@@ -1,0 +1,3 @@
+const body=document.body,toggle=document.querySelector('[data-toggle]'),close=document.querySelector('[data-close]'),overlay=document.querySelector('[data-overlay]');
+function drawer(v){body.classList.toggle('open',v);if(toggle)toggle.setAttribute('aria-expanded',v?'true':'false')}
+toggle&&toggle.addEventListener('click',()=>drawer(!body.classList.contains('open')));close&&close.addEventListener('click',()=>drawer(false));overlay&&overlay.addEventListener('click',()=>drawer(false));document.querySelectorAll('.drawer a').forEach(a=>a.addEventListener('click',()=>drawer(false)));document.addEventListener('keydown',e=>{if(e.key==='Escape')drawer(false)});document.querySelectorAll('[data-year]').forEach(x=>x.textContent=new Date().getFullYear());
