@@ -64,25 +64,33 @@
 <main class="menu-page">
 <section class="menu-intro">
   <div class="container">
-    <div class="eyebrow">03 · TCC Menu</div>
-    <h1>Choose your mood.</h1>
-    <p>Coffee, signatures, refreshers and food — all in one easy-to-browse menu.</p>
+    <div class="menu-brand-lockup"><img src="images/logo.png" alt="TCC – The Coffee Club"></div>
+    <div class="eyebrow">THE TCC MENU</div>
+    <h1>Crafted for your mood.</h1>
+    <p>Premium coffee, refreshing teas, signatures and food — thoughtfully brought together for Nellore.</p>
   </div>
 </section>
 <div class="menu-tools">
   <div class="container">
     <div class="menu-tabs">
-      <button class="menu-tab active" data-target="coffee">Coffee</button>
-      <button class="menu-tab" data-target="refreshers-and-tea">Refreshers & Tea</button>
+      <button class="menu-tab active" data-target="coffee">Coffee & Tea</button>
+      <button class="menu-tab" data-target="refreshers-and-tea">Refreshers</button>
       <button class="menu-tab" data-target="signatures">Signatures</button>
       <button class="menu-tab" data-target="food">Food</button>
     </div>
-    <input class="menu-search" id="menuSearch" type="search" placeholder="Search coffee, pizza, pasta..." aria-label="Search menu">
+    <input class="menu-search" id="menuSearch" type="search" placeholder="Search coffee, food or favourites…" aria-label="Search menu">
   </div>
 </div>
 <section class="menu-content">
   <div class="container">
-    <div class="menu-note"><strong>Prices:</strong> Menu prices shown are from the current TCC menu provided. Items marked <strong>PRICE TBC</strong> need the final price confirmation.</div>
+    <section class="menu-favourites"><div class="eyebrow">A FEW TO START WITH</div><h2>TCC Favourites</h2><p class="menu-favourites-sub">A few favourites worth trying on your first visit.</p><div class="favourite-grid">
+<a href="#coffee"><span>COFFEE</span><strong>Spanish Latte</strong><em>₹299</em></a>
+<a href="#coffee"><span>COLD BREW</span><strong>Classic Cold Brew</strong><em>₹350</em></a>
+<a href="#signatures"><span>SIGNATURE</span><strong>Classic Matcha</strong><em>₹350</em></a>
+<a href="#signatures"><span>V60</span><strong>Pour Over</strong><em>₹450</em></a>
+<a href="#refreshers-and-tea"><span>TCC FAVOURITE</span><strong>Maska Bun</strong><em>₹99</em></a>
+<a href="#food"><span>PIZZA</span><strong>Pesto Chicken Pizza</strong><em>₹449</em></a>
+</div></section><div class="menu-note"><strong>Prices:</strong> Menu prices shown are from the current TCC menu provided. Items marked <strong>PRICE TBC</strong> need the final price confirmation.</div>
     <div id="noResults" class="no-results">No matching items found. Try another search.</div>
 <div class="menu-group" id="coffee" data-group="Coffee">
         <section class="menu-section" data-group="Coffee">
@@ -739,7 +747,7 @@
 <footer class="footer">
   <div class="container">
     <img class="footer-logo" src="images/logo.png" alt="TCC – The Coffee Club">
-    <p><strong>TCC – THE COFFEE CLUB</strong></p><p>Good Coffee. Good Food. Good Vibes.</p>
+    <p><strong>TCC – THE COFFEE CLUB</strong></p><p>Made to be shared. Made to be remembered.</p><p class="footer-location">TCC — The Coffee Club · Nellore</p>
     <div class="footer-links">
       <a class="btn btn-light" href="tel:+919059059553">Call</a>
       <a class="btn btn-light" href="https://wa.me/919059059553" target="_blank" rel="noopener">WhatsApp</a>
@@ -750,6 +758,7 @@
 <nav class="mobile-bar" aria-label="Quick actions"><a href="tel:+919059059553">☎ Call</a><a class="accent" href="menu.html">☕ Menu</a><a href="https://maps.app.goo.gl/LTdYTXNZPJU4qetv6?g_st=ac" target="_blank" rel="noopener">⌖ Map</a></nav>
 <script src="script.js"></script>
 <script>
+document.querySelectorAll(".menu-section").forEach(sec=>{const title=sec.querySelector("h2")?.textContent.toLowerCase()||"";let type="";if(title.includes("non-veg"))type="NON-VEG";else if(title.includes("veg")||title==="soups"||title==="pastas")type="VEG";else if(title==="add-ons"){sec.querySelectorAll(".m-item").forEach(item=>{const n=item.querySelector("h3")?.textContent.toLowerCase()||"";item.dataset.foodType=(n.includes("chicken")||n.includes("prawn"))?"NON-VEG":"VEG"});}if(type)sec.querySelectorAll(".m-item").forEach(item=>item.dataset.foodType=type);});
 const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults");
 function showGroup(id){
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
