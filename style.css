@@ -224,3 +224,19 @@ h1,h2,h3,.lux-home h1,.lux-intro-copy h2,.lux-menu-inner h2,.lux-grid-copy h2,.l
 .lux-intro-copy p{font-family:'Manrope',Arial,sans-serif}
 footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Manrope',Arial,sans-serif}
 @media(max-width:799px){.brand{width:96px;height:52px}.lux-hero h1{letter-spacing:-.025em}.lux-menu-button:hover{gap:32px}}
+
+/* Cross-page consistency + premium polish */
+.page-hero h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;letter-spacing:-.035em}
+.page-hero .lead,.info-row strong,.contact-grid p,.founder-grid p,.story-copy,.drawer nav a{font-family:'Manrope',Arial,sans-serif}
+.menu-page .menu-intro{padding-top:128px;padding-bottom:42px}
+.menu-page .menu-intro h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;letter-spacing:-.035em}
+.menu-page .menu-intro p{font-family:'Manrope',Arial,sans-serif}
+.menu-page .menu-section h2,.menu-page .m-item h3{font-family:'Manrope',Arial,sans-serif}
+.menu-page .menu-section h2{font-weight:700;letter-spacing:-.02em}
+.menu-page .m-item h3{font-weight:600}
+.menu-page .m-item p,.menu-page .m-item strong,.menu-page .menu-tab,.menu-page .menu-search,.menu-page .menu-note{font-family:'Manrope',Arial,sans-serif}
+.menu-page .menu-landing-favourites h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600}
+.menu-page .menu-landing-favourites>p{font-family:'Manrope',Arial,sans-serif}
+.menu-page .menu-tools{top:70px}
+.menu-page .menu-brand-lockup{box-shadow:0 10px 30px rgba(0,0,0,.12)}
+@media(max-width:799px){.menu-page .menu-intro{padding-top:108px;padding-bottom:34px}.menu-page .menu-tools{top:69px}}
