@@ -207,3 +207,20 @@
 .lux-grid{grid-template-columns:1fr;min-height:0}.lux-grid>div:first-child img{height:360px;min-height:0}.lux-grid-copy{padding:60px 24px 72px}.lux-grid-copy h2{font-size:45px}
 .lux-visit{padding:70px 0 105px}.lux-visit-inner{display:block}.lux-visit h2{font-size:50px}.lux-visit .btn{margin-top:28px}
 }
+
+/* Final premium typography + header polish */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+body{font-family:'Manrope',Arial,sans-serif}
+h1,h2,h3,.lux-home h1,.lux-intro-copy h2,.lux-menu-inner h2,.lux-grid-copy h2,.lux-visit h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600}
+.site-header{transition:background .3s,box-shadow .3s}
+.brand{width:104px;height:56px}
+.menu-toggle{width:42px;height:42px}
+.lux-hero h1{font-weight:600;letter-spacing:-.035em}
+.lux-kicker,.lux-intro-copy>span,.lux-menu-inner span,.lux-grid-copy>span,.lux-visit span,.header-location{font-family:'Manrope',Arial,sans-serif}
+.lux-hero-bottom,.lux-hero-bottom span,.lux-menu-button,.new-outline-link,.btn{font-family:'Manrope',Arial,sans-serif}
+.lux-menu-button{transition:gap .25s}
+.lux-menu-button:hover{gap:42px}
+.text-link{font-family:'Manrope',Arial,sans-serif;font-size:12px;letter-spacing:.02em}
+.lux-intro-copy p{font-family:'Manrope',Arial,sans-serif}
+footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Manrope',Arial,sans-serif}
+@media(max-width:799px){.brand{width:96px;height:52px}.lux-hero h1{letter-spacing:-.025em}.lux-menu-button:hover{gap:32px}}
