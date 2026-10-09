@@ -987,7 +987,10 @@ foodTabs.forEach(t=>t.addEventListener("click",()=>{
     });
     const panel=document.querySelector("[data-addon-panel]");
     if(panel) panel.style.display=target==="Pastas"?"block":"none";
-    section.scrollIntoView({behavior:"smooth",block:"start"});
+    const toolsBar=document.querySelector(".menu-tools");
+    const offset=(toolsBar?.getBoundingClientRect().height||0)+12;
+    const y=section.getBoundingClientRect().top+window.scrollY-offset;
+    window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
   }
 }));
 search.addEventListener("input",e=>{
