@@ -51,25 +51,32 @@
 .food-badge.nonveg{color:#ef2029}
 /* Distinct premium treatments for non-food categories */
 .menu-group#coffee .menu-section,
-.menu-group#refreshers-and-tea .menu-section{margin-top:26px}
+.menu-group#refreshers-and-tea .menu-section,
+.menu-group#signatures .menu-section{margin-top:28px}
 .menu-group#coffee .m-list,
-.menu-group#refreshers-and-tea .m-list{gap:0}
+.menu-group#refreshers-and-tea .m-list,
+.menu-group#signatures .m-list{gap:10px}
 .menu-group#coffee .m-item,
-.menu-group#refreshers-and-tea .m-item{
-  border:0;border-bottom:1px solid rgba(23,60,43,.14);border-radius:0;box-shadow:none;
-  background:transparent;padding:15px 4px;
+.menu-group#refreshers-and-tea .m-item,
+.menu-group#signatures .m-item{
+  background:linear-gradient(135deg,#f7f0e1,#fff);
+  border:1px solid rgba(183,154,90,.28);
+  border-radius:16px;box-shadow:0 7px 22px rgba(20,42,31,.055);
+  padding:17px 16px;
 }
-.menu-group#coffee .m-item:first-child,
-.menu-group#refreshers-and-tea .m-item:first-child{border-top:1px solid rgba(23,60,43,.14)}
 .menu-group#coffee .m-item strong,
-.menu-group#refreshers-and-tea .m-item strong{font-size:15px}
+.menu-group#refreshers-and-tea .m-item strong,
+.menu-group#signatures .m-item strong{font-size:15px}
 .menu-group#coffee .menu-section h2,
-.menu-group#refreshers-and-tea .menu-section h2{
-  display:flex;align-items:center;gap:10px;border:0;padding:0;margin-bottom:10px;
+.menu-group#refreshers-and-tea .menu-section h2,
+.menu-group#signatures .menu-section h2{
+  color:#8d7337;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  border-bottom:0;padding-bottom:5px;
 }
 .menu-group#coffee .menu-section h2:after,
-.menu-group#refreshers-and-tea .menu-section h2:after{
-  content:"";height:1px;flex:1;background:rgba(183,154,90,.45);
+.menu-group#refreshers-and-tea .menu-section h2:after,
+.menu-group#signatures .menu-section h2:after{
+  content:"";display:block;width:34px;height:2px;background:#b79a5a;margin-top:7px;
 }
 .menu-group#signatures .menu-section{margin-top:28px}
 .menu-group#signatures .m-list{gap:10px}
