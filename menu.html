@@ -50,6 +50,22 @@
 .food-badge.veg{color:#2eaa55}
 .food-badge.nonveg{color:#ef2029}
 /* Distinct premium treatments for non-food categories */
+/* Editorial menu motion + category identity */
+.menu-category-intro{position:relative;padding:30px 4px 18px;margin-bottom:2px;overflow:hidden}
+.category-kicker{font:800 10px/1 Manrope,Arial,sans-serif;letter-spacing:.16em;color:#8d7337;text-transform:uppercase}
+.menu-category-intro h2{font:500 clamp(34px,9vw,54px)/.95 "Cormorant Garamond",serif;color:#173c2b;margin:9px 0 8px}
+.menu-category-intro span{font:13px/1.5 Manrope,Arial,sans-serif;color:#6c756d}
+.menu-category-intro:after{content:"";position:absolute;right:-35px;top:0;width:130px;height:130px;border:1px solid rgba(183,154,90,.28);border-radius:50%}
+.menu-group.active .menu-section{animation:menuReveal .45s ease both}
+.menu-group.active .menu-section:nth-child(2){animation-delay:.04s}
+.menu-group.active .menu-section:nth-child(3){animation-delay:.08s}
+.menu-group.active .menu-section:nth-child(4){animation-delay:.12s}
+@keyframes menuReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.menu-tab{transition:all .22s ease}
+.m-item{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.m-item:active{transform:scale(.985)}
+@media(min-width:850px){.menu-category-intro{padding-top:42px;padding-bottom:26px}.menu-category-intro h2{font-size:58px}}
+
 /* FINAL CATEGORY CARD STYLE */
 .menu-group#coffee .m-item,
 .menu-group#refreshers-and-tea .m-item,
@@ -180,6 +196,11 @@
 </div>
 <section class="menu-content">
   <div class="container">
+    <div class="menu-category-intro" id="menuCategoryIntro">
+      <div class="category-kicker">01 · COFFEE & TEA</div>
+      <h2>Slow down. Sip well.</h2>
+      <span>Classic brews, cold favourites and everyday comforts.</span>
+    </div>
     <div id="noResults" class="no-results">No matching items found. Try another search.</div>
 <div class="menu-group" id="coffee" data-group="Coffee">
         <section class="menu-section" data-group="Coffee">
@@ -882,6 +903,14 @@ const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.quer
 function showGroup(id){
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
+  const intro=document.getElementById("menuCategoryIntro");
+  const copy={
+    coffee:["01 · COFFEE & TEA","Slow down. Sip well.","Classic brews, cold favourites and everyday comforts."],
+    "refreshers-and-tea":["02 · REFRESHERS","Bright. Cold. Refreshing.","Iced teas, coolers and South Indian favourites."],
+    signatures:["03 · SIGNATURES","Made the TCC way.","Matcha, pour-over and house favourites."],
+    food:["04 · FOOD","Good food, no fuss.","Soups, starters, pasta, pizza, burgers and sandwiches."]
+  }[id];
+  if(intro&&copy){intro.querySelector(".category-kicker").textContent=copy[0];intro.querySelector("h2").textContent=copy[1];intro.querySelector("span").textContent=copy[2];}
   if(foodTabsWrap) foodTabsWrap.classList.toggle("visible",id==="food");
   foodTabs.forEach(t=>t.classList.toggle("active",t.dataset.foodTarget==="all"));
   search.value="";
