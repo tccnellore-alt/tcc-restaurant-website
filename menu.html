@@ -753,10 +753,25 @@
 <nav class="mobile-bar" aria-label="Quick actions"><a href="tel:+919059059553">☎ Call</a><a class="accent" href="menu.html">☕ Menu</a><a href="https://maps.app.goo.gl/LTdYTXNZPJU4qetv6?g_st=ac" target="_blank" rel="noopener">⌖ Map</a></nav>
 <script src="script.js"></script>
 <script>
-document.querySelectorAll(".menu-section").forEach(sec=>{const title=sec.querySelector("h2")?.textContent.toLowerCase()||"";let type="";if(title.includes("non-veg"))type="NON-VEG";else if(title.includes("veg")||title==="soups"||title==="pastas")type="VEG";else if(title==="add-ons"){sec.querySelectorAll(".m-item").forEach(item=>{const n=item.querySelector("h3")?.textContent.toLowerCase()||"";item.dataset.foodType=(n.includes("chicken")||n.includes("prawn"))?"NON-VEG":"VEG"});}if(type)sec.querySelectorAll(".m-item").forEach(item=>item.dataset.foodType=type);});
+document.querySelectorAll(".menu-section").forEach(sec=>{
+  const title=(sec.querySelector("h2")?.textContent||"").toLowerCase();
+  let type="";
+  if(title.includes("non-veg") || title.includes("grilled chicken")) type="NON-VEG";
+  else if(title.includes("veg") || title==="soups" || title==="pastas") type="VEG";
+  if(title==="add-ons"){
+    sec.querySelectorAll(".m-item").forEach(item=>{
+      const n=(item.querySelector("h3")?.textContent||"").toLowerCase();
+      item.dataset.foodType=(n.includes("chicken")||n.includes("prawn"))?"NON-VEG":"VEG";
+    });
+  } else if(type) {
+    sec.querySelectorAll(".m-item").forEach(item=>item.dataset.foodType=type);
+  }
+});
 document.querySelectorAll(".m-item[data-food-type]").forEach(item=>{
   const h=item.querySelector("h3");
-  if(!h || h.querySelector(".food-badge")) return;
+  if(!h) return;
+  const old=h.querySelector(".food-badge");
+  if(old) old.remove();
   const badge=document.createElement("span");
   const type=item.dataset.foodType;
   badge.className="food-badge "+(type==="VEG"?"veg":"nonveg");
