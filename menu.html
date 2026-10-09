@@ -907,15 +907,33 @@ function buildSubTabs(id){
   all.dataset.foodTarget="all";
   all.textContent=id==="food"?"All Food":"All";
   foodTabsWrap.appendChild(all);
-  sections.forEach(sec=>{
-    const h=(sec.querySelector("h2")?.textContent||"").trim();
-    if(!h) return;
-    const b=document.createElement("button");
-    b.className="food-tab";
-    b.dataset.foodTarget=h;
-    b.textContent=h==="Appetizers · Veg"?"Starters":h;
-    foodTabsWrap.appendChild(b);
-  });
+  if(id==="food"){
+    const labels=[
+      ["Soups","Soups"],
+      ["Appetizers","Starters"],
+      ["Pastas","Pasta"],
+      ["Pizzas","Pizza"],
+      ["Burgers","Burgers"],
+      ["Sandwiches","Sandwiches"]
+    ];
+    labels.forEach(([target,label])=>{
+      const b=document.createElement("button");
+      b.className="food-tab";
+      b.dataset.foodTarget=target;
+      b.textContent=label;
+      foodTabsWrap.appendChild(b);
+    });
+  } else {
+    sections.forEach(sec=>{
+      const h=(sec.querySelector("h2")?.textContent||"").trim();
+      if(!h) return;
+      const b=document.createElement("button");
+      b.className="food-tab";
+      b.dataset.foodTarget=h;
+      b.textContent=h;
+      foodTabsWrap.appendChild(b);
+    });
+  }
   foodTabs=[...foodTabsWrap.querySelectorAll(".food-tab")];
   foodTabs.forEach(t=>t.addEventListener("click",()=>jumpToSubcategory(t.dataset.foodTarget)));
   foodTabsWrap.classList.add("visible");
