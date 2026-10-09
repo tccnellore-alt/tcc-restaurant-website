@@ -947,9 +947,14 @@ function jumpToSubcategory(target){
   if(target==="all"){
     const first=active.querySelector(".menu-section");
     if(first){
-      const offset=(document.querySelector(".menu-tools")?.getBoundingClientRect().height||0)+18;
-      const y=first.getBoundingClientRect().top+window.scrollY-offset;
-      window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
+      const toolsBar=document.querySelector(".menu-tools");
+      const jumpAll=()=>{
+        const desired=(toolsBar?.getBoundingClientRect().height||0)+12;
+        const delta=first.getBoundingClientRect().top-desired;
+        if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
+      };
+      jumpAll();
+      setTimeout(jumpAll,450);
     }
     return;
   }
@@ -961,9 +966,17 @@ function jumpToSubcategory(target){
   if(!section) return;
   const panel=document.querySelector("[data-addon-panel]");
   if(panel) panel.style.display=(active.id==="food" && target==="Pastas")?"block":"none";
-  const offset=(document.querySelector(".menu-tools")?.getBoundingClientRect().height||0)+18;
-  const y=section.getBoundingClientRect().top+window.scrollY-offset;
-  window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
+  const toolsBar=document.querySelector(".menu-tools");
+  const getOffset=()=>((toolsBar?.getBoundingClientRect().height||0)+12);
+  const jump=()=>{
+    const heading=section.querySelector("h2")||section;
+    const desired=getOffset();
+    const delta=heading.getBoundingClientRect().top-desired;
+    if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
+  };
+  jump();
+  setTimeout(jump,450);
+  setTimeout(jump,900);
 }
 
 function showGroup(id){
