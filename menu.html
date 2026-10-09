@@ -30,6 +30,17 @@
 .m-item strong{white-space:nowrap;color:#8d7337;font:bold 14px Arial}
 .menu-note{margin:0 0 22px;padding:15px 16px;background:#f5efe1;border-left:3px solid #b79a5a;border-radius:10px;font:13px/1.5 Arial;color:#526057}
 .no-results{display:none;padding:30px;text-align:center;color:#69746b;font:14px Arial}
+
+.food-tabs{display:none;gap:7px;overflow-x:auto;scrollbar-width:none;margin-top:9px;padding-bottom:1px}
+.food-tabs.visible{display:flex}
+.food-tabs::-webkit-scrollbar{display:none}
+.food-tab{border:0;background:transparent;color:#657168;padding:6px 7px;white-space:nowrap;font:700 10px Arial;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.food-tab.active{color:#173c2b;border-bottom:2px solid #b79a5a}
+.m-item{position:relative}
+.m-item[data-food-type] h3:before{content:attr(data-food-type);display:inline-flex;align-items:center;justify-content:center;margin-right:8px;width:7px;height:7px;border:1px solid currentColor;font-size:0;vertical-align:2px}
+.m-item[data-food-type="VEG"] h3:before{border-color:#4c7a55}
+.m-item[data-food-type="NON-VEG"] h3:before{border-color:#a35d50}
+@media(max-width:849px){.menu-intro{padding-top:116px}.menu-intro h1{font-size:48px}.menu-intro p{font-size:14px}.menu-search{border-radius:12px;padding:11px 14px}.menu-tools{padding:10px 0}.menu-tab{padding:9px 14px}}
 @media(min-width:850px){
  .menu-tools{top:72px}.menu-content{padding-bottom:60px}
  .menu-tabs{justify-content:center}.menu-search{max-width:520px;display:block;margin:10px auto 0}
@@ -48,8 +59,8 @@
   <div class="container">
     <div class="menu-brand-lockup"><img src="images/logo.png" alt="TCC – The Coffee Club"></div>
     <div class="eyebrow">THE TCC MENU</div>
-    <h1>Crafted for your mood.</h1>
-    <p>Premium coffee, refreshing teas, signatures and food — thoughtfully brought together for Nellore.</p>
+    <h1>The TCC Menu</h1>
+    <p>Coffee, food, signatures and more.</p>
   </div>
 </section>
 <div class="menu-tools">
@@ -60,13 +71,21 @@
       <button class="menu-tab" data-target="signatures">Signatures</button>
       <button class="menu-tab" data-target="food">Food</button>
     </div>
-    <input class="menu-search" id="menuSearch" type="search" placeholder="Search coffee, food or favourites…" aria-label="Search menu">
+    <div class="food-tabs" id="foodTabs" aria-label="Food categories">
+      <button class="food-tab active" data-food-target="all">All Food</button>
+      <button class="food-tab" data-food-target="Soups">Soups</button>
+      <button class="food-tab" data-food-target="Appetizers">Starters</button>
+      <button class="food-tab" data-food-target="Pastas">Pasta</button>
+      <button class="food-tab" data-food-target="Pizzas">Pizza</button>
+      <button class="food-tab" data-food-target="Burgers">Burgers</button>
+      <button class="food-tab" data-food-target="Sandwiches">Sandwiches</button>
+    </div>
+    <input class="menu-search" id="menuSearch" type="search" placeholder="Search the menu…" aria-label="Search menu">
   </div>
 </div>
 <section class="menu-content">
   <div class="container">
     <section class="menu-landing-favourites" id="menuFavourites"><div class="eyebrow">NOT SURE WHAT TO ORDER?</div><h2>Start with a TCC Favourite.</h2><p>Six popular picks to begin with.</p><div class="landing-fav-row"><a href="#" data-fav-target="coffee"><strong>Spanish Latte</strong><span>₹299</span></a><a href="#" data-fav-target="coffee"><strong>Classic Cold Brew</strong><span>₹350</span></a><a href="#" data-fav-target="signatures"><strong>Classic Matcha</strong><span>₹350</span></a><a href="#" data-fav-target="signatures"><strong>Pour Over</strong><span>₹450</span></a><a href="#" data-fav-target="refreshers-and-tea"><strong>Maska Bun</strong><span>₹99</span></a><a href="#" data-fav-target="food"><strong>Pesto Chicken Pizza</strong><span>₹449</span></a></div></section>
-    <div class="menu-note"><strong>Prices:</strong> Menu prices shown are from the current TCC menu provided. Items marked <strong>PRICE TBC</strong> need the final price confirmation.</div>
     <div id="noResults" class="no-results">No matching items found. Try another search.</div>
 <div class="menu-group" id="coffee" data-group="Coffee">
         <section class="menu-section" data-group="Coffee">
@@ -705,7 +724,7 @@
       <article class="m-item">
         <div>
           <h3>Mexican Grilled Chicken</h3>
-          <p>Grilled chicken with mashed potato, sauté vegetables &amp; mashed potato.</p>
+          <p>Grilled chicken with mashed potato &amp; sauté vegetables.</p>
         </div>
         <strong>₹380</strong>
       </article>
@@ -735,12 +754,15 @@
 <script src="script.js"></script>
 <script>
 document.querySelectorAll(".menu-section").forEach(sec=>{const title=sec.querySelector("h2")?.textContent.toLowerCase()||"";let type="";if(title.includes("non-veg"))type="NON-VEG";else if(title.includes("veg")||title==="soups"||title==="pastas")type="VEG";else if(title==="add-ons"){sec.querySelectorAll(".m-item").forEach(item=>{const n=item.querySelector("h3")?.textContent.toLowerCase()||"";item.dataset.foodType=(n.includes("chicken")||n.includes("prawn"))?"NON-VEG":"VEG"});}if(type)sec.querySelectorAll(".m-item").forEach(item=>item.dataset.foodType=type);});
-const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults");
+const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults"), foodTabs=[...document.querySelectorAll(".food-tab")], foodTabsWrap=document.getElementById("foodTabs");
 function showGroup(id){
   const landing=document.getElementById("menuFavourites"); if(landing) landing.style.display=(id==="coffee" && !window.__menuCategoryChosen)?"block":"none";
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
+  if(foodTabsWrap) foodTabsWrap.classList.toggle("visible",id==="food");
+  foodTabs.forEach(t=>t.classList.toggle("active",t.dataset.foodTarget==="all"));
   search.value="";
+  window.__foodCategory="all";
   filter("");
   window.scrollTo({top:document.querySelector(".menu-tools").offsetTop-10,behavior:"smooth"});
 }
@@ -750,17 +772,23 @@ function filter(q){
   q=q.toLowerCase().trim(); let found=0;
   const active=document.querySelector(".menu-group.active");
   active.querySelectorAll(".menu-section").forEach(sec=>{
+    const foodMatch=active.id!=="food" || !window.__foodCategory || window.__foodCategory==="all" || sec.querySelector("h2")?.textContent.includes(window.__foodCategory);
     let sectionFound=0;
     sec.querySelectorAll(".m-item").forEach(item=>{
-      const ok=!q || item.textContent.toLowerCase().includes(q);
+      const ok=foodMatch && (!q || item.textContent.toLowerCase().includes(q));
       item.style.display=ok?"flex":"none"; if(ok)sectionFound++;
     });
     sec.style.display=sectionFound?"block":"none"; found+=sectionFound;
   });
   noResults.style.display=found?"none":"block";
 }
+foodTabs.forEach(t=>t.addEventListener("click",()=>{
+  window.__foodCategory=t.dataset.foodTarget;
+  foodTabs.forEach(x=>x.classList.toggle("active",x===t));
+  filter(search.value);
+}));
 search.addEventListener("input",e=>filter(e.target.value));
-document.addEventListener("DOMContentLoaded",()=>{window.__menuCategoryChosen=false;showGroup("coffee")});
+document.addEventListener("DOMContentLoaded",()=>{window.__menuCategoryChosen=false;window.__foodCategory="all";showGroup("coffee")});
 </script>
 </body>
 </html>
