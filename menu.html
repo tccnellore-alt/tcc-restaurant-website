@@ -31,7 +31,15 @@
 .menu-note{margin:0 0 22px;padding:15px 16px;background:#f5efe1;border-left:3px solid #b79a5a;border-radius:10px;font:13px/1.5 Arial;color:#526057}
 .no-results{display:none;padding:30px;text-align:center;color:#69746b;font:14px Arial}
 
-.food-tabs{display:none;gap:7px;overflow-x:auto;scrollbar-width:none;margin-top:9px;padding-bottom:1px}
+.menu-addons-panel{margin:18px 0 6px;padding:16px 16px 14px;border:1px solid rgba(23,60,43,.12);border-radius:16px;background:#f3ecdc}
+.addons-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.addons-heading .eyebrow{margin:0;color:#8d7337;font-size:9px}
+.addons-heading strong{color:#173c2b;font:700 15px/1.2 Manrope,Arial,sans-serif}
+.addons-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.addons-row::-webkit-scrollbar{display:none}
+.addons-row span{flex:0 0 auto;padding:9px 11px;border:1px solid rgba(23,60,43,.12);border-radius:10px;background:#fff;color:#526057;font:500 11px/1.2 Manrope,Arial,sans-serif}
+.addons-row b{color:#8d7337;font-weight:800}
+.menu-addons-panel{display:none}\n.menu-group#food .menu-section[data-group="Food"] h2{}.food-tabs{display:none;gap:7px;overflow-x:auto;scrollbar-width:none;margin-top:9px;padding-bottom:1px}
 .food-tabs.visible{display:flex}
 .food-tabs::-webkit-scrollbar{display:none}
 .food-tab{border:0;background:transparent;color:#657168;padding:6px 7px;white-space:nowrap;font:700 10px Arial;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
@@ -558,6 +566,17 @@
         <strong>₹340</strong>
       </article></div>
         </section>
+        <section class="menu-addons-panel" data-addon-panel>
+          <div class="addons-heading">
+            <span class="eyebrow">MAKE IT YOURS</span>
+            <strong>Add to any pasta</strong>
+          </div>
+          <div class="addons-row">
+            <span>Roasted Mushroom <b>+₹40</b></span>
+            <span>Grilled Chicken <b>+₹60</b></span>
+            <span>Prawns <b>+₹80</b></span>
+          </div>
+        </section>
         <section class="menu-section" data-group="Food">
           <h2>Add-ons</h2>
           <div class="m-list">
@@ -792,6 +811,13 @@ document.querySelectorAll(".m-item[data-food-type]").forEach(item=>{
   badge.setAttribute("aria-label",type==="VEG"?"Vegetarian":"Non-vegetarian");
   h.prepend(badge);
 });
+function syncPastaAddon(){
+  const panel=document.querySelector("[data-addon-panel]");
+  const food=document.getElementById("food");
+  if(!panel||!food) return;
+  const pasta=[...food.querySelectorAll(".menu-section")].find(s=>(s.querySelector("h2")?.textContent||"").trim().toLowerCase()==="pastas");
+  panel.style.display=(food.classList.contains("active") && (!window.__foodCategory || window.__foodCategory==="all" || window.__foodCategory==="Pastas") && pasta && pasta.style.display!=="none")?"block":"none";
+}
 const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults"), foodTabs=[...document.querySelectorAll(".food-tab")], foodTabsWrap=document.getElementById("foodTabs");
 function showGroup(id){
   const landing=document.getElementById("menuFavourites"); if(landing) landing.style.display=(id==="coffee" && !window.__menuCategoryChosen)?"block":"none";
@@ -802,6 +828,7 @@ function showGroup(id){
   search.value="";
   window.__foodCategory="all";
   filter("");
+  syncPastaAddon();
   window.scrollTo({top:document.querySelector(".menu-tools").offsetTop-10,behavior:"smooth"});
 }
 tabs.forEach(t=>t.addEventListener("click",()=>{window.__menuCategoryChosen=true;showGroup(t.dataset.target)}));
@@ -819,13 +846,15 @@ function filter(q){
     sec.style.display=sectionFound?"block":"none"; found+=sectionFound;
   });
   noResults.style.display=found?"none":"block";
+  syncPastaAddon();
 }
 foodTabs.forEach(t=>t.addEventListener("click",()=>{
   window.__foodCategory=t.dataset.foodTarget;
   foodTabs.forEach(x=>x.classList.toggle("active",x===t));
   filter(search.value);
+  syncPastaAddon();
 }));
-search.addEventListener("input",e=>filter(e.target.value));
+search.addEventListener("input",e=>{filter(e.target.value);syncPastaAddon()});
 document.addEventListener("DOMContentLoaded",()=>{window.__menuCategoryChosen=false;window.__foodCategory="all";showGroup("coffee")});
 </script>
 </body>
