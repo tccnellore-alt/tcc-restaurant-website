@@ -184,15 +184,7 @@
       <button class="menu-tab" data-target="signatures">Signatures</button>
       <button class="menu-tab" data-target="food">Food</button>
     </div>
-    <div class="food-tabs" id="foodTabs" aria-label="Food categories">
-      <button class="food-tab active" data-food-target="all">All Food</button>
-      <button class="food-tab" data-food-target="Soups">Soups</button>
-      <button class="food-tab" data-food-target="Appetizers">Starters</button>
-      <button class="food-tab" data-food-target="Pastas">Pasta</button>
-      <button class="food-tab" data-food-target="Pizzas">Pizza</button>
-      <button class="food-tab" data-food-target="Burgers">Burgers</button>
-      <button class="food-tab" data-food-target="Sandwiches">Sandwiches</button>
-    </div>
+    <div class="food-tabs" id="foodTabs" aria-label="Category sections"></div>
     <input class="menu-search" id="menuSearch" type="search" placeholder="Search the entire menu…" aria-label="Search menu">
   </div>
 </div>
@@ -901,7 +893,61 @@ function syncPastaAddon(){
   const pasta=[...food.querySelectorAll(".menu-section")].find(s=>(s.querySelector("h2")?.textContent||"").trim().toLowerCase()==="pastas");
   panel.style.display=(food.classList.contains("active") && pasta && pasta.style.display!=="none")?"block":"none";
 }
-const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults"), foodTabs=[...document.querySelectorAll(".food-tab")], foodTabsWrap=document.getElementById("foodTabs");
+const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults"), foodTabsWrap=document.getElementById("foodTabs");
+let foodTabs=[];
+
+function buildSubTabs(id){
+  if(!foodTabsWrap) return;
+  const group=document.getElementById(id);
+  if(!group){ foodTabsWrap.classList.remove("visible"); return; }
+  const sections=[...group.querySelectorAll(":scope > .menu-section")];
+  foodTabsWrap.innerHTML="";
+  const all=document.createElement("button");
+  all.className="food-tab active";
+  all.dataset.foodTarget="all";
+  all.textContent=id==="food"?"All Food":"All";
+  foodTabsWrap.appendChild(all);
+  sections.forEach(sec=>{
+    const h=(sec.querySelector("h2")?.textContent||"").trim();
+    if(!h) return;
+    const b=document.createElement("button");
+    b.className="food-tab";
+    b.dataset.foodTarget=h;
+    b.textContent=h==="Appetizers · Veg"?"Starters":h;
+    foodTabsWrap.appendChild(b);
+  });
+  foodTabs=[...foodTabsWrap.querySelectorAll(".food-tab")];
+  foodTabs.forEach(t=>t.addEventListener("click",()=>jumpToSubcategory(t.dataset.foodTarget)));
+  foodTabsWrap.classList.add("visible");
+}
+
+function jumpToSubcategory(target){
+  if(!target) return;
+  foodTabs.forEach(x=>x.classList.toggle("active",x.dataset.foodTarget===target));
+  const active=document.querySelector(".menu-group.active");
+  if(!active) return;
+  if(target==="all"){
+    const first=active.querySelector(".menu-section");
+    if(first){
+      const offset=(document.querySelector(".menu-tools")?.getBoundingClientRect().height||0)+18;
+      const y=first.getBoundingClientRect().top+window.scrollY-offset;
+      window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
+    }
+    return;
+  }
+  const section=[...active.querySelectorAll(":scope > .menu-section")].find(sec=>
+    (sec.querySelector("h2")?.textContent||"").trim().toLowerCase()===target.toLowerCase()
+  ) || [...active.querySelectorAll(":scope > .menu-section")].find(sec=>
+    (sec.querySelector("h2")?.textContent||"").toLowerCase().includes(target.toLowerCase())
+  );
+  if(!section) return;
+  const panel=document.querySelector("[data-addon-panel]");
+  if(panel) panel.style.display=(active.id==="food" && target==="Pastas")?"block":"none";
+  const offset=(document.querySelector(".menu-tools")?.getBoundingClientRect().height||0)+18;
+  const y=section.getBoundingClientRect().top+window.scrollY-offset;
+  window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
+}
+
 function showGroup(id){
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
@@ -913,15 +959,13 @@ function showGroup(id){
     food:["04 · FOOD","Good food, no fuss.","Soups, starters, pasta, pizza, burgers and sandwiches."]
   }[id];
   if(intro&&copy){intro.querySelector(".category-kicker").textContent=copy[0];intro.querySelector("h2").textContent=copy[1];intro.querySelector("span").textContent=copy[2];}
-  if(foodTabsWrap) foodTabsWrap.classList.toggle("visible",id==="food");
-  foodTabs.forEach(t=>t.classList.toggle("active",t.dataset.foodTarget==="all"));
+  buildSubTabs(id);
   search.value="";
-  window.__foodCategory="all";
   filter("");
   syncPastaAddon();
   window.scrollTo({top:document.querySelector(".menu-tools").offsetTop-10,behavior:"smooth"});
 }
-tabs.forEach(t=>t.addEventListener("click",()=>{showGroup(t.dataset.target)}));
+tabs.forEach(t=>t.addEventListener("click",()=>showGroup(t.dataset.target)));
 document.querySelectorAll("[data-fav-target]").forEach(a=>a.remove());
 
 function filter(q){
@@ -929,7 +973,6 @@ function filter(q){
   let found=0;
   const active=document.querySelector(".menu-group.active");
   if(!active) return;
-  // Search is global: when text is entered, search every menu group.
   if(q){
     groups.forEach(g=>{
       let groupFound=0;
@@ -951,49 +994,19 @@ function filter(q){
   } else {
     groups.forEach(g=>g.classList.toggle("active",g===active));
     active.querySelectorAll(".menu-section").forEach(sec=>{
-      const foodMatch=active.id!=="food" || true;
       let sectionFound=0;
       sec.querySelectorAll(".m-item").forEach(item=>{
-        const ok=foodMatch;
-        item.style.display=ok?"flex":"none";
-        if(ok)sectionFound++;
+        item.style.display="flex";
+        sectionFound++;
       });
       sec.style.display=sectionFound?"block":"none";
       found+=sectionFound;
     });
+    buildSubTabs(active.id);
   }
   noResults.style.display=found?"none":"block";
   syncPastaAddon();
 }
-foodTabs.forEach(t=>t.addEventListener("click",()=>{
-  const target=t.dataset.foodTarget;
-  window.__foodCategory=target;
-  foodTabs.forEach(x=>x.classList.toggle("active",x===t));
-  if(search.value.trim()) return;
-  if(target==="all"){
-    // Keep every food section visible; All Food simply returns to the top of Food.
-    filter("");
-    document.querySelector("#food")?.scrollIntoView({behavior:"smooth",block:"start"});
-    return;
-  }
-  // Sub-category selection is a jump, not a filter: everything before and after
-  // the selected section remains in the page while the selected section is brought into view.
-  const section=[...document.querySelectorAll("#food .menu-section")].find(sec=>
-    (sec.querySelector("h2")?.textContent||"").toLowerCase().includes(target.toLowerCase())
-  );
-  if(section){
-    document.querySelectorAll("#food .menu-section").forEach(sec=>{
-      sec.style.display="block";
-      sec.querySelectorAll(".m-item").forEach(item=>item.style.display="flex");
-    });
-    const panel=document.querySelector("[data-addon-panel]");
-    if(panel) panel.style.display=target==="Pastas"?"block":"none";
-    const toolsBar=document.querySelector(".menu-tools");
-    const offset=(toolsBar?.getBoundingClientRect().height||0)+18;
-    const y=section.getBoundingClientRect().top+window.scrollY-offset;
-    window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
-  }
-}));
 search.addEventListener("input",e=>{
   const q=e.target.value.trim();
   search.classList.toggle("global-search-active",!!q);
