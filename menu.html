@@ -39,7 +39,8 @@
 .addons-row::-webkit-scrollbar{display:none}
 .addons-row span{flex:0 0 auto;padding:9px 11px;border:1px solid rgba(23,60,43,.12);border-radius:10px;background:#fff;color:#526057;font:500 11px/1.2 Manrope,Arial,sans-serif}
 .addons-row b{color:#8d7337;font-weight:800}
-.menu-addons-panel{display:none}\n.menu-group#food .menu-section[data-group="Food"] h2{}.food-tabs{display:none;gap:7px;overflow-x:auto;scrollbar-width:none;margin-top:9px;padding-bottom:1px}
+.menu-addons-panel{display:none}\n.menu-group#food .menu-section[data-group="Food"] h2{}
+.menu-group#food .menu-section{scroll-margin-top:150px}.food-tabs{display:none;gap:7px;overflow-x:auto;scrollbar-width:none;margin-top:9px;padding-bottom:1px}
 .food-tabs.visible{display:flex}
 .food-tabs::-webkit-scrollbar{display:none}
 .food-tab{border:0;background:transparent;color:#657168;padding:6px 7px;white-space:nowrap;font:700 10px Arial;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
@@ -897,7 +898,7 @@ function syncPastaAddon(){
   const food=document.getElementById("food");
   if(!panel||!food) return;
   const pasta=[...food.querySelectorAll(".menu-section")].find(s=>(s.querySelector("h2")?.textContent||"").trim().toLowerCase()==="pastas");
-  panel.style.display=(food.classList.contains("active") && (!window.__foodCategory || window.__foodCategory==="all" || window.__foodCategory==="Pastas") && pasta && pasta.style.display!=="none")?"block":"none";
+  panel.style.display=(food.classList.contains("active") && pasta && pasta.style.display!=="none")?"block":"none";
 }
 const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults"), foodTabs=[...document.querySelectorAll(".food-tab")], foodTabsWrap=document.getElementById("foodTabs");
 function showGroup(id){
@@ -949,7 +950,7 @@ function filter(q){
   } else {
     groups.forEach(g=>g.classList.toggle("active",g===active));
     active.querySelectorAll(".menu-section").forEach(sec=>{
-      const foodMatch=active.id!=="food" || !window.__foodCategory || window.__foodCategory==="all" || (sec.querySelector("h2")?.textContent||"").includes(window.__foodCategory);
+      const foodMatch=active.id!=="food" || true;
       let sectionFound=0;
       sec.querySelectorAll(".m-item").forEach(item=>{
         const ok=foodMatch;
@@ -964,10 +965,30 @@ function filter(q){
   syncPastaAddon();
 }
 foodTabs.forEach(t=>t.addEventListener("click",()=>{
-  window.__foodCategory=t.dataset.foodTarget;
+  const target=t.dataset.foodTarget;
+  window.__foodCategory=target;
   foodTabs.forEach(x=>x.classList.toggle("active",x===t));
-  filter(search.value);
-  syncPastaAddon();
+  if(search.value.trim()) return;
+  if(target==="all"){
+    // Keep every food section visible; All Food simply returns to the top of Food.
+    filter("");
+    document.querySelector("#food")?.scrollIntoView({behavior:"smooth",block:"start"});
+    return;
+  }
+  // Sub-category selection is a jump, not a filter: everything before and after
+  // the selected section remains in the page while the selected section is brought into view.
+  const section=[...document.querySelectorAll("#food .menu-section")].find(sec=>
+    (sec.querySelector("h2")?.textContent||"").toLowerCase().includes(target.toLowerCase())
+  );
+  if(section){
+    document.querySelectorAll("#food .menu-section").forEach(sec=>{
+      sec.style.display="block";
+      sec.querySelectorAll(".m-item").forEach(item=>item.style.display="flex");
+    });
+    const panel=document.querySelector("[data-addon-panel]");
+    if(panel) panel.style.display=target==="Pastas"?"block":"none";
+    section.scrollIntoView({behavior:"smooth",block:"start"});
+  }
 }));
 search.addEventListener("input",e=>{
   const q=e.target.value.trim();
