@@ -949,7 +949,7 @@ function jumpToSubcategory(target){
     if(first){
       const toolsBar=document.querySelector(".menu-tools");
       const jumpAll=()=>{
-        const desired=(toolsBar?.getBoundingClientRect().height||0)+12;
+        const desired=(toolsBar?.getBoundingClientRect().bottom||0)+12;
         const delta=first.getBoundingClientRect().top-desired;
         if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
       };
@@ -970,7 +970,7 @@ function jumpToSubcategory(target){
   const getOffset=()=>((toolsBar?.getBoundingClientRect().height||0)+12);
   const jump=()=>{
     const heading=section.querySelector("h2")||section;
-    const desired=getOffset();
+    const desired=(toolsBar?.getBoundingClientRect().bottom||0)+12;
     const delta=heading.getBoundingClientRect().top-desired;
     if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
   };
