@@ -40,7 +40,8 @@
 .addons-row span{flex:0 0 auto;padding:9px 11px;border:1px solid rgba(23,60,43,.12);border-radius:10px;background:#fff;color:#526057;font:500 11px/1.2 Manrope,Arial,sans-serif}
 .addons-row b{color:#8d7337;font-weight:800}
 .menu-addons-panel{display:none}\n.menu-group#food .menu-section[data-group="Food"] h2{}
-.menu-group#food .menu-section{scroll-margin-top:700px}.food-tabs{display:none;gap:7px;overflow-x:auto;scrollbar-width:none;margin-top:9px;padding-bottom:1px}
+.menu-group#food .menu-section{scroll-margin-top:285px}
+@media(max-width:849px){.menu-content{padding-bottom:520px!important}}.food-tabs{display:none;gap:7px;overflow-x:auto;scrollbar-width:none;margin-top:9px;padding-bottom:1px}
 .food-tabs.visible{display:flex}
 .food-tabs::-webkit-scrollbar{display:none}
 .food-tab{border:0;background:transparent;color:#657168;padding:6px 7px;white-space:nowrap;font:700 10px Arial;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
@@ -988,7 +989,7 @@ foodTabs.forEach(t=>t.addEventListener("click",()=>{
     const panel=document.querySelector("[data-addon-panel]");
     if(panel) panel.style.display=target==="Pastas"?"block":"none";
     const toolsBar=document.querySelector(".menu-tools");
-    const offset=Math.max(700,(toolsBar?.getBoundingClientRect().height||0)+55);
+    const offset=Math.max(285,(toolsBar?.getBoundingClientRect().height||0)+28);
     const y=section.getBoundingClientRect().top+window.scrollY-offset;
     window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
     setTimeout(()=>{
