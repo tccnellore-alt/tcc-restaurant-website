@@ -83,14 +83,8 @@
 </div>
 <section class="menu-content">
   <div class="container">
-    <section class="menu-favourites"><div class="eyebrow">A FEW TO START WITH</div><h2>TCC Favourites</h2><p class="menu-favourites-sub">A few favourites worth trying on your first visit.</p><div class="favourite-grid">
-<a href="#coffee"><span>COFFEE</span><strong>Spanish Latte</strong><em>₹299</em></a>
-<a href="#coffee"><span>COLD BREW</span><strong>Classic Cold Brew</strong><em>₹350</em></a>
-<a href="#signatures"><span>SIGNATURE</span><strong>Classic Matcha</strong><em>₹350</em></a>
-<a href="#signatures"><span>V60</span><strong>Pour Over</strong><em>₹450</em></a>
-<a href="#refreshers-and-tea"><span>TCC FAVOURITE</span><strong>Maska Bun</strong><em>₹99</em></a>
-<a href="#food"><span>PIZZA</span><strong>Pesto Chicken Pizza</strong><em>₹449</em></a>
-</div></section><div class="menu-note"><strong>Prices:</strong> Menu prices shown are from the current TCC menu provided. Items marked <strong>PRICE TBC</strong> need the final price confirmation.</div>
+    <section class="menu-landing-favourites" id="menuFavourites"><div class="eyebrow">NOT SURE WHAT TO ORDER?</div><h2>Start with a TCC Favourite.</h2><p>Six popular picks to begin with.</p><div class="landing-fav-row"><a href="#" data-fav-target="coffee"><strong>Spanish Latte</strong><span>₹299</span></a><a href="#" data-fav-target="coffee"><strong>Classic Cold Brew</strong><span>₹350</span></a><a href="#" data-fav-target="signatures"><strong>Classic Matcha</strong><span>₹350</span></a><a href="#" data-fav-target="signatures"><strong>Pour Over</strong><span>₹450</span></a><a href="#" data-fav-target="refreshers-and-tea"><strong>Maska Bun</strong><span>₹99</span></a><a href="#" data-fav-target="food"><strong>Pesto Chicken Pizza</strong><span>₹449</span></a></div></section>
+    <div class="menu-note"><strong>Prices:</strong> Menu prices shown are from the current TCC menu provided. Items marked <strong>PRICE TBC</strong> need the final price confirmation.</div>
     <div id="noResults" class="no-results">No matching items found. Try another search.</div>
 <div class="menu-group" id="coffee" data-group="Coffee">
         <section class="menu-section" data-group="Coffee">
@@ -761,13 +755,15 @@
 document.querySelectorAll(".menu-section").forEach(sec=>{const title=sec.querySelector("h2")?.textContent.toLowerCase()||"";let type="";if(title.includes("non-veg"))type="NON-VEG";else if(title.includes("veg")||title==="soups"||title==="pastas")type="VEG";else if(title==="add-ons"){sec.querySelectorAll(".m-item").forEach(item=>{const n=item.querySelector("h3")?.textContent.toLowerCase()||"";item.dataset.foodType=(n.includes("chicken")||n.includes("prawn"))?"NON-VEG":"VEG"});}if(type)sec.querySelectorAll(".m-item").forEach(item=>item.dataset.foodType=type);});
 const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults");
 function showGroup(id){
+  const landing=document.getElementById("menuFavourites"); if(landing) landing.style.display=(id==="coffee" && !window.__menuCategoryChosen)?"block":"none";
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
   search.value="";
   filter("");
   window.scrollTo({top:document.querySelector(".menu-tools").offsetTop-10,behavior:"smooth"});
 }
-tabs.forEach(t=>t.addEventListener("click",()=>showGroup(t.dataset.target)));
+tabs.forEach(t=>t.addEventListener("click",()=>{window.__menuCategoryChosen=true;showGroup(t.dataset.target)}));
+document.querySelectorAll("[data-fav-target]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();window.__menuCategoryChosen=true;showGroup(a.dataset.favTarget)}));
 function filter(q){
   q=q.toLowerCase().trim(); let found=0;
   const active=document.querySelector(".menu-group.active");
@@ -782,7 +778,7 @@ function filter(q){
   noResults.style.display=found?"none":"block";
 }
 search.addEventListener("input",e=>filter(e.target.value));
-document.addEventListener("DOMContentLoaded",()=>showGroup("coffee"));
+document.addEventListener("DOMContentLoaded",()=>{window.__menuCategoryChosen=false;showGroup("coffee")});
 </script>
 </body>
 </html>
