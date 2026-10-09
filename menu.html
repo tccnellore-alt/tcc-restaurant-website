@@ -37,9 +37,9 @@
 .food-tab{border:0;background:transparent;color:#657168;padding:6px 7px;white-space:nowrap;font:700 10px Arial;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
 .food-tab.active{color:#173c2b;border-bottom:2px solid #b79a5a}
 .m-item{position:relative}
-.m-item[data-food-type] h3:before{content:attr(data-food-type);display:inline-flex;align-items:center;justify-content:center;margin-right:8px;padding:3px 6px;border:1px solid currentColor;border-radius:5px;font:700 8px/1 Arial,sans-serif;letter-spacing:.04em;vertical-align:3px;background:#fff}
-.m-item[data-food-type="VEG"] h3:before{content:"VEG";color:#4c7a55;border-color:#4c7a55}
-.m-item[data-food-type="NON-VEG"] h3:before{content:"NON-VEG";color:#a35d50;border-color:#a35d50}
+.food-badge{display:inline-block;margin-right:8px;padding:3px 6px;border:1px solid;border-radius:5px;font:800 8px/1 Arial,sans-serif;letter-spacing:.04em;vertical-align:3px}
+.food-badge.veg{color:#4c7a55;border-color:#4c7a55}
+.food-badge.nonveg{color:#a35d50;border-color:#a35d50}
 @media(max-width:849px){.menu-intro{padding-top:116px}.menu-intro h1{font-size:48px}.menu-intro p{font-size:14px}.menu-search{border-radius:12px;padding:11px 14px}.menu-tools{padding:10px 0}.menu-tab{padding:9px 14px}}
 @media(min-width:850px){
  .menu-tools{top:72px}.menu-content{padding-bottom:60px}
@@ -754,6 +754,15 @@
 <script src="script.js"></script>
 <script>
 document.querySelectorAll(".menu-section").forEach(sec=>{const title=sec.querySelector("h2")?.textContent.toLowerCase()||"";let type="";if(title.includes("non-veg"))type="NON-VEG";else if(title.includes("veg")||title==="soups"||title==="pastas")type="VEG";else if(title==="add-ons"){sec.querySelectorAll(".m-item").forEach(item=>{const n=item.querySelector("h3")?.textContent.toLowerCase()||"";item.dataset.foodType=(n.includes("chicken")||n.includes("prawn"))?"NON-VEG":"VEG"});}if(type)sec.querySelectorAll(".m-item").forEach(item=>item.dataset.foodType=type);});
+document.querySelectorAll(".m-item[data-food-type]").forEach(item=>{
+  const h=item.querySelector("h3");
+  if(!h || h.querySelector(".food-badge")) return;
+  const badge=document.createElement("span");
+  const type=item.dataset.foodType;
+  badge.className="food-badge "+(type==="VEG"?"veg":"nonveg");
+  badge.textContent=type==="VEG"?"VEG":"NON-VEG";
+  h.prepend(badge);
+});
 const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults"), foodTabs=[...document.querySelectorAll(".food-tab")], foodTabsWrap=document.getElementById("foodTabs");
 function showGroup(id){
   const landing=document.getElementById("menuFavourites"); if(landing) landing.style.display=(id==="coffee" && !window.__menuCategoryChosen)?"block":"none";
