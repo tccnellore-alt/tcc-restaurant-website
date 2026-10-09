@@ -767,6 +767,19 @@ document.querySelectorAll(".menu-section").forEach(sec=>{
     sec.querySelectorAll(".m-item").forEach(item=>item.dataset.foodType=type);
   }
 });
+document.querySelectorAll(".menu-section").forEach(sec=>{
+  const title=(sec.querySelector("h2")?.textContent||"").toLowerCase();
+  if(title.includes("main course") || title.includes("grilled chicken")){
+    sec.querySelectorAll(".m-item").forEach(item=>item.dataset.foodType="NON-VEG");
+  }
+});
+document.querySelectorAll(".menu-section").forEach(sec=>{
+  sec.querySelectorAll(".m-item").forEach(item=>{
+    if(item.dataset.foodType) return;
+    const name=(item.querySelector("h3")?.textContent||"").toLowerCase();
+    if(name.includes("chicken") || name.includes("prawn") || name.includes("prawns")) item.dataset.foodType="NON-VEG";
+  });
+});
 document.querySelectorAll(".m-item[data-food-type]").forEach(item=>{
   const h=item.querySelector("h3");
   if(!h) return;
