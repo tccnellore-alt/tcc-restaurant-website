@@ -191,7 +191,7 @@
       <button class="food-tab" data-food-target="Burgers">Burgers</button>
       <button class="food-tab" data-food-target="Sandwiches">Sandwiches</button>
     </div>
-    <input class="menu-search" id="menuSearch" type="search" placeholder="Search the menu…" aria-label="Search menu">
+    <input class="menu-search" id="menuSearch" type="search" placeholder="Search the entire menu…" aria-label="Search menu">
   </div>
 </div>
 <section class="menu-content">
@@ -927,17 +927,39 @@ function filter(q){
   let found=0;
   const active=document.querySelector(".menu-group.active");
   if(!active) return;
-  active.querySelectorAll(".menu-section").forEach(sec=>{
-    const foodMatch=active.id!=="food" || !window.__foodCategory || window.__foodCategory==="all" || (sec.querySelector("h2")?.textContent||"").includes(window.__foodCategory);
-    let sectionFound=0;
-    sec.querySelectorAll(".m-item").forEach(item=>{
-      const ok=foodMatch && (!q || item.textContent.toLowerCase().includes(q));
-      item.style.display=ok?"flex":"none";
-      if(ok) sectionFound++;
+  // Search is global: when text is entered, search every menu group.
+  if(q){
+    groups.forEach(g=>{
+      let groupFound=0;
+      g.querySelectorAll(".menu-section").forEach(sec=>{
+        let sectionFound=0;
+        sec.querySelectorAll(".m-item").forEach(item=>{
+          const ok=item.textContent.toLowerCase().includes(q);
+          item.style.display=ok?"flex":"none";
+          if(ok)sectionFound++;
+        });
+        sec.style.display=sectionFound?"block":"none";
+        groupFound+=sectionFound;
+      });
+      g.classList.toggle("active",groupFound>0);
+      found+=groupFound;
     });
-    sec.style.display=sectionFound?"block":"none";
-    found+=sectionFound;
-  });
+    tabs.forEach(t=>t.classList.toggle("active",groups.find(g=>g.id===t.dataset.target)?.classList.contains("active")));
+    if(foodTabsWrap) foodTabsWrap.classList.remove("visible");
+  } else {
+    groups.forEach(g=>g.classList.toggle("active",g===active));
+    active.querySelectorAll(".menu-section").forEach(sec=>{
+      const foodMatch=active.id!=="food" || !window.__foodCategory || window.__foodCategory==="all" || (sec.querySelector("h2")?.textContent||"").includes(window.__foodCategory);
+      let sectionFound=0;
+      sec.querySelectorAll(".m-item").forEach(item=>{
+        const ok=foodMatch;
+        item.style.display=ok?"flex":"none";
+        if(ok)sectionFound++;
+      });
+      sec.style.display=sectionFound?"block":"none";
+      found+=sectionFound;
+    });
+  }
   noResults.style.display=found?"none":"block";
   syncPastaAddon();
 }
@@ -947,7 +969,11 @@ foodTabs.forEach(t=>t.addEventListener("click",()=>{
   filter(search.value);
   syncPastaAddon();
 }));
-search.addEventListener("input",e=>{filter(e.target.value);syncPastaAddon()});
+search.addEventListener("input",e=>{
+  const q=e.target.value.trim();
+  search.classList.toggle("global-search-active",!!q);
+  filter(q);
+});
 document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";showGroup("coffee")});
 </script>
 </body>
