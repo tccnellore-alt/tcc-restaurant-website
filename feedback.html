@@ -76,6 +76,12 @@ starButtons.forEach(button => button.addEventListener('click', () => {
   googleButton.style.display = 'flex';
   publicDivider.style.display = 'flex';
   googleFine.style.display = 'block';
+
+  // Customers with any rating can use the Google review link. For 4–5 stars,
+  // open it immediately; the link remains available on the page for 1–3 too.
+  if (selectedRating >= 4) {
+    window.location.href = REVIEW_URL;
+  }
 }));
 document.querySelector('.google').href = REVIEW_URL;
 document.getElementById('feedbackForm').addEventListener('submit', async event => {
