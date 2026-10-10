@@ -971,6 +971,20 @@ function tccPhotoFallbacks(name,category){
   if(/fizz|cooler|iced|pineapple|mango|coco rose|berry|lemon/.test(n)) return [33573170,9705336,28944484];
   return category==='food' ? [14711525,8165289,1435896] : [6205634,5461662,7658130];
 }
+/* Curated Pexels photos whose source page descriptions match the dish. */
+const TCC_PEXELS_VERIFIED = {
+  "Classic Matcha (Hot / Cold)": {url:"https://images.pexels.com/photos/36415285/pexels-photo-36415285.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/refreshing-iced-matcha-and-coffee-drinks-on-wooden-table-36415285/"},
+  "Creamy Mushroom Soup": {url:"https://images.pexels.com/photos/5950442/pexels-photo-5950442.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/mushroom-soup-beside-toasted-bread-5950442/"},
+  "Italian Margherita": {url:"https://images.pexels.com/photos/14590497/pexels-photo-14590497.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/photo-of-margherita-pizza-14590497/"},
+  "BBQ Chicken Pizza": {url:"https://images.pexels.com/photos/33458051/pexels-photo-33458051.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/delicious-bbq-chicken-pizza-with-creamy-sauce-33458051/"},
+  "Grilled Chicken Burger": {url:"https://images.pexels.com/photos/30622041/pexels-photo-30622041.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/delicious-pulled-chicken-burger-with-fresh-vegetables-30622041/"},
+  "Crispy Chicken Burger": {url:"https://images.pexels.com/photos/38895552/pexels-photo-38895552.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/delicious-crispy-chicken-burger-with-fries-38895552/"},
+  "Grilled Chicken Sandwich": {url:"https://images.pexels.com/photos/5122952/pexels-photo-5122952.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/close-up-photo-of-a-sandwich-5122952/"},
+  "Crispy Chicken Sandwich": {url:"https://images.pexels.com/photos/18743145/pexels-photo-18743145.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/hands-holding-a-grilled-toast-sandwich-18743145/"},
+  "Peach Iced Tea": {url:"https://images.pexels.com/photos/33573170/pexels-photo-33573170.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/refreshing-peach-iced-tea-with-straw-and-lemon-33573170/"},
+  "Lemon Iced Tea": {url:"https://images.pexels.com/photos/34486580/pexels-photo-34486580.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/chilled-lemon-iced-tea-with-ice-cube-drop-34486580/"},
+  "Elderflower Fizz / Peach Fizz": {url:"https://images.pexels.com/photos/33573170/pexels-photo-33573170.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/refreshing-peach-iced-tea-with-straw-and-lemon-33573170/"}
+};
 /* Verified item-specific image URLs override generic stock-photo IDs. */
 const TCC_PHOTO_URLS = {
   "Maska Bun": {
@@ -998,12 +1012,13 @@ function addTccMenuPhotos(){
     img.decoding='async';
     img.alt=name+' — representative menu photo';
     const verifiedPhoto=TCC_PHOTO_URLS[name];
-    img.src=verifiedPhoto ? verifiedPhoto.url : tccPexelsUrl(id);
-    if(verifiedPhoto){
-      img.alt=name+' — illustrative photo of bun maska with chai';
+    const curatedPhoto=TCC_PEXELS_VERIFIED[name];
+    img.src=verifiedPhoto ? verifiedPhoto.url : (curatedPhoto ? curatedPhoto.url : tccPexelsUrl(id));
+    if(verifiedPhoto || curatedPhoto){
+      img.alt=name+' — illustrative stock photo, not a guaranteed representation of TCC serving';
       img.loading='lazy';
     }
-    img.dataset.fallbacks=JSON.stringify(verifiedPhoto ? [] : tccPhotoFallbacks(name,category).filter(n=>n!==id));
+    img.dataset.fallbacks=JSON.stringify((verifiedPhoto || curatedPhoto) ? [] : tccPhotoFallbacks(name,category).filter(n=>n!==id));
     img.addEventListener('error',()=>{
       let fallbacks=[];
       try{fallbacks=JSON.parse(img.dataset.fallbacks||'[]')}catch(e){}
@@ -1011,10 +1026,10 @@ function addTccMenuPhotos(){
       else {wrap.classList.add('photo-unavailable');img.remove();}
     });
     wrap.appendChild(img);
-    if(verifiedPhoto && verifiedPhoto.credit){
+    if((verifiedPhoto && verifiedPhoto.credit) || curatedPhoto){
       const credit=document.createElement('div');
       credit.className='m-photo-credit';
-      credit.innerHTML=verifiedPhoto.credit;
+      credit.innerHTML=verifiedPhoto && verifiedPhoto.credit ? verifiedPhoto.credit : '<a href="'+curatedPhoto.source+'" target="_blank" rel="noopener">Illustrative photo · Pexels</a>';
       wrap.appendChild(credit);
     }
     const info=document.createElement('div');
