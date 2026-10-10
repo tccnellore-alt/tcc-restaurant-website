@@ -931,28 +931,28 @@
 
 /* Product photography for redesign-test: illustrative stock photos, matched by menu item. */
 const TCC_PHOTO_IDS = {
-  "Espresso":5246890,"Long Black":5461662,"Latte":6205634,"Mocha":12703064,
-  "Spanish Latte":27548803,"Cortado":9180208,"Hot Chocolate":15149193,"Affogato":2013798,"Cappuccino":30351599,
+  "Espresso":29269539,"Long Black":5461662,"Latte":10955991,"Mocha":798728,
+  "Spanish Latte":27548803,"Cortado":9180208,"Hot Chocolate":10545074,"Affogato":19352809,"Cappuccino":30351599,
   "Iced Americano":4728009,"Iced Latte":20220698,"Iced Mocha":36829384,"Classic Cold Coffee":7658130,"Spanish Iced Latte":16496289,
-  "Classic Cold Brew":18997241,"Coco Brew":33486726,"Mont Blanc":7658122,"Bird's Eye Pineapple":25113739,"Vanilla Cream":7658130,"Orange Fizzy Brew":28944484,
+  "Classic Cold Brew":18997241,"Coco Brew":33486726,"Mont Blanc":7658122,"Bird's Eye Pineapple":5817623,"Vanilla Cream":7658130,"Orange Fizzy Brew":28944484,
   "Lemon Cooler":9705336,"Elderflower Fizz / Peach Fizz":33573170,"Dry Mango Picante":25113739,"Coco Rose Cooler":31066139,
-  "Peach Iced Tea":33573170,"Lemon Iced Tea":11009224,"Berry Iced Tea":37515875,
+  "Peach Iced Tea":33573178,"Lemon Iced Tea":34486580,"Berry Iced Tea":37515875,
   "TCC Traditional Chai":36998132,"South Indian Coffee":38201891,"Maska Bun":12540665,
-  "Classic Matcha (Hot / Cold)":14430999,"Coconut Matcha Cloud":36517065,"Mango Passion Matcha":37745284,
-  "Pour Over":33932441,"French Press":29619148,
-  "Apple Pie Latte":32382174,"Honey Rose Merry Latte":13127826,"Biscoff Latte":34651089,"Nutella Latte":2013798,
+  "Classic Matcha (Hot / Cold)":37745284,"Coconut Matcha Cloud":36517065,"Mango Passion Matcha":37745284,
+  "Pour Over":2616164,"French Press":872894,
+  "Apple Pie Latte":32382174,"Honey Rose Merry Latte":13127826,"Biscoff Latte":34651089,"Nutella Latte":798728,
   "Coconut Cold":33486726,"Orange Espresso":20240640,"Pineapple Float":25113739,
-  "Hearty Minestrone Soup":14711525,"Creamy Mushroom Soup":39927557,
-  "French Fries Classic":8165289,"Peri Peri French Fries":2962450,"Butter Garlic Mushroom":5718131,
-  "Cheese Chilli Toast":12540665,"Potato Cheese Balls":39799185,"Avocado Toast":7936737,
+  "Hearty Minestrone Soup":16811678,"Creamy Mushroom Soup":5419047,
+  "French Fries Classic":19784555,"Peri Peri French Fries":2962450,"Butter Garlic Mushroom":5718131,
+  "Cheese Chilli Toast":12540677,"Potato Cheese Balls":39799185,"Avocado Toast":1656685,
   "Butter Garlic Prawns":16273763,"Fried Chicken Strips":38895552,"Butter Garlic Chicken":29043470,
-  "Fettuccine Aglio Olio":1435896,"Penne Arrabbiata":39853054,"Penne Rossa":14930725,"Penne Alfredo":37336686,
-  "Fettuccine Al Pesto":38773986,"Mac & Cheese (Veg)":5060461,
-  "Italian Margherita":14590497,"The Farmer's Pizza":30818095,"Pizza Verde":35759994,"Pesto Pizza":11230267,
-  "BBQ Chicken Pizza":33458049,"Pesto Chicken Pizza":33458051,"Chicken Pizzaiola":5639555,
-  "Mushroom Burger":10560076,"Grilled Paneer Burger":20741663,"Grilled Chicken Burger":19737927,"Crispy Chicken Burger":34407494,
+  "Fettuccine Aglio Olio":11654236,"Penne Arrabbiata":39853054,"Penne Rossa":14930725,"Penne Alfredo":37336686,
+  "Fettuccine Al Pesto":38773986,"Mac & Cheese (Veg)":9456716,
+  "Italian Margherita":14590497,"The Farmer's Pizza":30818095,"Pizza Verde":27941805,"Pesto Pizza":11230267,
+  "BBQ Chicken Pizza":33458051,"Pesto Chicken Pizza":33458051,"Chicken Pizzaiola":5639555,
+  "Mushroom Burger":10560076,"Grilled Paneer Burger":20741663,"Grilled Chicken Burger":19737927,"Crispy Chicken Burger":7963093,
   "Cheese Grilled Sandwich":6824498,"Bombay Street Sandwich":5836618,"Chicken Club Sandwich":16845663,
-  "Crispy Chicken Sandwich":17121731,"Grilled Chicken Sandwich":8478417,
+  "Crispy Chicken Sandwich":38895555,"Grilled Chicken Sandwich":8478417,
   "Mexican Grilled Chicken":37045063,"Mexican Grilled Chicken with BBQ Sauce":5704254
 };
 function tccPhotoFallbacks(name,category){
@@ -1010,7 +1010,7 @@ function addTccMenuPhotos(){
     img.className='m-photo';
     img.loading='lazy';
     img.decoding='async';
-    img.alt=name+' — representative menu photo';
+    img.alt=name+' — illustrative stock photo; TCC serving may differ';
     const verifiedPhoto=TCC_PHOTO_URLS[name];
     const curatedPhoto=TCC_PEXELS_VERIFIED[name];
     img.src=verifiedPhoto ? verifiedPhoto.url : (curatedPhoto ? curatedPhoto.url : tccPexelsUrl(id));
