@@ -35,9 +35,9 @@
 <button class="submit" id="submitBtn" type="submit" style="display:none">Send private feedback</button>
 <div class="status" id="status" role="status" aria-live="polite"></div>
 </form>
-<div class="divider" id="publicDivider" style="display:none">OR SHARE PUBLICLY</div>
-<a class="google" id="googleButton" style="display:none" href="https://g.page/r/CTLF5lr7fxTIEBI/review" target="_blank" rel="noopener noreferrer">Write an honest Google review ↗</a>
-<p class="fine" id="googleFine" style="display:none">Your Google review is optional. You can leave one regardless of the rating you gave us above.</p>
+<div class="divider" id="publicDivider">OR SHARE PUBLICLY</div>
+<a class="google" id="googleButton" href="https://g.page/r/CTLF5lr7fxTIEBI/review" target="_blank" rel="noopener noreferrer">Write an honest Google review ↗</a>
+<p class="fine" id="googleFine">Your Google review is optional. You can leave one regardless of the rating you gave us above.</p>
 <div class="thanks" id="thanks"><h2>Thank you.</h2><p>Your feedback helps TCC keep getting better. We appreciate you taking a moment to share it.</p></div>
 </section>
 <div class="foot">TCC · THE COFFEE CLUB · NELLORE</div>
@@ -54,8 +54,6 @@ const commentsLabel = document.getElementById('commentsLabel');
 const commentsBox = document.getElementById('comments');
 const submitButton = document.getElementById('submitBtn');
 const googleButton = document.getElementById('googleButton');
-const publicDivider = document.getElementById('publicDivider');
-const googleFine = document.getElementById('googleFine');
 starButtons.forEach(button => button.addEventListener('click', () => {
   selectedRating = Number(button.dataset.rating);
   starButtons.forEach(star => {
@@ -66,22 +64,17 @@ starButtons.forEach(button => button.addEventListener('click', () => {
   });
   ratingLabel.textContent = labels[selectedRating];
 
-  // Offer private feedback for lower ratings, while keeping the public review
-  // option visible for every rating.
-  const showPrivateForm = selectedRating <= 3;
-  commentsLabel.style.display = showPrivateForm ? 'block' : 'none';
-  commentsBox.style.display = showPrivateForm ? 'block' : 'none';
-  submitButton.style.display = showPrivateForm ? 'flex' : 'none';
-  commentsBox.placeholder = 'Tell us what went wrong or what we could improve…';
-  googleButton.style.display = 'flex';
-  publicDivider.style.display = 'flex';
-  googleFine.style.display = 'block';
-
-  // Customers with any rating can use the Google review link. For 4–5 stars,
-  // open it immediately; the link remains available on the page for 1–3 too.
   if (selectedRating >= 4) {
+    // Google review link remains visible for every rating; 4- and 5-star taps
+    // also take the customer directly to the public review page.
     window.location.href = REVIEW_URL;
+    return;
   }
+
+  commentsLabel.style.display = 'block';
+  commentsBox.style.display = 'block';
+  submitButton.style.display = 'flex';
+  commentsBox.placeholder = 'Tell us what went wrong or what we could improve…';
 }));
 document.querySelector('.google').href = REVIEW_URL;
 document.getElementById('feedbackForm').addEventListener('submit', async event => {
