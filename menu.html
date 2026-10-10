@@ -1067,7 +1067,7 @@ function addTccMenuPhotos(){
       img.alt=name+' — illustrative stock photo, not a guaranteed representation of TCC serving';
       img.loading='lazy';
     }
-    img.dataset.fallbacks=JSON.stringify((verifiedPhoto || curatedPhoto) ? [] : tccPhotoFallbacks(name,category).filter(n=>n!==id));
+    img.dataset.fallbacks=JSON.stringify(tccPhotoFallbacks(name,category).filter(n=>n!==id));
     img.addEventListener('error',()=>{
       let fallbacks=[];
       try{fallbacks=JSON.parse(img.dataset.fallbacks||'[]')}catch(e){}
