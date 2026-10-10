@@ -201,6 +201,38 @@
  .m-list{grid-template-columns:1fr 1fr}
  .menu-section h2{font-size:29px}
 }
+
+/* REDESIGN TEST — image-led menu cards */
+.menu-photo-disclaimer{display:flex;align-items:flex-start;gap:12px;margin:0 0 12px;padding:14px 15px;background:#f4ecda;border:1px solid rgba(179,138,69,.42);border-radius:14px;color:#526056}
+.disclaimer-mark{flex:0 0 38px;height:38px;display:grid;place-items:center;border-radius:50%;background:#173d31;color:#f8f3e8;font:700 10px Georgia,serif;letter-spacing:.03em}
+.menu-photo-disclaimer strong{display:block;font:700 11px/1.4 Manrope,Arial,sans-serif;letter-spacing:.025em;color:#173d31}
+.menu-photo-disclaimer p{margin:4px 0 4px;font:11px/1.55 Manrope,Arial,sans-serif;color:#536257}
+.menu-photo-disclaimer small{display:block;font:9px/1.45 Manrope,Arial,sans-serif;color:#8d7337}
+.menu-content{padding-top:18px}
+.menu-category-intro{padding-top:20px;padding-bottom:13px}
+.menu-group .menu-section{margin-top:22px}
+.menu-group .menu-section h2{font:700 12px/1.4 Manrope,Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#8d7337;border:0;padding:0 0 10px;margin:0}
+.menu-group .menu-section h2:after{content:"";display:block;width:34px;height:2px;background:#b79a5a;margin-top:7px}
+.menu-group .m-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px!important;align-items:stretch}
+.menu-group .m-item{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;min-width:0;overflow:hidden;padding:0!important;margin:0;background:#fffdf8!important;border:1px solid rgba(183,154,90,.3)!important;border-radius:15px!important;box-shadow:0 6px 18px rgba(23,61,49,.065)!important}
+.m-photo-wrap{position:relative;display:block;overflow:hidden;width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#e8dfca,#f7f1e4)}
+.m-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .35s ease}
+.m-item:hover .m-photo{transform:scale(1.035)}
+.m-item-info{display:flex;flex-direction:column;flex:1;padding:11px 11px 5px;min-width:0}
+.menu-group .m-item h3{margin:0;color:#173d31;font:700 13px/1.35 Manrope,Arial,sans-serif;overflow-wrap:anywhere}
+.menu-group .m-item p{margin:5px 0 0;color:#6d776e;font:10.5px/1.45 Manrope,Arial,sans-serif;overflow-wrap:anywhere}
+.menu-group .m-item strong{align-self:flex-start;white-space:nowrap;margin:3px 11px 11px;padding:5px 8px;border-radius:999px;background:#f3ead7;color:#8d6d2e;font:800 11px/1.2 Manrope,Arial,sans-serif}
+.menu-group .food-badge{width:10px;height:10px;margin-right:6px;flex:none}
+.menu-group .food-badge:after{width:5px;height:5px}
+.menu-group .m-item .food-badge{vertical-align:1px}
+.menu-group .m-item[data-food-type]{}
+.menu-group#food .m-item p{font-size:10px;line-height:1.4}
+.menu-addons-panel{display:none}
+.no-results{padding:34px 12px}
+@media(max-width:360px){.menu-group .m-list{grid-template-columns:minmax(0,1fr)}.menu-group .m-item h3{font-size:14px}.m-photo-wrap{aspect-ratio:16/9}}
+@media(min-width:700px){.menu-group .m-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px!important}.menu-group .m-item-info{padding:13px 13px 6px}.menu-group .m-item h3{font-size:14px}.menu-group .m-item p{font-size:11px}.menu-group .m-item strong{margin-left:13px;margin-bottom:13px}}
+@media(min-width:1000px){.menu-group .m-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px!important}.menu-photo-disclaimer{max-width:860px}}
+
 </style>
 </head>
 <body>
@@ -236,6 +268,11 @@
       <h2>Slow down. Sip well.</h2>
       <span>Classic brews, cold favourites and everyday comforts.</span>
     </div>
+
+    <aside class="menu-photo-disclaimer" role="note" aria-label="Menu photography disclaimer">
+      <span class="disclaimer-mark">TCC</span>
+      <div><strong>A note on our menu photography</strong><p>Images are for illustrative purposes only. Actual ingredients, portion sizes, garnish, plating and presentation may vary. Please ask our team about ingredients or allergens.</p><small>Representative stock photography · Not a guarantee of the exact dish served</small></div>
+    </aside>
     <div id="noResults" class="no-results">No matching items found. Try another search.</div>
 <div class="menu-group" id="coffee" data-group="Coffee">
         <section class="menu-section" data-group="Coffee">
@@ -889,6 +926,77 @@
 <nav class="mobile-bar" aria-label="Quick actions"><a href="tel:+919059059553">☎ Call</a><a class="accent" href="menu.html">☕ Menu</a><a href="https://maps.app.goo.gl/LTdYTXNZPJU4qetv6?g_st=ac" target="_blank" rel="noopener">⌖ Map</a></nav>
 <script src="script.js"></script>
 <script>
+
+/* Product photography for redesign-test: illustrative stock photos, matched by menu item. */
+const TCC_PHOTO_IDS = {
+  "Espresso":5246890,"Long Black":5461662,"Latte":6205634,"Mocha":12703064,
+  "Spanish Latte":27548803,"Cortado":9180208,"Hot Chocolate":15149193,"Affogato":2013798,"Cappuccino":30351599,
+  "Iced Americano":4728009,"Iced Latte":20220698,"Iced Mocha":36829384,"Classic Cold Coffee":7658130,"Spanish Iced Latte":16496289,
+  "Classic Cold Brew":17650200,"Coco Brew":33486726,"Mont Blanc":7658122,"Bird's Eye Pineapple":25113739,"Vanilla Cream":7658130,"Orange Fizzy Brew":28944484,
+  "Lemon Cooler":9705336,"Elderflower Fizz / Peach Fizz":33573170,"Dry Mango Picante":25113739,"Coco Rose Cooler":31066139,
+  "Peach Iced Tea":33573170,"Lemon Iced Tea":11009224,"Berry Iced Tea":37515875,
+  "TCC Traditional Chai":36998132,"South Indian Coffee":38201891,"Maska Bun":12540665,
+  "Classic Matcha (Hot / Cold)":8634757,"Coconut Matcha Cloud":36517065,"Mango Passion Matcha":37745284,
+  "Pour Over":33932441,"French Press":29619148,
+  "Apple Pie Latte":32382174,"Honey Rose Merry Latte":13127826,"Biscoff Latte":34651089,"Nutella Latte":2013798,
+  "Coconut Cold":33486726,"Orange Espresso":20240640,"Pineapple Float":25113739,
+  "Hearty Minestrone Soup":14711525,"Creamy Mushroom Soup":5419047,
+  "French Fries Classic":8165289,"Peri Peri French Fries":2962450,"Butter Garlic Mushroom":5718131,
+  "Cheese Chilli Toast":12540665,"Potato Cheese Balls":39799185,"Avocado Toast":7936737,
+  "Butter Garlic Prawns":16273763,"Fried Chicken Strips":38895552,"Butter Garlic Chicken":29043470,
+  "Fettuccine Aglio Olio":1435896,"Penne Arrabbiata":39853054,"Penne Rossa":14930725,"Penne Alfredo":37336686,
+  "Fettuccine Al Pesto":38773986,"Mac & Cheese (Veg)":5060461,
+  "Italian Margherita":14590497,"The Farmer's Pizza":30818095,"Pizza Verde":35759994,"Pesto Pizza":11230267,
+  "BBQ Chicken Pizza":33458049,"Pesto Chicken Pizza":33458051,"Chicken Pizzaiola":5639555,
+  "Mushroom Burger":10560076,"Grilled Paneer Burger":20741663,"Grilled Chicken Burger":19737927,"Crispy Chicken Burger":34407494,
+  "Cheese Grilled Sandwich":6824498,"Bombay Street Sandwich":5836618,"Chicken Club Sandwich":16845663,
+  "Crispy Chicken Sandwich":17121731,"Grilled Chicken Sandwich":8478417,
+  "Mexican Grilled Chicken":37045063,"Mexican Grilled Chicken with BBQ Sauce":5704254
+};
+const TCC_PHOTO_FALLBACK = {
+  drinks:[6205634,5461662,7658130],
+  food:[14711525,8165289,1435896]
+};
+function tccPexelsUrl(id){
+  return 'https://images.pexels.com/photos/'+id+'/pexels-photo-'+id+'.jpeg?auto=compress&cs=tinysrgb&w=900';
+}
+function addTccMenuPhotos(){
+  document.querySelectorAll('.menu-group .m-item').forEach(item=>{
+    const title=item.querySelector('h3');
+    const price=item.querySelector('strong');
+    if(!title||!price||item.querySelector('.m-photo-wrap')) return;
+    const name=title.textContent.trim();
+    const isFood=!!item.closest('#food');
+    const category=isFood?'food':'drinks';
+    const id=TCC_PHOTO_IDS[name] || TCC_PHOTO_FALLBACK[category][0];
+    const wrap=document.createElement('div');
+    wrap.className='m-photo-wrap';
+    const img=document.createElement('img');
+    img.className='m-photo';
+    img.loading='lazy';
+    img.decoding='async';
+    img.alt=name+' — representative menu photo';
+    img.src=tccPexelsUrl(id);
+    img.dataset.fallbacks=JSON.stringify(TCC_PHOTO_FALLBACK[category].filter(n=>n!==id));
+    img.addEventListener('error',()=>{
+      let fallbacks=[];
+      try{fallbacks=JSON.parse(img.dataset.fallbacks||'[]')}catch(e){}
+      if(fallbacks.length){const next=fallbacks.shift();img.dataset.fallbacks=JSON.stringify(fallbacks);img.src=tccPexelsUrl(next);}
+      else {wrap.classList.add('photo-unavailable');img.remove();}
+    });
+    wrap.appendChild(img);
+    const info=document.createElement('div');
+    info.className='m-item-info';
+    title.parentElement.querySelectorAll('p').forEach(p=>{});
+    const oldContent=title.parentElement;
+    oldContent.classList.add('m-item-info-source');
+    oldContent.querySelectorAll('h3,p').forEach(el=>info.appendChild(el));
+    item.insertBefore(wrap,item.firstChild);
+    item.insertBefore(info,price);
+  });
+}
+addTccMenuPhotos();
+
 document.querySelectorAll(".menu-section").forEach(sec=>{
   const title=(sec.querySelector("h2")?.textContent||"").toLowerCase();
   let type="";
