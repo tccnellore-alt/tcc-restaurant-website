@@ -5,8 +5,8 @@ Audit date: 10 October 2026
 ## Status
 
 - Menu items: 77
-- Items with a dish-specific stock-photo source selected: 63
-- Items still showing “TCC photo needed”: 14
+- Items with a dish-specific stock-photo source selected: 62
+- Items still showing “TCC photo needed”: 15
 - Policy: **No generic fallback photos.** Items without an exact-match source show “TCC photo needed”. If a selected image fails to load, its card also changes to that placeholder.
 - All pictures are illustrative stock photography, not verified images of TCC's own plating or portion size.
 
@@ -89,7 +89,7 @@ Audit date: 10 October 2026
 
 - **Spanish Latte** — [Pixabay photo by Penabeckie](https://pixabay.com/photos/latte-spanish-latte-coffee-1200501/). Pixabay labels it “Latte, Spanish latte, Coffee image” and makes it available under the Pixabay Content License. This particular photo is a hot latte in a cup; it is suitable for **Spanish Latte**, not for the iced variant.
 - **Fettuccine Aglio Olio** — [Wikimedia Commons photo by Shreya13jain](https://commons.wikimedia.org/wiki/File:Fettuccine_with_olive_oil_and_garlic.jpg), licensed CC BY-SA 4.0. The source identifies the dish as fettuccine with olive oil and garlic / aglio e olio. Credited and licensed on the menu.
-- **Cheese Chilli Toast** — [Pixabay photo by thestorychef](https://pixabay.com/photos/garlic-bread-garlic-cheese-chilli-5785406/), free under the Pixabay Content License. The photo and tags specifically show chilli-cheese toast/garlic bread: it is a close dish-type match, but the example includes garlic, which may differ from TCC's recipe. Credited in the menu to make that distinction clear.
+- **Cheese Chilli Toast** — [Pixabay photo by thestorychef](https://pixabay.com/photos/garlic-bread-garlic-cheese-chilli-5785406/) was inspected. It shows cheese chilli garlic bread, and the image includes garlic pieces; it does not reliably match TCC's cheese-chilli-toast recipe, so it was **rejected** and the menu remains on “TCC photo needed”.
 
 
 ## Exact-match image still needed
@@ -105,6 +105,7 @@ Audit date: 10 October 2026
 - [ ] Biscoff Latte
 - [ ] Nutella Latte
 - [ ] Pineapple Float
+- [ ] Cheese Chilli Toast
 - [ ] Potato Cheese Balls
 - [ ] Butter Garlic Chicken
 - [ ] Pesto Chicken Pizza
