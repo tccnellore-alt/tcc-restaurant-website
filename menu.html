@@ -1273,6 +1273,45 @@ function buildSubTabs(id){
   foodTabsWrap.classList.add("visible");
 }
 
+function syncFoodTabToScroll(){
+  if(!foodTabsWrap || !foodTabsWrap.classList.contains("visible")) return;
+  const active=document.querySelector(".menu-group.active");
+  if(!active || active.id!=="food") return;
+  const toolsBar=document.querySelector(".menu-tools");
+  const anchor=(toolsBar?.getBoundingClientRect().bottom||0)+34;
+  const sections=[...active.querySelectorAll(":scope > .menu-section")].filter(sec=>{
+    const style=getComputedStyle(sec);
+    return style.display!=="none" && sec.getClientRects().length>0;
+  });
+  if(!sections.length) return;
+  let chosen=sections[0], best=Infinity;
+  sections.forEach(sec=>{
+    const rect=sec.getBoundingClientRect();
+    const distance=rect.top<=anchor && rect.bottom>=anchor ? 0 : Math.abs(rect.top-anchor)+(rect.bottom<anchor?80:0);
+    if(distance<best){best=distance;chosen=sec;}
+  });
+  const heading=(chosen.querySelector("h2")?.textContent||"").trim().toLowerCase();
+  const matched=foodTabs.find(t=>{
+    if(t.dataset.foodTarget==="all") return false;
+    const target=t.dataset.foodTarget.toLowerCase();
+    return heading===target || heading.includes(target) || target.includes(heading);
+  });
+  const next=matched || foodTabs.find(t=>t.dataset.foodTarget==="all");
+  if(!next) return;
+  foodTabs.forEach(t=>t.classList.toggle("active",t===next));
+  const wrapRect=foodTabsWrap.getBoundingClientRect(), tabRect=next.getBoundingClientRect();
+  if(tabRect.left<wrapRect.left+8) foodTabsWrap.scrollLeft-=wrapRect.left-tabRect.left+12;
+  else if(tabRect.right>wrapRect.right-8) foodTabsWrap.scrollLeft+=tabRect.right-wrapRect.right+12;
+}
+
+let foodScrollTick=false;
+window.addEventListener("scroll",()=>{
+  if(foodScrollTick) return;
+  foodScrollTick=true;
+  requestAnimationFrame(()=>{syncFoodTabToScroll();foodScrollTick=false;});
+},{passive:true});
+window.addEventListener("resize",syncFoodTabToScroll);
+
 function jumpToSubcategory(target){
   if(!target) return;
   foodTabs.forEach(x=>x.classList.toggle("active",x.dataset.foodTarget===target));
