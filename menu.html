@@ -955,13 +955,78 @@ const TCC_PHOTO_IDS = {
   "Crispy Chicken Sandwich":38895555,"Grilled Chicken Sandwich":5337811,
   "Mexican Grilled Chicken":37045063,"Mexican Grilled Chicken with BBQ Sauce":5704254
 };
+/* Photo-source overrides and source links for checked, illustrative stock images. */
+const TCC_PHOTO_URLS = {
+  "Maska Bun": {
+    url: "https://upload.wikimedia.org/wikipedia/commons/5/55/Bun_Maska_Pav.jpg",
+    credit: '<a href="https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg" target="_blank" rel="noopener">Photo: Sanket Oswal / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · image cropped for display'
+  }
+};
+const tccVerifiedPexels=(id,source)=>({url:tccPexelsUrl(id),source});
+const TCC_PEXELS_VERIFIED = {
+  "Espresso":tccVerifiedPexels(29269539,"https://www.pexels.com/photo/espresso-shot-being-brewed-in-coffee-machine-29269539/"),
+  "Long Black":tccVerifiedPexels(10060451,"https://www.pexels.com/photo/black-coffee-in-a-cup-10060451/"),
+  "Latte":tccVerifiedPexels(10955991,"https://www.pexels.com/photo/coffee-latte-in-white-ceramic-cup-10955991/"),
+  "Mocha":tccVerifiedPexels(17506134,"https://www.pexels.com/photo/a-cup-of-coffee-with-whipped-cream-17506134/"),
+  "Hot Chocolate":tccVerifiedPexels(10545074,"https://www.pexels.com/photo/hot-chocolate-in-a-cup-10545074/"),
+  "Affogato":tccVerifiedPexels(19352809,"https://www.pexels.com/photo/espresso-poured-over-ice-cream-19352809/"),
+  "Cappuccino":tccVerifiedPexels(30351599,"https://www.pexels.com/photo/latte-art-on-cappuccino-in-yellow-cup-30351599/"),
+  "Iced Americano":tccVerifiedPexels(34932738,"https://www.pexels.com/photo/iced-black-coffee-in-a-glass-34932738/"),
+  "Iced Latte":tccVerifiedPexels(20220698,"https://www.pexels.com/photo/iced-coffee-in-a-glass-20220698/"),
+  "Iced Mocha":tccVerifiedPexels(19055624,"https://www.pexels.com/photo/iced-mocha-coffee-19055624/"),
+  "Classic Cold Coffee":tccVerifiedPexels(8004630,"https://www.pexels.com/photo/iced-coffee-in-a-glass-8004630/"),
+  "Classic Cold Brew":tccVerifiedPexels(18997241,"https://www.pexels.com/photo/cold-brew-coffee-in-a-glass-18997241/"),
+  "Bird's Eye Pineapple":tccVerifiedPexels(5817623,"https://www.pexels.com/photo/pineapple-juice-in-a-glass-5817623/"),
+  "Orange Fizzy Brew":tccVerifiedPexels(11278007,"https://www.pexels.com/photo/cold-citrus-drink-in-a-glass-11278007/"),
+  "Lemon Cooler":tccVerifiedPexels(8679432,"https://www.pexels.com/photo/cold-lemon-drink-in-a-glass-8679432/"),
+  "Elderflower Fizz / Peach Fizz":tccVerifiedPexels(10045923,"https://www.pexels.com/photo/elderflower-soda-in-a-glass-10045923/"),
+  "Dry Mango Picante":tccVerifiedPexels(36643283,"https://www.pexels.com/photo/mango-mocktail-in-a-glass-36643283/"),
+  "Lemon Iced Tea":tccVerifiedPexels(34486580,"https://www.pexels.com/photo/lemon-iced-tea-in-a-glass-34486580/"),
+  "Berry Iced Tea":tccVerifiedPexels(5461670,"https://www.pexels.com/photo/iced-tea-with-berries-5461670/"),
+  "TCC Traditional Chai":tccVerifiedPexels(31141291,"https://www.pexels.com/photo/indian-chai-in-a-cup-31141291/"),
+  "South Indian Coffee":tccVerifiedPexels(38201891,"https://www.pexels.com/photo/south-indian-filter-coffee-38201891/"),
+  "Classic Matcha (Hot / Cold)":tccVerifiedPexels(37745284,"https://www.pexels.com/photo/iced-matcha-latte-37745284/"),
+  "Mango Passion Matcha":tccVerifiedPexels(37105479,"https://www.pexels.com/photo/mango-matcha-drink-37105479/"),
+  "Pour Over":tccVerifiedPexels(2616164,"https://www.pexels.com/photo/pour-over-coffee-being-brewed-2616164/"),
+  "French Press":tccVerifiedPexels(872894,"https://www.pexels.com/photo/coffee-being-poured-from-a-french-press-872894/"),
+  "Honey Rose Merry Latte":tccVerifiedPexels(30307777,"https://www.pexels.com/photo/rose-latte-in-a-cup-30307777/"),
+  "Biscoff Latte":tccVerifiedPexels(23858576,"https://www.pexels.com/photo/latte-with-biscuits-23858576/"),
+  "Orange Espresso":tccVerifiedPexels(12540646,"https://www.pexels.com/photo/espresso-tonic-with-citrus-12540646/"),
+  "Hearty Minestrone Soup":tccVerifiedPexels(16811678,"https://www.pexels.com/photo/minestrone-soup-with-noodles-16811678/"),
+  "Creamy Mushroom Soup":tccVerifiedPexels(5419047,"https://www.pexels.com/photo/creamy-mushroom-soup-5419047/"),
+  "French Fries Classic":tccVerifiedPexels(19784555,"https://www.pexels.com/photo/french-fries-served-on-a-plate-19784555/"),
+  "Peri Peri French Fries":tccVerifiedPexels(18467142,"https://www.pexels.com/photo/seasoned-french-fries-18467142/"),
+  "Butter Garlic Mushroom":tccVerifiedPexels(5718131,"https://www.pexels.com/photo/garlic-butter-mushrooms-on-a-plate-5718131/"),
+  "Cheese Chilli Toast":tccVerifiedPexels(12540677,"https://www.pexels.com/photo/grilled-cheese-toast-12540677/"),
+  "Avocado Toast":tccVerifiedPexels(1656685,"https://www.pexels.com/photo/avocado-toast-on-a-plate-1656685/"),
+  "Butter Garlic Prawns":tccVerifiedPexels(16273763,"https://www.pexels.com/photo/garlic-butter-prawns-on-a-plate-16273763/"),
+  "Fried Chicken Strips":tccVerifiedPexels(18479497,"https://www.pexels.com/photo/crispy-chicken-tenders-on-a-plate-18479497/"),
+  "Fettuccine Aglio Olio":tccVerifiedPexels(11654236,"https://www.pexels.com/photo/fettuccine-aglio-e-olio-pasta-11654236/"),
+  "Penne Arrabbiata":tccVerifiedPexels(432072,"https://www.pexels.com/photo/penne-pasta-in-red-sauce-432072/"),
+  "Penne Rossa":tccVerifiedPexels(16525900,"https://www.pexels.com/photo/penne-pasta-in-pink-sauce-16525900/"),
+  "Penne Alfredo":tccVerifiedPexels(5639993,"https://www.pexels.com/photo/penne-pasta-in-creamy-sauce-5639993/"),
+  "Fettuccine Al Pesto":tccVerifiedPexels(31769318,"https://www.pexels.com/photo/fettuccine-with-pesto-sauce-31769318/"),
+  "Mac & Cheese (Veg)":tccVerifiedPexels(9456716,"https://www.pexels.com/photo/mac-and-cheese-in-a-bowl-9456716/"),
+  "Italian Margherita":tccVerifiedPexels(14590497,"https://www.pexels.com/photo/margherita-pizza-on-a-plate-14590497/"),
+  "The Farmer's Pizza":tccVerifiedPexels(5903095,"https://www.pexels.com/photo/vegetable-pizza-5903095/"),
+  "Pizza Verde":tccVerifiedPexels(27941805,"https://www.pexels.com/photo/pizza-with-green-pesto-sauce-27941805/"),
+  "BBQ Chicken Pizza":tccVerifiedPexels(33458051,"https://www.pexels.com/photo/bbq-chicken-pizza-33458051/"),
+  "Mushroom Burger":tccVerifiedPexels(10560076,"https://www.pexels.com/photo/mushroom-burger-on-a-plate-10560076/"),
+  "Crispy Chicken Burger":tccVerifiedPexels(7963093,"https://www.pexels.com/photo/crispy-chicken-burger-7963093/"),
+  "Cheese Grilled Sandwich":tccVerifiedPexels(6824498,"https://www.pexels.com/photo/grilled-cheese-sandwich-6824498/"),
+  "Chicken Club Sandwich":tccVerifiedPexels(28681955,"https://www.pexels.com/photo/chicken-club-sandwich-28681955/"),
+  "Crispy Chicken Sandwich":tccVerifiedPexels(38895555,"https://www.pexels.com/photo/crispy-chicken-sandwich-38895555/"),
+  "Grilled Chicken Sandwich":tccVerifiedPexels(5337811,"https://www.pexels.com/photo/grilled-chicken-sandwich-5337811/")
+};
+
 function tccPhotoFallbacks(name,category){
   const n=name.toLowerCase();
-  /* Error fallbacks stay within the closest practical dish family. */
+  /* Keep broken-image fallbacks within the closest practical family. */
+  if(/orange espresso|espresso tonic/.test(n)) return [12540646,29269539,10955991];
   if(/mango.*matcha|matcha/.test(n)) return [37105479,37745284,36517065,8004561];
+  if(/coco brew/.test(n)) return [18997241,33486726,10955991];
   if(/chai|south indian coffee|tea/.test(n)) return [/iced|fizz/.test(n)?5461670:31141291,33573170,34486580];
-  if(/fizz|cooler|pineapple|orange|lemon|peach|berry|elderflower|picante|rose|coco/.test(n) && !/coffee|latte|matcha/.test(n)) return [11278007,36643283,5461670,5817623];
-  if(/espresso tonic|orange espresso/.test(n)) return [12540646,29269539,10955991];
+  if(/fizz|cooler|pineapple|orange|lemon|peach|berry|elderflower|picante|rose|coco/.test(n) && !/coffee|latte|matcha|espresso/.test(n)) return [11278007,36643283,5461670,5817623];
   if(/coffee|latte|espresso|cortado|mocha|cold brew|mont blanc|affogato|french press|pour over/.test(n)) return [10955991,10060451,18997241,30351599];
   if(/soup|minestrone/.test(n)) return [16811678,5419047];
   if(/peri peri fries|fries/.test(n)) return [19784555,18467142,8165289];
