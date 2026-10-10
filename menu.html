@@ -202,11 +202,16 @@
  .menu-section h2{font-size:29px}
 }
 
-.menu-view-toggle{display:flex;align-items:center;justify-content:center;gap:6px;margin:0 0 10px;padding:4px;border:1px solid rgba(23,60,43,.14);border-radius:999px;background:#f3ecdc}
-.menu-view-label{padding:0 7px;color:#667167;font:700 10px/1.2 Manrope,Arial,sans-serif;letter-spacing:.04em}
-.menu-view-option{border:1px solid transparent;border-radius:999px;padding:9px 13px;background:transparent;color:#526057;font:800 11px/1.2 Manrope,Arial,sans-serif;cursor:pointer;white-space:nowrap}
-.menu-view-option.active{background:#173d31;color:#fffdf8;border-color:#173d31;box-shadow:0 2px 6px rgba(23,61,49,.14)}
-.menu-view-option:focus-visible{outline:2px solid #b79a5a;outline-offset:2px}
+.menu-view-toggle{display:flex;align-items:center;justify-content:flex-end;gap:9px;margin:0 0 10px;padding:0;border:0;border-radius:0;background:transparent}
+.menu-view-label{padding:0;color:#667167;font:700 10px/1.2 Manrope,Arial,sans-serif;letter-spacing:.04em}
+.menu-view-switch{position:relative;display:inline-flex;align-items:center;width:58px;height:32px;padding:3px;border:1px solid rgba(23,60,43,.22);border-radius:999px;background:#d9ddcf;cursor:pointer;transition:background .2s ease,border-color .2s ease;flex:none}
+.menu-view-switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fffdf8;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .2s ease}
+.menu-view-switch[aria-checked="true"]{background:#173d31;border-color:#173d31}
+.menu-view-switch[aria-checked="true"]::after{transform:translateX(26px)}
+.menu-view-switch:focus-visible{outline:2px solid #b79a5a;outline-offset:3px}
+.menu-view-mode{font:700 11px/1.2 Manrope,Arial,sans-serif;color:#526057;min-width:68px}
+.menu-view-mode strong{color:#173d31}
+
 body.text-menu-mode .menu-group .m-list{display:block!important}
 body.text-menu-mode .menu-group .m-item{display:flex!important;flex-direction:row!important;align-items:flex-start!important;justify-content:space-between!important;gap:14px!important;min-height:0!important;overflow:visible!important;padding:14px 15px!important;margin:0 0 8px!important;background:#fffdf8!important;border:1px solid rgba(23,60,43,.09)!important;border-radius:12px!important;box-shadow:none!important}
 body.text-menu-mode .m-photo-wrap{display:none!important}
@@ -278,10 +283,10 @@ body.text-menu-mode .menu-group .m-item strong{align-self:flex-start;margin:1px 
 </section>
 <div class="menu-tools">
   <div class="container">
-    <div class="menu-view-toggle" role="group" aria-label="Menu display mode">
+    <div class="menu-view-toggle">
       <span class="menu-view-label">Menu view</span>
-      <button type="button" class="menu-view-option active" data-menu-view="image" aria-pressed="true">Image mode</button>
-      <button type="button" class="menu-view-option" data-menu-view="text" aria-pressed="false">Text only</button>
+      <span class="menu-view-mode" id="menuViewModeLabel"><strong>Images</strong></span>
+      <button type="button" class="menu-view-switch" id="menuViewSwitch" role="switch" aria-label="Switch between image mode and text-only mode" aria-checked="false"></button>
     </div>
     <div class="menu-tabs">
       <button class="menu-tab active" data-target="coffee">Coffee & Tea</button>
@@ -1088,17 +1093,15 @@ function addTccMenuPhotos(){
 addTccMenuPhotos();
 
 // Image mode is the default; switch to a compact text-only menu when preferred.
-const tccMenuViewButtons=[...document.querySelectorAll("[data-menu-view]")];
+const tccMenuViewSwitch=document.getElementById("menuViewSwitch");
+const tccMenuViewModeLabel=document.getElementById("menuViewModeLabel");
 function setTccMenuView(mode){
   const textOnly=mode==="text";
   document.body.classList.toggle("text-menu-mode",textOnly);
-  tccMenuViewButtons.forEach(button=>{
-    const active=button.dataset.menuView===mode;
-    button.classList.toggle("active",active);
-    button.setAttribute("aria-pressed",active?"true":"false");
-  });
+  if(tccMenuViewSwitch) tccMenuViewSwitch.setAttribute("aria-checked",textOnly?"true":"false");
+  if(tccMenuViewModeLabel) tccMenuViewModeLabel.innerHTML=textOnly?"<strong>Text only</strong>":"<strong>Images</strong>";
 }
-tccMenuViewButtons.forEach(button=>button.addEventListener("click",()=>setTccMenuView(button.dataset.menuView)));
+if(tccMenuViewSwitch) tccMenuViewSwitch.addEventListener("click",()=>setTccMenuView(tccMenuViewSwitch.getAttribute("aria-checked")==="true"?"image":"text"));
 setTccMenuView("image");
 
 // Tap any menu photo to view it larger; tap outside or close to return.
