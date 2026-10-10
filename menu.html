@@ -217,6 +217,8 @@
 .menu-group .m-item{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;min-width:0;overflow:hidden;padding:0!important;margin:0;background:#fffdf8!important;border:1px solid rgba(183,154,90,.3)!important;border-radius:15px!important;box-shadow:0 6px 18px rgba(23,61,49,.065)!important}
 .m-photo-wrap{position:relative;display:block;overflow:hidden;width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#e8dfca,#f7f1e4)}
 .m-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .35s ease}
+.m-photo-credit{position:absolute;left:0;right:0;bottom:0;padding:5px 7px;background:rgba(20,35,27,.78);color:#fff;font:9px/1.35 Manrope,Arial,sans-serif}
+.m-photo-credit a{color:#fff;text-decoration:underline}
 .m-item:hover .m-photo{transform:scale(1.035)}
 .m-item-info{display:flex;flex-direction:column;flex:1;padding:11px 11px 5px;min-width:0}
 .menu-group .m-item h3{margin:0;color:#173d31;font:700 13px/1.35 Manrope,Arial,sans-serif;overflow-wrap:anywhere}
@@ -969,6 +971,13 @@ function tccPhotoFallbacks(name,category){
   if(/fizz|cooler|iced|pineapple|mango|coco rose|berry|lemon/.test(n)) return [33573170,9705336,28944484];
   return category==='food' ? [14711525,8165289,1435896] : [6205634,5461662,7658130];
 }
+/* Verified item-specific image URLs override generic stock-photo IDs. */
+const TCC_PHOTO_URLS = {
+  "Maska Bun": {
+    url: "https://upload.wikimedia.org/wikipedia/commons/5/55/Bun_Maska_Pav.jpg",
+    credit: '<a href="https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg" target="_blank" rel="noopener">Photo: Sanket Oswal / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · cropped for display'
+  }
+};
 function tccPexelsUrl(id){
   return 'https://images.pexels.com/photos/'+id+'/pexels-photo-'+id+'.jpeg?auto=compress&cs=tinysrgb&w=900';
 }
@@ -988,8 +997,13 @@ function addTccMenuPhotos(){
     img.loading='lazy';
     img.decoding='async';
     img.alt=name+' — representative menu photo';
-    img.src=tccPexelsUrl(id);
-    img.dataset.fallbacks=JSON.stringify(tccPhotoFallbacks(name,category).filter(n=>n!==id));
+    const verifiedPhoto=TCC_PHOTO_URLS[name];
+    img.src=verifiedPhoto ? verifiedPhoto.url : tccPexelsUrl(id);
+    if(verifiedPhoto){
+      img.alt=name+' — illustrative photo of bun maska with chai';
+      img.loading='lazy';
+    }
+    img.dataset.fallbacks=JSON.stringify(verifiedPhoto ? [] : tccPhotoFallbacks(name,category).filter(n=>n!==id));
     img.addEventListener('error',()=>{
       let fallbacks=[];
       try{fallbacks=JSON.parse(img.dataset.fallbacks||'[]')}catch(e){}
@@ -997,6 +1011,12 @@ function addTccMenuPhotos(){
       else {wrap.classList.add('photo-unavailable');img.remove();}
     });
     wrap.appendChild(img);
+    if(verifiedPhoto && verifiedPhoto.credit){
+      const credit=document.createElement('div');
+      credit.className='m-photo-credit';
+      credit.innerHTML=verifiedPhoto.credit;
+      wrap.appendChild(credit);
+    }
     const info=document.createElement('div');
     info.className='m-item-info';
     title.parentElement.querySelectorAll('p').forEach(p=>{});
