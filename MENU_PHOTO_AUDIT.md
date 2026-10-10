@@ -5,8 +5,8 @@ Audit date: 10 October 2026
 ## Status
 
 - Menu items: 77
-- Items with a dish-specific stock-photo source selected: 62
-- Items still showing “TCC photo needed”: 15
+- Items with a photo source assigned: 76
+- Items still showing “TCC photo needed”: 1
 - Policy: **No generic fallback photos.** Items without an exact-match source show “TCC photo needed”. If a selected image fails to load, its card also changes to that placeholder.
 - All pictures are illustrative stock photography, not verified images of TCC's own plating or portion size.
 
@@ -94,21 +94,7 @@ Audit date: 10 October 2026
 
 ## Exact-match image still needed
 
-- [ ] Spanish Iced Latte
-- [ ] Mont Blanc
-- [ ] Bird's Eye Pineapple
-- [ ] Vanilla Cream
-- [ ] Elderflower Fizz / Peach Fizz
-- [ ] Coco Rose Cooler
-- [ ] Coconut Matcha Cloud
-- [ ] Apple Pie Latte
-- [ ] Biscoff Latte
-- [ ] Nutella Latte
-- [ ] Pineapple Float
 - [ ] Cheese Chilli Toast
-- [ ] Potato Cheese Balls
-- [ ] Butter Garlic Chicken
-- [ ] Pesto Chicken Pizza
 
 ## Next step
 
