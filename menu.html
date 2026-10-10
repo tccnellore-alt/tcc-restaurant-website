@@ -1112,14 +1112,24 @@ tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-clo
 document.body.appendChild(tccImageLightbox);
 const tccLightboxImage=tccImageLightbox.querySelector("img");
 const tccLightboxClose=tccImageLightbox.querySelector("button");
-function closeTccImageLightbox(){
+function hideTccImageLightbox(){
   tccImageLightbox.classList.remove("is-open");
   tccLightboxImage.removeAttribute("src");
   document.body.style.overflow="";
 }
+function closeTccImageLightbox(){
+  if(history.state&&history.state.tccImageLightbox){
+    history.back();
+  }else{
+    hideTccImageLightbox();
+  }
+}
 document.addEventListener("click",event=>{
   const photo=event.target.closest(".m-photo");
   if(photo){
+    if(!tccImageLightbox.classList.contains("is-open")){
+      history.pushState({tccImageLightbox:true},"",window.location.href);
+    }
     tccLightboxImage.src=photo.currentSrc||photo.src;
     tccLightboxImage.alt=photo.alt||"Expanded menu photo";
     tccImageLightbox.classList.add("is-open");
@@ -1130,6 +1140,9 @@ document.addEventListener("click",event=>{
 tccLightboxClose.addEventListener("click",closeTccImageLightbox);
 tccImageLightbox.addEventListener("click",event=>{
   if(event.target===tccImageLightbox) closeTccImageLightbox();
+});
+window.addEventListener("popstate",()=>{
+  if(tccImageLightbox.classList.contains("is-open")) hideTccImageLightbox();
 });
 document.addEventListener("keydown",event=>{
   if(event.key==="Escape"&&tccImageLightbox.classList.contains("is-open")) closeTccImageLightbox();
