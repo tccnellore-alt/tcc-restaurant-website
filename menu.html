@@ -202,6 +202,19 @@
  .menu-section h2{font-size:29px}
 }
 
+.menu-view-toggle{display:flex;align-items:center;justify-content:center;gap:6px;margin:0 0 10px;padding:4px;border:1px solid rgba(23,60,43,.14);border-radius:999px;background:#f3ecdc}
+.menu-view-label{padding:0 7px;color:#667167;font:700 10px/1.2 Manrope,Arial,sans-serif;letter-spacing:.04em}
+.menu-view-option{border:1px solid transparent;border-radius:999px;padding:9px 13px;background:transparent;color:#526057;font:800 11px/1.2 Manrope,Arial,sans-serif;cursor:pointer;white-space:nowrap}
+.menu-view-option.active{background:#173d31;color:#fffdf8;border-color:#173d31;box-shadow:0 2px 6px rgba(23,61,49,.14)}
+.menu-view-option:focus-visible{outline:2px solid #b79a5a;outline-offset:2px}
+body.text-menu-mode .menu-group .m-list{display:block!important}
+body.text-menu-mode .menu-group .m-item{display:flex!important;flex-direction:row!important;align-items:flex-start!important;justify-content:space-between!important;gap:14px!important;min-height:0!important;overflow:visible!important;padding:14px 15px!important;margin:0 0 8px!important;background:#fffdf8!important;border:1px solid rgba(23,60,43,.09)!important;border-radius:12px!important;box-shadow:none!important}
+body.text-menu-mode .m-photo-wrap{display:none!important}
+body.text-menu-mode .menu-group .m-item-info{padding:0!important;min-width:0}
+body.text-menu-mode .menu-group .m-item h3{font-size:15px!important}
+body.text-menu-mode .menu-group .m-item p{font-size:12px!important}
+body.text-menu-mode .menu-group .m-item strong{align-self:flex-start;margin:1px 0 0 8px!important;flex:none}
+@media(max-width:480px){.menu-view-label{display:none}.menu-view-toggle{width:max-content;max-width:100%;margin:0 auto 10px}.menu-view-option{padding:10px 16px}}
 /* REDESIGN TEST — image-led menu cards */
 .menu-photo-disclaimer{display:flex;align-items:flex-start;gap:10px;margin:0 0 12px;padding:12px 14px;background:#fffdf8;border:1px solid #c9b98f;border-left:4px solid #173d31;border-radius:10px;color:#263b32}
 .disclaimer-mark{flex:0 0 30px;height:30px;display:grid;place-items:center;border-radius:7px;background:#173d31;color:#fffdf8;font:700 9px Arial,sans-serif;letter-spacing:.02em}
@@ -265,6 +278,11 @@
 </section>
 <div class="menu-tools">
   <div class="container">
+    <div class="menu-view-toggle" role="group" aria-label="Menu display mode">
+      <span class="menu-view-label">Menu view</span>
+      <button type="button" class="menu-view-option active" data-menu-view="image" aria-pressed="true">Image mode</button>
+      <button type="button" class="menu-view-option" data-menu-view="text" aria-pressed="false">Text only</button>
+    </div>
     <div class="menu-tabs">
       <button class="menu-tab active" data-target="coffee">Coffee & Tea</button>
       <button class="menu-tab" data-target="refreshers-and-tea">Refreshers</button>
@@ -1068,6 +1086,20 @@ function addTccMenuPhotos(){
   });
 }
 addTccMenuPhotos();
+
+// Image mode is the default; switch to a compact text-only menu when preferred.
+const tccMenuViewButtons=[...document.querySelectorAll("[data-menu-view]")];
+function setTccMenuView(mode){
+  const textOnly=mode==="text";
+  document.body.classList.toggle("text-menu-mode",textOnly);
+  tccMenuViewButtons.forEach(button=>{
+    const active=button.dataset.menuView===mode;
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-pressed",active?"true":"false");
+  });
+}
+tccMenuViewButtons.forEach(button=>button.addEventListener("click",()=>setTccMenuView(button.dataset.menuView)));
+setTccMenuView("image");
 
 // Tap any menu photo to view it larger; tap outside or close to return.
 const tccImageLightbox=document.createElement("div");
