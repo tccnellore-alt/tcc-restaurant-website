@@ -219,6 +219,11 @@
 .m-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .35s ease}
 .m-photo-credit{position:absolute;left:0;right:0;bottom:0;padding:5px 7px;background:rgba(20,35,27,.78);color:#fff;font:9px/1.35 Manrope,Arial,sans-serif}
 .m-photo-credit a{color:#fff;text-decoration:underline}
+.m-photo-placeholder{width:100%;height:100%;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:14px;text-align:center;background:linear-gradient(135deg,#eee6d5,#faf5e9);color:#173d31}
+.m-photo-placeholder-icon{display:grid;place-items:center;width:42px;height:42px;border:1px dashed rgba(23,61,49,.36);border-radius:50%;font:700 11px Georgia,serif;letter-spacing:.05em}
+.m-photo-placeholder strong{font:700 11px/1.3 Manrope,Arial,sans-serif}
+.m-photo-placeholder small{font:10px/1.4 Manrope,Arial,sans-serif;color:#69736a}
+.m-photo-wrap.photo-unverified{display:block;background:#f7f0e3}
 .m-item:hover .m-photo{transform:scale(1.035)}
 .m-item-info{display:flex;flex-direction:column;flex:1;padding:11px 11px 5px;min-width:0}
 .menu-group .m-item h3{margin:0;color:#173d31;font:700 13px/1.35 Manrope,Arial,sans-serif;overflow-wrap:anywhere}
@@ -273,7 +278,7 @@
 
     <aside class="menu-photo-disclaimer" role="note" aria-label="Menu photography disclaimer">
       <span class="disclaimer-mark">TCC</span>
-      <div><strong>A note on our menu photography</strong><p>Images are for illustrative purposes only. Actual ingredients, portion sizes, garnish, plating and presentation may vary. Please ask our team about ingredients or allergens.</p><small>Representative stock photography · Not a guarantee of the exact dish served</small></div>
+      <div><strong>A note on our menu photography</strong><p>Stock photos are shown only where a matching dish could be verified from its source. Where no exact match was verified, the card says “TCC photo needed” rather than showing a possibly different dish. Actual TCC ingredients, portions, garnish and presentation may vary.</p><small>Illustrative stock photography · Ask our team about ingredients or allergens</small></div>
     </aside>
     <div id="noResults" class="no-results">No matching items found. Try another search.</div>
 <div class="menu-group" id="coffee" data-group="Coffee">
@@ -929,120 +934,54 @@
 <script src="script.js"></script>
 <script>
 
-/* Product photography for redesign-test: illustrative stock photos, matched by menu item. */
-const TCC_PHOTO_IDS = {
-  "Espresso":29269539,"Long Black":10060451,"Latte":10955991,"Mocha":17506134,
-  "Spanish Latte":27548803,"Cortado":9180208,"Hot Chocolate":10545074,"Affogato":19352809,"Cappuccino":30351599,
-  "Iced Americano":34932738,"Iced Latte":20220698,"Iced Mocha":19055624,"Classic Cold Coffee":8004630,"Spanish Iced Latte":36673266,
-  "Classic Cold Brew":18997241,"Coco Brew":33486726,"Mont Blanc":7658122,"Bird's Eye Pineapple":5817623,"Vanilla Cream":31306510,"Orange Fizzy Brew":11278007,
-  "Lemon Cooler":8679432,"Elderflower Fizz / Peach Fizz":10045923,"Dry Mango Picante":36643283,"Coco Rose Cooler":31066139,
-  "Peach Iced Tea":33573170,"Lemon Iced Tea":34486580,"Berry Iced Tea":5461670,
-  "TCC Traditional Chai":31141291,"South Indian Coffee":38201891,"Maska Bun":12540665,
-  "Classic Matcha (Hot / Cold)":37745284,"Coconut Matcha Cloud":36517065,"Mango Passion Matcha":37105479,
-  "Pour Over":2616164,"French Press":872894,
-  "Apple Pie Latte":25381199,"Honey Rose Merry Latte":30307777,"Biscoff Latte":23858576,"Nutella Latte":798728,
-  "Coconut Cold":17971866,"Orange Espresso":12540646,"Pineapple Float":5146439,
-  "Hearty Minestrone Soup":16811678,"Creamy Mushroom Soup":5419047,
-  "French Fries Classic":19784555,"Peri Peri French Fries":18467142,"Butter Garlic Mushroom":5718131,
-  "Cheese Chilli Toast":12540677,"Potato Cheese Balls":39799185,"Avocado Toast":1656685,
-  "Butter Garlic Prawns":16273763,"Fried Chicken Strips":18479497,"Butter Garlic Chicken":8697537,
-  "Fettuccine Aglio Olio":11654236,"Penne Arrabbiata":432072,"Penne Rossa":16525900,"Penne Alfredo":5639993,
-  "Fettuccine Al Pesto":31769318,"Mac & Cheese (Veg)":9456716,
-  "Italian Margherita":14590497,"The Farmer's Pizza":5903095,"Pizza Verde":27941805,"Pesto Pizza":11230267,
-  "BBQ Chicken Pizza":33458051,"Pesto Chicken Pizza":33458049,"Chicken Pizzaiola":5639555,
-  "Mushroom Burger":10560076,"Grilled Paneer Burger":20741663,"Grilled Chicken Burger":19737927,"Crispy Chicken Burger":7963093,
-  "Cheese Grilled Sandwich":6824498,"Bombay Street Sandwich":5836618,"Chicken Club Sandwich":28681955,
-  "Crispy Chicken Sandwich":38895555,"Grilled Chicken Sandwich":5337811,
-  "Mexican Grilled Chicken":37045063,"Mexican Grilled Chicken with BBQ Sauce":5704254
+/* Strict menu-photo audit: only source pages that identify the named dish are allowed. */
+const TCC_VERIFIED_PHOTOS = {
+  "Espresso": {id:12975714, source:"https://www.pexels.com/photo/an-espresso-shot-on-a-double-walled-glass-cup-12975714/"},
+  "Long Black": {id:10060451, source:"https://www.pexels.com/photo/black-coffee-in-a-cup-10060451/"},
+  "Latte": {id:36851642, source:"https://www.pexels.com/photo/latte-art-in-ceramic-cup-on-dark-table-36851642/"},
+  "Mocha": {id:17506134, source:"https://www.pexels.com/photo/glass-of-coffee-with-chocolate-17506134/"},
+  "Cortado": {id:30067135, source:"https://www.pexels.com/photo/warm-cortado-at-kronotrop-coffee-istanbul-30067135/"},
+  "Hot Chocolate": {id:15149193, source:"https://www.pexels.com/photo/chocolate-drink-with-whipped-cream-15149193/"},
+  "Affogato": {id:12914800, source:"https://www.pexels.com/photo/close-up-shot-of-a-glass-of-affogato-12914800/"},
+  "Cappuccino": {id:30351599, source:"https://www.pexels.com/photo/latte-art-on-cappuccino-in-yellow-cup-30351599/"},
+  "Iced Americano": {id:34932738, source:"https://www.pexels.com/photo/iced-americano-with-layered-espresso-in-glass-34932738/"},
+  "Iced Latte": {id:20220698, source:"https://www.pexels.com/photo/glass-of-iced-latte-with-ice-cubes-20220698/"},
+  "Iced Mocha": {id:11512983, source:"https://www.pexels.com/photo/clear-glass-with-iced-mocha-11512983/"},
+  "Classic Cold Coffee": {id:4869289, source:"https://www.pexels.com/photo/cold-coffee-drink-in-clear-drinking-glass-4869289/"},
+  "Classic Cold Brew": {id:18997241, source:"https://www.pexels.com/photo/cold-brew-coffee-in-glass-18997241/"},
+  "Peach Iced Tea": {id:33573170, source:"https://www.pexels.com/photo/refreshing-peach-iced-tea-with-straw-and-lemon-33573170/"},
+  "Lemon Iced Tea": {id:12033562, source:"https://www.pexels.com/photo/a-glass-of-iced-tea-with-lemon-slices-12033562/"},
+  "TCC Traditional Chai": {id:31141291, source:"https://www.pexels.com/photo/classic-indian-chai-on-wooden-table-31141291/"},
+  "South Indian Coffee": {id:38201891, source:"https://www.pexels.com/photo/traditional-south-indian-filter-coffee-in-bengaluru-38201891/"},
+  "Maska Bun": {url:"https://upload.wikimedia.org/wikipedia/commons/5/55/Bun_Maska_Pav.jpg", source:"https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg", credit:'<a href="https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg" target="_blank" rel="noopener">Photo: Sanket Oswal / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · cropped for display'},
+  "Mango Passion Matcha": {id:37105479, source:"https://www.pexels.com/photo/refreshing-mango-matcha-drink-with-fresh-ingredients-37105479/"},
+  "Pour Over": {id:29619148, source:"https://www.pexels.com/photo/pour-over-coffee-brewing-with-v60-and-scale-29619148/"},
+  "French Press": {id:872894, source:"https://www.pexels.com/photo/coffee-being-poured-from-french-press-into-elegant-glass-872894/"},
+  "Orange Espresso": {id:12540640, source:"https://www.pexels.com/photo/pouring-of-espresso-on-a-cold-drink-12540640/"},
+  "Hearty Minestrone Soup": {id:16811678, source:"https://www.pexels.com/photo/minestrone-soup-with-noodles-16811678/"},
+  "Creamy Mushroom Soup": {id:39927557, source:"https://www.pexels.com/photo/creamy-mushroom-soup-with-fresh-garnish-39927557/"},
+  "French Fries Classic": {id:9502106, source:"https://www.pexels.com/photo/french-fries-seasoned-with-salt-9502106/"},
+  "Butter Garlic Mushroom": {id:5718131, source:"https://www.pexels.com/photo/top-view-of-mushroom-dish-on-table-5718131/"},
+  "Avocado Toast": {id:7936669, source:"https://www.pexels.com/photo/avocado-toasts-on-a-flat-surface-7936669/"},
+  "Butter Garlic Prawns": {id:16273763, source:"https://www.pexels.com/photo/prawns-in-a-bowl-16273763/"},
+  "Fried Chicken Strips": {id:37025062, source:"https://www.pexels.com/photo/crispy-fried-chicken-strips-with-spicy-sauce-37025062/"},
+  "Penne Arrabbiata": {id:39853054, source:"https://www.pexels.com/photo/delicious-penne-arrabbiata-with-fresh-tomatoes-39853054/"},
+  "Penne Rossa": {id:16525900, source:"https://www.pexels.com/photo/penne-pasta-in-pink-sauce-sprinkled-with-chopped-parsley-and-toast-16525900/"},
+  "Fettuccine Al Pesto": {id:31769318, source:"https://www.pexels.com/photo/delicious-spinach-pesto-fettuccine-pasta-31769318/"},
+  "Mac & Cheese (Veg)": {id:5107161, source:"https://www.pexels.com/photo/white-ceramic-bowl-with-food-5107161/"},
+  "Italian Margherita": {id:35759994, source:"https://www.pexels.com/photo/close-up-of-margherita-pizza-with-fresh-basil-35759994/"},
+  "BBQ Chicken Pizza": {id:29839587, source:"https://www.pexels.com/photo/delicious-bbq-chicken-pizza-on-wooden-table-29839587/"},
+  "Mushroom Burger": {id:10560076, source:"https://www.pexels.com/photo/hamburger-on-plate-10560076/"},
+  "Crispy Chicken Burger": {id:7963093, source:"https://www.pexels.com/photo/photograph-of-a-chicken-burger-7963093/"},
+  "Crispy Chicken Sandwich": {id:19585047, source:"https://www.pexels.com/photo/crispy-chicken-sandwiches-19585047/"},
+  "Grilled Chicken Sandwich": {id:5122952, source:"https://www.pexels.com/photo/close-up-photo-of-a-sandwich-5122952/"}
 };
-/* Photo-source overrides and source links for checked, illustrative stock images. */
-const TCC_PHOTO_URLS = {
-  "Maska Bun": {
-    url: "https://upload.wikimedia.org/wikipedia/commons/5/55/Bun_Maska_Pav.jpg",
-    credit: '<a href="https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg" target="_blank" rel="noopener">Photo: Sanket Oswal / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · image cropped for display'
-  }
-};
-const tccVerifiedPexels=(id,source)=>({url:tccPexelsUrl(id),source});
-const TCC_PEXELS_VERIFIED = {
-  "Espresso":tccVerifiedPexels(29269539,"https://www.pexels.com/photo/espresso-shot-being-brewed-in-coffee-machine-29269539/"),
-  "Long Black":tccVerifiedPexels(10060451,"https://www.pexels.com/photo/black-coffee-in-a-cup-10060451/"),
-  "Latte":tccVerifiedPexels(10955991,"https://www.pexels.com/photo/coffee-latte-in-white-ceramic-cup-10955991/"),
-  "Mocha":tccVerifiedPexels(17506134,"https://www.pexels.com/photo/a-cup-of-coffee-with-whipped-cream-17506134/"),
-  "Hot Chocolate":tccVerifiedPexels(10545074,"https://www.pexels.com/photo/hot-chocolate-in-a-cup-10545074/"),
-  "Affogato":tccVerifiedPexels(19352809,"https://www.pexels.com/photo/coffee-with-ice-creams-19352809/"),
-  "Cappuccino":tccVerifiedPexels(30351599,"https://www.pexels.com/photo/latte-art-on-cappuccino-in-yellow-cup-30351599/"),
-  "Iced Americano":tccVerifiedPexels(34932738,"https://www.pexels.com/photo/iced-black-coffee-in-a-glass-34932738/"),
-  "Iced Latte":tccVerifiedPexels(20220698,"https://www.pexels.com/photo/iced-coffee-in-a-glass-20220698/"),
-  "Iced Mocha":tccVerifiedPexels(19055624,"https://www.pexels.com/photo/iced-mocha-coffee-19055624/"),
-  "Classic Cold Coffee":tccVerifiedPexels(8004630,"https://www.pexels.com/photo/iced-coffee-in-a-glass-8004630/"),
-  "Classic Cold Brew":tccVerifiedPexels(18997241,"https://www.pexels.com/photo/cold-brew-coffee-in-a-glass-18997241/"),
-  "Bird's Eye Pineapple":tccVerifiedPexels(5817623,"https://www.pexels.com/photo/pineapple-juice-in-a-glass-5817623/"),
-  "Orange Fizzy Brew":tccVerifiedPexels(11278007,"https://www.pexels.com/photo/cold-citrus-drink-in-a-glass-11278007/"),
-  "Lemon Cooler":tccVerifiedPexels(8679432,"https://www.pexels.com/photo/cold-lemon-drink-in-a-glass-8679432/"),
-  "Elderflower Fizz / Peach Fizz":tccVerifiedPexels(10045923,"https://www.pexels.com/photo/elderflower-soda-in-a-glass-10045923/"),
-  "Dry Mango Picante":tccVerifiedPexels(36643283,"https://www.pexels.com/photo/mango-mocktail-in-a-glass-36643283/"),
-  "Lemon Iced Tea":tccVerifiedPexels(34486580,"https://www.pexels.com/photo/lemon-iced-tea-in-a-glass-34486580/"),
-  "Berry Iced Tea":tccVerifiedPexels(5461670,"https://www.pexels.com/photo/iced-tea-with-berries-5461670/"),
-  "TCC Traditional Chai":tccVerifiedPexels(31141291,"https://www.pexels.com/photo/indian-chai-in-a-cup-31141291/"),
-  "South Indian Coffee":tccVerifiedPexels(38201891,"https://www.pexels.com/photo/south-indian-filter-coffee-38201891/"),
-  "Classic Matcha (Hot / Cold)":tccVerifiedPexels(37745284,"https://www.pexels.com/photo/iced-matcha-latte-37745284/"),
-  "Mango Passion Matcha":tccVerifiedPexels(37105479,"https://www.pexels.com/photo/refreshing-mango-matcha-drink-with-fresh-ingredients-37105479/"),
-  "Pour Over":tccVerifiedPexels(2616164,"https://www.pexels.com/photo/pour-over-coffee-being-brewed-2616164/"),
-  "French Press":tccVerifiedPexels(872894,"https://www.pexels.com/photo/coffee-being-poured-from-a-french-press-872894/"),
-  "Honey Rose Merry Latte":tccVerifiedPexels(30307777,"https://www.pexels.com/photo/rose-latte-in-a-cup-30307777/"),
-  "Biscoff Latte":tccVerifiedPexels(23858576,"https://www.pexels.com/photo/latte-with-biscuits-23858576/"),
-  "Orange Espresso":tccVerifiedPexels(12540646,"https://www.pexels.com/photo/espresso-tonic-with-citrus-12540646/"),
-  "Hearty Minestrone Soup":tccVerifiedPexels(16811678,"https://www.pexels.com/photo/minestrone-soup-with-noodles-16811678/"),
-  "Creamy Mushroom Soup":tccVerifiedPexels(5419047,"https://www.pexels.com/photo/creamy-mushroom-soup-5419047/"),
-  "French Fries Classic":tccVerifiedPexels(19784555,"https://www.pexels.com/photo/french-fries-served-on-a-plate-19784555/"),
-  "Peri Peri French Fries":tccVerifiedPexels(18467142,"https://www.pexels.com/photo/seasoned-french-fries-18467142/"),
-  "Butter Garlic Mushroom":tccVerifiedPexels(5718131,"https://www.pexels.com/photo/garlic-butter-mushrooms-on-a-plate-5718131/"),
-  "Cheese Chilli Toast":tccVerifiedPexels(12540677,"https://www.pexels.com/photo/grilled-cheese-toast-12540677/"),
-  "Avocado Toast":tccVerifiedPexels(1656685,"https://www.pexels.com/photo/avocado-toast-on-a-plate-1656685/"),
-  "Butter Garlic Prawns":tccVerifiedPexels(16273763,"https://www.pexels.com/photo/garlic-butter-prawns-on-a-plate-16273763/"),
-  "Fried Chicken Strips":tccVerifiedPexels(18479497,"https://www.pexels.com/photo/crispy-chicken-tenders-on-a-plate-18479497/"),
-  "Fettuccine Aglio Olio":tccVerifiedPexels(11654236,"https://www.pexels.com/photo/fettuccine-aglio-e-olio-pasta-11654236/"),
-  "Penne Arrabbiata":tccVerifiedPexels(39853054,"https://www.pexels.com/photo/delicious-penne-arrabbiata-with-fresh-tomatoes-39853054/"),
-  "Penne Rossa":tccVerifiedPexels(16525900,"https://www.pexels.com/photo/penne-pasta-in-pink-sauce-16525900/"),
-  "Penne Alfredo":tccVerifiedPexels(5639993,"https://www.pexels.com/photo/penne-pasta-in-creamy-sauce-5639993/"),
-  "Fettuccine Al Pesto":tccVerifiedPexels(31769318,"https://www.pexels.com/photo/fettuccine-with-pesto-sauce-31769318/"),
-  "Mac & Cheese (Veg)":tccVerifiedPexels(9456716,"https://www.pexels.com/photo/mac-and-cheese-in-a-bowl-9456716/"),
-  "Italian Margherita":tccVerifiedPexels(14590497,"https://www.pexels.com/photo/margherita-pizza-on-a-plate-14590497/"),
-  "The Farmer's Pizza":tccVerifiedPexels(5903095,"https://www.pexels.com/photo/vegetable-pizza-5903095/"),
-  "Pizza Verde":tccVerifiedPexels(27941805,"https://www.pexels.com/photo/pizza-with-green-pesto-sauce-27941805/"),
-  "BBQ Chicken Pizza":tccVerifiedPexels(33458051,"https://www.pexels.com/photo/bbq-chicken-pizza-33458051/"),
-  "Mushroom Burger":tccVerifiedPexels(10560076,"https://www.pexels.com/photo/hamburger-on-plate-10560076/"),
-  "Crispy Chicken Burger":tccVerifiedPexels(7963093,"https://www.pexels.com/photo/crispy-chicken-burger-7963093/"),
-  "Cheese Grilled Sandwich":tccVerifiedPexels(6824498,"https://www.pexels.com/photo/grilled-cheese-sandwich-6824498/"),
-  "Chicken Club Sandwich":tccVerifiedPexels(28681955,"https://www.pexels.com/photo/chicken-club-sandwich-28681955/"),
-  "Crispy Chicken Sandwich":tccVerifiedPexels(38895555,"https://www.pexels.com/photo/crispy-chicken-sandwich-38895555/"),
-  "Grilled Chicken Sandwich":tccVerifiedPexels(5337811,"https://www.pexels.com/photo/grilled-chicken-sandwich-5337811/")
-};
-
-function tccPhotoFallbacks(name,category){
-  const n=name.toLowerCase();
-  /* Keep broken-image fallbacks within the closest practical family. */
-  if(/orange espresso|espresso tonic/.test(n)) return [12540646,29269539,10955991];
-  if(/mango.*matcha|matcha/.test(n)) return [37105479,37745284,36517065,8004561];
-  if(/coco brew/.test(n)) return [18997241,33486726,10955991];
-  if(/chai|south indian coffee|tea/.test(n)) return [/iced|fizz/.test(n)?5461670:31141291,33573170,34486580];
-  if(/fizz|cooler|pineapple|orange|lemon|peach|berry|elderflower|picante|rose|coco/.test(n) && !/coffee|latte|matcha|espresso/.test(n)) return [11278007,36643283,5461670,5817623];
-  if(/coffee|latte|espresso|cortado|mocha|cold brew|mont blanc|affogato|french press|pour over/.test(n)) return [10955991,10060451,18997241,30351599];
-  if(/soup|minestrone/.test(n)) return [16811678,5419047];
-  if(/peri peri fries|fries/.test(n)) return [19784555,18467142,8165289];
-  if(/potato cheese balls/.test(n)) return [39799185];
-  if(/mushroom/.test(n) && !/burger/.test(n)) return [5718131,5419047];
-  if(/prawn|shrimp/.test(n)) return [16273763];
-  if(/fried chicken strips|crispy chicken strips/.test(n)) return [18479497,19969204];
-  if(/pasta|penne|fettuccine|mac & cheese/.test(n)) return [11654236,432072,16525900,5639993,31769318,9456716];
-  if(/pizza/.test(n)) return [14590497,5903095,27941805,11230267,33458051,33458049];
-  if(/burger/.test(n)) return [10560076,20741663,19737927,7963093];
-  if(/sandwich|toast|bun/.test(n)) return [6824498,28681955,38895555,5337811,1656685];
-  if(/chicken/.test(n)) return [8697537,37045063,5704254,18479497];
-  return category==='food' ? [5419047,19784555,14590497] : [10955991,10060451,8004630];
-}
 function tccPexelsUrl(id){
   return 'https://images.pexels.com/photos/'+id+'/pexels-photo-'+id+'.jpeg?auto=compress&cs=tinysrgb&w=900';
+}
+function showTccPhotoPlaceholder(wrap){
+  wrap.classList.add('photo-unverified');
+  wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Exact stock photo not verified; TCC photo needed"><span class="m-photo-placeholder-icon" aria-hidden="true">TCC</span><strong>TCC photo needed</strong><small>No exact stock match verified</small></div>';
 }
 function addTccMenuPhotos(){
   document.querySelectorAll('.menu-group .m-item').forEach(item=>{
@@ -1050,44 +989,33 @@ function addTccMenuPhotos(){
     const price=item.querySelector('strong');
     if(!title||!price||item.querySelector('.m-photo-wrap')) return;
     const name=title.textContent.trim();
-    const isFood=!!item.closest('#food');
-    const category=isFood?'food':'drinks';
-    const id=TCC_PHOTO_IDS[name] || tccPhotoFallbacks(name,category)[0];
+    const photo=TCC_VERIFIED_PHOTOS[name];
     const wrap=document.createElement('div');
     wrap.className='m-photo-wrap';
-    const img=document.createElement('img');
-    img.className='m-photo';
-    img.loading='lazy';
-    img.decoding='async';
-    img.alt=name+' — illustrative stock photo; TCC serving may differ';
-    const verifiedPhoto=TCC_PHOTO_URLS[name];
-    const curatedPhoto=TCC_PEXELS_VERIFIED[name];
-    img.src=verifiedPhoto ? verifiedPhoto.url : (curatedPhoto ? curatedPhoto.url : tccPexelsUrl(id));
-    if(verifiedPhoto || curatedPhoto){
-      img.alt=name+' — illustrative stock photo, not a guaranteed representation of TCC serving';
+    if(!photo){
+      showTccPhotoPlaceholder(wrap);
+      item.insertBefore(wrap,item.firstChild);
+    }else{
+      const img=document.createElement('img');
+      img.className='m-photo';
       img.loading='lazy';
-    }
-    img.dataset.fallbacks=JSON.stringify(tccPhotoFallbacks(name,category).filter(n=>n!==id));
-    img.addEventListener('error',()=>{
-      let fallbacks=[];
-      try{fallbacks=JSON.parse(img.dataset.fallbacks||'[]')}catch(e){}
-      if(fallbacks.length){const next=fallbacks.shift();img.dataset.fallbacks=JSON.stringify(fallbacks);img.src=tccPexelsUrl(next);}
-      else {wrap.classList.add('photo-unavailable');img.remove();}
-    });
-    wrap.appendChild(img);
-    if((verifiedPhoto && verifiedPhoto.credit) || curatedPhoto){
+      img.decoding='async';
+      img.alt=name+' — illustrative stock photo of '+name+'; TCC serving may differ';
+      img.src=photo.url || tccPexelsUrl(photo.id);
+      img.addEventListener('error',()=>showTccPhotoPlaceholder(wrap),{once:true});
+      wrap.appendChild(img);
       const credit=document.createElement('div');
       credit.className='m-photo-credit';
-      credit.innerHTML=verifiedPhoto && verifiedPhoto.credit ? verifiedPhoto.credit : '<a href="'+curatedPhoto.source+'" target="_blank" rel="noopener">Illustrative photo · Pexels</a>';
+      if(photo.credit) credit.innerHTML=photo.credit;
+      else credit.innerHTML='<a href="'+photo.source+'" target="_blank" rel="noopener">Illustrative photo · Pexels</a>';
       wrap.appendChild(credit);
+      item.insertBefore(wrap,item.firstChild);
     }
     const info=document.createElement('div');
     info.className='m-item-info';
-    title.parentElement.querySelectorAll('p').forEach(p=>{});
-    const oldContent=title.parentElement;
-    oldContent.classList.add('m-item-info-source');
-    oldContent.querySelectorAll('h3,p').forEach(el=>info.appendChild(el));
-    item.insertBefore(wrap,item.firstChild);
+    const sourceBlock=title.parentElement;
+    sourceBlock.classList.add('m-item-info-source');
+    sourceBlock.querySelectorAll('h3,p').forEach(el=>info.appendChild(el));
     item.insertBefore(info,price);
   });
 }
