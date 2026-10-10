@@ -957,41 +957,25 @@ const TCC_PHOTO_IDS = {
 };
 function tccPhotoFallbacks(name,category){
   const n=name.toLowerCase();
-  if(/matcha/.test(n)) return [37745284,36517065,8634757];
-  if(/tea|chai/.test(n)) return [33573170,11009224,36998132];
-  if(/soup/.test(n)) return [5419047,14711525];
-  if(/fries|potato cheese/.test(n)) return [2962450,8165289,39799185];
-  if(/mushroom/.test(n)) return [5718131,14711525,10560076];
-  if(/pasta|penne|fettuccine|mac & cheese/.test(n)) return [38773986,37336686,39853054];
-  if(/pizza/.test(n)) return [14590497,30818095,33458049];
-  if(/burger/.test(n)) return [20741663,19737927,10560076];
-  if(/sandwich|toast|bun/.test(n)) return [8478399,6824498,7936737];
-  if(/prawn|shrimp/.test(n)) return [16273763,4175148,7111475];
-  if(/chicken/.test(n)) return [29043470,5704254,38895552];
-  if(/fizz|cooler|iced|pineapple|mango|coco rose|berry|lemon/.test(n)) return [33573170,9705336,28944484];
-  return category==='food' ? [14711525,8165289,1435896] : [6205634,5461662,7658130];
+  /* Error fallbacks stay within the closest practical dish family. */
+  if(/mango.*matcha|matcha/.test(n)) return [37105479,37745284,36517065,8004561];
+  if(/chai|south indian coffee|tea/.test(n)) return [/iced|fizz/.test(n)?5461670:31141291,33573170,34486580];
+  if(/fizz|cooler|pineapple|orange|lemon|peach|berry|elderflower|picante|rose|coco/.test(n) && !/coffee|latte|matcha/.test(n)) return [11278007,36643283,5461670,5817623];
+  if(/espresso tonic|orange espresso/.test(n)) return [12540646,29269539,10955991];
+  if(/coffee|latte|espresso|cortado|mocha|cold brew|mont blanc|affogato|french press|pour over/.test(n)) return [10955991,10060451,18997241,30351599];
+  if(/soup|minestrone/.test(n)) return [16811678,5419047];
+  if(/peri peri fries|fries/.test(n)) return [19784555,18467142,8165289];
+  if(/potato cheese balls/.test(n)) return [39799185];
+  if(/mushroom/.test(n) && !/burger/.test(n)) return [5718131,5419047];
+  if(/prawn|shrimp/.test(n)) return [16273763];
+  if(/fried chicken strips|crispy chicken strips/.test(n)) return [18479497,19969204];
+  if(/pasta|penne|fettuccine|mac & cheese/.test(n)) return [11654236,432072,16525900,5639993,31769318,9456716];
+  if(/pizza/.test(n)) return [14590497,5903095,27941805,11230267,33458051,33458049];
+  if(/burger/.test(n)) return [10560076,20741663,19737927,7963093];
+  if(/sandwich|toast|bun/.test(n)) return [6824498,28681955,38895555,5337811,1656685];
+  if(/chicken/.test(n)) return [8697537,37045063,5704254,18479497];
+  return category==='food' ? [5419047,19784555,14590497] : [10955991,10060451,8004630];
 }
-/* Curated Pexels photos whose source page descriptions match the dish. */
-const TCC_PEXELS_VERIFIED = {
-  "Classic Matcha (Hot / Cold)": {url:"https://images.pexels.com/photos/36415285/pexels-photo-36415285.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/refreshing-iced-matcha-and-coffee-drinks-on-wooden-table-36415285/"},
-  "Creamy Mushroom Soup": {url:"https://images.pexels.com/photos/5950442/pexels-photo-5950442.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/mushroom-soup-beside-toasted-bread-5950442/"},
-  "Italian Margherita": {url:"https://images.pexels.com/photos/14590497/pexels-photo-14590497.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/photo-of-margherita-pizza-14590497/"},
-  "BBQ Chicken Pizza": {url:"https://images.pexels.com/photos/33458051/pexels-photo-33458051.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/delicious-bbq-chicken-pizza-with-creamy-sauce-33458051/"},
-  "Grilled Chicken Burger": {url:"https://images.pexels.com/photos/30622041/pexels-photo-30622041.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/delicious-pulled-chicken-burger-with-fresh-vegetables-30622041/"},
-  "Crispy Chicken Burger": {url:"https://images.pexels.com/photos/38895552/pexels-photo-38895552.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/delicious-crispy-chicken-burger-with-fries-38895552/"},
-  "Grilled Chicken Sandwich": {url:"https://images.pexels.com/photos/5122952/pexels-photo-5122952.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/close-up-photo-of-a-sandwich-5122952/"},
-  "Crispy Chicken Sandwich": {url:"https://images.pexels.com/photos/18743145/pexels-photo-18743145.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/hands-holding-a-grilled-toast-sandwich-18743145/"},
-  "Peach Iced Tea": {url:"https://images.pexels.com/photos/33573170/pexels-photo-33573170.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/refreshing-peach-iced-tea-with-straw-and-lemon-33573170/"},
-  "Lemon Iced Tea": {url:"https://images.pexels.com/photos/34486580/pexels-photo-34486580.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/chilled-lemon-iced-tea-with-ice-cube-drop-34486580/"},
-  "Elderflower Fizz / Peach Fizz": {url:"https://images.pexels.com/photos/33573170/pexels-photo-33573170.jpeg?auto=compress&cs=tinysrgb&w=900", source:"https://www.pexels.com/photo/refreshing-peach-iced-tea-with-straw-and-lemon-33573170/"}
-};
-/* Verified item-specific image URLs override generic stock-photo IDs. */
-const TCC_PHOTO_URLS = {
-  "Maska Bun": {
-    url: "https://upload.wikimedia.org/wikipedia/commons/5/55/Bun_Maska_Pav.jpg",
-    credit: '<a href="https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg" target="_blank" rel="noopener">Photo: Sanket Oswal / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · cropped for display'
-  }
-};
 function tccPexelsUrl(id){
   return 'https://images.pexels.com/photos/'+id+'/pexels-photo-'+id+'.jpeg?auto=compress&cs=tinysrgb&w=900';
 }
