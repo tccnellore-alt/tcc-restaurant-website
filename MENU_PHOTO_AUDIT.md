@@ -5,8 +5,8 @@ Audit date: 10 October 2026
 ## Status
 
 - Menu items: 77
-- Items with a dish-specific stock-photo source selected: 60
-- Items still showing “TCC photo needed”: 17
+- Items with a dish-specific stock-photo source selected: 63
+- Items still showing “TCC photo needed”: 14
 - Policy: **No generic fallback photos.** Items without an exact-match source show “TCC photo needed”. If a selected image fails to load, its card also changes to that placeholder.
 - All pictures are illustrative stock photography, not verified images of TCC's own plating or portion size.
 
@@ -84,9 +84,16 @@ Audit date: 10 October 2026
 - **Grilled Chicken Burger** — [Wikimedia Commons photo by Bahnfrend](https://commons.wikimedia.org/wiki/File:Grilled_Chicken_Burger,_D%C3%B4me_Byford,_2026_(01).jpg), licensed CC BY-SA 4.0. The source caption explicitly identifies a grilled chicken burger.
 
 
+
+## Fourth-pass matches (Pixabay and Wikimedia Commons)
+
+- **Spanish Latte** — [Pixabay photo by Penabeckie](https://pixabay.com/photos/latte-spanish-latte-coffee-1200501/). Pixabay labels it “Latte, Spanish latte, Coffee image” and makes it available under the Pixabay Content License. This particular photo is a hot latte in a cup; it is suitable for **Spanish Latte**, not for the iced variant.
+- **Fettuccine Aglio Olio** — [Wikimedia Commons photo by Shreya13jain](https://commons.wikimedia.org/wiki/File:Fettuccine_with_olive_oil_and_garlic.jpg), licensed CC BY-SA 4.0. The source identifies the dish as fettuccine with olive oil and garlic / aglio e olio. Credited and licensed on the menu.
+- **Cheese Chilli Toast** — [Pixabay photo by thestorychef](https://pixabay.com/photos/garlic-bread-garlic-cheese-chilli-5785406/), free under the Pixabay Content License. The photo and tags specifically show chilli-cheese toast/garlic bread: it is a close dish-type match, but the example includes garlic, which may differ from TCC's recipe. Credited in the menu to make that distinction clear.
+
+
 ## Exact-match image still needed
 
-- [ ] Spanish Latte
 - [ ] Spanish Iced Latte
 - [ ] Mont Blanc
 - [ ] Bird's Eye Pineapple
@@ -98,10 +105,8 @@ Audit date: 10 October 2026
 - [ ] Biscoff Latte
 - [ ] Nutella Latte
 - [ ] Pineapple Float
-- [ ] Cheese Chilli Toast
 - [ ] Potato Cheese Balls
 - [ ] Butter Garlic Chicken
-- [ ] Fettuccine Aglio Olio
 - [ ] Pesto Chicken Pizza
 
 ## Next step
