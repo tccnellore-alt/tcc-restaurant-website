@@ -89,13 +89,9 @@ Audit date: 10 October 2026
 
 - **Spanish Latte** — [Pixabay photo by Penabeckie](https://pixabay.com/photos/latte-spanish-latte-coffee-1200501/). Pixabay labels it “Latte, Spanish latte, Coffee image” and makes it available under the Pixabay Content License. This particular photo is a hot latte in a cup; it is suitable for **Spanish Latte**, not for the iced variant.
 - **Fettuccine Aglio Olio** — [Wikimedia Commons photo by Shreya13jain](https://commons.wikimedia.org/wiki/File:Fettuccine_with_olive_oil_and_garlic.jpg), licensed CC BY-SA 4.0. The source identifies the dish as fettuccine with olive oil and garlic / aglio e olio. Credited and licensed on the menu.
-- **Cheese Chilli Toast** — [Pixabay photo by thestorychef](https://pixabay.com/photos/garlic-bread-garlic-cheese-chilli-5785406/) was inspected. It shows cheese chilli garlic bread, and the image includes garlic pieces; it does not reliably match TCC's cheese-chilli-toast recipe, so it was **rejected** and the menu remains on “TCC photo needed”.
+- **Cheese Chilli Toast** — selected the classic Indian-style chilli cheese toast image from [Dassana’s Veg Recipes](https://www.vegrecipesofindia.com/cheese-chilli-toast-recipe/). The source shows toasted bread topped with melted cheese and green chilli, matching the dish name more closely than the previously rejected garlic-bread candidate. This is an illustrative reference image, not a verified photo of TCC’s own plating.
 
 
-## Exact-match image still needed
+## Remaining image status
 
-- [ ] Cheese Chilli Toast
-
-## Next step
-
-Take one clear photo of each outstanding menu item in TCC's own standard serving, ideally in consistent lighting and against a simple café background. Keep the same orientation and crop across items where practical. Replace each “TCC photo needed” placeholder only after a matching real photo is supplied or an exact stock source has been checked.
+All 77 menu items now have a photo source assigned on the `redesign-test` branch. Cheese Chilli Toast uses the classic chilli-cheese-toast reference noted above. Sources are visual references; TCC’s actual portions and plating may differ.
