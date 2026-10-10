@@ -5,8 +5,8 @@ Audit date: 10 October 2026
 ## Status
 
 - Menu items: 77
-- Items with a dish-specific stock-photo source selected: 56
-- Items still showing “TCC photo needed”: 21
+- Items with a dish-specific stock-photo source selected: 60
+- Items still showing “TCC photo needed”: 17
 - Policy: **No generic fallback photos.** Items without an exact-match source show “TCC photo needed”. If a selected image fails to load, its card also changes to that placeholder.
 - All pictures are illustrative stock photography, not verified images of TCC's own plating or portion size.
 
@@ -75,6 +75,15 @@ Audit date: 10 October 2026
 - **Chicken Club Sandwich** — source title identifies Chicken Club Sandwich; credited and licensed under CC BY-SA 4.0 on the menu; [source](https://commons.wikimedia.org/wiki/File:Chicken_Club_sandwich-_Egypt_01.jpg)
 
 
+
+## Third-pass verified matches
+
+- **The Farmer's Pizza** — [Pexels photo by Engin Akyurt](https://www.pexels.com/photo/selective-focus-photography-of-vegetable-pizza-1437270/). The source specifically describes vegetarian pizza topped with feta, olives and vegetables, matching the main toppings in the TCC menu description. The photo may not show the same jalapeño quantity or exact TCC presentation.
+- **Chicken Pizzaiola** — [Wikimedia Commons photo by blynneda](https://commons.wikimedia.org/wiki/File:Venezia_Chicken_Pizzaiola.jpg), licensed CC BY 2.0. The source identifies the dish as *Pollo alla pizzaiola*.
+- **Grilled Paneer Burger** — [Wikimedia Commons photo by Mokshjuneja](https://commons.wikimedia.org/wiki/File:Paneer_Burger.jpg), licensed CC BY-SA 4.0. The photo clearly depicts a paneer burger; the precise TCC grilling and toppings may differ.
+- **Grilled Chicken Burger** — [Wikimedia Commons photo by Bahnfrend](https://commons.wikimedia.org/wiki/File:Grilled_Chicken_Burger,_D%C3%B4me_Byford,_2026_(01).jpg), licensed CC BY-SA 4.0. The source caption explicitly identifies a grilled chicken burger.
+
+
 ## Exact-match image still needed
 
 - [ ] Spanish Latte
@@ -93,11 +102,7 @@ Audit date: 10 October 2026
 - [ ] Potato Cheese Balls
 - [ ] Butter Garlic Chicken
 - [ ] Fettuccine Aglio Olio
-- [ ] The Farmer's Pizza
 - [ ] Pesto Chicken Pizza
-- [ ] Chicken Pizzaiola
-- [ ] Grilled Paneer Burger
-- [ ] Grilled Chicken Burger
 
 ## Next step
 
