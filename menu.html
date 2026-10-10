@@ -236,6 +236,8 @@ body.text-menu-mode .menu-group .m-item strong{align-self:flex-start;margin:1px 
 .menu-image-lightbox img{display:block;max-width:100%;max-height:calc(100vh - 180px);width:auto;height:auto;object-fit:contain;border-radius:8px}
 .menu-lightbox-details{width:100%;padding:0 4px 3px;color:#173d31;text-align:left}
 .menu-lightbox-name{margin:0;font:700 20px/1.3 Manrope,Arial,sans-serif}
+.menu-lightbox-description{margin:6px 0 0;color:#6d776e;font:13px/1.5 Manrope,Arial,sans-serif}
+.menu-lightbox-description:empty{display:none}
 .menu-lightbox-price{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#f3ead7;color:#8d6d2e;font:800 14px/1.2 Manrope,Arial,sans-serif}
 @media(max-width:480px){.menu-lightbox-card{gap:10px;padding:10px;max-height:calc(100vh - 24px)}.menu-image-lightbox img{max-height:calc(100vh - 190px)}.menu-lightbox-name{font-size:18px}}
 .menu-image-lightbox-close{position:absolute;top:12px;right:14px;width:42px;height:42px;border:1px solid rgba(255,255,255,.55);border-radius:50%;background:rgba(0,0,0,.35);color:#fff;font-size:28px;line-height:1;cursor:pointer}
@@ -1113,10 +1115,11 @@ tccImageLightbox.className="menu-image-lightbox";
 tccImageLightbox.setAttribute("role","dialog");
 tccImageLightbox.setAttribute("aria-modal","true");
 tccImageLightbox.setAttribute("aria-label","Expanded menu photo");
-tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><div class="menu-lightbox-price"></div></div></div>';
+tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><p class="menu-lightbox-description"></p><div class="menu-lightbox-price"></div></div></div>';
 document.body.appendChild(tccImageLightbox);
 const tccLightboxImage=tccImageLightbox.querySelector("img");
 const tccLightboxName=tccImageLightbox.querySelector(".menu-lightbox-name");
+const tccLightboxDescription=tccImageLightbox.querySelector(".menu-lightbox-description");
 const tccLightboxPrice=tccImageLightbox.querySelector(".menu-lightbox-price");
 const tccLightboxClose=tccImageLightbox.querySelector("button");
 function hideTccImageLightbox(){
@@ -1142,7 +1145,9 @@ document.addEventListener("click",event=>{
     const item=photo.closest(".m-item");
     const name=item?.querySelector("h3")?.textContent.trim()||photo.alt||"Menu item";
     const price=item?.querySelector("strong")?.textContent.trim()||"";
+    const description=item?.querySelector(".m-item-info p")?.textContent.trim()||"";
     tccLightboxName.textContent=name;
+    tccLightboxDescription.textContent=description;
     tccLightboxPrice.textContent=price;
     tccLightboxPrice.style.display=price?"inline-block":"none";
     tccImageLightbox.classList.add("is-open");
