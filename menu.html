@@ -953,10 +953,22 @@ const TCC_PHOTO_IDS = {
   "Crispy Chicken Sandwich":17121731,"Grilled Chicken Sandwich":8478417,
   "Mexican Grilled Chicken":37045063,"Mexican Grilled Chicken with BBQ Sauce":5704254
 };
-const TCC_PHOTO_FALLBACK = {
-  drinks:[6205634,5461662,7658130],
-  food:[14711525,8165289,1435896]
-};
+function tccPhotoFallbacks(name,category){
+  const n=name.toLowerCase();
+  if(/matcha/.test(n)) return [37745284,36517065,8634757];
+  if(/tea|chai/.test(n)) return [33573170,11009224,36998132];
+  if(/soup/.test(n)) return [5419047,14711525];
+  if(/fries|potato cheese/.test(n)) return [2962450,8165289,39799185];
+  if(/mushroom/.test(n)) return [5718131,14711525,10560076];
+  if(/pasta|penne|fettuccine|mac & cheese/.test(n)) return [38773986,37336686,39853054];
+  if(/pizza/.test(n)) return [14590497,30818095,33458049];
+  if(/burger/.test(n)) return [20741663,19737927,10560076];
+  if(/sandwich|toast|bun/.test(n)) return [8478399,6824498,7936737];
+  if(/prawn|shrimp/.test(n)) return [16273763,4175148,7111475];
+  if(/chicken/.test(n)) return [29043470,5704254,38895552];
+  if(/fizz|cooler|iced|pineapple|mango|coco rose|berry|lemon/.test(n)) return [33573170,9705336,28944484];
+  return category==='food' ? [14711525,8165289,1435896] : [6205634,5461662,7658130];
+}
 function tccPexelsUrl(id){
   return 'https://images.pexels.com/photos/'+id+'/pexels-photo-'+id+'.jpeg?auto=compress&cs=tinysrgb&w=900';
 }
@@ -968,7 +980,7 @@ function addTccMenuPhotos(){
     const name=title.textContent.trim();
     const isFood=!!item.closest('#food');
     const category=isFood?'food':'drinks';
-    const id=TCC_PHOTO_IDS[name] || TCC_PHOTO_FALLBACK[category][0];
+    const id=TCC_PHOTO_IDS[name] || tccPhotoFallbacks(name,category)[0];
     const wrap=document.createElement('div');
     wrap.className='m-photo-wrap';
     const img=document.createElement('img');
@@ -977,7 +989,7 @@ function addTccMenuPhotos(){
     img.decoding='async';
     img.alt=name+' — representative menu photo';
     img.src=tccPexelsUrl(id);
-    img.dataset.fallbacks=JSON.stringify(TCC_PHOTO_FALLBACK[category].filter(n=>n!==id));
+    img.dataset.fallbacks=JSON.stringify(tccPhotoFallbacks(name,category).filter(n=>n!==id));
     img.addEventListener('error',()=>{
       let fallbacks=[];
       try{fallbacks=JSON.parse(img.dataset.fallbacks||'[]')}catch(e){}
@@ -1160,7 +1172,7 @@ function filter(q){
         let sectionFound=0;
         sec.querySelectorAll(".m-item").forEach(item=>{
           const ok=item.textContent.toLowerCase().includes(q);
-          item.style.display=ok?"flex":"none";
+          item.style.setProperty("display",ok?"flex":"none","important");
           if(ok)sectionFound++;
         });
         sec.style.display=sectionFound?"block":"none";
@@ -1176,7 +1188,7 @@ function filter(q){
     active.querySelectorAll(".menu-section").forEach(sec=>{
       let sectionFound=0;
       sec.querySelectorAll(".m-item").forEach(item=>{
-        item.style.display="flex";
+        item.style.setProperty("display","flex","important");
         sectionFound++;
       });
       sec.style.display=sectionFound?"block":"none";
