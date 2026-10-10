@@ -5,12 +5,12 @@ Audit date: 10 October 2026
 ## Status
 
 - Menu items: 77
-- Items with a specific stock-photo source selected: 39
-- Items without an independently supportable exact stock match: 38
+- Items with a dish-specific stock-photo source selected: 56
+- Items still showing “TCC photo needed”: 21
 - Policy: **No generic fallback photos.** Items without an exact-match source show “TCC photo needed”. If a selected image fails to load, its card also changes to that placeholder.
 - All pictures are illustrative stock photography, not verified images of TCC's own plating or portion size.
 
-“Photo match” means the source page's photo title/description identifies the named dish or the core dish type clearly enough for an illustrative menu image. It does not certify TCC's recipe, ingredient ratios, garnish or serving presentation. Branded/signature menu names require TCC's actual drink/food photos unless a specifically matching stock image is found.
+“Photo match” means the source page title/description identifies the same dish or the closest defensible dish-level match for illustrative use. It does not certify TCC's exact recipe, spice mix, garnish, toppings, ingredients or serving presentation. For signature drinks, details such as “picante”, “fizzy”, “honey” and “cream cloud” cannot always be proven from a stock image; use TCC's own photos when the precise signature profile matters.
 
 ## Source-backed image selections
 
@@ -54,46 +54,50 @@ Audit date: 10 October 2026
 - **Crispy Chicken Sandwich** — Pexels source page — linked from the menu; [source](https://www.pexels.com/photo/crispy-chicken-sandwiches-19585047/) (Pexels image ID 19585047)
 - **Grilled Chicken Sandwich** — Pexels source page — linked from the menu; [source](https://www.pexels.com/photo/close-up-photo-of-a-sandwich-5122952/) (Pexels image ID 5122952)
 
+## Additional matches from second research round
+
+- **Coco Brew** — coconut coffee with cream on a tray; good coconut-coffee match; [source](https://www.pexels.com/photo/coconut-coffee-with-cream-on-wooden-tray-29370798/) (ID 29370798)
+- **Lemon Cooler** — cold lemonade with lemon slice; [source](https://www.pexels.com/photo/refreshing-cold-lemonade-with-lemon-slice-6542761/) (ID 6542761)
+- **Dry Mango Picante** — mango mocktail; mango drink is matched, but the picante/spice element is not visually confirmable; [source](https://www.pexels.com/photo/refreshing-mango-mocktail-with-honey-drizzle-36643286/) (ID 36643286)
+- **Berry Iced Tea** — source explicitly identifies berry iced tea; [source](https://www.pexels.com/photo/person-holding-clear-glass-jar-with-drinking-straw-13591742/) (ID 13591742)
+- **Classic Matcha (Hot / Cold)** — iced matcha latte; representative image for the cold variant; [source](https://www.pexels.com/photo/refreshing-iced-matcha-latte-cup-on-wooden-table-36737006/) (ID 36737006)
+- **Honey Rose Merry Latte** — rose latte; the honey element is not visibly verifiable; [source](https://www.pexels.com/photo/rose-latte-on-outdoor-cafe-table-in-baghdad-30307776/) (ID 30307776)
+- **Coconut Cold** — iced coconut coffee; [source](https://www.pexels.com/photo/a-glass-of-coffee-near-the-fresh-coconut-4294726/) (ID 4294726)
+- **Orange Fizzy Brew** — citrus coffee drink; citrus/coffee appear in the source description, but carbonation cannot be visually confirmed; [source](https://www.pexels.com/photo/fruit-slice-in-glass-of-beverage-24771824/) (ID 24771824)
+- **Peri Peri French Fries** — seasoned fries with chili sauce and herbs; peri-peri seasoning itself isn't verified; [source](https://www.pexels.com/photo/close-up-shot-of-french-fries-11485199/) (ID 11485199)
+- **Penne Alfredo** — source title explicitly identifies Penne Alfredo; the exact TCC toppings may differ; [source](https://www.pexels.com/photo/penne-alfredo-20234575/) (ID 20234575)
+- **Pizza Verde** — green-leaf/pesto-style pizza; closest match to the green pesto base; [source](https://www.pexels.com/photo/pizza-with-green-leaves-and-red-tomatoes-13457627/) (ID 13457627)
+- **Pesto Pizza** — source describes sliced pesto pizza; [source](https://www.pexels.com/photo/pizza-slices-on-wooden-board-6761057/) (ID 6761057)
+- **Cheese Grilled Sandwich** — grilled cheese sandwiches; [source](https://www.pexels.com/photo/delicious-grilled-sandwiches-with-latte-on-plate-34452165/) (ID 34452165)
+- **Mexican Grilled Chicken** — grilled chicken with mashed potatoes and a side; TCC vegetables/plating may differ; [source](https://www.pexels.com/photo/delicious-chicken-with-mashed-potatoes-and-salad-37269998/) (ID 37269998)
+- **Mexican Grilled Chicken with BBQ Sauce** — barbecue chicken entrée; exact sides may differ; [source](https://www.pexels.com/photo/chicken-barbecue-served-with-pepper-on-white-ceramic-plate-8743924/) (ID 8743924)
+- **Bombay Street Sandwich** — Bombay-style toasted vegetable/cheese sandwich; credited and licensed under CC BY-SA 4.0 on the menu; [source](https://commons.wikimedia.org/wiki/File:Bombay_Sandwich.jpg)
+- **Chicken Club Sandwich** — source title identifies Chicken Club Sandwich; credited and licensed under CC BY-SA 4.0 on the menu; [source](https://commons.wikimedia.org/wiki/File:Chicken_Club_sandwich-_Egypt_01.jpg)
+
+
 ## Exact-match image still needed
 
 - [ ] Spanish Latte
 - [ ] Spanish Iced Latte
-- [ ] Coco Brew
 - [ ] Mont Blanc
 - [ ] Bird's Eye Pineapple
 - [ ] Vanilla Cream
-- [ ] Orange Fizzy Brew
-- [ ] Lemon Cooler
 - [ ] Elderflower Fizz / Peach Fizz
-- [ ] Dry Mango Picante
 - [ ] Coco Rose Cooler
-- [ ] Berry Iced Tea
-- [ ] Classic Matcha (Hot / Cold)
 - [ ] Coconut Matcha Cloud
 - [ ] Apple Pie Latte
-- [ ] Honey Rose Merry Latte
 - [ ] Biscoff Latte
 - [ ] Nutella Latte
-- [ ] Coconut Cold
 - [ ] Pineapple Float
-- [ ] Peri Peri French Fries
 - [ ] Cheese Chilli Toast
 - [ ] Potato Cheese Balls
 - [ ] Butter Garlic Chicken
 - [ ] Fettuccine Aglio Olio
-- [ ] Penne Alfredo
 - [ ] The Farmer's Pizza
-- [ ] Pizza Verde
-- [ ] Pesto Pizza
 - [ ] Pesto Chicken Pizza
 - [ ] Chicken Pizzaiola
 - [ ] Grilled Paneer Burger
 - [ ] Grilled Chicken Burger
-- [ ] Cheese Grilled Sandwich
-- [ ] Bombay Street Sandwich
-- [ ] Chicken Club Sandwich
-- [ ] Mexican Grilled Chicken
-- [ ] Mexican Grilled Chicken with BBQ Sauce
 
 ## Next step
 
