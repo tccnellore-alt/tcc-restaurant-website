@@ -202,29 +202,6 @@
  .menu-section h2{font-size:29px}
 }
 
-.menu-view-toggle{display:flex;align-items:stretch;justify-content:stretch;gap:0;width:min(100%,520px);max-width:100%;margin:0 auto 12px;padding:4px;border:1px solid rgba(23,60,43,.13);border-radius:13px;background:#f0eadc;box-shadow:inset 0 1px 2px rgba(23,60,43,.04);box-sizing:border-box}
-.menu-view-option{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:1 1 50%;min-width:0;min-height:44px;padding:10px 12px;border:1px solid transparent;border-radius:9px;background:transparent;color:#526057;font:700 13px/1.1 Manrope,Arial,sans-serif;white-space:nowrap;cursor:pointer;transition:background .2s ease,color .2s ease,box-shadow .2s ease}
-.menu-view-option.active{background:#173d31;color:#fffdf8;box-shadow:0 2px 7px rgba(23,61,49,.16)}
-.menu-view-option:focus-visible{outline:2px solid #b79a5a;outline-offset:2px}
-.menu-view-option-icon{font-size:17px;line-height:1;flex:0 0 auto}
-@media(max-width:480px){.menu-view-toggle{width:100%;max-width:none;margin:0 0 10px;padding:4px}.menu-view-option{min-height:46px;padding:11px 8px;font-size:12px;gap:7px}}
-
-/* Text Menu: match production main's compact horizontal rows; hide photos only. */
-body.text-menu-mode .menu-group .m-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;gap:8px!important}
-body.text-menu-mode .menu-group .m-item{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;padding:15px 15px!important;margin:0!important;background:#fff!important;border:1px solid rgba(23,60,43,.09)!important;border-radius:15px!important;box-shadow:0 5px 18px rgba(20,42,31,.04)!important}
-body.text-menu-mode .m-photo-wrap{display:none!important}
-/* The photo script leaves an empty source wrapper after moving item text into .m-item-info. Hide it in Text Menu so it cannot steal half the row. */
-body.text-menu-mode .menu-group .m-item .m-item-info-source{display:none!important}
-body.text-menu-mode .menu-group .m-item{text-align:left!important}
-body.text-menu-mode .menu-group .m-item>div:not(.m-photo-wrap){display:flex!important;flex:1 1 auto!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;min-width:0!important;width:auto!important;margin:0!important;padding:0!important;text-align:left!important}
-body.text-menu-mode .menu-group .m-item-info{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;min-width:0!important;width:auto!important;margin:0!important;padding:0!important;text-align:left!important}
-body.text-menu-mode .menu-group .m-item h3,body.text-menu-mode .menu-group .m-item p{display:block!important;width:100%!important;text-align:left!important;margin-left:0!important;margin-right:0!important}
-body.text-menu-mode .menu-group .m-item strong{margin-left:auto!important;text-align:right!important}
-body.text-menu-mode .menu-group .m-item h3{font-size:17px!important;line-height:1.25!important}
-body.text-menu-mode .menu-group .m-item p{font-size:13px!important;line-height:1.45!important}
-body.text-menu-mode .menu-group .m-item strong{align-self:center!important;white-space:nowrap!important;flex:none!important;margin:0!important;padding:0!important;background:transparent!important;border-radius:0!important;color:#8d7337!important;font:bold 14px Arial,sans-serif!important}
-@media(min-width:850px){body.text-menu-mode .menu-group .m-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
-@media(max-width:480px){.menu-view-label{display:none}.menu-view-toggle{width:100%;max-width:none;margin:0 0 10px}.menu-view-option{padding:11px 8px}}
 /* REDESIGN TEST — image-led menu cards */
 .menu-photo-notice{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(10,20,15,.58)}
 .menu-photo-notice.is-open{display:flex}
@@ -308,18 +285,6 @@ body.text-menu-mode .menu-group .m-item strong{align-self:center!important;white
 </section>
 <div class="menu-tools">
   <div class="container">
-    <div class="menu-view-toggle" role="group" aria-label="Choose menu display">
-      <button type="button" class="menu-view-option active" id="menuViewText" data-menu-view="text" aria-pressed="true"><span class="menu-view-option-icon" aria-hidden="true">☷</span> Text Menu</button>
-      <button type="button" class="menu-view-option" id="menuViewImage" data-menu-view="image" aria-pressed="false"><span class="menu-view-option-icon" aria-hidden="true">▦</span> Photo Menu</button>
-    </div>
-    <div class="menu-photo-notice" id="menuPhotoNotice" role="dialog" aria-modal="true" aria-labelledby="menuPhotoNoticeTitle" aria-describedby="menuPhotoNoticeText">
-      <div class="menu-photo-notice-card">
-        <span class="menu-photo-notice-mark">TCC</span>
-        <h2 id="menuPhotoNoticeTitle">A quick note about our photos</h2>
-        <p id="menuPhotoNoticeText">Menu photos are for illustration purposes only. The actual item, ingredients and presentation may vary.</p>
-        <button type="button" id="menuPhotoNoticeClose">Got it</button>
-      </div>
-    </div>
     <div class="menu-tabs">
       <button class="menu-tab active" data-target="coffee">Coffee & Tea</button>
       <button class="menu-tab" data-target="refreshers-and-tea">Refreshers</button>
@@ -1134,33 +1099,7 @@ function addTccMenuPhotos(){
 }
 addTccMenuPhotos();
 
-// Text mode is the default; switch to Photo Menu when preferred.
-const tccMenuViewOptions=[...document.querySelectorAll("[data-menu-view]")];
-function setTccMenuView(mode){
-  const textOnly=mode==="text";
-  document.body.classList.toggle("text-menu-mode",textOnly);
-  tccMenuViewOptions.forEach(option=>{
-    const selected=option.dataset.menuView===mode;
-    option.classList.toggle("active",selected);
-    option.setAttribute("aria-pressed",selected?"true":"false");
-  });
-}
-tccMenuViewOptions.forEach(option=>option.addEventListener("click",()=>setTccMenuView(option.dataset.menuView)));
-const menuPhotoNotice=document.getElementById("menuPhotoNotice");
-const menuPhotoNoticeClose=document.getElementById("menuPhotoNoticeClose");
-document.getElementById("menuViewImage")?.addEventListener("click",()=>{
-  menuPhotoNotice?.classList.add("is-open");
-  menuPhotoNoticeClose?.focus();
-});
-menuPhotoNoticeClose?.addEventListener("click",()=>menuPhotoNotice?.classList.remove("is-open"));
-menuPhotoNotice?.addEventListener("click",event=>{
-  if(event.target===menuPhotoNotice) menuPhotoNotice.classList.remove("is-open");
-});
-document.addEventListener("keydown",event=>{
-  if(event.key==="Escape") menuPhotoNotice?.classList.remove("is-open");
-});
-setTccMenuView("text");
-
+// Photo Menu only; text-mode toggle removed.
 // Tap any menu photo to view it larger; tap outside or close to return.
 const tccImageLightbox=document.createElement("div");
 tccImageLightbox.className="menu-image-lightbox";
