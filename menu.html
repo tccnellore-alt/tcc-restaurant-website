@@ -259,6 +259,14 @@
 .menu-group .food-badge{width:10px;height:10px;margin-right:6px;flex:none}
 .menu-group .food-badge:after{width:5px;height:5px}
 .menu-group .m-item .food-badge{vertical-align:1px}
+/* Defensive cleanup: menu cards are display-only; hide stray controls and empty placeholder nodes beneath item names. */
+.menu-group .m-item input[type="checkbox"],.menu-group .m-item input[type="radio"],.menu-group .m-item label:empty{display:none!important;appearance:none!important;-webkit-appearance:none!important}
+.menu-group .m-item-info > :empty:not(.food-badge){display:none!important}
+.menu-group .m-item-info-source:empty{display:none!important}
+/* Final card cleanup: suppress empty inline artifacts across the full item card, not just its info wrapper. */
+.menu-group .m-item *:empty:not(.food-badge):not(img),.menu-group .m-item-info:empty{display:none!important}
+.menu-group .m-item-info-source:before,.menu-group .m-item-info-source:after,.menu-group .m-item:before,.menu-group .m-item:after{content:none!important;display:none!important}
+.menu-group .m-item h3:before,.menu-group .m-item h3:after{content:none!important;display:none!important}
 .menu-group .m-item[data-food-type]{}
 .menu-group#food .m-item p{font-size:10px;line-height:1.4}
 .menu-addons-panel{display:none}
