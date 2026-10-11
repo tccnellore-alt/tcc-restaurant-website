@@ -263,6 +263,9 @@
 .menu-group .m-item input[type="checkbox"],.menu-group .m-item input[type="radio"],.menu-group .m-item label:empty{display:none!important;appearance:none!important;-webkit-appearance:none!important}
 .menu-group .m-item-info > :empty:not(.food-badge){display:none!important}
 .menu-group .m-item-info-source:empty{display:none!important}
+/* Final card cleanup: suppress any empty descendant that could render as a tiny outlined capsule. */
+.menu-group .m-item-info *:empty:not(.food-badge),.menu-group .m-item-info:empty{display:none!important}
+.menu-group .m-item-info-source:before,.menu-group .m-item-info-source:after{content:none!important;display:none!important}
 .menu-group .m-item[data-food-type]{}
 .menu-group#food .m-item p{font-size:10px;line-height:1.4}
 .menu-addons-panel{display:none}
