@@ -1103,7 +1103,8 @@ function addTccMenuPhotos(){
     const sourceBlock=title.parentElement;
     sourceBlock.classList.add('m-item-info-source');
     sourceBlock.querySelectorAll('h3,p').forEach(el=>info.appendChild(el));
-    item.insertBefore(info,price);
+    /* Replace the original wrapper instead of leaving an empty div that can affect Text Menu alignment. */
+    sourceBlock.replaceWith(info);
   });
 }
 addTccMenuPhotos();
