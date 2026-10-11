@@ -259,6 +259,8 @@
 .menu-group .food-badge{width:10px;height:10px;margin-right:6px;flex:none}
 .menu-group .food-badge:after{width:5px;height:5px}
 .menu-group .m-item .food-badge{vertical-align:1px}
+/* Defensive cleanup: menu cards are display-only; stray empty checkbox controls are not part of the card UI. */
+.menu-group .m-item input[type="checkbox"],.menu-group .m-item input[type="radio"]{display:none!important;appearance:none!important;-webkit-appearance:none!important}
 .menu-group .m-item[data-food-type]{}
 .menu-group#food .m-item p{font-size:10px;line-height:1.4}
 .menu-addons-panel{display:none}
