@@ -301,8 +301,8 @@ body.text-menu-mode .menu-group .m-item strong{align-self:center!important;white
 <div class="menu-tools">
   <div class="container">
     <div class="menu-view-toggle" role="group" aria-label="Choose menu display">
-      <button type="button" class="menu-view-option active" id="menuViewImage" data-menu-view="image" aria-pressed="true"><span class="menu-view-option-icon" aria-hidden="true">▦</span> Photo Menu</button>
-      <button type="button" class="menu-view-option" id="menuViewText" data-menu-view="text" aria-pressed="false"><span class="menu-view-option-icon" aria-hidden="true">☷</span> Text Menu</button>
+      <button type="button" class="menu-view-option active" id="menuViewText" data-menu-view="text" aria-pressed="true"><span class="menu-view-option-icon" aria-hidden="true">☷</span> Text Menu</button>
+      <button type="button" class="menu-view-option" id="menuViewImage" data-menu-view="image" aria-pressed="false"><span class="menu-view-option-icon" aria-hidden="true">▦</span> Photo Menu</button>
     </div>
     <div class="menu-tabs">
       <button class="menu-tab active" data-target="coffee">Coffee & Tea</button>
@@ -1109,7 +1109,7 @@ function addTccMenuPhotos(){
 }
 addTccMenuPhotos();
 
-// Image mode is the default; switch to a compact text-only menu when preferred.
+// Text mode is the default; switch to Photo Menu when preferred.
 const tccMenuViewOptions=[...document.querySelectorAll("[data-menu-view]")];
 function setTccMenuView(mode){
   const textOnly=mode==="text";
