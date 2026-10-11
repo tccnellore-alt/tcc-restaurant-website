@@ -1146,7 +1146,7 @@ document.addEventListener("click",event=>{
     const item=photo.closest(".m-item");
     const name=item?.querySelector("h3")?.textContent.trim()||photo.alt||"Menu item";
     const price=item?.querySelector("strong")?.textContent.trim()||"";
-    const description=item?.querySelector(".m-item-info p")?.textContent.trim()||"";
+    const description=item?[...item.querySelectorAll(".m-item-info p")].map(p=>p.textContent.trim()).filter(Boolean).join(" "):"";
     tccLightboxName.textContent=name;
     tccLightboxDescription.textContent=description;
     const section=item?.closest(".menu-section");
