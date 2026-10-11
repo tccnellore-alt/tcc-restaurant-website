@@ -1121,7 +1121,7 @@ function setTccMenuView(mode){
   });
 }
 tccMenuViewOptions.forEach(option=>option.addEventListener("click",()=>setTccMenuView(option.dataset.menuView)));
-setTccMenuView("image");
+setTccMenuView("text");
 
 // Tap any menu photo to view it larger; tap outside or close to return.
 const tccImageLightbox=document.createElement("div");
