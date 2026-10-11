@@ -213,6 +213,8 @@
 body.text-menu-mode .menu-group .m-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;gap:8px!important}
 body.text-menu-mode .menu-group .m-item{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;padding:15px 15px!important;margin:0!important;background:#fff!important;border:1px solid rgba(23,60,43,.09)!important;border-radius:15px!important;box-shadow:0 5px 18px rgba(20,42,31,.04)!important}
 body.text-menu-mode .m-photo-wrap{display:none!important}
+/* The photo script leaves an empty source wrapper after moving item text into .m-item-info. Hide it in Text Menu so it cannot steal half the row. */
+body.text-menu-mode .menu-group .m-item .m-item-info-source{display:none!important}
 body.text-menu-mode .menu-group .m-item{text-align:left!important}
 body.text-menu-mode .menu-group .m-item>div:not(.m-photo-wrap){display:flex!important;flex:1 1 auto!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;min-width:0!important;width:auto!important;margin:0!important;padding:0!important;text-align:left!important}
 body.text-menu-mode .menu-group .m-item-info{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;min-width:0!important;width:auto!important;margin:0!important;padding:0!important;text-align:left!important}
