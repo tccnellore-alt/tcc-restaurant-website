@@ -226,6 +226,13 @@ body.text-menu-mode .menu-group .m-item strong{align-self:center!important;white
 @media(min-width:850px){body.text-menu-mode .menu-group .m-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:480px){.menu-view-label{display:none}.menu-view-toggle{width:100%;max-width:none;margin:0 0 10px}.menu-view-option{padding:11px 8px}}
 /* REDESIGN TEST — image-led menu cards */
+.menu-photo-notice{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(10,20,15,.58)}
+.menu-photo-notice.is-open{display:flex}
+.menu-photo-notice-card{width:min(100%,390px);padding:24px 22px;border:1px solid rgba(183,154,90,.5);border-radius:18px;background:#fffaf0;color:#173d31;box-shadow:0 18px 60px rgba(0,0,0,.25);text-align:center}
+.menu-photo-notice-mark{display:grid;place-items:center;width:42px;height:42px;margin:0 auto 12px;border-radius:50%;background:#173d31;color:#fffaf0;font-weight:800;font-size:12px}
+.menu-photo-notice-card h2{margin:0 0 9px;font:700 20px/1.25 Manrope,Arial,sans-serif}
+.menu-photo-notice-card p{margin:0 0 18px;color:#526057;font:14px/1.55 Manrope,Arial,sans-serif}
+.menu-photo-notice-card button{width:100%;min-height:46px;border:0;border-radius:10px;background:#173d31;color:#fffaf0;font:700 14px Manrope,Arial,sans-serif;cursor:pointer}
 .menu-photo-disclaimer{display:flex;align-items:flex-start;gap:10px;margin:0 0 12px;padding:12px 14px;background:#fffdf8;border:1px solid #c9b98f;border-left:4px solid #173d31;border-radius:10px;color:#263b32}
 .disclaimer-mark{flex:0 0 30px;height:30px;display:grid;place-items:center;border-radius:7px;background:#173d31;color:#fffdf8;font:700 9px Arial,sans-serif;letter-spacing:.02em}
 .menu-photo-disclaimer strong{display:block;font:700 14px/1.4 Manrope,Arial,sans-serif;color:#173d31}
@@ -303,6 +310,14 @@ body.text-menu-mode .menu-group .m-item strong{align-self:center!important;white
     <div class="menu-view-toggle" role="group" aria-label="Choose menu display">
       <button type="button" class="menu-view-option active" id="menuViewText" data-menu-view="text" aria-pressed="true"><span class="menu-view-option-icon" aria-hidden="true">☷</span> Text Menu</button>
       <button type="button" class="menu-view-option" id="menuViewImage" data-menu-view="image" aria-pressed="false"><span class="menu-view-option-icon" aria-hidden="true">▦</span> Photo Menu</button>
+    </div>
+    <div class="menu-photo-notice" id="menuPhotoNotice" role="dialog" aria-modal="true" aria-labelledby="menuPhotoNoticeTitle" aria-describedby="menuPhotoNoticeText">
+      <div class="menu-photo-notice-card">
+        <span class="menu-photo-notice-mark">TCC</span>
+        <h2 id="menuPhotoNoticeTitle">A quick note about our photos</h2>
+        <p id="menuPhotoNoticeText">Menu photos are for illustration purposes only. The actual item, ingredients and presentation may vary.</p>
+        <button type="button" id="menuPhotoNoticeClose">Got it</button>
+      </div>
     </div>
     <div class="menu-tabs">
       <button class="menu-tab active" data-target="coffee">Coffee & Tea</button>
@@ -1121,6 +1136,19 @@ function setTccMenuView(mode){
   });
 }
 tccMenuViewOptions.forEach(option=>option.addEventListener("click",()=>setTccMenuView(option.dataset.menuView)));
+const menuPhotoNotice=document.getElementById("menuPhotoNotice");
+const menuPhotoNoticeClose=document.getElementById("menuPhotoNoticeClose");
+document.getElementById("menuViewImage")?.addEventListener("click",()=>{
+  menuPhotoNotice?.classList.add("is-open");
+  menuPhotoNoticeClose?.focus();
+});
+menuPhotoNoticeClose?.addEventListener("click",()=>menuPhotoNotice?.classList.remove("is-open"));
+menuPhotoNotice?.addEventListener("click",event=>{
+  if(event.target===menuPhotoNotice) menuPhotoNotice.classList.remove("is-open");
+});
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape") menuPhotoNotice?.classList.remove("is-open");
+});
 setTccMenuView("text");
 
 // Tap any menu photo to view it larger; tap outside or close to return.
