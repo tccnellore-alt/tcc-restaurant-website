@@ -1270,7 +1270,7 @@ function buildSubTabs(id){
 function syncFoodTabToScroll(){
   if(!foodTabsWrap || !foodTabsWrap.classList.contains("visible")) return;
   const active=document.querySelector(".menu-group.active");
-  if(!active || active.id!=="food") return;
+  if(!active) return;
   const toolsBar=document.querySelector(".menu-tools");
   const anchor=(toolsBar?.getBoundingClientRect().bottom||0)+34;
   const sections=[...active.querySelectorAll(":scope > .menu-section")].filter(sec=>{
