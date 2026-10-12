@@ -644,3 +644,13 @@ body.xp-body{margin:0;background:var(--x-void);color:var(--x-text);font-family:v
   .xp-secondary-body .photo-grid img{border-radius:12px}
   .xp-secondary-body .feature-grid a,.xp-secondary-body .contact-grid a{padding:23px}
 }
+
+
+/* Ensure experimental item ornaments supersede the legacy pill-suppression rules */
+.xp-menu-body .menu-page .menu-group .m-item:before{content:""!important;display:block!important}
+.xp-menu-body .menu-page .menu-group .m-item:after{content:"↗"!important;display:block!important}
+.xp-menu-body .menu-tab[data-target="coffee"]:before{content:"☕"}
+.xp-menu-body .menu-tab[data-target="refreshers-and-tea"]:before{content:"🧊"}
+.xp-menu-body .menu-tab[data-target="signatures"]:before{content:"🪄"}
+.xp-menu-body .menu-tab[data-target="food"]:before{content:"🍴"}
+@media(max-width:370px){.xp-menu-body .m-list{grid-template-columns:minmax(0,1fr)!important}}
