@@ -276,8 +276,9 @@
 @media(min-width:1000px){.menu-group .m-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px!important}.menu-photo-disclaimer{max-width:860px}}
 
 </style>
+<link rel="stylesheet" href="experiment.css">
 </head>
-<body>
+<body class="xp-body xp-menu-body">
 <!-- HEADER -->
 <header class="site-header premium-header"><div class="container header-inner"><a href="index.html" class="header-brand"><img class="brand" src="images/logo.png" alt="TCC – The Coffee Club"></a><div class="header-location">MAGUNTA LAYOUT · NELLORE</div><button class="menu-toggle" data-toggle aria-label="Open menu"><span></span><span></span><span></span></button></div></header>
 <div class="overlay" data-overlay></div>
@@ -285,13 +286,21 @@
 <main class="menu-page">
 <section class="menu-intro">
   <div class="container">
+    <div class="xp-menu-copy">
+      <div class="eyebrow"><span class="xp-pulse-dot"></span> TCC MENU OS / VERSION 04.0</div>
+      <h1>Your next craving<br><span>starts here.</span></h1>
+      <p>Four portals. Countless plot twists. Scroll, search, switch lanes and meet your next favourite.</p>
+      <div class="xp-menu-hero-actions">
+        <a class="xp-menu-enter" href="#menu-explore">ENTER THE MENU <b>↓</b></a>
+        <a class="xp-menu-surprise" href="menu.html?surprise=1">SURPRISE ME <b>✳</b></a>
+      </div>
+    </div>
     <div class="menu-brand-lockup"><img src="images/logo.png" alt="TCC – The Coffee Club"></div>
-    <div class="eyebrow">THE TCC MENU</div>
-    <h1>The TCC Menu</h1>
-    <p>Coffee, food, signatures and more.</p>
+    <div class="xp-menu-hero-meta"><span>☕ COFFEE / 🍹 REFRESH / ✨ SIGNATURE / 🍴 FOOD</span><span>DESIGNED FOR CRAVING.</span></div>
+    <div class="xp-menu-sticker">100%<br><strong>MOOD</strong><span>✳ ✳ ✳</span></div>
   </div>
 </section>
-<div class="menu-tools">
+<div class="menu-tools" id="menu-explore">
   <div class="container">
     <div class="menu-tabs">
       <button class="menu-tab active" data-target="coffee">Coffee & Tea</button>
@@ -1410,7 +1419,16 @@ search.addEventListener("input",e=>{
   search.classList.toggle("global-search-active",!!q);
   filter(q);
 });
-document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";showGroup("coffee")});
+document.addEventListener("DOMContentLoaded",()=>{
+  window.__foodCategory="all";
+  const valid=["coffee","refreshers-and-tea","signatures","food"];
+  const params=new URLSearchParams(window.location.search);
+  const requested=(window.location.hash||"").slice(1);
+  const target=params.get("surprise")==="1"
+    ? valid[Math.floor(Math.random()*valid.length)]
+    : (valid.includes(requested)?requested:(valid.includes(params.get("category"))?params.get("category"):"coffee"));
+  showGroup(target);
+});
 </script>
 </body>
 </html>
