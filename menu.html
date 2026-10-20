@@ -275,6 +275,16 @@
 @media(min-width:700px){.menu-group .m-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px!important}.menu-group .m-item-info{padding:13px 13px 6px}.menu-group .m-item h3{font-size:14px}.menu-group .m-item p{font-size:11px}.menu-group .m-item strong{margin-left:13px;margin-bottom:13px}}
 @media(min-width:1000px){.menu-group .m-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px!important}.menu-photo-disclaimer{max-width:860px}}
 
+/* TEMPORARY TCC TEXT-ONLY MENU — keep the existing photo feature code/assets intact for later restoration. */
+.menu-group .m-list{grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
+.menu-group .m-item{display:flex!important;flex-direction:row!important;align-items:flex-start!important;justify-content:space-between!important;gap:14px!important;padding:15px 15px!important;margin:0!important;background:#fff!important;border:1px solid rgba(23,60,43,.10)!important;border-radius:13px!important;box-shadow:0 3px 12px rgba(20,42,31,.035)!important}
+.menu-group .m-item .m-item-info{display:block!important;flex:1 1 auto!important;min-width:0!important;padding:0!important}
+.menu-group .m-item h3{font-size:16px!important;line-height:1.35!important}
+.menu-group .m-item p{font-size:12px!important;line-height:1.5!important}
+.menu-group .m-item strong{flex:0 0 auto!important;padding-top:2px!important;font-size:14px!important}
+.menu-group .m-photo-wrap{display:none!important}
+@media(min-width:850px){.menu-group .m-list{grid-template-columns:minmax(0,1fr)!important;max-width:900px;margin-inline:auto}}
+
 </style>
 </head>
 <body>
@@ -1092,7 +1102,7 @@ function addTccMenuPhotos(){
     sourceBlock.replaceWith(info);
   });
 }
-addTccMenuPhotos();
+// TEMPORARY TEXT-ONLY MENU: photo-card injection disabled; original photo code and assets are preserved.
 
 // Photo Menu only; text-mode toggle removed.
 // Tap any menu photo to view it larger; tap outside or close to return.
