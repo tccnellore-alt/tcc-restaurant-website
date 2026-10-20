@@ -97,8 +97,7 @@
   margin:0!important;
 }
 .menu-group#coffee .menu-section h2:after,
-.menu-group#refreshers-and-tea .menu-section h2:after,
-.menu-group#signatures .menu-section h2:after{
+.menu-group#refreshers-and-tea .menu-section h2:after,.menu-group#signatures .menu-section h2:after{
   content:""!important;
   display:block!important;
   width:34px!important;
@@ -197,8 +196,7 @@
 @media(max-width:849px){.menu-intro{padding-top:116px}.menu-intro h1{font-size:48px}.menu-intro p{font-size:14px}.menu-search{border-radius:12px;padding:11px 14px}.menu-tools{padding:10px 0}.menu-tab{padding:9px 14px}}
 @media(min-width:850px){
  .menu-tools{top:72px}.menu-content{padding-bottom:60px}
- .menu-tabs{justify-content:center}.menu-search{max-width:520px;display:block;margin:10px auto 0}
- .m-list{grid-template-columns:1fr 1fr}
+ .menu-tabs{justify-content:center}.menu-search{max-width:520px;display:block;margin:10px auto 0} .m-list{grid-template-columns:1fr 1fr}
  .menu-section h2{font-size:29px}
 }
 
@@ -285,6 +283,10 @@
 .menu-group .m-photo-wrap{display:none!important}
 @media(min-width:850px){.menu-group .m-list{grid-template-columns:minmax(0,1fr)!important;max-width:900px;margin-inline:auto}}
 
+
+/* Temporary stock status for pizza and burger items */
+.menu-group .availability-status{display:inline-flex!important;align-items:center;width:max-content;max-width:100%;margin:7px 0 0!important;padding:5px 9px;border:1px solid rgba(141,115,55,.22);border-radius:999px;background:#f5efe1;color:#80672f!important;font:700 10px/1.25 Manrope,Arial,sans-serif!important;letter-spacing:.035em}
+.menu-group .m-item:has(.availability-status) h3{color:#68756b!important}
 </style>
 </head>
 <body>
@@ -297,8 +299,7 @@
   <div class="container">
     <div class="menu-brand-lockup"><img src="images/logo.png" alt="TCC – The Coffee Club"></div>
     <div class="eyebrow">THE TCC MENU</div>
-    <h1>The TCC Menu</h1>
-    <p>Coffee, food, signatures and more.</p>
+    <h1>The TCC Menu</h1>    <p>Coffee, food, signatures and more.</p>
   </div>
 </section>
 <div class="menu-tools">
@@ -397,8 +398,7 @@
         </div>
         <strong>₹315</strong>
       </article>
-      <article class="m-item">
-        <div>
+      <article class="m-item">        <div>
           <h3>Affogato</h3>
           
         </div>
@@ -497,8 +497,7 @@
           <h3>Orange Fizzy Brew</h3>
           
         </div>
-        <strong>₹350</strong>
-      </article></div>
+        <strong>₹350</strong>      </article></div>
         </section></div><div class="menu-group" id="refreshers-and-tea" data-group="Refreshers &amp; Tea">
         <section class="menu-section" data-group="Refreshers &amp; Tea">
           <h2>Refreshers</h2>
@@ -597,8 +596,7 @@
           <h3>French Press</h3>
           
         </div>
-        <strong>₹410</strong>
-      </article></div>
+        <strong>₹410</strong>      </article></div>
         </section>
         <section class="menu-section" data-group="Signatures">
           <h2>House Favourites — Hot</h2>
@@ -697,8 +695,7 @@
           <h3>Butter Garlic Mushroom</h3>
           <p>Served with toasted bread.</p>
         </div>
-        <strong>₹243</strong>
-      </article>
+        <strong>₹243</strong>      </article>
       <article class="m-item">
         <div>
           <h3>Potato Cheese Balls</h3>
@@ -797,11 +794,11 @@
           </div>
         </section>
         <section class="menu-section" data-group="Food">
-          <h2>Pizzas · Veg</h2>
-          <div class="m-list">
+          <h2>Pizzas · Veg</h2>          <div class="m-list">
       <article class="m-item">
         <div>
           <h3>Italian Margherita</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p>Mozzarella cheese, tomato sauce, basil leaves.</p>
         </div>
         <strong>₹249</strong>
@@ -809,6 +806,7 @@
       <article class="m-item">
         <div>
           <h3>The Farmer&#x27;s Pizza</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p>Red onions, bell peppers, jalapeno, black olive, feta cheese.</p>
         </div>
         <strong>₹299</strong>
@@ -816,6 +814,7 @@
       <article class="m-item">
         <div>
           <h3>Pizza Verde</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p>Basil pesto, broccoli, black olive, jalapeno, zucchini, mozzarella cheese.</p>
         </div>
         <strong>₹329</strong>
@@ -823,6 +822,7 @@
       <article class="m-item">
         <div>
           <h3>Pesto Pizza</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p>Pesto sauce, tomato sauce, fresh tomatoes.</p>
         </div>
         <strong>₹329</strong>
@@ -834,6 +834,7 @@
       <article class="m-item">
         <div>
           <h3>BBQ Chicken Pizza</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p>BBQ chicken, red onion, mozzarella cheese.</p>
         </div>
         <strong>₹399</strong>
@@ -841,6 +842,7 @@
       <article class="m-item">
         <div>
           <h3>Pesto Chicken Pizza</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p>Grilled chicken, jalapeno, mozzarella cheese, basil pesto.</p>
         </div>
         <strong>₹449</strong>
@@ -848,6 +850,7 @@
       <article class="m-item">
         <div>
           <h3>Chicken Pizzaiola</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p>Red paprika, black olive, mozzarella cheese, grilled chicken.</p>
         </div>
         <strong>₹429</strong>
@@ -859,6 +862,7 @@
       <article class="m-item">
         <div>
           <h3>Mushroom Burger</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p class="food-serving-note">Served with fries 🍟</p>
           <p>Mushroom patty, spicy mayo, onion, tomato and cheese.</p>
         </div>
@@ -867,6 +871,7 @@
       <article class="m-item">
         <div>
           <h3>Grilled Paneer Burger</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p class="food-serving-note">Served with fries 🍟</p>
           <p>Grilled paneer, tomato sauce &amp; cheese, onion, tomato.</p>
         </div>
@@ -879,6 +884,7 @@
       <article class="m-item">
         <div>
           <h3>Grilled Chicken Burger</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p class="food-serving-note">Served with fries 🍟</p>
           
         </div>
@@ -887,6 +893,7 @@
       <article class="m-item">
         <div>
           <h3>Crispy Chicken Burger</h3>
+          <p class="availability-status">Temporarily Sold Out</p>
           <p class="food-serving-note">Served with fries 🍟</p>
           
         </div>
@@ -897,8 +904,7 @@
           <h2>Sandwiches · Veg</h2>
           <div class="m-list">
       <article class="m-item">
-        <div>
-          <h3>Cheese Grilled Sandwich</h3>
+        <div>          <h3>Cheese Grilled Sandwich</h3>
           <p class="food-serving-note">Served with fries 🍟</p>
           <p>Pesto mayo, 2 varieties of cheese, butter.</p>
         </div>
@@ -997,8 +1003,7 @@ const TCC_VERIFIED_PHOTOS = {
   "TCC Traditional Chai": {id:31141291, source:"https://www.pexels.com/photo/classic-indian-chai-on-wooden-table-31141291/"},
   "South Indian Coffee": {id:16128085, source:"https://www.pexels.com/photo/cups-with-coffee-16128085/"},
   "Maska Bun": {url:"https://upload.wikimedia.org/wikipedia/commons/5/55/Bun_Maska_Pav.jpg", source:"https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg", credit:'<a href="https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg" target="_blank" rel="noopener">Photo: Sanket Oswal / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · cropped for display'},
-  "Bun Maska with TCC Chai": {url:"https://upload.wikimedia.org/wikipedia/commons/5/55/Bun_Maska_Pav.jpg", source:"https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg", credit:'<a href="https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg" target="_blank" rel="noopener">Photo: Sanket Oswal / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · cropped for display'},
-  "Mango Passion Matcha": {id:37105479, source:"https://www.pexels.com/photo/refreshing-mango-matcha-drink-with-fresh-ingredients-37105479/"},
+  "Bun Maska with TCC Chai": {url:"https://upload.wikimedia.org/wikipedia/commons/5/55/Bun_Maska_Pav.jpg", source:"https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg", credit:'<a href="https://commons.wikimedia.org/wiki/File:Bun_Maska_Pav.jpg" target="_blank" rel="noopener">Photo: Sanket Oswal / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · cropped for display'},  "Mango Passion Matcha": {id:37105479, source:"https://www.pexels.com/photo/refreshing-mango-matcha-drink-with-fresh-ingredients-37105479/"},
   "Pour Over": {id:29619148, source:"https://www.pexels.com/photo/pour-over-coffee-brewing-with-v60-and-scale-29619148/"},
   "French Press": {id:872894, source:"https://www.pexels.com/photo/coffee-being-poured-from-french-press-into-elegant-glass-872894/"},
   "Orange Espresso": {id:872894, source:"https://www.pexels.com/photo/coffee-being-poured-from-french-press-into-elegant-glass-872894/"},
@@ -1097,8 +1102,7 @@ function addTccMenuPhotos(){
     info.className='m-item-info';
     const sourceBlock=title.parentElement;
     sourceBlock.classList.add('m-item-info-source');
-    sourceBlock.querySelectorAll('h3,p').forEach(el=>info.appendChild(el));
-    /* Replace the original wrapper instead of leaving an empty div that can affect Text Menu alignment. */
+    sourceBlock.querySelectorAll('h3,p').forEach(el=>info.appendChild(el));    /* Replace the original wrapper instead of leaving an empty div that can affect Text Menu alignment. */
     sourceBlock.replaceWith(info);
   });
 }
@@ -1197,8 +1201,7 @@ document.querySelectorAll(".menu-section").forEach(sec=>{
   sec.querySelectorAll(".m-item").forEach(item=>{
     if(item.dataset.foodType) return;
     const name=(item.querySelector("h3")?.textContent||"").toLowerCase();
-    if(name.includes("chicken") || name.includes("prawn") || name.includes("prawns")) item.dataset.foodType="NON-VEG";
-  });
+    if(name.includes("chicken") || name.includes("prawn") || name.includes("prawns")) item.dataset.foodType="NON-VEG";  });
 });
 document.querySelectorAll(".m-item[data-food-type]").forEach(item=>{
   const h=item.querySelector("h3");
@@ -1297,8 +1300,7 @@ function syncFoodTabToScroll(){
 
 let foodScrollTick=false;
 window.addEventListener("scroll",()=>{
-  if(foodScrollTick) return;
-  foodScrollTick=true;
+  if(foodScrollTick) return;  foodScrollTick=true;
   requestAnimationFrame(()=>{syncFoodTabToScroll();foodScrollTick=false;});
 },{passive:true});
 window.addEventListener("resize",syncFoodTabToScroll);
@@ -1398,16 +1400,3 @@ function filter(q){
       found+=sectionFound;
     });
     buildSubTabs(active.id);
-  }
-  noResults.style.display=found?"none":"block";
-  syncPastaAddon();
-}
-search.addEventListener("input",e=>{
-  const q=e.target.value.trim();
-  search.classList.toggle("global-search-active",!!q);
-  filter(q);
-});
-document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";showGroup("coffee")});
-</script>
-</body>
-</html>
