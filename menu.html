@@ -661,7 +661,7 @@
         <strong>₹360</strong>
       </article></div>
         </section></div><div class="menu-group" id="food" data-group="Food">
-        <section class="menu-section" data-group="Food">
+        <section class="menu-section" data-group="Food" data-menu-paused="true" aria-hidden="true">
           <h2>Soups</h2>
           <div class="m-list">
       <article class="m-item">
@@ -800,7 +800,7 @@
             <span>Prawns <b>+₹80</b></span>
           </div>
         </section>
-        <section class="menu-section" data-group="Food">
+        <section class="menu-section" data-group="Food" data-menu-paused="true" aria-hidden="true">
           <h2>Pizzas · Veg</h2>
           <div class="m-list">
       <article class="m-item">
@@ -836,7 +836,7 @@
         <strong>₹329</strong>
       </article></div>
         </section>
-        <section class="menu-section" data-group="Food">
+        <section class="menu-section" data-group="Food" data-menu-paused="true" aria-hidden="true">
           <h2>Pizzas · Non-Veg</h2>
           <div class="m-list">
       <article class="m-item">
@@ -864,7 +864,7 @@
         <strong>₹429</strong>
       </article></div>
         </section>
-        <section class="menu-section" data-group="Food">
+        <section class="menu-section" data-group="Food" data-menu-paused="true" aria-hidden="true">
           <h2>Burgers · Veg</h2>
           <div class="m-list">
       <article class="m-item">
@@ -886,7 +886,7 @@
         <strong>₹248</strong>
       </article></div>
         </section>
-        <section class="menu-section" data-group="Food">
+        <section class="menu-section" data-group="Food" data-menu-paused="true" aria-hidden="true">
           <h2>Burgers · Non-Veg</h2>
           <div class="m-list">
       <article class="m-item">
@@ -908,7 +908,7 @@
         <strong>₹248</strong>
       </article></div>
         </section>
-        <section class="menu-section" data-group="Food">
+        <section class="menu-section" data-group="Food" data-menu-paused="true" aria-hidden="true">
           <h2>Sandwiches · Veg</h2>
           <div class="m-list">
       <article class="m-item">
@@ -928,7 +928,7 @@
         <strong>₹169</strong>
       </article></div>
         </section>
-        <section class="menu-section" data-group="Food">
+        <section class="menu-section" data-group="Food" data-menu-paused="true" aria-hidden="true">
           <h2>Sandwiches · Non-Veg</h2>
           <div class="m-list">
       <article class="m-item">
@@ -1249,12 +1249,8 @@ function buildSubTabs(id){
   foodTabsWrap.appendChild(all);
   if(id==="food"){
     const labels=[
-      ["Soups","Soups"],
       ["Appetizers","Starters"],
-      ["Pastas","Pasta"],
-      ["Pizzas","Pizza"],
-      ["Burgers","Burgers"],
-      ["Sandwiches","Sandwiches"]
+      ["Pastas","Pasta"]
     ];
     labels.forEach(([target,label])=>{
       const b=document.createElement("button");
@@ -1366,7 +1362,7 @@ function showGroup(id){
     coffee:["01 · COFFEE & TEA","Slow down. Sip well.","Classic brews, cold favourites and everyday comforts."],
     "refreshers-and-tea":["02 · REFRESHERS","Bright. Cold. Refreshing.","Iced teas, coolers and South Indian favourites."],
     signatures:["03 · SIGNATURES","Made the TCC way.","Matcha, pour-over and house favourites."],
-    food:["04 · FOOD","Good food, no fuss.","Soups, starters, pasta, pizza, burgers and sandwiches."]
+    food:["04 · FOOD","Good food, no fuss.","Starters and pasta, while we refine the TCC food menu."]
   }[id];
   if(intro&&copy){intro.querySelector(".category-kicker").textContent=copy[0];intro.querySelector("h2").textContent=copy[1];intro.querySelector("span").textContent=copy[2];}
   buildSubTabs(id);
@@ -1387,6 +1383,7 @@ function filter(q){
     groups.forEach(g=>{
       let groupFound=0;
       g.querySelectorAll(".menu-section").forEach(sec=>{
+        if(sec.hasAttribute("data-menu-paused")){sec.style.display="none";return;}
         let sectionFound=0;
         sec.querySelectorAll(".m-item").forEach(item=>{
           const ok=item.textContent.toLowerCase().includes(q);
@@ -1404,6 +1401,7 @@ function filter(q){
   } else {
     groups.forEach(g=>g.classList.toggle("active",g===active));
     active.querySelectorAll(".menu-section").forEach(sec=>{
+      if(sec.hasAttribute("data-menu-paused")){sec.style.display="none";return;}
       let sectionFound=0;
       sec.querySelectorAll(".m-item").forEach(item=>{
         item.style.setProperty("display","flex","important");
