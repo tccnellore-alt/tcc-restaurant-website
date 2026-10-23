@@ -322,54 +322,53 @@
   .mobile-bar a.accent{background:rgba(255,255,255,.12)!important}
 }
 
-/* ICE CREAMS DISCOVERY — highlighted tab + clear horizontal-scroll cue */
+/* MENU CATEGORY NAV — show every category at once, no horizontal swipe */
 @media(max-width:849px){
-  .menu-tools{position:sticky!important}
+  .menu-tools:has(.menu-tabs)::after{content:none!important;display:none!important}
   .menu-tabs{
-    justify-content:flex-start!important;
-    overflow-x:auto!important;
-    overflow-y:hidden!important;
-    -webkit-overflow-scrolling:touch;
-    scroll-snap-type:x proximity;
-    scrollbar-width:none;
-    padding:2px 34px 5px 0!important;
-    gap:8px!important;
-    position:relative;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    justify-content:stretch!important;
+    align-items:stretch!important;
+    gap:7px!important;
+    overflow:visible!important;
+    padding:2px 0 5px!important;
+    scroll-snap-type:none!important;
   }
-  .menu-tabs::-webkit-scrollbar{display:none}
   .menu-tabs .menu-tab{
-    flex:0 0 auto!important;
-    min-width:max-content!important;
-    scroll-snap-align:start;
+    display:flex!important;
+    flex:initial!important;
+    min-width:0!important;
+    min-height:44px!important;
+    padding:9px 5px!important;
+    gap:4px!important;
+    white-space:normal!important;
+    text-align:center!important;
+    font-size:9px!important;
+    line-height:1.15!important;
+    letter-spacing:.025em!important;
+    scroll-snap-align:none!important;
   }
   .menu-tabs .menu-tab[data-target="ice-creams"]{
     color:#173c2b!important;
     background:linear-gradient(135deg,#f6e9c9,#fff8e8)!important;
     border:1.5px solid #b79a5a!important;
-    box-shadow:0 2px 8px rgba(141,115,55,.16);
+    box-shadow:0 2px 8px rgba(141,115,55,.16)!important;
     font-weight:900!important;
   }
-  .menu-tools:has(.menu-tabs)::after{
-    content:"SWIPE  →";
-    position:absolute;
-    right:0;
-    top:12px;
-    padding:5px 0 5px 8px;
-    background:linear-gradient(90deg,rgba(255,250,240,0),#fffaf0 22%);
-    color:#8d7337;
-    font:800 8px/1.2 Arial,sans-serif;
-    letter-spacing:.08em;
-    pointer-events:none;
-  }
+}
+@media(max-width:360px){
+  .menu-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .menu-tabs .menu-tab{font-size:10px!important}
 }
 @media(min-width:850px){
+  .menu-tabs{justify-content:center}
   .menu-tabs .menu-tab[data-target="ice-creams"]{
     color:#173c2b;
     background:linear-gradient(135deg,#f6e9c9,#fff8e8);
     border:1.5px solid #b79a5a;
   }
 }
-
 
 /* CONSISTENT CATEGORY ICONS — readable, balanced premium navigation */
 @media(max-width:849px){
