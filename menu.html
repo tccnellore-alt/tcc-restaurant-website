@@ -370,6 +370,26 @@
   }
 }
 
+
+/* CONSISTENT CATEGORY ICONS — readable, balanced premium navigation */
+@media(max-width:849px){
+  .menu-tabs .menu-tab{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:6px!important;
+    line-height:1.15!important;
+  }
+}
+@media(min-width:850px){
+  .menu-tabs .menu-tab{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -389,10 +409,10 @@
 <div class="menu-tools">
   <div class="container">
     <div class="menu-tabs">
-      <button class="menu-tab active" data-target="coffee">Coffee & Tea</button>
-      <button class="menu-tab" data-target="refreshers-and-tea">Refreshers</button>
-      <button class="menu-tab" data-target="signatures">Signatures</button>
-      <button class="menu-tab" data-target="food">Food</button>
+      <button class="menu-tab active" data-target="coffee" aria-label="Coffee and Tea menu">☕ Coffee &amp; Tea</button>
+      <button class="menu-tab" data-target="refreshers-and-tea" aria-label="Refreshers menu">🧊 Refreshers</button>
+      <button class="menu-tab" data-target="signatures" aria-label="Signature drinks menu">✨ Signatures</button>
+      <button class="menu-tab" data-target="food" aria-label="Food menu">🍽️ Food</button>
       <button class="menu-tab" data-target="ice-creams" aria-label="Ice Creams menu">🍨 Ice Creams</button>
     </div>
     <div class="food-tabs" id="foodTabs" aria-label="Category sections"></div>
