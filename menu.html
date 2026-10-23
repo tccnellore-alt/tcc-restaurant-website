@@ -289,6 +289,23 @@
 /* Temporary stock status for pizza and burger items */
 .menu-group .availability-status{display:inline-flex!important;align-items:center;width:max-content;max-width:100%;margin:7px 0 0!important;padding:5px 9px;border:1px solid rgba(141,115,55,.22);border-radius:999px;background:#f5efe1;color:#80672f!important;font:700 10px/1.25 Manrope,Arial,sans-serif!important;letter-spacing:.035em}
 .menu-group .m-item:has(.availability-status) h3{color:#68756b!important}
+
+/* Authoritative mobile menu layout reset: keep toolbar and content flow predictable. */
+.menu-tools{position:sticky!important;top:66px!important;z-index:100!important;padding:10px 0!important}
+.menu-content{padding:0 0 150px!important}
+.menu-category-intro{padding:18px 4px 16px!important;margin:0 0 8px!important}
+.menu-category-intro h2{margin:8px 0!important}
+.menu-category-intro span{display:block;margin-top:4px!important}
+.menu-photo-disclaimer{margin:0 0 18px!important}
+.menu-group .menu-section{scroll-margin-top:210px}
+@media(max-width:799px){
+  .menu-tools{top:0!important}
+  .menu-content{padding:0 0 160px!important}
+  .menu-category-intro{padding:18px 4px 16px!important}
+  .menu-category-intro h2{font-size:clamp(32px,8.5vw,44px)!important;line-height:1.02!important}
+  .menu-photo-disclaimer{margin-bottom:18px!important}
+  .mobile-bar{z-index:500!important;bottom:12px!important}
+}
 </style>
 </head>
 <body>
