@@ -306,6 +306,14 @@
   .menu-photo-disclaimer{margin-bottom:18px!important}
   .mobile-bar{z-index:500!important;bottom:12px!important}
 }
+
+/* Keep fixed quick actions from obscuring the final menu rows. */
+@media(max-width:849px){
+  .menu-content{padding-bottom:190px!important}
+  .menu-group:last-of-type{padding-bottom:90px!important}
+  .menu-section{scroll-margin-bottom:120px!important}
+  .mobile-bar{background:#0d2b1d!important;box-shadow:0 0 0 8px rgba(255,250,240,.92),0 8px 24px rgba(0,0,0,.18)!important}
+}
 </style>
 </head>
 <body>
