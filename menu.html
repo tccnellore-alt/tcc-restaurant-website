@@ -321,6 +321,55 @@
   .mobile-bar a{display:flex!important;align-items:center!important;justify-content:center!important;min-height:42px!important;padding:10px 4px!important;border-radius:12px!important;color:#fff!important;font:800 12px/1.2 Arial,sans-serif!important;white-space:nowrap!important}
   .mobile-bar a.accent{background:rgba(255,255,255,.12)!important}
 }
+
+/* ICE CREAMS DISCOVERY — highlighted tab + clear horizontal-scroll cue */
+@media(max-width:849px){
+  .menu-tools{position:sticky!important}
+  .menu-tabs{
+    justify-content:flex-start!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+    padding:2px 34px 5px 0!important;
+    gap:8px!important;
+    position:relative;
+  }
+  .menu-tabs::-webkit-scrollbar{display:none}
+  .menu-tabs .menu-tab{
+    flex:0 0 auto!important;
+    min-width:max-content!important;
+    scroll-snap-align:start;
+  }
+  .menu-tabs .menu-tab[data-target="ice-creams"]{
+    color:#173c2b!important;
+    background:linear-gradient(135deg,#f6e9c9,#fff8e8)!important;
+    border:1.5px solid #b79a5a!important;
+    box-shadow:0 2px 8px rgba(141,115,55,.16);
+    font-weight:900!important;
+  }
+  .menu-tools:has(.menu-tabs)::after{
+    content:"SWIPE  →";
+    position:absolute;
+    right:0;
+    top:12px;
+    padding:5px 0 5px 8px;
+    background:linear-gradient(90deg,rgba(255,250,240,0),#fffaf0 22%);
+    color:#8d7337;
+    font:800 8px/1.2 Arial,sans-serif;
+    letter-spacing:.08em;
+    pointer-events:none;
+  }
+}
+@media(min-width:850px){
+  .menu-tabs .menu-tab[data-target="ice-creams"]{
+    color:#173c2b;
+    background:linear-gradient(135deg,#f6e9c9,#fff8e8);
+    border:1.5px solid #b79a5a;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -344,7 +393,7 @@
       <button class="menu-tab" data-target="refreshers-and-tea">Refreshers</button>
       <button class="menu-tab" data-target="signatures">Signatures</button>
       <button class="menu-tab" data-target="food">Food</button>
-      <button class="menu-tab" data-target="ice-creams">Ice Creams</button>
+      <button class="menu-tab" data-target="ice-creams" aria-label="Ice Creams menu">🍨 Ice Creams</button>
     </div>
     <div class="food-tabs" id="foodTabs" aria-label="Category sections"></div>
     <input class="menu-search" id="menuSearch" type="search" placeholder="Search the entire menu…" aria-label="Search menu">
