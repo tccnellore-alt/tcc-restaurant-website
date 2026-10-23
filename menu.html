@@ -18,7 +18,7 @@
 .menu-tab{border:1px solid rgba(23,60,43,.15);background:#fff;border-radius:999px;padding:10px 15px;white-space:nowrap;font:800 10px Arial;letter-spacing:.08em;text-transform:uppercase;color:#173c2b;cursor:pointer}
 .menu-tab.active{background:#173c2b;color:#fff;border-color:#173c2b}
 .menu-search{margin-top:10px;width:100%;border:1px solid rgba(23,60,43,.15);border-radius:14px;background:#fff;padding:12px 15px;outline:none;font:15px Arial;color:#173c2b}
-.menu-content{padding:28px 0 85px}
+.menu-content{padding:76px 0 85px}
 .menu-group{display:none}
 .menu-group.active{display:block}
 .menu-section{margin:30px 0 0}
@@ -53,7 +53,7 @@
 .food-badge.nonveg{color:#ef2029}
 /* Distinct premium treatments for non-food categories */
 /* Editorial menu motion + category identity */
-.menu-category-intro{position:relative;padding:30px 4px 18px;margin-bottom:2px;overflow:hidden}
+.menu-category-intro{position:relative;padding:48px 4px 24px;margin-bottom:8px;overflow:hidden}
 .category-kicker{font:800 10px/1 Manrope,Arial,sans-serif;letter-spacing:.16em;color:#8d7337;text-transform:uppercase}
 .menu-category-intro h2{font:500 clamp(34px,9vw,54px)/.95 "Cormorant Garamond",serif;color:#173c2b;margin:9px 0 8px}
 .menu-category-intro span{font:13px/1.5 Manrope,Arial,sans-serif;color:#6c756d}
@@ -196,7 +196,7 @@
 }
 @media(max-width:849px){.menu-intro{padding-top:116px}.menu-intro h1{font-size:48px}.menu-intro p{font-size:14px}.menu-search{border-radius:12px;padding:11px 14px}.menu-tools{padding:10px 0}.menu-tab{padding:9px 14px}}
 @media(min-width:850px){
- .menu-tools{top:72px}.menu-content{padding-bottom:60px}
+ .menu-tools{top:72px}.menu-content{padding-bottom:130px!important}
  .menu-tabs{justify-content:center}.menu-search{max-width:520px;display:block;margin:10px auto 0}
  .m-list{grid-template-columns:1fr 1fr}
  .menu-section h2{font-size:29px}
@@ -216,8 +216,8 @@
 .menu-photo-disclaimer strong{display:block;font:700 14px/1.4 Manrope,Arial,sans-serif;color:#173d31}
 .menu-photo-disclaimer p{margin:4px 0;font:13px/1.5 Manrope,Arial,sans-serif;color:#263b32}
 .menu-photo-disclaimer small{display:block;font:12px/1.45 Manrope,Arial,sans-serif;color:#536257}
-.menu-content{padding-top:18px}
-.menu-category-intro{padding-top:20px;padding-bottom:13px}
+.menu-content{padding-top:24px!important;padding-bottom:130px!important}
+.menu-category-intro{padding-top:16px!important;padding-bottom:18px!important;margin-bottom:10px}
 .menu-group .menu-section{margin-top:22px}
 .menu-group .menu-section h2{font:700 12px/1.4 Manrope,Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#8d7337;border:0;padding:0 0 10px;margin:0}
 .menu-group .menu-section h2:after{content:"";display:block;width:34px;height:2px;background:#b79a5a;margin-top:7px}
@@ -289,6 +289,106 @@
 /* Temporary stock status for pizza and burger items */
 .menu-group .availability-status{display:inline-flex!important;align-items:center;width:max-content;max-width:100%;margin:7px 0 0!important;padding:5px 9px;border:1px solid rgba(141,115,55,.22);border-radius:999px;background:#f5efe1;color:#80672f!important;font:700 10px/1.25 Manrope,Arial,sans-serif!important;letter-spacing:.035em}
 .menu-group .m-item:has(.availability-status) h3{color:#68756b!important}
+
+/* Authoritative mobile menu layout reset: keep toolbar and content flow predictable. */
+.menu-tools{position:sticky!important;top:66px!important;z-index:100!important;padding:10px 0!important}
+.menu-content{padding:0 0 150px!important}
+.menu-category-intro{padding:18px 4px 16px!important;margin:0 0 8px!important}
+.menu-category-intro h2{margin:8px 0!important}
+.menu-category-intro span{display:block;margin-top:4px!important}
+.menu-photo-disclaimer{margin:0 0 18px!important}
+.menu-group .menu-section{scroll-margin-top:210px}
+@media(max-width:799px){
+  .menu-tools{top:0!important}
+  .menu-content{padding:0 0 160px!important}
+  .menu-category-intro{padding:18px 4px 16px!important}
+  .menu-category-intro h2{font-size:clamp(32px,8.5vw,44px)!important;line-height:1.02!important}
+  .menu-photo-disclaimer{margin-bottom:18px!important}
+  .mobile-bar{z-index:500!important;bottom:12px!important}
+}
+
+/* Mobile menu usability fix: tabs stay horizontally scrollable; fixed actions are visually separated and content clears them. */
+@media(max-width:849px){
+  .menu-tools{position:sticky!important;top:0!important;z-index:1000!important;padding:8px 0 12px!important;background:rgba(255,250,240,.98)!important}
+  .menu-tabs{display:flex!important;gap:8px!important;overflow-x:auto!important;overscroll-behavior-x:contain!important;scroll-snap-type:x proximity!important;padding:4px 12px 8px!important;margin:0 -12px!important}
+  .menu-tab{flex:0 0 auto!important;min-width:max-content!important;padding:12px 16px!important;scroll-snap-align:start!important}
+  .food-tabs{display:flex!important;gap:18px!important;overflow-x:auto!important;white-space:nowrap!important;padding:8px 4px 10px!important}
+  .food-tab{flex:0 0 auto!important;white-space:nowrap!important}
+  .menu-content{padding:0 0 calc(240px + env(safe-area-inset-bottom))!important}
+  .menu-category-intro{padding:18px 4px 16px!important;margin:0 0 8px!important}
+  .menu-photo-disclaimer{margin-bottom:22px!important}
+  .mobile-bar{position:fixed!important;left:16px!important;right:16px!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;z-index:2000!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important;padding:8px!important;border:1px solid rgba(183,154,90,.45)!important;border-radius:18px!important;background:#173c2b!important;box-shadow:0 0 0 7px rgba(255,250,240,.96),0 8px 28px rgba(0,0,0,.18)!important}
+  .mobile-bar a{display:flex!important;align-items:center!important;justify-content:center!important;min-height:42px!important;padding:10px 4px!important;border-radius:12px!important;color:#fff!important;font:800 12px/1.2 Arial,sans-serif!important;white-space:nowrap!important}
+  .mobile-bar a.accent{background:rgba(255,255,255,.12)!important}
+}
+
+/* MENU CATEGORY NAV — show every category at once, no horizontal swipe */
+@media(max-width:849px){
+  .menu-tools:has(.menu-tabs)::after{content:none!important;display:none!important}
+  .menu-tabs{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    justify-content:stretch!important;
+    align-items:stretch!important;
+    gap:7px!important;
+    overflow:visible!important;
+    padding:2px 0 5px!important;
+    scroll-snap-type:none!important;
+  }
+  .menu-tabs .menu-tab{
+    display:flex!important;
+    flex:initial!important;
+    min-width:0!important;
+    min-height:44px!important;
+    padding:9px 5px!important;
+    gap:4px!important;
+    white-space:normal!important;
+    text-align:center!important;
+    font-size:9px!important;
+    line-height:1.15!important;
+    letter-spacing:.025em!important;
+    scroll-snap-align:none!important;
+  }
+  .menu-tabs .menu-tab[data-target="ice-creams"]{
+    color:#173c2b!important;
+    background:linear-gradient(135deg,#f6e9c9,#fff8e8)!important;
+    border:1.5px solid #b79a5a!important;
+    box-shadow:0 2px 8px rgba(141,115,55,.16)!important;
+    font-weight:900!important;
+  }
+}
+@media(max-width:360px){
+  .menu-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .menu-tabs .menu-tab{font-size:10px!important}
+}
+@media(min-width:850px){
+  .menu-tabs{justify-content:center}
+  .menu-tabs .menu-tab[data-target="ice-creams"]{
+    color:#173c2b;
+    background:linear-gradient(135deg,#f6e9c9,#fff8e8);
+    border:1.5px solid #b79a5a;
+  }
+}
+
+/* CONSISTENT CATEGORY ICONS — readable, balanced premium navigation */
+@media(max-width:849px){
+  .menu-tabs .menu-tab{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:6px!important;
+    line-height:1.15!important;
+  }
+}
+@media(min-width:850px){
+  .menu-tabs .menu-tab{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -308,10 +408,11 @@
 <div class="menu-tools">
   <div class="container">
     <div class="menu-tabs">
-      <button class="menu-tab active" data-target="coffee">Coffee & Tea</button>
-      <button class="menu-tab" data-target="refreshers-and-tea">Refreshers</button>
-      <button class="menu-tab" data-target="signatures">Signatures</button>
-      <button class="menu-tab" data-target="food">Food</button>
+      <button class="menu-tab active" data-target="coffee" aria-label="Coffee and Tea menu">☕ Coffee &amp; Tea</button>
+      <button class="menu-tab" data-target="refreshers-and-tea" aria-label="Refreshers menu">🧊 Refreshers</button>
+      <button class="menu-tab" data-target="signatures" aria-label="Signature drinks menu">✨ Signatures</button>
+      <button class="menu-tab" data-target="food" aria-label="Food menu">🍽️ Food</button>
+      <button class="menu-tab" data-target="ice-creams" aria-label="Ice Creams menu">🍨 Ice Creams</button>
     </div>
     <div class="food-tabs" id="foodTabs" aria-label="Category sections"></div>
     <input class="menu-search" id="menuSearch" type="search" placeholder="Search the entire menu…" aria-label="Search menu">
@@ -1003,6 +1104,73 @@
           <h2>Main Course · Grilled Chicken</h2>
           <div class="m-list">
         </section></div>
+      <div class="menu-group" id="ice-creams" data-group="Ice Creams">
+        <section class="menu-section" data-group="Ice Creams">
+          <h2>Ice Creams</h2>
+          <div class="m-list">
+      <article class="m-item">
+        <div>
+          <h3>Vanilla</h3>
+        </div>
+        <strong>₹99</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Mango</h3>
+        </div>
+        <strong>₹119</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Caramel Nuts</h3>
+        </div>
+        <strong>₹159</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Chocolate</h3>
+        </div>
+        <strong>₹119</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Kesari Pista</h3>
+        </div>
+        <strong>₹159</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Strawberry</h3>
+        </div>
+        <strong>₹119</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Butterscotch</h3>
+        </div>
+        <strong>₹139</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Red Velvet</h3>
+        </div>
+        <strong>₹159</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Tutti Frutti</h3>
+        </div>
+        <strong>₹149</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Oreo Cookies</h3>
+        </div>
+        <strong>₹159</strong>
+      </article>
+          </div>
+        </section>
+      </div>
   </div>
 </section>
 </main>
