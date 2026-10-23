@@ -306,6 +306,21 @@
   .menu-photo-disclaimer{margin-bottom:18px!important}
   .mobile-bar{z-index:500!important;bottom:12px!important}
 }
+
+/* Mobile menu usability fix: tabs stay horizontally scrollable; fixed actions are visually separated and content clears them. */
+@media(max-width:849px){
+  .menu-tools{position:sticky!important;top:0!important;z-index:1000!important;padding:8px 0 12px!important;background:rgba(255,250,240,.98)!important}
+  .menu-tabs{display:flex!important;gap:8px!important;overflow-x:auto!important;overscroll-behavior-x:contain!important;scroll-snap-type:x proximity!important;padding:4px 12px 8px!important;margin:0 -12px!important}
+  .menu-tab{flex:0 0 auto!important;min-width:max-content!important;padding:12px 16px!important;scroll-snap-align:start!important}
+  .food-tabs{display:flex!important;gap:18px!important;overflow-x:auto!important;white-space:nowrap!important;padding:8px 4px 10px!important}
+  .food-tab{flex:0 0 auto!important;white-space:nowrap!important}
+  .menu-content{padding:0 0 calc(240px + env(safe-area-inset-bottom))!important}
+  .menu-category-intro{padding:18px 4px 16px!important;margin:0 0 8px!important}
+  .menu-photo-disclaimer{margin-bottom:22px!important}
+  .mobile-bar{position:fixed!important;left:16px!important;right:16px!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;z-index:2000!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important;padding:8px!important;border:1px solid rgba(183,154,90,.45)!important;border-radius:18px!important;background:#173c2b!important;box-shadow:0 0 0 7px rgba(255,250,240,.96),0 8px 28px rgba(0,0,0,.18)!important}
+  .mobile-bar a{display:flex!important;align-items:center!important;justify-content:center!important;min-height:42px!important;padding:10px 4px!important;border-radius:12px!important;color:#fff!important;font:800 12px/1.2 Arial,sans-serif!important;white-space:nowrap!important}
+  .mobile-bar a.accent{background:rgba(255,255,255,.12)!important}
+}
 </style>
 </head>
 <body>
