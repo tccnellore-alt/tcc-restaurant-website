@@ -444,6 +444,22 @@
   .menu-group .m-item strong{margin:7px 9px 10px!important}
 }
 
+
+/* Fallback: keep image placeholders visible even if card-enhancement JavaScript is delayed. */
+.menu-group .m-item:not(:has(.m-photo-wrap))::before{
+  content:"";
+  display:block;
+  width:100%;
+  aspect-ratio:4/3;
+  flex:0 0 auto;
+  background-color:#f6efdf;
+  background-image:url("images/logo.png");
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:contain;
+  border-bottom:1px solid rgba(183,154,90,.2);
+}
+
 </style>
 </head>
 <body>
