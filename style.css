@@ -241,7 +241,9 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
 .menu-page .menu-brand-lockup{box-shadow:0 10px 30px rgba(0,0,0,.12)}
 @media(max-width:799px){.menu-page .menu-intro{padding-top:108px;padding-bottom:34px}.menu-page .menu-tools{top:69px}}
 
-/* TCC bestseller icon-only mark */
-.menu-page .tcc-bestseller-badge{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-left:6px;width:20px;height:20px;border:1px solid #c7a45b;border-radius:50%;background:#173c2b;color:#e2c16d;font:700 13px/1 Georgia,serif;white-space:nowrap;box-shadow:0 1px 3px rgba(23,60,43,.12)}
-.menu-page .tcc-bestseller-crown{color:#e2c16d;font-size:13px;line-height:1}
-@media(max-width:480px){.menu-page .tcc-bestseller-badge{width:18px;height:18px;margin-left:5px}.menu-page .tcc-bestseller-crown{font-size:12px}}
+/* TCC bestseller label — inline beside the item name */
+.menu-page .m-item h3{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.menu-page .tcc-bestseller-badge{display:inline-flex;align-items:center;justify-content:center;gap:4px;vertical-align:middle;margin:0 0 0 2px;padding:3px 6px;border:1px solid #c7a45b;border-radius:999px;background:#173c2b;color:#f4df9b;font:800 8px/1.2 Manrope,Arial,sans-serif;letter-spacing:.035em;white-space:nowrap;box-shadow:0 1px 3px rgba(23,60,43,.12)}
+.menu-page .tcc-bestseller-crown{color:#e2c16d;font-size:12px;line-height:1}
+.menu-page .tcc-bestseller-label{display:inline}
+@media(max-width:480px){.menu-page .tcc-bestseller-badge{font-size:7px;padding:3px 5px;gap:3px}.menu-page .tcc-bestseller-crown{font-size:11px}}
