@@ -240,3 +240,8 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
 .menu-page .menu-tools{top:70px}
 .menu-page .menu-brand-lockup{box-shadow:0 10px 30px rgba(0,0,0,.12)}
 @media(max-width:799px){.menu-page .menu-intro{padding-top:108px;padding-bottom:34px}.menu-page .menu-tools{top:69px}}
+
+/* TCC bestseller seal */
+.menu-page .tcc-bestseller-badge{display:inline-flex;align-items:center;gap:3px;vertical-align:middle;margin-left:7px;padding:3px 6px;border:1px solid #c7a45b;border-radius:999px;background:#173c2b;color:#fff8e9;font:800 8px/1 Manrope,Arial,sans-serif;letter-spacing:.055em;white-space:nowrap;box-shadow:0 1px 3px rgba(23,60,43,.12)}
+.menu-page .tcc-bestseller-crown{color:#e2c16d;font-size:12px;line-height:1}
+@media(max-width:480px){.menu-page .tcc-bestseller-badge{font-size:7px;padding:3px 5px;gap:2px;margin-left:5px}.menu-page .tcc-bestseller-crown{font-size:10px}}
