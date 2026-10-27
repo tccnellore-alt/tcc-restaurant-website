@@ -1384,7 +1384,14 @@ tccImageLightbox.className="menu-image-lightbox";
 tccImageLightbox.setAttribute("role","dialog");
 tccImageLightbox.setAttribute("aria-modal","true");
 tccImageLightbox.setAttribute("aria-label","Expanded menu photo");
-tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><p class="menu-lightbox-description"></p><div class="menu-lightbox-price"></div><div class="menu-lightbox-addons"><h3 class="menu-lightbox-addons-title">Available add-ons</h3><div class="menu-lightbox-addons-row"></div></div></div></div>';
+tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><p class="menu-lightbox-description"></p>
+          <p class="availability-status">Out of Stock</p>
+          <p class="availability-status">Out of Stock</p>
+          <p class="availability-status">Out of Stock</p>
+          <p class="availability-status">Out of Stock</p>
+          <p class="availability-status">Out of Stock</p>
+          <p class="availability-status">Out of Stock</p>
+          <p class="availability-status">Out of Stock</p><div class="menu-lightbox-price"></div><div class="menu-lightbox-addons"><h3 class="menu-lightbox-addons-title">Available add-ons</h3><div class="menu-lightbox-addons-row"></div></div></div></div>';
 document.body.appendChild(tccImageLightbox);
 const tccLightboxImage=tccImageLightbox.querySelector("img");
 const tccLightboxName=tccImageLightbox.querySelector(".menu-lightbox-name");
@@ -1510,6 +1517,7 @@ function buildSubTabs(id){
       ["Appetizers","Starters"],
       ["Pastas","Pasta"],
       ["Pizzas","Pizza"],
+      ["Burgers","Burgers"],
       ["Sandwiches","Sandwiches"]
     ];
     labels.forEach(([target,label])=>{
