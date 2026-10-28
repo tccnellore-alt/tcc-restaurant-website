@@ -1747,8 +1747,8 @@ document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";sh
     const heading=item.querySelector("h3");
     if(!heading || item.querySelector(".spice-level")) return;
     const name=heading.textContent
-      .replace(/♛?\\s*Best Seller/gi,"")
-      .replace(/\\s+/g," ").trim();
+      .replace(/♛?\s*Best Seller/gi,"")
+      .replace(/\s+/g," ").trim();
     if(!Object.prototype.hasOwnProperty.call(spiceRatings,name)) return;
     const level=spiceRatings[name];
     const indicator=document.createElement("div");
