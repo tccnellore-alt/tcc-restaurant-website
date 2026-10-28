@@ -281,6 +281,12 @@
 .menu-group .m-item .m-item-info{display:block!important;flex:1 1 auto!important;min-width:0!important;padding:0!important}
 .menu-group .m-item h3{font-size:16px!important;line-height:1.35!important}
 .menu-group .m-item p{font-size:12px!important;line-height:1.5!important}
+
+/* Trial spice indicator — subtle TCC green/cream styling */
+.spice-level{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:7px}
+.spice-chillies{font-size:11px;line-height:1.2;letter-spacing:-2px;white-space:nowrap}
+.spice-copy{color:#8b493d;font:700 10px/1.35 Manrope,Arial,sans-serif;letter-spacing:.01em}
+@media(min-width:850px){.spice-copy{font-size:11px}}
 .menu-group .m-item strong{flex:0 0 auto!important;padding-top:2px!important;font-size:14px!important}
 .menu-group .m-photo-wrap{display:none!important}
 @media(min-width:850px){.menu-group .m-list{grid-template-columns:minmax(0,1fr)!important;max-width:900px;margin-inline:auto}}
@@ -1682,6 +1688,51 @@ search.addEventListener("input",e=>{
   filter(q);
 });
 document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";showGroup("coffee")});
+
+/* TRIAL BRANCH: kitchen-provided spice ratings. Only explicitly rated dishes are labelled. */
+(function addTccSpiceRatings(){
+  const spiceRatings = {
+    "Penne Alfredo": 1,
+    "Penne Arrabbiata": 3,
+    "Fettuccine Al Pesto": 1,
+    "Fettuccine Aglio Olio": 2,
+    "Penne Rossa": 3,
+    "Mac & Cheese (Veg)": 1,
+    "BBQ Chicken Pizza": 1,
+    "Pesto Chicken Pizza": 1,
+    "Butter Garlic Prawns": 3,
+    "Butter Garlic Chicken": 3,
+    "Fried Chicken Strips": 3,
+    "Chicken Alfredo Bliss": 2,
+    "Potato Cheese Balls": 2,
+    "Peri Peri French Fries": 4,
+    "French Fries Classic": 1,
+    "Butter Garlic Mushroom": 3
+  };
+  const labels = {
+    1: "Very mild",
+    2: "Mild",
+    3: "Medium hot",
+    4: "Hot",
+    5: "Extra hot"
+  };
+  document.querySelectorAll("#food .m-item").forEach(item => {
+    const heading = item.querySelector("h3");
+    if (!heading || item.querySelector(".spice-level")) return;
+    const name = heading.textContent.replace(/♛?\s*Best Seller/gi, "").replace(/\s+/g, " ").trim();
+    const level = spiceRatings[name];
+    if (!level) return;
+    const indicator = document.createElement("div");
+    indicator.className = "spice-level";
+    indicator.setAttribute("aria-label", "Spice level " + level + " out of 5, " + labels[level]);
+    indicator.innerHTML = '<span class="spice-chillies" aria-hidden="true">' + "🌶️".repeat(level) + '</span><span class="spice-copy">Spice ' + level + '/5 · ' + labels[level] + '</span>';
+    const info = item.querySelector(".m-item-info") || heading.parentElement;
+    const description = info.querySelector("p");
+    if (description) description.insertAdjacentElement("afterend", indicator);
+    else heading.insertAdjacentElement("afterend", indicator);
+  });
+})(); 
+
 </script>
 </body>
 </html>
