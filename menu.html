@@ -751,6 +751,109 @@
   .menu-group .m-item.has-tcc-photo h3{font-size:14px!important}
 }
 
+
+/* OPTION A — compact horizontal menu rows. This is the sole final layout override. */
+html body .menu-group .m-list.has-tcc-photo{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:10px!important;
+  width:100%!important;
+}
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:14px!important;
+  width:100%!important;
+  min-height:112px!important;
+  height:auto!important;
+  box-sizing:border-box!important;
+  padding:10px!important;
+  overflow:hidden!important;
+  background:#fffdf8!important;
+  border:1px solid rgba(183,154,90,.30)!important;
+  border-radius:14px!important;
+  box-shadow:0 4px 14px rgba(23,60,43,.045)!important;
+}
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-photo-wrap{
+  display:block!important;
+  position:relative!important;
+  flex:0 0 92px!important;
+  width:92px!important;
+  min-width:92px!important;
+  max-width:92px!important;
+  height:92px!important;
+  min-height:92px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:10px!important;
+  aspect-ratio:1/1!important;
+}
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-photo-wrap > img.m-photo{
+  display:block!important;
+  position:static!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+}
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-item-info{
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:row!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px 10px!important;
+  width:auto!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-item-info > div{
+  flex:1 1 100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo h3{
+  margin:0!important;
+  font-size:15px!important;
+  line-height:1.35!important;
+  overflow-wrap:anywhere!important;
+}
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo p{
+  margin:4px 0 0!important;
+  font-size:11px!important;
+  line-height:1.4!important;
+}
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-item-info > strong{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-self:center!important;
+  width:max-content!important;
+  margin:0!important;
+  padding:5px 10px!important;
+  border-radius:999px!important;
+  background:#f3ead7!important;
+  color:#8d6d2e!important;
+  font-size:12px!important;
+  line-height:1.2!important;
+}
+@media(max-width:380px){
+  html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo{gap:10px!important;padding:8px!important}
+  html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-photo-wrap{
+    flex-basis:78px!important;width:78px!important;min-width:78px!important;max-width:78px!important;height:78px!important;min-height:78px!important;
+  }
+  html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo h3{font-size:14px!important}
+}
+
 </style>
 </head>
 <body>
@@ -2096,7 +2199,7 @@ document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";sh
 })();
 
 
-/* Owner-supplied TCC photos — selected items only; all other items stay text-only. */
+/* TCC HYBRID MENU — clean horizontal rows for the seven owner photos. */
 (function addTccOwnedPhotos(){
   const photos={
     "Watermelon Fizzy":"images/menu/watermelon-fizz.jpg",
@@ -2109,29 +2212,40 @@ document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";sh
   };
   document.querySelectorAll(".menu-group .m-item").forEach(item=>{
     const heading=item.querySelector("h3");
-    if(!heading) return;
-    const badge=heading.querySelector(".tcc-bestseller-badge");
+    const price=item.querySelector(":scope > strong");
+    if(!heading||!price) return;
     const name=(heading.childNodes[0]?.textContent||heading.textContent).replace(/\\s+/g," ").trim();
     const src=photos[name];
     if(!src||item.querySelector(".m-photo-wrap")) return;
+
+    const list=item.parentElement;
+    list.classList.add("has-tcc-photo");
     item.classList.add("has-tcc-photo");
-    item.parentElement?.classList.add("has-tcc-photo");
-    const wrap=document.createElement("div");
-    wrap.className="m-photo-wrap";
+
+    const photoWrap=document.createElement("div");
+    photoWrap.className="m-photo-wrap";
     const img=document.createElement("img");
     img.className="m-photo";
+    img.src=src;
+    img.alt=name+" — TCC menu photo";
     img.loading="lazy";
     img.decoding="async";
-    img.alt=name+" — TCC menu photo";
-    img.src=src;
-    img.addEventListener("error",()=>{wrap.remove();item.classList.remove("has-tcc-photo");},{once:true});
-    wrap.appendChild(img);
-    item.insertBefore(wrap,item.firstChild);
-    const info=item.querySelector(".m-item-info")||heading.parentElement;
-    if(!info.classList.contains("m-item-info")) info.classList.add("m-item-info");
+    photoWrap.appendChild(img);
+
+    const info=document.createElement("div");
+    info.className="m-item-info";
+    const oldInfo=heading.parentElement;
+    info.appendChild(oldInfo);
+    info.appendChild(price);
+
+    item.replaceChildren(photoWrap,info);
+    img.addEventListener("error",()=>{
+      item.replaceChildren(info);
+      item.classList.remove("has-tcc-photo");
+      if(!list.querySelector(".m-item.has-tcc-photo")) list.classList.remove("has-tcc-photo");
+    },{once:true});
   });
 })();
-
 </script>
 </body>
 </html>
