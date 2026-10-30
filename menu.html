@@ -910,6 +910,143 @@ html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-
   html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo h3{font-size:14px!important}
 }
 
+
+/* FINAL CONSISTENT TWO-COLUMN TILE SYSTEM — overrides all previous layout experiments */
+html body .menu-group .m-list,
+html body .menu-group .m-list.has-tcc-photo{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  gap:12px!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+}
+html body .menu-group .m-list > article.m-item,
+html body .menu-group .m-list.has-tcc-photo > article.m-item,
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo{
+  display:flex!important;
+  flex-direction:column!important;
+  flex-wrap:nowrap!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:0!important;
+  grid-column:auto!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:100%!important;
+  height:auto!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#fffdf8!important;
+  border:1px solid rgba(23,60,43,.13)!important;
+  border-radius:14px!important;
+  box-shadow:0 4px 14px rgba(23,60,43,.055)!important;
+}
+html body .menu-group .m-list > article.m-item > .m-photo-wrap,
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-photo-wrap{
+  display:block!important;
+  position:relative!important;
+  flex:0 0 auto!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:4/3!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+}
+html body .menu-group .m-list > article.m-item > .m-photo-wrap > img.m-photo,
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-photo-wrap > img.m-photo{
+  display:block!important;
+  position:static!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+}
+html body .menu-group .m-list > article.m-item > .m-item-info,
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-item-info{
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:space-between!important;
+  gap:9px!important;
+  width:auto!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:11px!important;
+}
+html body .menu-group .m-list > article.m-item:not(.has-tcc-photo) > div:first-child{
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:flex-start!important;
+  gap:7px!important;
+  min-width:0!important;
+  padding:12px!important;
+}
+html body .menu-group .m-list > article.m-item:not(.has-tcc-photo) > div:first-child h3{
+  margin:0!important;
+}
+html body .menu-group .m-list > article.m-item h3,
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo h3{
+  width:100%!important;
+  margin:0!important;
+  color:#173c2b!important;
+  font:700 13px/1.35 Manrope,Arial,sans-serif!important;
+  overflow-wrap:anywhere!important;
+}
+html body .menu-group .m-list > article.m-item p,
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo p{
+  margin:5px 0 0!important;
+  font-size:11px!important;
+  line-height:1.4!important;
+}
+html body .menu-group .m-list > article.m-item > strong,
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-item-info > strong{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-self:flex-start!important;
+  width:max-content!important;
+  margin:0 11px 11px!important;
+  padding:5px 9px!important;
+  border-radius:999px!important;
+  background:#f3ead7!important;
+  color:#8d6d2e!important;
+  font:800 12px/1.2 Manrope,Arial,sans-serif!important;
+}
+html body .menu-group .m-list.has-tcc-photo > article.m-item.has-tcc-photo > .m-item-info > strong{
+  margin:0!important;
+}
+html body .menu-group .m-list > article.m-item .availability-status{
+  white-space:normal!important;
+  font-size:9px!important;
+}
+@media(max-width:380px){
+  html body .menu-group .m-list,
+  html body .menu-group .m-list.has-tcc-photo{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  html body .menu-group .m-list > article.m-item h3{font-size:12px!important}
+  html body .menu-group .m-list > article.m-item > .m-item-info{padding:8px!important}
+}
+@media(min-width:700px){
+  html body .menu-group .m-list,
+  html body .menu-group .m-list.has-tcc-photo{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important}
+  html body .menu-group .m-list > article.m-item h3{font-size:15px!important}
+  html body .menu-group .m-list > article.m-item > .m-item-info{padding:14px!important}
+}
+
 </style>
 </head>
 <body>
