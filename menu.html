@@ -275,16 +275,72 @@
 @media(min-width:700px){.menu-group .m-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px!important}.menu-group .m-item-info{padding:13px 13px 6px}.menu-group .m-item h3{font-size:14px}.menu-group .m-item p{font-size:11px}.menu-group .m-item strong{margin-left:13px;margin-bottom:13px}}
 @media(min-width:1000px){.menu-group .m-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px!important}.menu-photo-disclaimer{max-width:860px}}
 
-/* TEMPORARY TCC TEXT-ONLY MENU — keep the existing photo feature code/assets intact for later restoration. */
-.menu-group .m-list{grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
-.menu-group .m-item{display:flex!important;flex-direction:row!important;align-items:flex-start!important;justify-content:space-between!important;gap:14px!important;padding:15px 15px!important;margin:0!important;background:#fff!important;border:1px solid rgba(23,60,43,.10)!important;border-radius:13px!important;box-shadow:0 3px 12px rgba(20,42,31,.035)!important}
-.menu-group .m-item .m-item-info{display:block!important;flex:1 1 auto!important;min-width:0!important;padding:0!important}
-.menu-group .m-item h3{font-size:16px!important;line-height:1.35!important}
-.menu-group .m-item p{font-size:12px!important;line-height:1.5!important}
-.menu-group .m-item strong{flex:0 0 auto!important;padding-top:2px!important;font-size:14px!important}
-.menu-group .m-photo-wrap{display:none!important}
-@media(min-width:850px){.menu-group .m-list{grid-template-columns:minmax(0,1fr)!important;max-width:900px;margin-inline:auto}}
+/* Replaced temporary text-only layout with the two-column hybrid tile layout above. */
 
+
+/* TCC HYBRID MENU — consistent two-column tiles for every menu item */
+.menu-group .m-list{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  align-items:stretch!important;
+}
+.menu-group .m-item{
+  display:grid!important;
+  grid-template-rows:auto 1fr!important;
+  align-content:start!important;
+  align-items:start!important;
+  justify-content:stretch!important;
+  gap:0!important;
+  min-width:0!important;
+  min-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#fffdf8!important;
+  border:1px solid rgba(23,60,43,.12)!important;
+  border-radius:14px!important;
+  box-shadow:0 4px 14px rgba(20,42,31,.05)!important;
+}
+.menu-group .m-item:not(.has-tcc-photo){grid-template-rows:1fr!important}
+.menu-group .m-item .m-photo-wrap{
+  display:block!important;
+  width:100%!important;
+  aspect-ratio:4/3!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+}
+.menu-group .m-item .m-photo{width:100%!important;height:100%!important;object-fit:cover!important}
+.menu-group .m-item .m-item-info{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  min-width:0!important;
+  padding:11px!important;
+}
+.menu-group .m-item:not(.has-tcc-photo) > div:first-child{padding:12px!important}
+.menu-group .m-item h3{font-size:clamp(12px,3.2vw,15px)!important;line-height:1.3!important;overflow-wrap:anywhere!important}
+.menu-group .m-item p{font-size:11px!important;line-height:1.4!important}
+.menu-group .m-item strong{
+  display:block!important;
+  align-self:flex-start!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:14px!important;
+}
+.menu-group .m-item .availability-status{font-size:9px!important;white-space:normal!important}
+@media(max-width:360px){
+  .menu-group .m-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  .menu-group .m-item .m-item-info{padding:8px!important}
+  .menu-group .m-item h3{font-size:12px!important}
+}
+@media(min-width:850px){
+  .menu-group .m-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;max-width:900px;margin-inline:auto;gap:16px!important}
+  .menu-group .m-item .m-item-info{padding:14px!important}
+  .menu-group .m-item h3{font-size:15px!important}
+}
 
 /* Temporary stock status for pizza and burger items */
 .menu-group .availability-status{display:inline-flex!important;align-items:center;width:max-content;max-width:100%;margin:7px 0 0!important;padding:5px 9px;border:1px solid rgba(141,115,55,.22);border-radius:999px;background:#f5efe1;color:#80672f!important;font:700 10px/1.25 Manrope,Arial,sans-serif!important;letter-spacing:.035em}
@@ -2104,7 +2160,7 @@ function filter(q){
           const matchesText=item.textContent.toLowerCase().includes(q);
           const matchesFoodFilters=!applyFilters(g)||itemPassesFoodFilters(item);
           const ok=matchesText&&matchesFoodFilters;
-          item.style.setProperty("display",ok?"flex":"none","important");
+          item.style.setProperty("display",ok?"grid":"none","important");
           if(ok)sectionFound++;
         });
         sec.style.display=sectionFound?"block":"none";
@@ -2122,7 +2178,7 @@ function filter(q){
       let sectionFound=0;
       sec.querySelectorAll(".m-item").forEach(item=>{
         const ok=!applyFilters(active)||itemPassesFoodFilters(item);
-        item.style.setProperty("display",ok?"flex":"none","important");
+        item.style.setProperty("display",ok?"grid":"none","important");
         if(ok)sectionFound++;
       });
       sec.style.display=sectionFound?"block":"none";
