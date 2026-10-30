@@ -2178,7 +2178,7 @@ document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";sh
     "Grilled Chicken Sandwich":2,
   };
   const labels = ["No spice","Very mild","Mild","Medium hot","Hot","Extra hot"];
-  document.querySelectorAll(".menu-group .m-item").forEach(item=>{
+  document.querySelectorAll(".menu-section .m-item").forEach(item=>{
     const heading=item.querySelector("h3");
     if(!heading || item.querySelector(".spice-level")) return;
     const name=heading.textContent
