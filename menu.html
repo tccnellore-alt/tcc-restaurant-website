@@ -1687,7 +1687,7 @@ function itemPassesFoodFilters(item){
   if(selectedMenuFilters.spice!=="all"){
     const spice=item.querySelector(".spice-level");
     if(!spice) return false;
-    const match=spice.textContent.match(/Spice\\s+(\\d)\\/5/);
+    const match=spice.textContent.match(/Spice\s+(\d)\/5/);
     if(!match) return false;
     const level=Number(match[1]), mode=selectedMenuFilters.spice;
     if(mode==="0" && level!==0) return false;
