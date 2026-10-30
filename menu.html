@@ -1047,6 +1047,163 @@ html body .menu-group .m-list > article.m-item .availability-status{
   html body .menu-group .m-list > article.m-item > .m-item-info{padding:14px!important}
 }
 
+
+/* TCC FINAL MENU GRID — one consistent card pattern in every category and subsection */
+html body .menu-group .menu-section .m-list,
+html body .menu-group .menu-section .m-list.has-tcc-photo{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-flow:row!important;
+  grid-auto-rows:1fr!important;
+  align-items:stretch!important;
+  justify-items:stretch!important;
+  gap:12px!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+}
+html body .menu-group .menu-section .m-list > .m-item,
+html body .menu-group .menu-section .m-list.has-tcc-photo > .m-item,
+html body .menu-group .menu-section .m-list.has-tcc-photo > .m-item.has-tcc-photo{
+  display:flex!important;
+  flex-direction:column!important;
+  flex-wrap:nowrap!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  grid-column:auto!important;
+  grid-row:auto!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  height:100%!important;
+  box-sizing:border-box!important;
+  gap:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#fffdf8!important;
+  background-image:none!important;
+  border:1px solid rgba(23,60,43,.14)!important;
+  border-radius:15px!important;
+  box-shadow:0 4px 14px rgba(23,60,43,.055)!important;
+}
+html body .menu-group .menu-section .m-list > .m-item > .m-photo-wrap,
+html body .menu-group .menu-section .m-list.has-tcc-photo > .m-item.has-tcc-photo > .m-photo-wrap{
+  display:block!important;
+  position:relative!important;
+  order:0!important;
+  flex:0 0 auto!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:4/3!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+}
+html body .menu-group .menu-section .m-list > .m-item > .m-photo-wrap > .m-photo,
+html body .menu-group .menu-section .m-list.has-tcc-photo > .m-item.has-tcc-photo > .m-photo-wrap > .m-photo{
+  display:block!important;
+  position:static!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+}
+html body .menu-group .menu-section .m-list > .m-item > .m-photo-wrap .m-photo-credit{display:none!important}
+html body .menu-group .menu-section .m-list > .m-item > .m-item-info,
+html body .menu-group .menu-section .m-list.has-tcc-photo > .m-item.has-tcc-photo > .m-item-info{
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:8px!important;
+  width:auto!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:12px!important;
+  background:transparent!important;
+}
+html body .menu-group .menu-section .m-list > .m-item:not(.has-tcc-photo) > div:first-child{
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:flex-start!important;
+  gap:8px!important;
+  min-width:0!important;
+  padding:12px!important;
+}
+html body .menu-group .menu-section .m-list > .m-item h3{
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  color:#173c2b!important;
+  font:700 14px/1.35 Manrope,Arial,sans-serif!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+}
+html body .menu-group .menu-section .m-list > .m-item p{
+  margin:2px 0 0!important;
+  color:#6c756d!important;
+  font:400 11px/1.45 Manrope,Arial,sans-serif!important;
+}
+html body .menu-group .menu-section .m-list > .m-item > strong,
+html body .menu-group .menu-section .m-list > .m-item > .m-item-info > strong{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-self:flex-start!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:0 12px 12px!important;
+  padding:6px 10px!important;
+  border:0!important;
+  border-radius:999px!important;
+  background:#f3ead7!important;
+  color:#8d6d2e!important;
+  font:800 13px/1.2 Manrope,Arial,sans-serif!important;
+  white-space:nowrap!important;
+}
+html body .menu-group .menu-section .m-list > .m-item > .m-item-info > strong{margin:0!important}
+html body .menu-group .menu-section .m-list > .m-item .tcc-bestseller-badge,
+html body .menu-group .menu-section .m-list > .m-item .availability-status{
+  display:inline-flex!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:5px 0 0!important;
+  white-space:normal!important;
+}
+html body .menu-group .menu-section .m-list > .m-item .m-photo-placeholder{
+  display:flex!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:#f3ecdc!important;
+}
+@media(max-width:380px){
+  html body .menu-group .menu-section .m-list,
+  html body .menu-group .menu-section .m-list.has-tcc-photo{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  html body .menu-group .menu-section .m-list > .m-item h3{font-size:12px!important}
+  html body .menu-group .menu-section .m-list > .m-item > div:first-child,
+  html body .menu-group .menu-section .m-list > .m-item > .m-item-info{padding:9px!important}
+  html body .menu-group .menu-section .m-list > .m-item > strong{margin:0 9px 9px!important;font-size:12px!important}
+}
+@media(min-width:700px){
+  html body .menu-group .menu-section .m-list,
+  html body .menu-group .menu-section .m-list.has-tcc-photo{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important}
+  html body .menu-group .menu-section .m-list > .m-item h3{font-size:15px!important}
+}
+
 </style>
 </head>
 <body>
