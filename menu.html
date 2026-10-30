@@ -405,16 +405,16 @@
 @media(max-width:480px){.menu-group#coffee .coffee-addons-panel{padding:15px 12px}.menu-group#coffee .coffee-addons-panel .addons-row span{font-size:10.5px;padding:8px 9px}}
 
 
-/* Food filters — compact, accessible and on-brand */
-.menu-filter-bar{display:none;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 0 2px}
+/* Food dietary filters — clear, tappable buttons */
+.menu-filter-bar{display:none;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 0 4px}
 .menu-filter-bar.visible{display:flex}
-.menu-filter-label{font:800 9px Manrope,Arial,sans-serif;letter-spacing:.12em;color:#8d7337;margin-right:2px}
-.menu-filter-chip,.menu-filter-clear{min-height:36px;padding:8px 12px;border:1px solid rgba(23,60,43,.18);border-radius:999px;background:#fff;color:#173c2b;font:700 11px Manrope,Arial,sans-serif;cursor:pointer}
-.menu-filter-chip[aria-pressed="true"]{background:#173c2b;border-color:#173c2b;color:#fff}
-.menu-spice-filter{display:flex;align-items:center;gap:7px;color:#526057;font:700 11px Manrope,Arial,sans-serif}
-.menu-spice-filter select{min-height:36px;max-width:190px;padding:7px 10px;border:1px solid rgba(23,60,43,.18);border-radius:999px;background:#fff;color:#173c2b;font:600 11px Manrope,Arial,sans-serif}
-.menu-filter-clear{border-color:transparent;background:transparent;color:#8d7337;text-decoration:underline}
-@media(max-width:480px){.menu-filter-bar{gap:6px}.menu-filter-label{width:100%}.menu-filter-chip,.menu-filter-clear{font-size:10px;padding:7px 9px}.menu-spice-filter{width:100%;justify-content:space-between}.menu-spice-filter select{flex:1;max-width:none}}
+.menu-filter-label{font:800 9px Manrope,Arial,sans-serif;letter-spacing:.12em;color:#8d7337;margin-right:3px}
+.menu-filter-chip{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;min-width:132px;padding:10px 17px;border:1.5px solid #173c2b;border-radius:10px;background:#fff;color:#173c2b;font:800 12px Manrope,Arial,sans-serif;letter-spacing:.01em;cursor:pointer;transition:background .18s,color .18s,border-color .18s,transform .18s}
+.menu-filter-chip[data-filter-type="VEG"]{border-color:#287348;color:#287348;background:#f3f8f3}
+.menu-filter-chip[data-filter-type="NON-VEG"]{border-color:#a64d3d;color:#a64d3d;background:#fff6f3}
+.menu-filter-chip[aria-pressed="true"]{background:#173c2b;border-color:#173c2b;color:#fff;box-shadow:0 3px 9px rgba(23,60,43,.16)}
+.menu-filter-chip:focus-visible{outline:3px solid rgba(141,115,55,.35);outline-offset:2px}
+@media(max-width:480px){.menu-filter-bar{gap:8px}.menu-filter-label{width:100%}.menu-filter-chip{flex:1;min-width:0;min-height:44px;padding:10px 9px;font-size:11px}}
 
 /* TCC SPICE LEVELS — approved draft */
 .spice-level{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:7px}
@@ -449,21 +449,10 @@
     </div>
     <div class="food-tabs" id="foodTabs" aria-label="Category sections"></div>
     <input class="menu-search" id="menuSearch" type="search" placeholder="Search the entire menu…" aria-label="Search menu">
-    <div class="menu-filter-bar" id="menuFilters" aria-label="Food filters">
-      <span class="menu-filter-label">FILTER FOOD</span>
+    <div class="menu-filter-bar" id="menuFilters" aria-label="Dietary filters">
+      <span class="menu-filter-label">FILTER BY</span>
       <button type="button" class="menu-filter-chip" data-filter-type="VEG" aria-pressed="false">● Vegetarian</button>
       <button type="button" class="menu-filter-chip" data-filter-type="NON-VEG" aria-pressed="false">● Non-Vegetarian</button>
-      <button type="button" class="menu-filter-chip" data-filter-type="BEST" aria-pressed="false">♛ Best Sellers</button>
-      <label class="menu-spice-filter">Spice
-        <select id="spiceFilter" aria-label="Filter by spice level">
-          <option value="all">Any level</option>
-          <option value="0">No spice · 0/5</option>
-          <option value="mild">Very mild / Mild · 1–2/5</option>
-          <option value="medium">Medium hot · 3/5</option>
-          <option value="hot">Hot / Extra hot · 4–5/5</option>
-        </select>
-      </label>
-      <button type="button" class="menu-filter-clear" id="clearMenuFilters">Clear filters</button>
     </div>
   </div>
 </div>
@@ -1675,55 +1664,25 @@ tabs.forEach(t=>t.addEventListener("click",()=>showGroup(t.dataset.target)));
 document.querySelectorAll("[data-fav-target]").forEach(a=>a.remove());
 
 const menuFilters=document.getElementById("menuFilters");
-const spiceFilter=document.getElementById("spiceFilter");
-const clearMenuFilters=document.getElementById("clearMenuFilters");
-const selectedMenuFilters={type:"",best:false,spice:"all"};
+const selectedMenuFilters={type:""};
 function hasActiveFoodFilters(){
-  return !!selectedMenuFilters.type || selectedMenuFilters.best || selectedMenuFilters.spice!=="all";
+  return !!selectedMenuFilters.type;
 }
 function itemPassesFoodFilters(item){
-  if(selectedMenuFilters.type && item.dataset.foodType!==selectedMenuFilters.type) return false;
-  if(selectedMenuFilters.best && !item.querySelector(".tcc-bestseller-badge")) return false;
-  if(selectedMenuFilters.spice!=="all"){
-    const spice=item.querySelector(".spice-level");
-    if(!spice) return false;
-    const match=spice.textContent.match(/Spice\s+(\d)\/5/);
-    if(!match) return false;
-    const level=Number(match[1]), mode=selectedMenuFilters.spice;
-    if(mode==="0" && level!==0) return false;
-    if(mode==="mild" && !(level>=1&&level<=2)) return false;
-    if(mode==="medium" && level!==3) return false;
-    if(mode==="hot" && level<4) return false;
-  }
-  return true;
+  return !selectedMenuFilters.type || item.dataset.foodType===selectedMenuFilters.type;
 }
 function syncMenuFilterUI(){
   if(menuFilters) menuFilters.classList.toggle("visible",document.getElementById("food")?.classList.contains("active"));
   document.querySelectorAll("[data-filter-type]").forEach(button=>{
-    const value=button.dataset.filterType;
-    const pressed=value==="BEST"?selectedMenuFilters.best:selectedMenuFilters.type===value;
-    button.setAttribute("aria-pressed",String(pressed));
+    button.setAttribute("aria-pressed",String(selectedMenuFilters.type===button.dataset.filterType));
   });
-  if(spiceFilter) spiceFilter.value=selectedMenuFilters.spice;
 }
 document.querySelectorAll("[data-filter-type]").forEach(button=>button.addEventListener("click",()=>{
   const value=button.dataset.filterType;
-  if(value==="BEST") selectedMenuFilters.best=!selectedMenuFilters.best;
-  else selectedMenuFilters.type=selectedMenuFilters.type===value?"":value;
+  selectedMenuFilters.type=selectedMenuFilters.type===value?"":value;
   syncMenuFilterUI();
   filter(search.value);
 }));
-if(spiceFilter) spiceFilter.addEventListener("change",()=>{
-  selectedMenuFilters.spice=spiceFilter.value;
-  filter(search.value);
-});
-if(clearMenuFilters) clearMenuFilters.addEventListener("click",()=>{
-  selectedMenuFilters.type="";
-  selectedMenuFilters.best=false;
-  selectedMenuFilters.spice="all";
-  syncMenuFilterUI();
-  filter(search.value);
-});
 function filter(q){
   q=q.toLowerCase().trim();
   let found=0;
