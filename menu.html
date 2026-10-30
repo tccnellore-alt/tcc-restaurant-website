@@ -670,6 +670,87 @@
   }
 }
 
+
+/* HOTFIX: enforce true left-photo/right-details row; override every earlier card experiment. */
+.menu-group .m-item.has-tcc-photo{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:14px!important;
+  width:100%!important;
+  min-height:112px!important;
+  height:auto!important;
+  padding:10px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+.menu-group .m-item.has-tcc-photo>.m-photo-wrap{
+  display:block!important;
+  position:relative!important;
+  flex:0 0 104px!important;
+  width:104px!important;
+  height:104px!important;
+  min-height:104px!important;
+  max-width:104px!important;
+  aspect-ratio:1/1!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:10px!important;
+}
+.menu-group .m-item.has-tcc-photo>.m-photo-wrap>.m-photo{
+  display:block!important;
+  position:static!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  margin:0!important;
+}
+.menu-group .m-item.has-tcc-photo>.m-item-info,
+.menu-group .m-item.has-tcc-photo>div:not(.m-photo-wrap){
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  width:auto!important;
+  min-width:0!important;
+  padding:0!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+.menu-group .m-item.has-tcc-photo h3{
+  width:100%!important;
+  margin:0!important;
+  font-size:15px!important;
+  line-height:1.35!important;
+  overflow-wrap:anywhere!important;
+}
+.menu-group .m-item.has-tcc-photo p{
+  margin:5px 0 0!important;
+  font-size:11px!important;
+  line-height:1.4!important;
+}
+.menu-group .m-item.has-tcc-photo>strong{
+  flex:0 0 auto!important;
+  align-self:center!important;
+  margin:0 4px 0 auto!important;
+  padding:6px 10px!important;
+  white-space:nowrap!important;
+}
+@media(max-width:390px){
+  .menu-group .m-item.has-tcc-photo{gap:10px!important;padding:9px!important}
+  .menu-group .m-item.has-tcc-photo>.m-photo-wrap{
+    flex-basis:88px!important;width:88px!important;height:88px!important;min-height:88px!important;max-width:88px!important;
+  }
+  .menu-group .m-item.has-tcc-photo h3{font-size:14px!important}
+}
+
 </style>
 </head>
 <body>
