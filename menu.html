@@ -501,6 +501,81 @@
   .menu-group .m-item.has-tcc-photo strong{margin:8px 13px 13px!important}
 }
 
+
+/* FINAL HYBRID PHOTO LAYOUT — full-width on phones, balanced tiles on larger screens. */
+.menu-group .m-list.has-tcc-photo{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:12px!important;
+  align-items:stretch!important;
+}
+.menu-group .m-list.has-tcc-photo>.m-item{
+  grid-column:1/-1!important;
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+.menu-group .m-list.has-tcc-photo>.m-item.has-tcc-photo{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:auto auto auto!important;
+  align-items:stretch!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:16px!important;
+  background:#fffdf8!important;
+}
+.menu-group .m-list.has-tcc-photo>.m-item.has-tcc-photo>.m-photo-wrap{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  height:auto!important;
+  aspect-ratio:16/9!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+}
+.menu-group .m-list.has-tcc-photo>.m-item.has-tcc-photo .m-photo{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:cover!important;
+  object-position:center 48%!important;
+}
+.menu-group .m-list.has-tcc-photo>.m-item.has-tcc-photo>.m-item-info{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  padding:13px 15px 4px!important;
+}
+.menu-group .m-list.has-tcc-photo>.m-item.has-tcc-photo h3{
+  font-size:16px!important;
+  line-height:1.35!important;
+}
+.menu-group .m-list.has-tcc-photo>.m-item.has-tcc-photo p{
+  font-size:12px!important;
+  line-height:1.45!important;
+}
+.menu-group .m-list.has-tcc-photo>.m-item.has-tcc-photo>strong{
+  display:inline-flex!important;
+  margin:5px 15px 14px!important;
+  padding:6px 11px!important;
+  font-size:13px!important;
+}
+@media(min-width:700px){
+  .menu-group .m-list.has-tcc-photo{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:16px!important;
+  }
+  .menu-group .m-list.has-tcc-photo>.m-item:not(.has-tcc-photo){grid-column:1/-1!important}
+  .menu-group .m-list.has-tcc-photo>.m-item.has-tcc-photo{grid-column:auto!important}
+}
+
 </style>
 </head>
 <body>
@@ -1865,6 +1940,7 @@ document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";sh
     const src=photos[name];
     if(!src||item.querySelector(".m-photo-wrap")) return;
     item.classList.add("has-tcc-photo");
+    item.parentElement?.classList.add("has-tcc-photo");
     const wrap=document.createElement("div");
     wrap.className="m-photo-wrap";
     const img=document.createElement("img");
