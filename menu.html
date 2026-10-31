@@ -1706,11 +1706,11 @@ search.addEventListener("input",e=>{
   search.classList.toggle("global-search-active",!!q);
   filter(q);
 });
-document.addEventListener("DOMContentLoaded",()=>{addTccMenuPhotos();window.__foodCategory="all";showGroup("coffee")});
+document.addEventListener("DOMContentLoaded",()=>{addTccMenuPhotos();addTccSpiceLevels();window.__foodCategory="all";showGroup("coffee")});
 
 /* TCC SPICE LEVELS — APPROVED DRAFT
    Ratings are maintained against exact menu item names. */
-(function addTccSpiceLevels(){
+function addTccSpiceLevels(){
   const spiceRatings = {
     "Hearty Minestrone Soup":1,
     "Creamy Mushroom Soup":0,
@@ -1763,7 +1763,7 @@ document.addEventListener("DOMContentLoaded",()=>{addTccMenuPhotos();window.__fo
     if(description) description.insertAdjacentElement("afterend",indicator);
     else heading.insertAdjacentElement("afterend",indicator);
   });
-})();
+}
 
 </script>
 </body>
