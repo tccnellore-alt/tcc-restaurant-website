@@ -1309,9 +1309,9 @@ function addTccMenuPhotos(){
     if(photo){
       const img=document.createElement('img');
       img.className='m-photo';
-      img.loading=index<6?'eager':'lazy';
+      img.loading='lazy';
       img.decoding='async';
-      if(index<6) img.fetchPriority='high';
+      img.fetchPriority='auto';
       img.sizes='(max-width: 699px) 50vw, (max-width: 999px) 33vw, 25vw';
       img.alt=name+' — TCC menu photo'; img.src=photo.url;
       img.addEventListener('error',()=>{
