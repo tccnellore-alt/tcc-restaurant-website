@@ -584,11 +584,7 @@
         <strong>₹320</strong>
       </article>
       <article class="m-item">
-        <div class="m-photo-wrap">
-          <img class="m-photo" src="https://images.pexels.com/photos/37616635/pexels-photo-37616635.jpeg?cs=srgb&amp;dl=pexels-bynamnamnam-43716305-37616635.jpg&amp;fm=jpg" alt="Classic cold coffee served in a glass on a warm wooden café table — illustrative stock photo" loading="lazy">
-          <div class="m-photo-credit">Illustrative photo: <a href="https://www.pexels.com/photo/iced-coffee-on-wooden-cafe-table-37616635/" target="_blank" rel="noopener noreferrer">bynamnamnam / Pexels</a> · Free to use under Pexels license</div>
-        </div>
-        <div class="m-item-info">
+        <div>
           <h3>Classic Cold Coffee<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
         </div>
         <strong>₹275</strong>
@@ -1305,7 +1301,7 @@ function addTccMenuPhotos(){
     const cleanTitle=title.cloneNode(true);
     cleanTitle.querySelectorAll('.food-badge,.best-seller,.availability-status,[class*="badge"]').forEach(el=>el.remove());
     const name=cleanTitle.textContent.replace(/\\s+/g,' ').trim();
-    const filename=TCC_VERIFIED_PHOTOS[name];
+    const filename=TCC_VERIFIED_PHOTOS[name]?.url;
     if(!filename) return;
     const wrap=document.createElement('div');
     wrap.className='m-photo-wrap';
@@ -1328,7 +1324,7 @@ function addTccMenuPhotos(){
     sourceBlock.replaceWith(info);
   });
 }
-// TEMPORARY TEXT-ONLY MENU: photo-card injection disabled; original photo code and assets are preserved.
+// Inject only verified TCC product photos; unmatched items remain image-free.
 
 // Photo Menu only; text-mode toggle removed.
 // Tap any menu photo to view it larger; tap outside or close to return.
