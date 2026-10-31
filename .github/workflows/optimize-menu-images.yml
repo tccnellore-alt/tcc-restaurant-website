@@ -1,0 +1,30 @@
+name: Optimise TCC menu photos
+on:
+  push:
+    branches: [feature/menu-photos-clean-start]
+    paths:
+      - 'images/menu/**'
+      - 'tools/optimize_menu_images.py'
+      - '.github/workflows/optimize-menu-images.yml'
+permissions:
+  contents: write
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/menu-photos-clean-start
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade Pillow
+      - run: python tools/optimize_menu_images.py
+      - name: Commit generated WebP files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images/menu/optimized
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "chore: generate optimised responsive menu images [skip ci]"
+          git push origin HEAD:feature/menu-photos-clean-start

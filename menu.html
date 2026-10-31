@@ -1266,28 +1266,28 @@
 
 /* Strict menu-photo audit: only source pages that identify the named dish are allowed. */
 const TCC_VERIFIED_PHOTOS = {
-  "Butter Garlic Chicken": {url:"images/menu/butter-garlic-chicken.jpg"},
-  "Fried Chicken Strips": {url:"images/menu/fried-chicken-strips.jpg"},
-  "Orange Fizzy": {url:"images/menu/orange-fizzy.jpg"},
-  "Penne Alfredo": {url:"images/menu/penne-alfredo.jpg"},
-  "The Farmer's Pizza": {url:"images/menu/the-farmers-pizza.jpg"},
-  "Tiramisu Latte": {url:"images/menu/tiramisu-latte.jpg"},
-  "Watermelon Fizzy": {url:"images/menu/watermelon-fizzy.jpg"},
-  "Belgium Truffle Tin": {url:"images/menu/belgium-truffle-tin.png"},
-  "Berry Iced Tea": {url:"images/menu/berry-iced-tea.png"},
-  "Biscoff Cheese Cake Tin": {url:"images/menu/biscoff-cheese-cake-tin.png"},
-  "Bun Maska with TCC Chai": {url:"images/menu/bun-maska-with-tcc-chai.png"},
-  "Cappuccino": {url:"images/menu/cappuccino.png"},
-  "Chicken Alfredo Bliss": {url:"images/menu/chicken-alfredo-bliss.png"},
-  "Classic Matcha (Hot / Cold)": {url:"images/menu/classic-matcha.png"},
-  "French Fries Classic": {url:"images/menu/french-fries-classic.png"},
-  "Iced Latte": {url:"images/menu/iced-latte.png"},
-  "Maska Bun": {url:"images/menu/maska-bun.png"},
-  "Mont Blanc": {url:"images/menu/mont-blanc.png"},
-  "Peri Peri French Fries": {url:"images/menu/peri-peri-french-fries.png"},
-  "Potato Cheese Balls": {url:"images/menu/potato-cheese-balls.png"},
-  "Strawberry Matcha": {url:"images/menu/strawberry-matcha.png"},
-  "Tiramisu Cake Tin": {url:"images/menu/tiramisu-cake-tin.png"},
+  "Butter Garlic Chicken": {url:"images/menu/optimized/butter-garlic-chicken-400.webp",large:"images/menu/optimized/butter-garlic-chicken-800.webp"},
+  "Fried Chicken Strips": {url:"images/menu/optimized/fried-chicken-strips-400.webp",large:"images/menu/optimized/fried-chicken-strips-800.webp"},
+  "Orange Fizzy": {url:"images/menu/optimized/orange-fizzy-400.webp",large:"images/menu/optimized/orange-fizzy-800.webp"},
+  "Penne Alfredo": {url:"images/menu/optimized/penne-alfredo-400.webp",large:"images/menu/optimized/penne-alfredo-800.webp"},
+  "The Farmer's Pizza": {url:"images/menu/optimized/the-farmers-pizza-400.webp",large:"images/menu/optimized/the-farmers-pizza-800.webp"},
+  "Tiramisu Latte": {url:"images/menu/optimized/tiramisu-latte-400.webp",large:"images/menu/optimized/tiramisu-latte-800.webp"},
+  "Watermelon Fizzy": {url:"images/menu/optimized/watermelon-fizzy-400.webp",large:"images/menu/optimized/watermelon-fizzy-800.webp"},
+  "Belgium Truffle Tin": {url:"images/menu/optimized/belgium-truffle-tin-400.webp",large:"images/menu/optimized/belgium-truffle-tin-800.webp"},
+  "Berry Iced Tea": {url:"images/menu/optimized/berry-iced-tea-400.webp",large:"images/menu/optimized/berry-iced-tea-800.webp"},
+  "Biscoff Cheese Cake Tin": {url:"images/menu/optimized/biscoff-cheese-cake-tin-400.webp",large:"images/menu/optimized/biscoff-cheese-cake-tin-800.webp"},
+  "Bun Maska with TCC Chai": {url:"images/menu/optimized/bun-maska-with-tcc-chai-400.webp",large:"images/menu/optimized/bun-maska-with-tcc-chai-800.webp"},
+  "Cappuccino": {url:"images/menu/optimized/cappuccino-400.webp",large:"images/menu/optimized/cappuccino-800.webp"},
+  "Chicken Alfredo Bliss": {url:"images/menu/optimized/chicken-alfredo-bliss-400.webp",large:"images/menu/optimized/chicken-alfredo-bliss-800.webp"},
+  "Classic Matcha (Hot / Cold)": {url:"images/menu/optimized/classic-matcha-400.webp",large:"images/menu/optimized/classic-matcha-800.webp"},
+  "French Fries Classic": {url:"images/menu/optimized/french-fries-classic-400.webp",large:"images/menu/optimized/french-fries-classic-800.webp"},
+  "Iced Latte": {url:"images/menu/optimized/iced-latte-400.webp",large:"images/menu/optimized/iced-latte-800.webp"},
+  "Maska Bun": {url:"images/menu/optimized/maska-bun-400.webp",large:"images/menu/optimized/maska-bun-800.webp"},
+  "Mont Blanc": {url:"images/menu/optimized/mont-blanc-400.webp",large:"images/menu/optimized/mont-blanc-800.webp"},
+  "Peri Peri French Fries": {url:"images/menu/optimized/peri-peri-french-fries-400.webp",large:"images/menu/optimized/peri-peri-french-fries-800.webp"},
+  "Potato Cheese Balls": {url:"images/menu/optimized/potato-cheese-balls-400.webp",large:"images/menu/optimized/potato-cheese-balls-800.webp"},
+  "Strawberry Matcha": {url:"images/menu/optimized/strawberry-matcha-400.webp",large:"images/menu/optimized/strawberry-matcha-800.webp"},
+  "Tiramisu Cake Tin": {url:"images/menu/optimized/tiramisu-cake-tin-400.webp",large:"images/menu/optimized/tiramisu-cake-tin-800.webp"},
 };
 function tccPexelsUrl(id){
   return 'https://images.pexels.com/photos/'+id+'/pexels-photo-'+id+'.jpeg?auto=compress&cs=tinysrgb&w=900';
@@ -1313,6 +1313,7 @@ function addTccMenuPhotos(){
       img.decoding='async';
       img.fetchPriority='auto';
       img.sizes='(max-width: 699px) 50vw, (max-width: 999px) 33vw, 25vw';
+      img.srcset=photo.url+' 400w, '+photo.large+' 800w';
       img.alt=name+' — TCC menu photo'; img.src=photo.url;
       img.addEventListener('error',()=>{
         wrap.classList.add('m-photo-placeholder-wrap');
