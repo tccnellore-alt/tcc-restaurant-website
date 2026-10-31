@@ -411,6 +411,8 @@
 .menu-section .m-item{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;overflow:hidden!important;min-width:0!important;height:100%!important;padding:0!important;background:#fffdf8!important;border:1px solid rgba(183,154,90,.28)!important;border-radius:16px!important;box-shadow:0 5px 16px rgba(23,61,49,.055)!important}
 .menu-section .m-photo-wrap{display:block!important;position:relative!important;width:100%!important;aspect-ratio:4/5!important;min-height:0!important;overflow:hidden!important;background:#eee8d9!important;flex:none!important}
 .menu-section .m-photo{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important}
+/* Product-first crop for selected drinks only; preserve every other photo's current fit. */
+.menu-section .m-photo.m-photo-product-crop{object-fit:cover!important;object-position:center center!important}
 .menu-section .m-photo-placeholder-wrap{background:linear-gradient(145deg,#f3eee2 0%,#e9e3d4 100%)!important}
 .menu-section .m-photo-placeholder{display:flex!important;width:100%!important;height:100%!important;align-items:center!important;justify-content:center!important;background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.45),transparent 58%)!important}
 .menu-section .m-photo-placeholder-mark{display:flex;align-items:center;justify-content:center;width:54px;height:54px;border:1px dashed rgba(23,61,49,.32);border-radius:50%;color:#244b3c;font:700 15px Georgia,serif;letter-spacing:.04em}
@@ -1338,6 +1340,10 @@ function addTccMenuPhotos(){
     if(photo){
       const img=document.createElement('img');
       img.className='m-photo';
+      // Crop only selected drink photos where the product is the focal point;
+      // leave all other images in their existing contain mode.
+      const productFocusedCrop=new Set(['Cappuccino','Orange Fizzy','Watermelon Fizzy','Iced Latte','Berry Iced Tea','Classic Matcha (Hot / Cold)','Strawberry Matcha']);
+      if(productFocusedCrop.has(name)) img.classList.add('m-photo-product-crop');
       img.loading='lazy';
       img.decoding='async';
       img.fetchPriority='auto';
