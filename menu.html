@@ -1756,9 +1756,9 @@ document.addEventListener("DOMContentLoaded",()=>{window.__foodCategory="all";sh
   document.querySelectorAll(".menu-group .m-item").forEach(item=>{
     const heading=item.querySelector("h3");
     if(!heading || item.querySelector(".spice-level")) return;
-    const name=heading.textContent
-      .replace(/♛?\s*Best Seller/gi,"")
-      .replace(/\s+/g," ").trim();
+    const cleanHeading=heading.cloneNode(true);
+    cleanHeading.querySelectorAll(".tcc-bestseller-badge,.tcc-new-arrival-badge,.food-badge,.availability-status").forEach(el=>el.remove());
+    const name=cleanHeading.textContent.replace(/\s+/g," ").trim();
     if(!Object.prototype.hasOwnProperty.call(spiceRatings,name)) return;
     const level=spiceRatings[name];
     const indicator=document.createElement("div");
