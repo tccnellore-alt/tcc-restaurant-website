@@ -430,14 +430,19 @@
 .menu-section .m-no-image-watermark{display:block!important;margin:0!important;padding:8px 12px!important;border:1px solid rgba(23,60,43,.35)!important;border-radius:5px!important;background:rgba(255,253,248,.82)!important;color:#173c2b!important;font:900 10px/1.2 Arial,sans-serif!important;letter-spacing:.13em!important;text-align:center!important}
 .menu-section .m-photo-placeholder small{display:block!important;color:#526057!important;font:600 10px/1.3 Arial,sans-serif!important}
 .menu-section .m-photo-placeholder-mark{flex:none!important}
-/* Clean text-only list view */
-body.menu-text-mode .menu-section .m-list{display:flex!important;flex-direction:column!important;gap:0!important;grid-auto-rows:auto!important}
-body.menu-text-mode .menu-section .m-item{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;gap:12px!important;height:auto!important;min-height:0!important;padding:14px 2px!important;border:0!important;border-bottom:1px solid rgba(23,60,43,.13)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
-body.menu-text-mode .menu-section .m-photo-wrap{display:none!important}
-body.menu-text-mode .menu-section .m-item-info{display:flex!important;min-width:0!important;padding:0!important}
-body.menu-text-mode .menu-section .m-item h3{font-size:16px!important;line-height:1.35!important}
-body.menu-text-mode .menu-section .m-item p{margin-top:4px!important;font-size:12px!important}
-body.menu-text-mode .menu-section .m-item strong{align-self:center!important;margin:0!important;padding:0!important;background:transparent!important;color:#8d6d2e!important;font-size:14px!important;white-space:nowrap!important}
+/* Text Menu — restore the original TCC text-first menu rows */
+body.menu-text-mode .menu-group .m-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;max-width:900px;margin-inline:auto}
+body.menu-text-mode .menu-group .m-item{display:flex!important;flex-direction:row!important;align-items:flex-start!important;justify-content:space-between!important;gap:14px!important;padding:15px 15px!important;margin:0!important;background:#fff!important;border:1px solid rgba(23,60,43,.10)!important;border-radius:13px!important;box-shadow:0 3px 12px rgba(20,42,31,.035)!important;overflow:visible!important}
+body.menu-text-mode .menu-group .m-item .m-item-info{display:block!important;flex:1 1 auto!important;min-width:0!important;padding:0!important}
+body.menu-text-mode .menu-group .m-item h3{font-size:16px!important;line-height:1.35!important}
+body.menu-text-mode .menu-group .m-item p{font-size:12px!important;line-height:1.5!important;margin:5px 0 0!important}
+body.menu-text-mode .menu-group .m-item strong{display:block!important;flex:0 0 auto!important;align-self:flex-start!important;margin:0!important;padding:2px 0 0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#8d7337!important;font-size:14px!important;white-space:nowrap!important}
+body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
+@media(min-width:850px){body.menu-text-mode .menu-group .m-list{grid-template-columns:minmax(0,1fr)!important;max-width:900px;margin-inline:auto!important}}
+/* Keep the missing-photo watermark fully inside its placeholder on narrow phones */
+.menu-section .m-no-image-watermark{box-sizing:border-box!important;width:min(100%,220px)!important;max-width:100%!important;white-space:normal!important;overflow-wrap:anywhere!important;letter-spacing:.07em!important;line-height:1.25!important;padding:8px 10px!important;text-align:center!important}
+.menu-section .m-photo-placeholder{box-sizing:border-box!important;min-width:0!important;overflow:hidden!important}
+.menu-section .m-photo-placeholder-mark{margin:0 auto!important}
 @media(max-width:480px){.menu-view-switch{margin-top:21px}.menu-view-option{min-height:40px;padding:10px 15px;font-size:10px}}
 
 </style>
