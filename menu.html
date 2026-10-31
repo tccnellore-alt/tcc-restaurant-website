@@ -410,7 +410,7 @@
 .menu-section .m-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;align-items:stretch!important;grid-auto-rows:1fr}
 .menu-section .m-item{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;overflow:hidden!important;min-width:0!important;height:100%!important;padding:0!important;background:#fffdf8!important;border:1px solid rgba(183,154,90,.28)!important;border-radius:16px!important;box-shadow:0 5px 16px rgba(23,61,49,.055)!important}
 .menu-section .m-photo-wrap{display:block!important;position:relative!important;width:100%!important;aspect-ratio:4/3!important;min-height:0!important;overflow:hidden!important;background:#eee8d9!important;flex:none!important}
-.menu-section .m-photo{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
+.menu-section .m-photo{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important}
 .menu-section .m-photo-placeholder-wrap{background:linear-gradient(145deg,#f3eee2 0%,#e9e3d4 100%)!important}
 .menu-section .m-photo-placeholder{display:flex!important;width:100%!important;height:100%!important;align-items:center!important;justify-content:center!important;background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.45),transparent 58%)!important}
 .menu-section .m-photo-placeholder-mark{display:flex;align-items:center;justify-content:center;width:54px;height:54px;border:1px dashed rgba(23,61,49,.32);border-radius:50%;color:#244b3c;font:700 15px Georgia,serif;letter-spacing:.04em}
@@ -1297,7 +1297,7 @@ function showTccPhotoPlaceholder(wrap){
   wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Exact stock photo not verified; TCC photo needed"><span class="m-photo-placeholder-icon" aria-hidden="true">TCC</span><strong>TCC photo needed</strong><small>No exact stock match verified</small></div>';
 }
 function addTccMenuPhotos(){
-  document.querySelectorAll('.menu-section .m-item').forEach(item=>{
+  document.querySelectorAll('.menu-section .m-item').forEach((item,index)=>{
     const title=item.querySelector('h3'), price=item.querySelector('strong');
     if(!title||!price||item.querySelector('.m-photo-wrap')) return;
     const cleanTitle=title.cloneNode(true);
@@ -1308,7 +1308,11 @@ function addTccMenuPhotos(){
     wrap.className='m-photo-wrap'+(photo?'':' m-photo-placeholder-wrap');
     if(photo){
       const img=document.createElement('img');
-      img.className='m-photo'; img.loading='lazy'; img.decoding='async';
+      img.className='m-photo';
+      img.loading=index<4?'eager':'lazy';
+      img.decoding='async';
+      if(index<4) img.fetchPriority='high';
+      img.sizes='(max-width: 699px) 50vw, (max-width: 999px) 33vw, 25vw';
       img.alt=name+' — TCC menu photo'; img.src=photo.url;
       img.addEventListener('error',()=>{
         wrap.classList.add('m-photo-placeholder-wrap');
