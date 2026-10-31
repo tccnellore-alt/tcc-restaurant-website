@@ -221,8 +221,8 @@
 .menu-group .menu-section{margin-top:22px}
 .menu-group .menu-section h2{font:700 12px/1.4 Manrope,Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#8d7337;border:0;padding:0 0 10px;margin:0}
 .menu-group .menu-section h2:after{content:"";display:block;width:34px;height:2px;background:#b79a5a;margin-top:7px}
-.menu-group .m-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px!important;align-items:stretch}
-.menu-group .m-item{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;min-width:0;overflow:hidden;padding:0!important;margin:0;background:#fffdf8!important;border:1px solid rgba(183,154,90,.3)!important;border-radius:15px!important;box-shadow:0 6px 18px rgba(23,61,49,.065)!important}
+.menu-section .m-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px!important;align-items:stretch}
+.menu-section .m-item{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;min-width:0;overflow:hidden;padding:0!important;margin:0;background:#fffdf8!important;border:1px solid rgba(183,154,90,.3)!important;border-radius:15px!important;box-shadow:0 6px 18px rgba(23,61,49,.065)!important}
 .menu-image-lightbox{display:none;position:fixed;inset:0;z-index:10000;background:rgba(10,16,13,.92);align-items:center;justify-content:center;padding:22px}
 .menu-image-lightbox.is-open{display:flex}
 .menu-lightbox-card{display:flex;flex-direction:column;align-items:center;gap:14px;width:min(100%,760px);max-height:calc(100vh - 44px);overflow:auto;padding:14px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:#fffaf0;box-shadow:0 12px 40px rgba(0,0,0,.35)}
@@ -253,31 +253,31 @@
 .m-photo-wrap.photo-unverified{display:block;background:#f7f0e3}
 .m-item:hover .m-photo{transform:scale(1.035)}
 .m-item-info{display:flex;flex-direction:column;flex:1;padding:11px 11px 5px;min-width:0}
-.menu-group .m-item h3{margin:0;color:#173d31;font:700 13px/1.35 Manrope,Arial,sans-serif;overflow-wrap:anywhere}
-.menu-group .m-item p{margin:5px 0 0;color:#6d776e;font:10.5px/1.45 Manrope,Arial,sans-serif;overflow-wrap:anywhere}
-.menu-group .m-item strong{align-self:flex-start;white-space:nowrap;margin:3px 11px 11px;padding:5px 8px;border-radius:999px;background:#f3ead7;color:#8d6d2e;font:800 11px/1.2 Manrope,Arial,sans-serif}
+.menu-section .m-item h3{margin:0;color:#173d31;font:700 13px/1.35 Manrope,Arial,sans-serif;overflow-wrap:anywhere}
+.menu-section .m-item p{margin:5px 0 0;color:#6d776e;font:10.5px/1.45 Manrope,Arial,sans-serif;overflow-wrap:anywhere}
+.menu-section .m-item strong{align-self:flex-start;white-space:nowrap;margin:3px 11px 11px;padding:5px 8px;border-radius:999px;background:#f3ead7;color:#8d6d2e;font:800 11px/1.2 Manrope,Arial,sans-serif}
 .menu-group .food-badge{width:10px;height:10px;margin-right:6px;flex:none}
 .menu-group .food-badge:after{width:5px;height:5px}
-.menu-group .m-item .food-badge{vertical-align:1px}
+.menu-section .m-item .food-badge{vertical-align:1px}
 /* Defensive cleanup: menu cards are display-only; hide stray controls and empty placeholder nodes beneath item names. */
-.menu-group .m-item input[type="checkbox"],.menu-group .m-item input[type="radio"],.menu-group .m-item label:empty{display:none!important;appearance:none!important;-webkit-appearance:none!important}
-.menu-group .m-item-info > :empty:not(.food-badge){display:none!important}
-.menu-group .m-item-info-source:empty{display:none!important}
+.menu-section .m-item input[type="checkbox"],.menu-section .m-item input[type="radio"],.menu-section .m-item label:empty{display:none!important;appearance:none!important;-webkit-appearance:none!important}
+.menu-section .m-item-info > :empty:not(.food-badge){display:none!important}
+.menu-section .m-item-info-source:empty{display:none!important}
 /* Final card cleanup: suppress empty inline artifacts across the full item card, not just its info wrapper. */
-.menu-group .m-item *:empty:not(.food-badge):not(img),.menu-group .m-item-info:empty{display:none!important}
-.menu-group .m-item-info-source:before,.menu-group .m-item-info-source:after,.menu-group .m-item:before,.menu-group .m-item:after{content:none!important;display:none!important}
-.menu-group .m-item h3:before,.menu-group .m-item h3:after{content:none!important;display:none!important}
-.menu-group .m-item[data-food-type]{}
+.menu-section .m-item *:empty:not(.food-badge):not(img),.menu-section .m-item-info:empty{display:none!important}
+.menu-section .m-item-info-source:before,.menu-section .m-item-info-source:after,.menu-section .m-item:before,.menu-section .m-item:after{content:none!important;display:none!important}
+.menu-section .m-item h3:before,.menu-section .m-item h3:after{content:none!important;display:none!important}
+.menu-section .m-item[data-food-type]{}
 .menu-group#food .m-item p{font-size:10px;line-height:1.4}
 .menu-addons-panel{display:none}
 .no-results{padding:34px 12px}
-@media(max-width:360px){.menu-group .m-list{grid-template-columns:minmax(0,1fr)}.menu-group .m-item h3{font-size:14px}.m-photo-wrap{aspect-ratio:16/9}}
-@media(min-width:700px){.menu-group .m-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px!important}.menu-group .m-item-info{padding:13px 13px 6px}.menu-group .m-item h3{font-size:14px}.menu-group .m-item p{font-size:11px}.menu-group .m-item strong{margin-left:13px;margin-bottom:13px}}
-@media(min-width:1000px){.menu-group .m-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px!important}.menu-photo-disclaimer{max-width:860px}}
+@media(max-width:360px){.menu-section .m-list{grid-template-columns:minmax(0,1fr)}.menu-section .m-item h3{font-size:14px}.m-photo-wrap{aspect-ratio:16/9}}
+@media(min-width:700px){.menu-section .m-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px!important}.menu-section .m-item-info{padding:13px 13px 6px}.menu-section .m-item h3{font-size:14px}.menu-section .m-item p{font-size:11px}.menu-section .m-item strong{margin-left:13px;margin-bottom:13px}}
+@media(min-width:1000px){.menu-section .m-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px!important}.menu-photo-disclaimer{max-width:860px}}
 
 /* Temporary stock status for pizza and burger items */
 .menu-group .availability-status{display:inline-flex!important;align-items:center;width:max-content;max-width:100%;margin:7px 0 0!important;padding:5px 9px;border:1px solid rgba(141,115,55,.22);border-radius:999px;background:#f5efe1;color:#80672f!important;font:700 10px/1.25 Manrope,Arial,sans-serif!important;letter-spacing:.035em}
-.menu-group .m-item:has(.availability-status) h3{color:#68756b!important}
+.menu-section .m-item:has(.availability-status) h3{color:#68756b!important}
 
 /* Authoritative mobile menu layout reset: keep toolbar and content flow predictable. */
 .menu-tools{position:sticky!important;top:66px!important;z-index:100!important;padding:10px 0!important}
@@ -407,16 +407,16 @@
 
 
 /* TCC uploaded-photo menu cards */
-.menu-group .m-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;align-items:stretch}
-.menu-group .m-item{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;overflow:hidden;padding:0!important;background:#fffdf8!important;border:1px solid rgba(183,154,90,.30)!important;border-radius:15px!important;box-shadow:0 6px 18px rgba(23,61,49,.065)!important}
+.menu-section .m-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;align-items:stretch}
+.menu-section .m-item{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;overflow:hidden;padding:0!important;background:#fffdf8!important;border:1px solid rgba(183,154,90,.30)!important;border-radius:15px!important;box-shadow:0 6px 18px rgba(23,61,49,.065)!important}
 .menu-group .m-photo-wrap{display:block!important;width:100%;aspect-ratio:4/3;overflow:hidden;background:#eee6d5}
 .menu-group .m-photo{display:block;width:100%;height:100%;object-fit:cover}
-.menu-group .m-item-info{display:flex!important;flex-direction:column;flex:1;padding:11px 11px 5px;min-width:0}
-.menu-group .m-item h3{font-size:13px!important;line-height:1.35!important}
-.menu-group .m-item p{font-size:10.5px!important;line-height:1.45!important}
-.menu-group .m-item strong{align-self:flex-start;margin:3px 11px 11px!important;padding:5px 8px;border-radius:999px;background:#f3ead7;color:#8d6d2e;font-size:11px!important}
-@media(min-width:700px){.menu-group .m-list{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}}
-@media(min-width:1000px){.menu-group .m-list{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important}}
+.menu-section .m-item-info{display:flex!important;flex-direction:column;flex:1;padding:11px 11px 5px;min-width:0}
+.menu-section .m-item h3{font-size:13px!important;line-height:1.35!important}
+.menu-section .m-item p{font-size:10.5px!important;line-height:1.45!important}
+.menu-section .m-item strong{align-self:flex-start;margin:3px 11px 11px!important;padding:5px 8px;border-radius:999px;background:#f3ead7;color:#8d6d2e;font-size:11px!important}
+@media(min-width:700px){.menu-section .m-list{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}}
+@media(min-width:1000px){.menu-section .m-list{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important}}
 </style>
 </head>
 <body>
@@ -1298,7 +1298,7 @@ function showTccPhotoPlaceholder(wrap){
   wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Exact stock photo not verified; TCC photo needed"><span class="m-photo-placeholder-icon" aria-hidden="true">TCC</span><strong>TCC photo needed</strong><small>No exact stock match verified</small></div>';
 }
 function addTccMenuPhotos(){
-  document.querySelectorAll('.menu-group .m-item').forEach(item=>{
+  document.querySelectorAll('.menu-section .m-item').forEach(item=>{
     const title=item.querySelector('h3');
     const price=item.querySelector('strong');
     if(!title||!price||item.querySelector('.m-photo-wrap')) return;
@@ -1680,7 +1680,7 @@ document.addEventListener("DOMContentLoaded",()=>{addTccMenuPhotos();window.__fo
     "Grilled Chicken Sandwich":2,
   };
   const labels = ["No spice","Very mild","Mild","Medium hot","Hot","Extra hot"];
-  document.querySelectorAll(".menu-group .m-item").forEach(item=>{
+  document.querySelectorAll(".menu-section .m-item").forEach(item=>{
     const heading=item.querySelector("h3");
     if(!heading || item.querySelector(".spice-level")) return;
     const name=heading.textContent
