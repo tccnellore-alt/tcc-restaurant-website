@@ -1,7 +1,7 @@
 name: Optimise TCC menu photos
 on:
   push:
-    branches: [feature/menu-photos-clean-start]
+    branches: [image]
     paths:
       - 'images/menu/**'
       - 'tools/optimize_menu_images.py'
@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: feature/menu-photos-clean-start
+          ref: image
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -27,4 +27,4 @@ jobs:
           git add images/menu/optimized
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "chore: generate optimised responsive menu images"
-          git push origin HEAD:feature/menu-photos-clean-start
+          git push origin HEAD:image
