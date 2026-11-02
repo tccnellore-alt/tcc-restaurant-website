@@ -618,6 +618,61 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   color:#b42318!important;
   font-weight:800!important;
 }
+
+/* Clear two-way segmented switch for Text / Image menu modes. */
+.menu-view-switch{
+  display:flex!important;
+  position:relative!important;
+  align-items:center!important;
+  justify-content:stretch!important;
+  gap:5px!important;
+  width:min(100%,340px)!important;
+  margin:24px auto 0!important;
+  padding:5px!important;
+  border:1px solid rgba(226,211,169,.62)!important;
+  border-radius:16px!important;
+  background:rgba(8,31,21,.72)!important;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.2),0 5px 16px rgba(0,0,0,.12)!important;
+}
+.menu-view-option{
+  display:flex!important;
+  flex:1 1 50%!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  min-width:0!important;
+  min-height:46px!important;
+  padding:11px 10px!important;
+  border:1px solid transparent!important;
+  border-radius:11px!important;
+  background:transparent!important;
+  color:#f1ead8!important;
+  font:800 12px/1.2 Manrope,Arial,sans-serif!important;
+  letter-spacing:.015em!important;
+  white-space:nowrap!important;
+  opacity:.78!important;
+  box-shadow:none!important;
+  transition:background .2s ease,color .2s ease,box-shadow .2s ease,opacity .2s ease!important;
+}
+.menu-view-option.is-active{
+  background:#f4eee1!important;
+  border-color:rgba(210,184,120,.8)!important;
+  color:#173c2b!important;
+  opacity:1!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.2),inset 0 0 0 1px rgba(255,255,255,.55)!important;
+}
+.menu-view-option:not(.is-active):hover{
+  background:rgba(255,255,255,.09)!important;
+  opacity:1!important;
+}
+.menu-view-option:focus-visible{
+  outline:2px solid #d2b878!important;
+  outline-offset:2px!important;
+}
+@media(max-width:480px){
+  .menu-view-switch{width:min(100%,330px)!important;margin-top:20px!important;padding:4px!important;border-radius:14px!important}
+  .menu-view-option{min-height:44px!important;padding:10px 7px!important;font-size:11px!important}
+}
 </style>
 </head>
 <body>
