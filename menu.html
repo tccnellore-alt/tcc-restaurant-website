@@ -699,6 +699,25 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   margin:7px 0 0!important;padding:0!important;white-space:normal!important;
 }
 
+
+/* TCC branded photo-coming-soon placeholder */
+.menu-section .m-photo-placeholder{
+  box-sizing:border-box!important;display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;gap:16px!important;
+  padding:20px!important;background:linear-gradient(145deg,#f7f1e5 0%,#eee7d8 100%)!important;
+  text-align:center!important;
+}
+.menu-section .m-photo-placeholder-logo{
+  display:block!important;width:min(44%,150px)!important;max-width:150px!important;
+  max-height:100px!important;height:auto!important;object-fit:contain!important;margin:0 auto!important;
+}
+.menu-section .m-photo-coming-soon{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:auto!important;max-width:100%!important;margin:0 auto!important;padding:11px 22px!important;
+  border:1.5px solid #78977d!important;border-radius:999px!important;
+  background:rgba(255,253,248,.5)!important;color:#173c2b!important;
+  font:800 13px/1.25 Manrope,Arial,sans-serif!important;letter-spacing:0!important;text-align:center!important;
+}
 </style>
 </head>
 <body>
@@ -1645,7 +1664,7 @@ function tccPexelsUrl(id){
 }
 function showTccPhotoPlaceholder(wrap){
   wrap.classList.add('photo-unverified','m-photo-placeholder-wrap');
-  wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="No image available"><span class="m-photo-placeholder-mark" aria-hidden="true">TCC</span><strong class="m-no-image-watermark">NO IMAGE AVAILABLE</strong><small>Photo coming soon</small></div>';
+  wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
 }
 function addTccMenuPhotos(){
   document.querySelectorAll('.menu-section .m-item').forEach((item,index)=>{
@@ -1672,11 +1691,11 @@ function addTccMenuPhotos(){
       img.alt=name+' — TCC menu photo'; img.src=photo.url;
       img.addEventListener('error',()=>{
         wrap.classList.add('m-photo-placeholder-wrap');
-        wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="No image available"><span class="m-photo-placeholder-mark" aria-hidden="true">TCC</span><strong class="m-no-image-watermark">NO IMAGE AVAILABLE</strong><small>Photo coming soon</small></div>';
+        wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
       },{once:true});
       wrap.appendChild(img);
     }else{
-      wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="No image available"><span class="m-photo-placeholder-mark" aria-hidden="true">TCC</span><strong class="m-no-image-watermark">NO IMAGE AVAILABLE</strong><small>Photo coming soon</small></div>';
+      wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
     }
     item.insertBefore(wrap,item.firstChild);
     const info=document.createElement('div'); info.className='m-item-info';
