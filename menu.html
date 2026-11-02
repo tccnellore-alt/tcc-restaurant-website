@@ -535,6 +535,43 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   min-height:0!important;
   align-self:stretch!important;
 }
+
+/* Sold-out menu items: muted card treatment in both text and photo views. */
+.menu-group .m-item:has(.availability-status),
+.menu-section .m-item:has(.availability-status){
+  background:#f0f0ed!important;
+  border-color:#d8d9d4!important;
+  box-shadow:0 3px 10px rgba(35,42,37,.045)!important;
+}
+.menu-group .m-item:has(.availability-status) .m-photo,
+.menu-section .m-item:has(.availability-status) .m-photo{
+  filter:grayscale(1)!important;
+  opacity:.62!important;
+}
+.menu-group .m-item:has(.availability-status) .m-photo-placeholder,
+.menu-section .m-item:has(.availability-status) .m-photo-placeholder{
+  filter:grayscale(.75)!important;
+  opacity:.78!important;
+}
+.menu-group .m-item:has(.availability-status) h3,
+.menu-section .m-item:has(.availability-status) h3{
+  color:#737873!important;
+}
+.menu-group .m-item:has(.availability-status) p,
+.menu-section .m-item:has(.availability-status) p{
+  color:#858984!important;
+}
+.menu-group .m-item:has(.availability-status) > strong,
+.menu-section .m-item:has(.availability-status) > strong{
+  background:#e2e3de!important;
+  color:#777b70!important;
+}
+.menu-group .m-item:has(.availability-status) .availability-status,
+.menu-section .m-item:has(.availability-status) .availability-status{
+  background:#e8e9e5!important;
+  border-color:#c9cbc5!important;
+  color:#747970!important;
+}
 </style>
 </head>
 <body>
