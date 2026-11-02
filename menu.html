@@ -573,6 +573,51 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   border-color:#c9cbc5!important;
   color:#747970!important;
 }
+
+/* Final sold-out treatment: red status, muted details, and a clear photo stamp. */
+.menu-group .m-item:has(.availability-status) .m-photo-wrap,
+.menu-section .m-item:has(.availability-status) .m-photo-wrap{
+  position:relative!important;
+}
+.menu-group .m-item:has(.availability-status) .m-photo-wrap::before,
+.menu-section .m-item:has(.availability-status) .m-photo-wrap::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:rgba(28,34,30,.28);
+  pointer-events:none;
+}
+.menu-group .m-item:has(.availability-status) .m-photo-wrap::after,
+.menu-section .m-item:has(.availability-status) .m-photo-wrap::after{
+  content:"SOLD OUT";
+  position:absolute;
+  z-index:2;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) rotate(-9deg);
+  display:block;
+  width:max-content;
+  max-width:86%;
+  padding:9px 17px;
+  border:2px solid rgba(255,255,255,.94);
+  border-radius:9px;
+  background:rgba(35,40,36,.48);
+  color:#fff!important;
+  font:800 clamp(13px,2.8vw,19px)/1.1 Manrope,Arial,sans-serif!important;
+  letter-spacing:.12em;
+  text-align:center;
+  white-space:nowrap;
+  text-shadow:0 1px 3px rgba(0,0,0,.3);
+  pointer-events:none;
+}
+.menu-group .m-item:has(.availability-status) .availability-status,
+.menu-section .m-item:has(.availability-status) .availability-status{
+  background:#f8e7e5!important;
+  border:1px solid #d88a83!important;
+  color:#b42318!important;
+  font-weight:800!important;
+}
 </style>
 </head>
 <body>
