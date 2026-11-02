@@ -753,6 +753,20 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   text-align:center!important;
   white-space:normal!important;
 }
+
+/* Keep the Photo Coming Soon label on one line on mobile and desktop. */
+.menu-section .m-photo-coming-soon{
+  display:inline-flex!important;
+  flex-wrap:nowrap!important;
+  white-space:nowrap!important;
+  width:max-content!important;
+  max-width:calc(100% - 8px)!important;
+  padding:10px 12px!important;
+  font-size:clamp(10px,2.8vw,13px)!important;
+  line-height:1.2!important;
+  overflow-wrap:normal!important;
+  word-break:keep-all!important;
+}
 </style>
 </head>
 <body>
