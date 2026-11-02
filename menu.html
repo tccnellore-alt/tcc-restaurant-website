@@ -673,6 +673,14 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   .menu-view-switch{width:min(100%,330px)!important;margin-top:20px!important;padding:4px!important;border-radius:14px!important}
   .menu-view-option{min-height:44px!important;padding:10px 7px!important;font-size:11px!important}
 }
+
+/* TCC takeaway pricing notice — visible in both menu views. */
+.takeaway-charge-notice{display:flex;align-items:center;justify-content:center;gap:11px;width:min(100%,390px);margin:15px auto 0;padding:10px 15px;border:1px solid rgba(226,211,169,.58);border-radius:12px;background:rgba(255,250,240,.97);color:#173c2b;box-shadow:0 5px 16px rgba(0,0,0,.12);text-align:left}
+.takeaway-charge-icon{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#e9dfc6;color:#173c2b;font:800 18px/1 Arial,sans-serif}
+.takeaway-charge-notice strong{display:block;color:#8d7337;font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.14em}
+.takeaway-charge-notice small{display:block;margin-top:3px;color:#263b32;font:700 12px/1.35 Manrope,Arial,sans-serif}
+@media(max-width:480px){.takeaway-charge-notice{width:min(100%,350px);margin-top:12px;padding:9px 12px}.takeaway-charge-notice small{font-size:11px}}
+
 </style>
 </head>
 <body>
@@ -690,6 +698,10 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
     <div class="menu-view-switch" role="group" aria-label="Choose menu view">
       <button type="button" class="menu-view-option" data-menu-view="text" aria-pressed="false">☰ Text Menu</button>
       <button type="button" class="menu-view-option is-active" data-menu-view="image" aria-pressed="true">▧ Image Menu</button>
+    </div>
+    <div class="takeaway-charge-notice" role="note" aria-label="Takeaway pricing">
+      <span class="takeaway-charge-icon" aria-hidden="true">↗</span>
+      <span><strong>TAKEAWAY</strong><small>₹10 extra per product on takeaway orders</small></span>
     </div>
   </div>
 </section>
