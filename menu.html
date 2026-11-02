@@ -690,6 +690,15 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 @media(max-width:480px){.menu-lightbox-bestseller{font-size:7px;padding:3px 5px;gap:3px}.menu-lightbox-bestseller .crown{font-size:10px}}
 
 
+
+/* Ensure the two newly added coffee descriptions remain visible in photo-menu cards. */
+.menu-group#coffee .menu-section .m-item .m-item-info p.menu-item-description-force{
+  display:block!important;visibility:visible!important;opacity:1!important;
+  height:auto!important;max-height:none!important;overflow:visible!important;
+  color:#6d776e!important;font:500 11px/1.5 Manrope,Arial,sans-serif!important;
+  margin:7px 0 0!important;padding:0!important;white-space:normal!important;
+}
+
 </style>
 </head>
 <body>
@@ -2009,13 +2018,6 @@ search.addEventListener("input",e=>{
 document.addEventListener("DOMContentLoaded",()=>{addTccMenuPhotos();window.__foodCategory="all";showGroup("coffee")});
 
 
-/* Ensure the two newly added coffee descriptions remain visible in photo-menu cards. */
-.menu-group#coffee .menu-section .m-item .m-item-info p.menu-item-description-force{
-  display:block!important;visibility:visible!important;opacity:1!important;
-  height:auto!important;max-height:none!important;overflow:visible!important;
-  color:#6d776e!important;font:500 11px/1.5 Manrope,Arial,sans-serif!important;
-  margin:7px 0 0!important;padding:0!important;white-space:normal!important;
-}
 
 /* TCC SPICE LEVELS — APPROVED DRAFT
    Ratings are maintained against exact menu item names. */
