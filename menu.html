@@ -682,10 +682,12 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 @media(max-width:480px){.takeaway-charge-notice{width:min(100%,350px);margin-top:12px;padding:9px 12px}.takeaway-charge-notice small{font-size:11px}}
 
 
-/* Compact bestseller pill in the expanded photo lightbox. */
-.menu-lightbox-bestseller{display:none;align-items:center;gap:5px;width:max-content;margin:7px 0 0;padding:5px 9px;border:1px solid rgba(183,154,90,.55);border-radius:999px;background:#f3ead7;color:#735c2b;font:700 10px/1.2 Manrope,Arial,sans-serif;letter-spacing:.015em}
+/* Bestseller badge in the photo lightbox — match the compact menu-card pill. */
+.menu-lightbox-name{display:inline!important;vertical-align:middle}
+.menu-lightbox-bestseller{display:none;align-items:center;gap:4px;width:max-content;max-width:100%;margin:0 0 0 8px;padding:3px 7px;border:1px solid #c7a45b;border-radius:999px;background:#173c2b;color:#f4df9b;font:800 8px/1.2 Manrope,Arial,sans-serif;letter-spacing:.035em;vertical-align:middle;white-space:nowrap;box-shadow:0 1px 3px rgba(23,60,43,.12)}
 .menu-lightbox-bestseller.is-visible{display:inline-flex}
-.menu-lightbox-bestseller .crown{color:#a98435;font-size:12px;line-height:1}
+.menu-lightbox-bestseller .crown{color:#e2c16d;font-size:11px;line-height:1}
+@media(max-width:480px){.menu-lightbox-bestseller{font-size:7px;padding:3px 5px;gap:3px}.menu-lightbox-bestseller .crown{font-size:10px}}
 
 </style>
 </head>
