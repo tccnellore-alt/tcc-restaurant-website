@@ -821,7 +821,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>Hot Chocolate<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
-          <p>Rich, velvety chocolate blended with warm milk, served with or without a scoop of ice cream.</p>
+          <p class="menu-item-description-force">Rich, velvety chocolate blended with warm milk, served with or without a scoop of ice cream.</p>
           
         </div>
         <strong>₹315</strong>
@@ -829,7 +829,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>Affogato<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
-          <p>A scoop of creamy vanilla ice cream topped with a shot of freshly brewed hot espresso.</p>
+          <p class="menu-item-description-force">A scoop of creamy vanilla ice cream topped with a shot of freshly brewed hot espresso.</p>
           
         </div>
         <strong>₹249</strong>
@@ -2007,6 +2007,15 @@ search.addEventListener("input",e=>{
   filter(q);
 });
 document.addEventListener("DOMContentLoaded",()=>{addTccMenuPhotos();window.__foodCategory="all";showGroup("coffee")});
+
+
+/* Ensure the two newly added coffee descriptions remain visible in photo-menu cards. */
+.menu-group#coffee .menu-section .m-item .m-item-info p.menu-item-description-force{
+  display:block!important;visibility:visible!important;opacity:1!important;
+  height:auto!important;max-height:none!important;overflow:visible!important;
+  color:#6d776e!important;font:500 11px/1.5 Manrope,Arial,sans-serif!important;
+  margin:7px 0 0!important;padding:0!important;white-space:normal!important;
+}
 
 /* TCC SPICE LEVELS — APPROVED DRAFT
    Ratings are maintained against exact menu item names. */
