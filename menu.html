@@ -642,10 +642,6 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
         <strong>₹320</strong>
       </article>
       <article class="m-item">
-        <div class="m-photo-wrap">
-          <img class="m-photo" src="https://images.pexels.com/photos/37616635/pexels-photo-37616635.jpeg?cs=srgb&amp;dl=pexels-bynamnamnam-43716305-37616635.jpg&amp;fm=jpg" alt="Classic cold coffee served in a glass on a warm wooden café table — illustrative stock photo" loading="lazy">
-          <div class="m-photo-credit">Illustrative photo: <a href="https://www.pexels.com/photo/iced-coffee-on-wooden-cafe-table-37616635/" target="_blank" rel="noopener noreferrer">bynamnamnam / Pexels</a> · Free to use under Pexels license</div>
-        </div>
         <div class="m-item-info">
           <h3>Classic Cold Coffee<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
         </div>
@@ -1435,7 +1431,7 @@ function addTccMenuPhotos(){
     item.insertBefore(wrap,item.firstChild);
     const info=document.createElement('div'); info.className='m-item-info';
     const sourceBlock=title.parentElement;
-    sourceBlock.querySelectorAll('h3,p').forEach(el=>info.appendChild(el));
+    sourceBlock.querySelectorAll('h3,p,.availability-status').forEach(el=>info.appendChild(el));
     sourceBlock.replaceWith(info);
   });
 }
