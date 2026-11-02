@@ -472,6 +472,69 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 .menu-section .m-photo-placeholder{box-sizing:border-box!important;min-width:0!important;overflow:hidden!important}
 .menu-section .m-photo-placeholder-mark{margin:0 auto!important}
 @media(max-width:480px){.menu-view-switch{margin-top:21px}.menu-view-option{min-height:40px;padding:10px 15px;font-size:10px}}
+
+/* Photo-menu card spacing and content-flow fix — prevent edge-hugging and clipped text. */
+.menu-group .m-item .m-item-info,
+.menu-section .m-item .m-item-info{
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:13px 14px 7px!important;
+  overflow:visible!important;
+}
+.menu-group .m-item h3,
+.menu-section .m-item h3{
+  display:block!important;
+  width:100%!important;
+  margin:0 0 5px!important;
+  padding:0!important;
+  line-height:1.4!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+}
+.menu-group .m-item p,
+.menu-section .m-item p{
+  display:block!important;
+  width:100%!important;
+  margin:5px 0 0!important;
+  padding:0!important;
+  line-height:1.5!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  overflow-wrap:anywhere!important;
+}
+.menu-group .m-item .availability-status,
+.menu-section .m-item .availability-status{
+  align-self:flex-start!important;
+  max-width:100%!important;
+  margin:6px 0 2px!important;
+  white-space:normal!important;
+}
+.menu-group .m-item > strong,
+.menu-section .m-item > strong{
+  flex:0 0 auto!important;
+  align-self:flex-start!important;
+  margin:2px 14px 14px!important;
+}
+.menu-group .m-list,
+.menu-section .m-list{
+  align-items:stretch!important;
+  grid-auto-rows:auto!important;
+}
+.menu-group .m-item,
+.menu-section .m-item{
+  height:auto!important;
+  min-height:0!important;
+  align-self:stretch!important;
+}
 </style>
 </head>
 <body>
