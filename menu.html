@@ -543,15 +543,16 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   border-color:#d8d9d4!important;
   box-shadow:0 3px 10px rgba(35,42,37,.045)!important;
 }
+/* Keep product photography in full colour even when the item is sold out. */
 .menu-group .m-item:has(.availability-status) .m-photo,
 .menu-section .m-item:has(.availability-status) .m-photo{
-  filter:grayscale(1)!important;
-  opacity:.62!important;
+  filter:none!important;
+  opacity:1!important;
 }
 .menu-group .m-item:has(.availability-status) .m-photo-placeholder,
 .menu-section .m-item:has(.availability-status) .m-photo-placeholder{
-  filter:grayscale(.75)!important;
-  opacity:.78!important;
+  filter:none!important;
+  opacity:1!important;
 }
 .menu-group .m-item:has(.availability-status) h3,
 .menu-section .m-item:has(.availability-status) h3{
