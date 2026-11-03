@@ -846,6 +846,51 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   letter-spacing:2px!important;
   white-space:nowrap!important;
 }
+
+/* Keep the original TCC circular logo and centre the message beneath it. */
+.menu-section .m-photo-placeholder{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:18px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding:18px 12px!important;
+  text-align:center!important;
+}
+.menu-section .m-photo-placeholder-logo{
+  display:block!important;
+  flex:0 0 auto!important;
+  align-self:center!important;
+  width:112px!important;
+  max-width:48%!important;
+  height:112px!important;
+  max-height:112px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0 auto!important;
+  position:static!important;
+  transform:none!important;
+}
+.menu-section .m-photo-coming-soon{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-self:center!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:max-content!important;
+  max-width:calc(100% - 8px)!important;
+  box-sizing:border-box!important;
+  margin:0 auto!important;
+  padding:9px 13px!important;
+  position:static!important;
+  transform:none!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+  font-size:clamp(10px,3vw,13px)!important;
+  line-height:1.2!important;
+}
 </style>
 </head>
 <body>
@@ -1792,7 +1837,7 @@ function tccPexelsUrl(id){
 }
 function showTccPhotoPlaceholder(wrap){
   wrap.classList.add('photo-unverified','m-photo-placeholder-wrap');
-  wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><span class="m-photo-placeholder-logo" role="img" aria-label="TCC – The Coffee Club"><span class="m-photo-logo-leaf" aria-hidden="true">◆</span><span class="m-photo-logo-name">TCC</span><span class="m-photo-logo-tagline">THE COFFEE CLUB</span></span><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
+  wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
 }
 function addTccMenuPhotos(){
   document.querySelectorAll('.menu-section .m-item').forEach((item,index)=>{
@@ -1819,11 +1864,11 @@ function addTccMenuPhotos(){
       img.alt=name+' — TCC menu photo'; img.src=photo.url;
       img.addEventListener('error',()=>{
         wrap.classList.add('m-photo-placeholder-wrap');
-        wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><span class="m-photo-placeholder-logo" role="img" aria-label="TCC – The Coffee Club"><span class="m-photo-logo-leaf" aria-hidden="true">◆</span><span class="m-photo-logo-name">TCC</span><span class="m-photo-logo-tagline">THE COFFEE CLUB</span></span><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
+        wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
       },{once:true});
       wrap.appendChild(img);
     }else{
-      wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><span class="m-photo-placeholder-logo" role="img" aria-label="TCC – The Coffee Club"><span class="m-photo-logo-leaf" aria-hidden="true">◆</span><span class="m-photo-logo-name">TCC</span><span class="m-photo-logo-tagline">THE COFFEE CLUB</span></span><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
+      wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
     }
     item.insertBefore(wrap,item.firstChild);
     const info=document.createElement('div'); info.className='m-item-info';
