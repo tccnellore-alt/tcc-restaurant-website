@@ -39,7 +39,7 @@
 .addons-row::-webkit-scrollbar{display:none}
 .addons-row span{flex:0 0 auto;padding:9px 11px;border:1px solid rgba(23,60,43,.12);border-radius:10px;background:#fff;color:#526057;font:500 11px/1.2 Manrope,Arial,sans-serif}
 .addons-row b{color:#8d7337;font-weight:800}
-.menu-addons-panel{display:none}\n.menu-group#food .menu-section[data-group="Food"] h2{}
+.menu-addons-panel{display:block}\n.menu-group#food .menu-section[data-group="Food"] h2{}
 .menu-group#food .menu-section{scroll-margin-top:285px}
 @media(max-width:849px){.menu-content{padding-bottom:110px!important}}.food-tabs{display:none;gap:7px;overflow-x:auto;scrollbar-width:none;margin-top:9px;padding-bottom:1px}
 .food-tabs.visible{display:flex}
@@ -272,7 +272,7 @@
 .menu-group .m-item h3:before,.menu-group .m-item h3:after{content:none!important;display:none!important}
 .menu-group .m-item[data-food-type]{}
 .menu-group#food .m-item p{font-size:10px;line-height:1.4}
-.menu-addons-panel{display:none}
+.menu-addons-panel{display:block}
 .no-results{padding:34px 12px}
 @media(max-width:360px){.menu-group .m-list{grid-template-columns:minmax(0,1fr)}.menu-group .m-item h3{font-size:14px}.m-photo-wrap{aspect-ratio:16/9}}
 @media(min-width:700px){.menu-group .m-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px!important}.menu-group .m-item-info{padding:13px 13px 6px}.menu-group .m-item h3{font-size:14px}.menu-group .m-item p{font-size:11px}.menu-group .m-item strong{margin-left:13px;margin-bottom:13px}}
@@ -2232,11 +2232,7 @@ document.querySelectorAll(".m-item[data-food-type]").forEach(item=>{
 });
 function syncPastaAddon(){
   const panel=document.querySelector("[data-addon-panel]");
-  const food=document.getElementById("food");
-  if(!panel||!food) return;
-  const activeFoodTab=foodTabsWrap?.querySelector(".food-tab.active");
-  const selectedPasta=activeFoodTab?.dataset.foodTarget==="Pastas";
-  panel.style.display=(food.classList.contains("active") && selectedPasta)?"block":"none";
+  if(panel) panel.style.display="block";
 }
 const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults"), foodTabsWrap=document.getElementById("foodTabs");
 let foodTabs=[];
@@ -2349,7 +2345,7 @@ function jumpToSubcategory(target){
   );
   if(!section) return;
   const panel=document.querySelector("[data-addon-panel]");
-  if(panel) panel.style.display=(active.id==="food" && target==="Pastas")?"block":"none";
+  if(panel) panel.style.display="block";
   const toolsBar=document.querySelector(".menu-tools");
   const getOffset=()=>((toolsBar?.getBoundingClientRect().height||0)+12);
   const jump=()=>{
