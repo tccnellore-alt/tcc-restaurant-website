@@ -954,6 +954,20 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   color:#173d31!important;
   -webkit-text-fill-color:#173d31!important;
 }
+
+/* Compact mobile menu hero: logo + title, view switch, then takeaway notice. */
+@media(max-width:849px){
+  .menu-intro{padding-top:104px!important;padding-bottom:14px!important}
+  .menu-intro .container{display:flex;flex-direction:column;align-items:stretch}
+  .menu-brand-lockup{display:flex!important;align-items:center;justify-content:flex-start;width:100%;margin:0!important}
+  .menu-brand-lockup img{display:block;width:68px!important;height:68px!important;max-width:68px!important;object-fit:contain;border-radius:50%}
+  .menu-intro .eyebrow{display:none!important}
+  .menu-intro h1{flex:1;margin:0 0 0 14px!important;font-size:clamp(29px,8vw,36px)!important;line-height:1.05!important}
+  .menu-intro p{display:none!important}
+  .menu-view-switch{display:flex!important;width:100%;margin:16px auto 0!important;box-sizing:border-box}
+  .menu-view-option{flex:1;min-width:0;min-height:46px!important;padding:10px 7px!important;font-size:12px!important}
+  .takeaway-charge-notice{width:calc(100% - 24px)!important;margin:10px auto 0!important}
+}
 </style>
 </head>
 <body>
