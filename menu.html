@@ -678,7 +678,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 .takeaway-charge-notice{display:flex;align-items:center;justify-content:center;gap:11px;width:min(100%,390px);margin:15px auto 0;padding:10px 15px;border:1px solid rgba(226,211,169,.58);border-radius:12px;background:rgba(255,250,240,.97);color:#173c2b;box-shadow:0 5px 16px rgba(0,0,0,.12);text-align:left}
 .takeaway-charge-icon{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#e9dfc6;color:#173c2b;font:800 18px/1 Arial,sans-serif}
 .takeaway-charge-notice strong{display:block;color:#8d7337;font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.14em}
-.takeaway-charge-notice small{display:block;margin-top:3px;color:#263b32;font:700 12px/1.35 Manrope,Arial,sans-serif}
+.takeaway-charge-notice small{display:block;margin-top:3px;color:#263b32;font:700 12px/1.35 Manrope,Arial,sans-serif}.takeaway-charge-notice .takeaway-charge-amount{margin-top:3px;color:#173c2b;font:800 15px/1.25 Manrope,Arial,sans-serif;letter-spacing:-.02em}.takeaway-charge-notice .takeaway-charge-detail{margin-top:2px;color:#526057;font:500 11px/1.35 Manrope,Arial,sans-serif}
 @media(max-width:480px){.takeaway-charge-notice{width:min(100%,350px);margin-top:12px;padding:9px 12px}.takeaway-charge-notice small{font-size:11px}}
 
 
@@ -972,9 +972,9 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <button type="button" class="menu-view-option" data-menu-view="text" aria-pressed="false">☰ Text Menu</button>
       <button type="button" class="menu-view-option is-active" data-menu-view="image" aria-pressed="true">▧ Image Menu</button>
     </div>
-    <div class="takeaway-charge-notice" role="note" aria-label="Takeaway pricing">
-      <span class="takeaway-charge-icon" aria-hidden="true">↗</span>
-      <span><strong>TAKEAWAY</strong><small>₹10 extra per product on takeaway orders</small></span>
+    <div class="takeaway-charge-notice" role="note" aria-label="Takeaway packaging charge">
+      <span class="takeaway-charge-icon" aria-hidden="true">🛍</span>
+      <span><strong>TAKEAWAY ORDERS</strong><small class="takeaway-charge-amount">₹10 Packaging Charge</small><small class="takeaway-charge-detail">Per product on takeaway orders</small></span>
     </div>
   </div>
 </section>
