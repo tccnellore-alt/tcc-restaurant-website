@@ -194,7 +194,7 @@
   }
   .food-tab.active{border-bottom-width:3px}
 }
-@media(max-width:849px){.menu-intro{padding-top:116px}.menu-intro h1{font-size:48px}.menu-intro p{font-size:14px}.menu-search{border-radius:12px;padding:11px 14px}.menu-tools{padding:10px 0}.menu-tab{padding:9px 14px}}
+@media(max-width:849px){.menu-intro{padding-top:116px;padding-bottom:12px}.menu-intro h1{font-size:48px}.menu-intro p{font-size:14px}.menu-search{border-radius:12px;padding:11px 14px}.menu-tools{padding:10px 0}.menu-tab{padding:9px 14px}}
 @media(min-width:850px){
  .menu-tools{top:72px}.menu-content{padding-bottom:130px!important}
  .menu-tabs{justify-content:center}.menu-search{max-width:520px;display:block;margin:10px auto 0}
@@ -231,6 +231,9 @@
 .menu-lightbox-name{margin:0;font:700 20px/1.3 Manrope,Arial,sans-serif}
 .menu-lightbox-description{margin:6px 0 0;color:#6d776e;font:13px/1.5 Manrope,Arial,sans-serif}
 .menu-lightbox-description:empty{display:none}
+.menu-lightbox-spice{display:none;width:100%;margin-top:7px}
+.menu-lightbox-spice .spice-level{margin:0!important}
+.menu-lightbox-spice .spice-copy{font-size:12px}
 .menu-lightbox-addons{display:none;width:100%;margin-top:10px;padding:12px;border:1px solid rgba(183,154,90,.3);border-radius:10px;background:#f3ecdc}
 .menu-lightbox-addons-title{margin:0 0 8px;color:#173d31;font:700 12px/1.3 Manrope,Arial,sans-serif}
 .menu-lightbox-addons-row{display:flex;flex-wrap:wrap;gap:7px}
@@ -675,11 +678,11 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 }
 
 /* TCC takeaway pricing notice — visible in both menu views. */
-.takeaway-charge-notice{display:flex;align-items:center;justify-content:center;gap:11px;width:min(100%,390px);margin:15px auto 0;padding:10px 15px;border:1px solid rgba(226,211,169,.58);border-radius:12px;background:rgba(255,250,240,.97);color:#173c2b;box-shadow:0 5px 16px rgba(0,0,0,.12);text-align:left}
+.takeaway-charge-notice{display:flex;align-items:center;justify-content:center;gap:11px;width:min(100%,520px);margin:12px auto 0;padding:10px 16px;box-sizing:border-box;border:1px solid rgba(226,211,169,.58);border-radius:12px;background:rgba(255,250,240,.97);color:#173c2b;box-shadow:0 5px 16px rgba(0,0,0,.12);text-align:left}
 .takeaway-charge-icon{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#e9dfc6;color:#173c2b;font:800 18px/1 Arial,sans-serif}
 .takeaway-charge-notice strong{display:block;color:#8d7337;font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.14em}
-.takeaway-charge-notice small{display:block;margin-top:3px;color:#263b32;font:700 12px/1.35 Manrope,Arial,sans-serif}
-@media(max-width:480px){.takeaway-charge-notice{width:min(100%,350px);margin-top:12px;padding:9px 12px}.takeaway-charge-notice small{font-size:11px}}
+.takeaway-charge-notice small{display:block;margin-top:3px;color:#263b32;font:700 12px/1.35 Manrope,Arial,sans-serif}.takeaway-charge-notice .takeaway-charge-amount{margin-top:3px;color:#173c2b;font:800 15px/1.25 Manrope,Arial,sans-serif;letter-spacing:-.02em}.takeaway-charge-notice .takeaway-charge-detail{margin-top:2px;color:#526057;font:500 11px/1.35 Manrope,Arial,sans-serif}
+@media(max-width:480px){.takeaway-charge-notice{width:calc(100% - 24px);max-width:520px;margin-top:10px;padding:9px 14px}.takeaway-charge-notice small{font-size:11px}}
 
 
 /* Bestseller badge in the photo lightbox — match the compact menu-card pill. */
@@ -1017,6 +1020,28 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   .takeaway-charge-notice strong{font-size:8px!important;letter-spacing:.08em!important}
   .takeaway-charge-notice .takeaway-charge-amount{font-size:clamp(11px,3.3vw,14px)!important;line-height:1.15!important}
   .takeaway-charge-notice .takeaway-charge-detail{font-size:8.5px!important;line-height:1.25!important}
+}
+
+/* Mobile menu hero: compact logo/title row and restrained segmented switch. */
+@media(max-width:849px){
+.menu-intro{padding:78px 0 11px!important}
+.menu-intro .container{display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:66px 64px;column-gap:5px;row-gap:10px;align-items:center;min-width:0}
+.menu-brand-lockup{grid-column:1 / 3;grid-row:1;display:flex!important;align-items:center;justify-content:center;width:56px!important;height:56px!important;min-width:56px;margin:0!important;padding:4px!important;box-sizing:border-box;border:1px solid rgba(210,184,120,.5)!important;border-radius:50%!important;background:rgba(255,250,240,.98)!important;box-shadow:0 3px 9px rgba(0,0,0,.10)!important}
+.menu-brand-lockup img{display:block;width:100%!important;height:100%!important;max-width:100%!important;object-fit:contain;border-radius:50%}
+.menu-intro .eyebrow,.menu-intro p{display:none!important}
+.menu-intro h1{grid-column:3 / 13;grid-row:1;align-self:center;min-width:0!important;max-width:100%;margin:0!important;font-family:"Cormorant Garamond",Georgia,serif!important;font-size:clamp(27px,7.6vw,34px)!important;font-weight:500!important;line-height:1!important;letter-spacing:-.04em!important;color:#fffaf0!important;text-align:left;white-space:nowrap!important;text-shadow:0 1px 1px rgba(0,0,0,.12)}
+.menu-view-switch{grid-column:8 / 13;grid-row:2;position:relative!important;display:flex!important;flex-direction:row!important;align-items:center;justify-content:center;align-self:stretch;width:100%!important;min-width:0!important;min-height:0!important;margin:0!important;padding:5px!important;gap:0!important;box-sizing:border-box;border:1px solid rgba(183,154,90,.25)!important;border-radius:18px!important;background:#f4eee1!important;box-shadow:0 2px 8px rgba(0,0,0,.08)!important}
+.menu-view-switch:before{content:"";position:absolute;inset:5px;border-radius:999px;background:#173c2b}
+.menu-view-option{position:relative!important;z-index:1;flex:1 1 0;display:flex!important;align-items:center;justify-content:center;width:50%;min-width:0!important;min-height:48px!important;margin:0!important;padding:3px!important;border:0!important;border-radius:999px!important;background:transparent!important;color:#f4eee1!important;font-size:0!important;line-height:1!important;box-shadow:none!important}
+.menu-view-option:before{display:block;font:500 23px/1 Arial,sans-serif;color:currentColor}
+.menu-view-option[data-menu-view="text"]:before{content:"☷"}
+.menu-view-option[data-menu-view="image"]:before{content:"▧"}
+.menu-view-option.is-active{background:#f4eee1!important;color:#173c2b!important;box-shadow:0 1px 3px rgba(0,0,0,.10)!important}
+.takeaway-charge-notice{grid-column:1 / 8;grid-row:2;display:flex!important;align-items:center!important;align-self:stretch;justify-content:flex-start!important;gap:7px!important;width:100%!important;min-width:0!important;min-height:0!important;margin:0!important;padding:8px 9px!important;box-sizing:border-box;border:1px solid rgba(226,211,169,.58)!important;border-radius:12px!important;background:rgba(255,250,240,.97)!important;box-shadow:0 3px 10px rgba(0,0,0,.09)!important}
+.takeaway-charge-icon{flex:0 0 23px!important;width:23px!important;height:23px!important;font-size:13px!important}
+.takeaway-charge-notice strong{font-size:8px!important;letter-spacing:.08em!important}
+.takeaway-charge-notice .takeaway-charge-amount{font-size:clamp(11px,3.4vw,14px)!important;line-height:1.15!important}
+.takeaway-charge-notice .takeaway-charge-detail{font-size:8.5px!important;line-height:1.25!important}
 }
 </style>
 </head>
@@ -1964,6 +1989,16 @@ const TCC_VERIFIED_PHOTOS = {
   "Nutella Latte": {url:"images/menu/optimized/nutella-latte-400.webp",large:"images/menu/optimized/nutella-latte-800.webp"},
   "Vietnamese Coffee": {url:"images/menu/optimized/vietnamese-coffee-400.webp",large:"images/menu/optimized/vietnamese-coffee-800.webp"},
   "Ginger Honey Lemon Tea": {url:"images/menu/honey-ginger-lemon-tea.png",large:"images/menu/honey-ginger-lemon-tea.png"},
+  "Vanilla": {url:"images/menu/optimized/vanilla-400.webp",large:"images/menu/optimized/vanilla-800.webp"},
+  "Mango": {url:"images/menu/optimized/mango-400.webp",large:"images/menu/optimized/mango-800.webp"},
+  "Caramel Nuts": {url:"images/menu/optimized/caramel-nuts-400.webp",large:"images/menu/optimized/caramel-nuts-800.webp"},
+  "Chocolate": {url:"images/menu/optimized/chocolate-400.webp",large:"images/menu/optimized/chocolate-800.webp"},
+  "Kesari Pista": {url:"images/menu/optimized/kesari-pista-400.webp",large:"images/menu/optimized/kesari-pista-800.webp"},
+  "Strawberry": {url:"images/menu/optimized/strawberry-400.webp",large:"images/menu/optimized/strawberry-800.webp"},
+  "Butterscotch": {url:"images/menu/optimized/butterscotch-400.webp",large:"images/menu/optimized/butterscotch-800.webp"},
+  "Red Velvet": {url:"images/menu/optimized/red-velvet-400.webp",large:"images/menu/optimized/red-velvet-800.webp"},
+  "Tutti Frutti": {url:"images/menu/optimized/tutti-frutti-400.webp",large:"images/menu/optimized/tutti-frutti-800.webp"},
+  "Oreo Cookies": {url:"images/menu/optimized/oreo-cookies-400.webp",large:"images/menu/optimized/oreo-cookies-800.webp"},
 };
 function tccPexelsUrl(id){
   return 'https://images.pexels.com/photos/'+id+'/pexels-photo-'+id+'.jpeg?auto=compress&cs=tinysrgb&w=900';
@@ -2033,11 +2068,12 @@ tccImageLightbox.className="menu-image-lightbox";
 tccImageLightbox.setAttribute("role","dialog");
 tccImageLightbox.setAttribute("aria-modal","true");
 tccImageLightbox.setAttribute("aria-label","Expanded menu photo");
-tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><div class="menu-lightbox-bestseller" aria-label="Best Seller"><span class="crown" aria-hidden="true">♛</span><span>Best Seller</span></div><p class="menu-lightbox-description"></p><div class="menu-lightbox-price"></div><div class="menu-lightbox-addons"><h3 class="menu-lightbox-addons-title">Available add-ons</h3><div class="menu-lightbox-addons-row"></div></div></div></div>';
+tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><div class="menu-lightbox-bestseller" aria-label="Best Seller"><span class="crown" aria-hidden="true">♛</span><span>Best Seller</span></div><p class="menu-lightbox-description"></p><div class="menu-lightbox-spice" aria-live="polite"></div><div class="menu-lightbox-price"></div><div class="menu-lightbox-addons"><h3 class="menu-lightbox-addons-title">Available add-ons</h3><div class="menu-lightbox-addons-row"></div></div></div></div>';
 document.body.appendChild(tccImageLightbox);
 const tccLightboxImage=tccImageLightbox.querySelector("img");
 const tccLightboxName=tccImageLightbox.querySelector(".menu-lightbox-name");
 const tccLightboxDescription=tccImageLightbox.querySelector(".menu-lightbox-description");
+const tccLightboxSpice=tccImageLightbox.querySelector(".menu-lightbox-spice");
 const tccLightboxPrice=tccImageLightbox.querySelector(".menu-lightbox-price");
 const tccLightboxAddons=tccImageLightbox.querySelector(".menu-lightbox-addons");
 const tccLightboxAddonsRow=tccImageLightbox.querySelector(".menu-lightbox-addons-row");
@@ -2074,6 +2110,10 @@ document.addEventListener("click",event=>{
     const description=item?[...item.querySelectorAll(".m-item-info p")].map(p=>p.textContent.trim()).filter(Boolean).join(" "):"";
     tccLightboxName.textContent=name;
     tccLightboxDescription.textContent=description;
+    tccLightboxSpice.replaceChildren();
+    const spiceLevel=item?.querySelector(".spice-level");
+    if(spiceLevel){tccLightboxSpice.appendChild(spiceLevel.cloneNode(true));tccLightboxSpice.style.display="block";}
+    else{tccLightboxSpice.style.display="none";}
     const section=item?.closest(".menu-section");
     const sectionName=section?.querySelector("h2")?.textContent.trim().toLowerCase()||"";
     const addonPanel=document.querySelector("[data-addon-panel] .addons-row");
