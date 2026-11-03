@@ -955,26 +955,27 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   -webkit-text-fill-color:#173d31!important;
 }
 
-/* Compact mobile menu hero: two-line title, smaller logo and balanced separate cards. */
+/* Mobile menu hero: logo and title side-by-side; compact separated controls below. */
 @media(max-width:849px){
-  .menu-intro{padding-top:88px!important;padding-bottom:10px!important}
+  .menu-intro{padding:84px 0 12px!important}
   .menu-intro .container{
     display:grid!important;
-    grid-template-columns:repeat(12,minmax(0,1fr));
-    grid-template-rows:76px auto;
-    column-gap:5px;
-    row-gap:10px;
-    align-items:stretch;
+    grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);
+    grid-template-rows:72px 76px;
+    column-gap:10px;
+    row-gap:12px;
+    align-items:center;
+    min-width:0;
   }
   .menu-brand-lockup{
-    grid-column:1 / 3;
+    grid-column:1;
     grid-row:1;
     display:flex!important;
     align-items:center;
     justify-content:center;
-    width:68px!important;
-    height:68px!important;
-    min-width:68px;
+    width:64px!important;
+    height:64px!important;
+    min-width:64px;
     margin:0!important;
     padding:4px!important;
     box-sizing:border-box;
@@ -984,33 +985,35 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
     box-shadow:0 4px 12px rgba(0,0,0,.11)!important;
   }
   .menu-brand-lockup img{display:block;width:100%!important;height:100%!important;max-width:100%!important;object-fit:contain;border-radius:50%}
-  .menu-intro .eyebrow{display:none!important}
+  .menu-intro .eyebrow,.menu-intro p{display:none!important}
   .menu-intro h1{
-    grid-column:3 / 13;
+    grid-column:2;
     grid-row:1;
     align-self:center;
-    min-width:0;
+    min-width:0!important;
+    max-width:100%;
     margin:0!important;
     font-family:"Cormorant Garamond",Georgia,serif!important;
-    font-size:clamp(31px,8vw,38px)!important;
+    font-size:clamp(29px,7.5vw,36px)!important;
     font-weight:500!important;
-    line-height:1!important;
+    line-height:.98!important;
     letter-spacing:-.035em!important;
     color:#fffaf0!important;
     text-align:left;
+    overflow-wrap:normal;
     text-shadow:0 1px 1px rgba(0,0,0,.12);
   }
-  .menu-intro p{display:none!important}
   .menu-view-switch{
-    grid-column:8 / 13;
+    grid-column:2;
     grid-row:2;
     display:flex!important;
     flex-direction:row!important;
     align-items:center;
     justify-content:center;
-    align-self:center;
-    width:100%;
-    min-height:72px;
+    align-self:stretch;
+    width:100%!important;
+    min-width:0!important;
+    min-height:0!important;
     margin:0!important;
     padding:4px!important;
     gap:3px!important;
@@ -1020,35 +1023,38 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
     background:#173c2b!important;
   }
   .menu-view-option{
-    flex:1;
+    flex:1 1 0;
     display:flex!important;
     flex-direction:column;
     align-items:center;
     justify-content:center;
     gap:3px;
     width:auto;
-    min-width:0;
+    min-width:0!important;
     min-height:58px!important;
     padding:5px 2px!important;
     border-radius:999px!important;
     color:#fffaf0!important;
-    font-size:9px!important;
+    font-size:clamp(8px,2.3vw,10px)!important;
     line-height:1!important;
     letter-spacing:0!important;
     white-space:nowrap;
   }
   .menu-view-option.is-active{background:#f4eee1!important;color:#173c2b!important;box-shadow:0 1px 4px rgba(0,0,0,.12)!important}
   .takeaway-charge-notice{
-    grid-column:1 / 8;
+    grid-column:1;
     grid-row:2;
+    display:flex!important;
+    align-items:center!important;
     align-self:stretch;
     justify-content:flex-start!important;
     gap:7px!important;
     width:100%!important;
-    min-width:0;
-    min-height:72px;
+    min-width:0!important;
+    min-height:0!important;
     margin:0!important;
     padding:9px!important;
+    box-sizing:border-box;
     border:1px solid rgba(226,211,169,.58)!important;
     border-radius:12px!important;
     background:rgba(255,250,240,.97)!important;
