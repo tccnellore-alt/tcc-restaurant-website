@@ -2234,8 +2234,9 @@ function syncPastaAddon(){
   const panel=document.querySelector("[data-addon-panel]");
   const food=document.getElementById("food");
   if(!panel||!food) return;
-  const pasta=[...food.querySelectorAll(".menu-section")].find(s=>(s.querySelector("h2")?.textContent||"").trim().toLowerCase()==="pastas");
-  panel.style.display=(food.classList.contains("active") && pasta && pasta.style.display!=="none")?"block":"none";
+  const activeFoodTab=foodTabsWrap?.querySelector(".food-tab.active");
+  const selectedPasta=activeFoodTab?.dataset.foodTarget==="Pastas";
+  panel.style.display=(food.classList.contains("active") && selectedPasta)?"block":"none";
 }
 const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults"), foodTabsWrap=document.getElementById("foodTabs");
 let foodTabs=[];
@@ -2308,6 +2309,7 @@ function syncFoodTabToScroll(){
   const next=matched || foodTabs.find(t=>t.dataset.foodTarget==="all");
   if(!next) return;
   foodTabs.forEach(t=>t.classList.toggle("active",t===next));
+  syncPastaAddon();
   const wrapRect=foodTabsWrap.getBoundingClientRect(), tabRect=next.getBoundingClientRect();
   if(tabRect.left<wrapRect.left+8) foodTabsWrap.scrollLeft-=wrapRect.left-tabRect.left+12;
   else if(tabRect.right>wrapRect.right-8) foodTabsWrap.scrollLeft+=tabRect.right-wrapRect.right+12;
