@@ -1569,6 +1569,17 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
         </section>
         <section class="menu-section" data-group="Food">
           <h2>Pastas</h2>
+          <section class="menu-addons-panel" data-addon-panel>
+                    <div class="addons-heading">
+                      <span class="eyebrow">MAKE IT YOURS</span>
+                      <strong>Add to any pasta</strong>
+                    </div>
+                    <div class="addons-row">
+                      <span>Roasted Mushroom <b>+₹40</b></span>
+                      <span>Grilled Chicken <b>+₹60</b></span>
+                      <span>Prawns <b>+₹80</b></span>
+                    </div>
+                  </section>
           <div class="m-list">
       <article class="m-item">
         <div>
@@ -1621,17 +1632,6 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
         </div>
         <strong>₹269</strong>
       </article></div>
-        </section>
-        <section class="menu-addons-panel" data-addon-panel>
-          <div class="addons-heading">
-            <span class="eyebrow">MAKE IT YOURS</span>
-            <strong>Add to any pasta</strong>
-          </div>
-          <div class="addons-row">
-            <span>Roasted Mushroom <b>+₹40</b></span>
-            <span>Grilled Chicken <b>+₹60</b></span>
-            <span>Prawns <b>+₹80</b></span>
-          </div>
         </section>
         <section class="menu-section" data-group="Food">
           <h2>Pizzas · Veg</h2>
@@ -2141,10 +2141,7 @@ document.querySelectorAll(".m-item[data-food-type]").forEach(item=>{
 });
 function syncPastaAddon(){
   const panel=document.querySelector("[data-addon-panel]");
-  const food=document.getElementById("food");
-  if(!panel||!food) return;
-  const pasta=[...food.querySelectorAll(".menu-section")].find(s=>(s.querySelector("h2")?.textContent||"").trim().toLowerCase()==="pastas");
-  panel.style.display=(food.classList.contains("active") && pasta && pasta.style.display!=="none")?"block":"none";
+  if(panel) panel.style.display="block";
 }
 const tabs=[...document.querySelectorAll(".menu-tab")], groups=[...document.querySelectorAll(".menu-group")], search=document.getElementById("menuSearch"), noResults=document.getElementById("noResults"), foodTabsWrap=document.getElementById("foodTabs");
 let foodTabs=[];
@@ -2256,7 +2253,7 @@ function jumpToSubcategory(target){
   );
   if(!section) return;
   const panel=document.querySelector("[data-addon-panel]");
-  if(panel) panel.style.display=(active.id==="food" && target==="Pastas")?"block":"none";
+  if(panel) panel.style.display="block";
   const toolsBar=document.querySelector(".menu-tools");
   const getOffset=()=>((toolsBar?.getBoundingClientRect().height||0)+12);
   const jump=()=>{
