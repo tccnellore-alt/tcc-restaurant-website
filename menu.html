@@ -955,16 +955,16 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   -webkit-text-fill-color:#173d31!important;
 }
 
-/* Compact mobile menu hero: logo and title share one row. */
+/* Compact mobile menu hero with separately contained takeaway and view cards. */
 @media(max-width:849px){
   .menu-intro{padding-top:104px!important;padding-bottom:14px!important}
   .menu-intro .container{
     display:grid!important;
-    grid-template-columns:68px minmax(0,1fr);
-    grid-template-rows:68px auto auto;
-    column-gap:14px;
-    row-gap:0;
-    align-items:center;
+    grid-template-columns:minmax(0,1.8fr) minmax(112px,1fr);
+    grid-template-rows:68px auto;
+    column-gap:10px;
+    row-gap:14px;
+    align-items:stretch;
   }
   .menu-brand-lockup{
     grid-column:1;
@@ -983,14 +983,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
     background:rgba(255,250,240,.98)!important;
     box-shadow:0 5px 14px rgba(0,0,0,.12)!important;
   }
-  .menu-brand-lockup img{
-    display:block;
-    width:100%!important;
-    height:100%!important;
-    max-width:100%!important;
-    object-fit:contain;
-    border-radius:50%;
-  }
+  .menu-brand-lockup img{display:block;width:100%!important;height:100%!important;max-width:100%!important;object-fit:contain;border-radius:50%}
   .menu-intro .eyebrow{display:none!important}
   .menu-intro h1{
     grid-column:2;
@@ -1009,20 +1002,52 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   }
   .menu-intro p{display:none!important}
   .menu-view-switch{
-    grid-column:1/-1;
+    grid-column:2;
     grid-row:2;
     display:flex!important;
+    flex-direction:column;
+    justify-content:center;
+    align-self:stretch;
     width:100%;
-    margin:16px auto 0!important;
+    margin:0!important;
+    padding:7px!important;
+    gap:6px!important;
     box-sizing:border-box;
+    border:1px solid rgba(226,211,169,.58)!important;
+    border-radius:12px!important;
+    background:#f4eee1!important;
   }
-  .menu-view-option{flex:1;min-width:0;min-height:46px!important;padding:10px 7px!important;font-size:12px!important}
+  .menu-view-option{
+    flex:1;
+    width:100%;
+    min-width:0;
+    min-height:36px!important;
+    padding:8px 5px!important;
+    border-radius:7px!important;
+    color:#173c2b!important;
+    font-size:11px!important;
+    letter-spacing:0!important;
+  }
+  .menu-view-option.is-active{background:#173c2b!important;color:#fffaf0!important}
   .takeaway-charge-notice{
-    grid-column:1/-1;
-    grid-row:3;
-    width:calc(100% - 24px)!important;
-    margin:10px auto 0!important;
+    grid-column:1;
+    grid-row:2;
+    align-self:stretch;
+    justify-content:flex-start!important;
+    gap:8px!important;
+    width:100%!important;
+    min-width:0;
+    margin:0!important;
+    padding:10px!important;
+    border:1px solid rgba(226,211,169,.58)!important;
+    border-radius:12px!important;
+    background:rgba(255,250,240,.97)!important;
+    box-shadow:0 5px 16px rgba(0,0,0,.12)!important;
   }
+  .takeaway-charge-icon{flex:0 0 26px!important;width:26px!important;height:26px!important;font-size:15px!important}
+  .takeaway-charge-notice strong{font-size:8px!important;letter-spacing:.09em!important}
+  .takeaway-charge-notice .takeaway-charge-amount{font-size:clamp(12px,3.6vw,15px)!important;line-height:1.15!important}
+  .takeaway-charge-notice .takeaway-charge-detail{font-size:9px!important;line-height:1.25!important}
 }
 </style>
 </head>
