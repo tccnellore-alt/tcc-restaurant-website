@@ -805,6 +805,47 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   position:static!important;
   transform:none!important;
 }
+
+/* Use the compact horizontal TCC wordmark, not the circular full logo, in placeholders. */
+.menu-section .m-photo-placeholder-logo{
+  display:flex!important;
+  flex:0 0 auto!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  position:relative!important;
+  width:150px!important;
+  max-width:62%!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  color:#173d31!important;
+  line-height:1!important;
+  object-fit:initial!important;
+}
+.menu-section .m-photo-logo-name{
+  display:block!important;
+  position:relative!important;
+  font:700 42px/.92 Georgia,serif!important;
+  letter-spacing:-2px!important;
+  color:#173d31!important;
+}
+.menu-section .m-photo-logo-leaf{
+  display:block!important;
+  height:13px!important;
+  margin:0 0 -1px 24px!important;
+  color:#47764e!important;
+  font:700 17px/1 Georgia,serif!important;
+  transform:rotate(-18deg)!important;
+}
+.menu-section .m-photo-logo-tagline{
+  display:block!important;
+  margin-top:7px!important;
+  color:#315b49!important;
+  font:700 9px/1 Manrope,Arial,sans-serif!important;
+  letter-spacing:2px!important;
+  white-space:nowrap!important;
+}
 </style>
 </head>
 <body>
@@ -1751,7 +1792,7 @@ function tccPexelsUrl(id){
 }
 function showTccPhotoPlaceholder(wrap){
   wrap.classList.add('photo-unverified','m-photo-placeholder-wrap');
-  wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
+  wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><span class="m-photo-placeholder-logo" role="img" aria-label="TCC – The Coffee Club"><span class="m-photo-logo-leaf" aria-hidden="true">◆</span><span class="m-photo-logo-name">TCC</span><span class="m-photo-logo-tagline">THE COFFEE CLUB</span></span><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
 }
 function addTccMenuPhotos(){
   document.querySelectorAll('.menu-section .m-item').forEach((item,index)=>{
@@ -1778,11 +1819,11 @@ function addTccMenuPhotos(){
       img.alt=name+' — TCC menu photo'; img.src=photo.url;
       img.addEventListener('error',()=>{
         wrap.classList.add('m-photo-placeholder-wrap');
-        wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
+        wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><span class="m-photo-placeholder-logo" role="img" aria-label="TCC – The Coffee Club"><span class="m-photo-logo-leaf" aria-hidden="true">◆</span><span class="m-photo-logo-name">TCC</span><span class="m-photo-logo-tagline">THE COFFEE CLUB</span></span><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
       },{once:true});
       wrap.appendChild(img);
     }else{
-      wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
+      wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><span class="m-photo-placeholder-logo" role="img" aria-label="TCC – The Coffee Club"><span class="m-photo-logo-leaf" aria-hidden="true">◆</span><span class="m-photo-logo-name">TCC</span><span class="m-photo-logo-tagline">THE COFFEE CLUB</span></span><strong class="m-photo-coming-soon">Photo Coming Soon</strong></div>';
     }
     item.insertBefore(wrap,item.firstChild);
     const info=document.createElement('div'); info.className='m-item-info';
