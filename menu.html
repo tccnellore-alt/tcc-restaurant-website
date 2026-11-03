@@ -891,6 +891,56 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   font-size:clamp(10px,3vw,13px)!important;
   line-height:1.2!important;
 }
+
+/* Final placeholder positioning: centre the original logo and label as one compact group. */
+.menu-section .m-photo-placeholder{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:auto auto!important;
+  justify-items:center!important;
+  align-content:center!important;
+  align-items:center!important;
+  gap:8px!important;
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  padding:16px 10px!important;
+  text-align:center!important;
+}
+.menu-section .m-photo-placeholder-logo{
+  display:block!important;
+  grid-column:1!important;
+  grid-row:1!important;
+  justify-self:center!important;
+  align-self:center!important;
+  width:108px!important;
+  max-width:48%!important;
+  height:108px!important;
+  max-height:108px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0 auto!important;
+  padding:0!important;
+}
+.menu-section .m-photo-coming-soon{
+  display:flex!important;
+  grid-column:1!important;
+  grid-row:2!important;
+  justify-self:center!important;
+  align-self:center!important;
+  width:max-content!important;
+  max-width:calc(100% - 8px)!important;
+  box-sizing:border-box!important;
+  margin:0 auto!important;
+  padding:9px 12px!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+  position:static!important;
+  left:auto!important;
+  right:auto!important;
+  transform:none!important;
+  line-height:1.2!important;
+}
 </style>
 </head>
 <body>
