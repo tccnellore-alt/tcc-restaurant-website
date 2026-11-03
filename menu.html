@@ -954,6 +954,70 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
   color:#173d31!important;
   -webkit-text-fill-color:#173d31!important;
 }
+
+/* Approved compact mobile menu header — isolated release port from image preview. */
+@media(max-width:849px){
+  .menu-intro{padding:78px 0 11px!important}
+  .menu-intro .container{
+    display:grid!important;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    grid-template-rows:62px 56px;
+    column-gap:5px;
+    row-gap:9px;
+    align-items:center;
+    min-width:0;
+  }
+  .menu-brand-lockup{
+    grid-column:1 / 3;grid-row:1;
+    display:flex!important;align-items:center;justify-content:center;
+    width:56px!important;height:56px!important;min-width:56px;
+    margin:0!important;padding:4px!important;box-sizing:border-box;
+    border:1px solid rgba(210,184,120,.5)!important;border-radius:50%!important;
+    background:rgba(255,250,240,.98)!important;box-shadow:0 3px 9px rgba(0,0,0,.10)!important;
+  }
+  .menu-brand-lockup img{display:block;width:100%!important;height:100%!important;max-width:100%!important;object-fit:contain;border-radius:50%}
+  .menu-intro .eyebrow,.menu-intro p{display:none!important}
+  .menu-intro h1{
+    grid-column:3 / 13;grid-row:1;align-self:center;
+    min-width:0!important;max-width:100%;margin:0!important;
+    font-family:"Cormorant Garamond",Georgia,serif!important;
+    font-size:clamp(27px,7.2vw,33px)!important;font-weight:500!important;
+    line-height:1!important;letter-spacing:-.04em!important;
+    color:#fffaf0!important;text-align:left;white-space:nowrap!important;
+    text-shadow:0 1px 1px rgba(0,0,0,.12);
+  }
+  .menu-view-switch{
+    grid-column:8 / 13;grid-row:2;position:relative!important;
+    display:flex!important;flex-direction:row!important;align-items:center;justify-content:center;
+    align-self:stretch;width:100%!important;min-width:0!important;height:56px!important;
+    min-height:0!important;margin:0!important;padding:4px!important;gap:0!important;box-sizing:border-box;
+    border:1px solid rgba(183,154,90,.25)!important;border-radius:16px!important;
+    background:#f4eee1!important;box-shadow:0 2px 8px rgba(0,0,0,.08)!important;
+  }
+  .menu-view-switch:before{content:"";position:absolute;inset:4px;border-radius:999px;background:#173c2b}
+  .menu-view-option{
+    position:relative!important;z-index:1;flex:1 1 0;
+    display:flex!important;align-items:center;justify-content:center;
+    width:50%;min-width:0!important;height:46px!important;min-height:46px!important;
+    margin:0!important;padding:3px!important;border:0!important;border-radius:999px!important;
+    background:transparent!important;color:#f4eee1!important;font-size:0!important;line-height:1!important;box-shadow:none!important;
+  }
+  .menu-view-option:before{display:block;font:500 22px/1 Arial,sans-serif;color:currentColor}
+  .menu-view-option[data-menu-view="text"]:before{content:"☷"}
+  .menu-view-option[data-menu-view="image"]:before{content:"▧"}
+  .menu-view-option.is-active{background:#f4eee1!important;color:#173c2b!important;box-shadow:0 1px 3px rgba(0,0,0,.10)!important}
+  .takeaway-charge-notice{
+    grid-column:1 / 8;grid-row:2;display:flex!important;align-items:center!important;align-self:stretch;
+    justify-content:flex-start!important;gap:7px!important;width:100%!important;min-width:0!important;min-height:0!important;
+    margin:0!important;padding:7px 9px!important;box-sizing:border-box;
+    border:1px solid rgba(226,211,169,.58)!important;border-radius:12px!important;
+    background:rgba(255,250,240,.97)!important;box-shadow:0 3px 10px rgba(0,0,0,.09)!important;
+  }
+  .takeaway-charge-icon{flex:0 0 23px!important;width:23px!important;height:23px!important;font-size:13px!important}
+  .takeaway-charge-notice strong{font-size:8px!important;letter-spacing:.08em!important}
+  .takeaway-charge-notice .takeaway-charge-amount{font-size:clamp(11px,3.3vw,14px)!important;line-height:1.15!important}
+  .takeaway-charge-notice .takeaway-charge-detail{font-size:8.5px!important;line-height:1.25!important}
+}
 </style>
 </head>
 <body>
@@ -969,12 +1033,12 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
     <h1>The TCC Menu</h1>
     <p>Coffee, food, signatures and more.</p>
     <div class="menu-view-switch" role="group" aria-label="Choose menu view">
-      <button type="button" class="menu-view-option" data-menu-view="text" aria-pressed="false">☰ Text Menu</button>
-      <button type="button" class="menu-view-option is-active" data-menu-view="image" aria-pressed="true">▧ Image Menu</button>
+      <button type="button" class="menu-view-option" data-menu-view="text" aria-label="Text Menu" aria-pressed="false">Text Menu</button>
+      <button type="button" class="menu-view-option is-active" data-menu-view="image" aria-label="Image Menu" aria-pressed="true">Image Menu</button>
     </div>
-    <div class="takeaway-charge-notice" role="note" aria-label="Takeaway pricing">
-      <span class="takeaway-charge-icon" aria-hidden="true">↗</span>
-      <span><strong>TAKEAWAY</strong><small>₹10 extra per product on takeaway orders</small></span>
+    <div class="takeaway-charge-notice" role="note" aria-label="Takeaway packaging charge">
+      <span class="takeaway-charge-icon" aria-hidden="true">🛍</span>
+      <span><strong>TAKEAWAY ORDERS</strong><small class="takeaway-charge-amount">₹10 Packaging Charge</small><small class="takeaway-charge-detail">Per product on takeaway orders</small></span>
     </div>
   </div>
 </section>
