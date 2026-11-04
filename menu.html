@@ -2328,7 +2328,7 @@ function jumpToSubcategory(target){
   setTimeout(jump,900);
 }
 
-function showGroup(id){
+let menuCategoryScrollToken=0;\nfunction showGroup(id){
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
   const intro=document.getElementById("menuCategoryIntro");
@@ -2345,19 +2345,34 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  const menuTools=document.querySelector(".menu-tools");
-  const categoryIntro=document.getElementById("menuCategoryIntro");
-  const resetMenuScroll=()=>{
-    if(!categoryIntro)return;
-    const stickyHeight=menuTools ? menuTools.getBoundingClientRect().height : 0;
-    categoryIntro.style.scrollMarginTop=(stickyHeight+8)+"px";
-    // Use the actual category heading as the anchor. This avoids calculating
-    // from a sticky element whose viewport position changes while scrolling.
-    categoryIntro.scrollIntoView({block:"start",inline:"nearest",behavior:"instant"});
+  // A category change must begin at that category's first product, not
+  // preserve the previous category's document scroll position.
+  const scrollToken=++menuCategoryScrollToken;
+  const resetToFirstProduct=()=>{
+    if(scrollToken!==menuCategoryScrollToken) return;
+    const activeGroup=document.getElementById(id);
+    if(!activeGroup || !activeGroup.classList.contains("active")) return;
+    const firstProduct=activeGroup.querySelector(".menu-section .m-item");
+    const firstSection=activeGroup.querySelector(":scope > .menu-section");
+    const target=firstProduct || firstSection || document.getElementById("menuCategoryIntro");
+    if(!target) return;
+    const menuTools=document.querySelector(".menu-tools");
+    const header=document.querySelector(".site-header");
+    const toolsBottom=menuTools?.getBoundingClientRect().bottom || 0;
+    const headerBottom=header?.getBoundingClientRect().bottom || 0;
+    const stickyOffset=Math.max(toolsBottom,headerBottom);
+    const targetTop=target.getBoundingClientRect().top + window.scrollY - stickyOffset - 12;
+    // style.css enables smooth scrolling globally. Temporarily disable it so
+    // the category switch is immediate and cannot be interrupted by an older
+    // smooth-scroll animation.
+    const root=document.documentElement;
+    const previousBehavior=root.style.scrollBehavior;
+    root.style.scrollBehavior="auto";
+    window.scrollTo(0,Math.max(0,targetTop));
+    root.style.scrollBehavior=previousBehavior;
   };
-  resetMenuScroll();
-  requestAnimationFrame(resetMenuScroll);
-  requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
+  resetToFirstProduct();
+  requestAnimationFrame(()=>requestAnimationFrame(resetToFirstProduct));
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
