@@ -2289,25 +2289,43 @@ window.addEventListener("scroll",()=>{
 window.addEventListener("resize",syncFoodTabToScroll);
 
 let foodJumpTimers=[];
-function jumpToSubcategory(target){
-  if(!target) return;
+let menuScrollRequest=0;
+function cancelMenuScrolls(){
+  menuScrollRequest++;
   foodJumpTimers.forEach(timer=>clearTimeout(timer));
   foodJumpTimers=[];
+}
+function scrollMenuTarget(target, gap=12){
+  if(!target) return;
+  const request=++menuScrollRequest;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    if(request!==menuScrollRequest || !target.isConnected) return;
+    const toolbar=document.querySelector(".menu-tools");
+    const toolbarBottom=toolbar?.getBoundingClientRect().bottom||0;
+    const rect=target.getBoundingClientRect();
+    const destination=Math.max(0,window.scrollY+rect.top-toolbarBottom-gap);
+    const root=document.documentElement;
+    const body=document.body;
+    const oldRoot=root.style.scrollBehavior;
+    const oldBody=body.style.scrollBehavior;
+    root.style.scrollBehavior="auto";
+    body.style.scrollBehavior="auto";
+    window.scrollTo({left:0,top:destination,behavior:"instant"});
+    requestAnimationFrame(()=>{
+      root.style.scrollBehavior=oldRoot;
+      body.style.scrollBehavior=oldBody;
+    });
+  }));
+}
+function jumpToSubcategory(target){
+  if(!target) return;
+  cancelMenuScrolls();
   foodTabs.forEach(x=>x.classList.toggle("active",x.dataset.foodTarget===target));
   const active=document.querySelector(".menu-group.active");
   if(!active) return;
   if(target==="all"){
-    const first=active.querySelector(".menu-section");
-    if(first){
-      const toolsBar=document.querySelector(".menu-tools");
-      const jumpAll=()=>{
-        const desired=(toolsBar?.getBoundingClientRect().bottom||0)+12;
-        const delta=first.getBoundingClientRect().top-desired;
-        if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
-      };
-      jumpAll();
-      foodJumpTimers.push(setTimeout(jumpAll,450));
-    }
+    const first=active.querySelector(":scope > .menu-section");
+    scrollMenuTarget(first,12);
     return;
   }
   const section=[...active.querySelectorAll(":scope > .menu-section")].find(sec=>
@@ -2318,20 +2336,11 @@ function jumpToSubcategory(target){
   if(!section) return;
   const panel=document.querySelector("[data-addon-panel]");
   if(panel) panel.style.display="block";
-  const toolsBar=document.querySelector(".menu-tools");
-  const getOffset=()=>((toolsBar?.getBoundingClientRect().height||0)+12);
-  const jump=()=>{
-    const heading=section.querySelector("h2")||section;
-    const desired=(toolsBar?.getBoundingClientRect().bottom||0)+12;
-    const delta=heading.getBoundingClientRect().top-desired;
-    if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
-  };
-  jump();
-  foodJumpTimers.push(setTimeout(jump,450));
-  foodJumpTimers.push(setTimeout(jump,900));
+  scrollMenuTarget(section.querySelector("h2")||section,12);
 }
 
 function showGroup(id){
+  cancelMenuScrolls();
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
   const intro=document.getElementById("menuCategoryIntro");
@@ -2348,32 +2357,7 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  // Cancel any delayed subcategory scroll so it cannot pull the page
-  // back down after the user has switched to another main category.
-  foodJumpTimers.forEach(timer=>clearTimeout(timer));
-  foodJumpTimers=[];
-  // Stop any smooth scroll already in progress before resetting the category position.
-  const currentY=window.scrollY;
-  window.scrollTo({top:currentY,behavior:"instant"});
-  const resetMenuScroll=()=>{
-    const categoryIntro=document.getElementById("menuCategoryIntro");
-    const menuTools=document.querySelector(".menu-tools");
-    if(!categoryIntro)return;
-
-    // Temporarily disable the site's global smooth-scroll rule. Assigning
-    // the document scroll position directly avoids scrollIntoView animation
-    // and works even when the toolbar is currently sticky.
-    const root=document.documentElement;
-    const previousBehavior=root.style.scrollBehavior;
-    root.style.scrollBehavior="auto";
-    const introTop=categoryIntro.getBoundingClientRect().top+window.scrollY;
-    const toolbarBottom=menuTools?.getBoundingClientRect().bottom||0;
-    const destination=introTop-(toolbarBottom+8);
-    const scroller=document.scrollingElement||root;
-    scroller.scrollTop=Math.max(0,destination);
-    requestAnimationFrame(()=>{root.style.scrollBehavior=previousBehavior;});
-  };
-  requestAnimationFrame(resetMenuScroll);
+  scrollMenuTarget(intro,8);
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
