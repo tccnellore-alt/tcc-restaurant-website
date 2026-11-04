@@ -2346,25 +2346,18 @@ function showGroup(id){
   filter("");
   syncPastaAddon();
   const menuTools=document.querySelector(".menu-tools");
-  const menuContent=document.querySelector(".menu-content");
+  const categoryIntro=document.getElementById("menuCategoryIntro");
   const resetMenuScroll=()=>{
-    if(!menuTools||!menuContent)return;
-    const stickyTop=parseFloat(getComputedStyle(menuTools).top)||0;
-    // Align the beginning of the newly selected category content directly
-    // below the sticky category navigation, regardless of prior scroll.
-    const contentTop=menuContent.getBoundingClientRect().top+window.scrollY;
-    const target=Math.max(0,contentTop-menuTools.offsetHeight-stickyTop);
-    document.documentElement.style.scrollBehavior="auto";
-    document.body.style.scrollBehavior="auto";
-    window.scrollTo({top:target,left:0,behavior:"instant"});
-    document.documentElement.scrollTop=target;
-    document.body.scrollTop=target;
+    if(!categoryIntro)return;
+    const stickyHeight=menuTools ? menuTools.getBoundingClientRect().height : 0;
+    categoryIntro.style.scrollMarginTop=(stickyHeight+8)+"px";
+    // Use the actual category heading as the anchor. This avoids calculating
+    // from a sticky element whose viewport position changes while scrolling.
+    categoryIntro.scrollIntoView({block:"start",inline:"nearest",behavior:"instant"});
   };
   resetMenuScroll();
   requestAnimationFrame(resetMenuScroll);
   requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
-  setTimeout(resetMenuScroll,150);
-  setTimeout(resetMenuScroll,400);
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
