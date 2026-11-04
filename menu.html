@@ -2345,9 +2345,8 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  const menuIntro=document.querySelector(".menu-intro");
   const menuTools=document.querySelector(".menu-tools");
-  if(menuIntro&&menuTools){const targetTop=menuIntro.getBoundingClientRect().bottom+window.scrollY-76;window.scrollTo({top:Math.max(0,targetTop),behavior:"smooth"});}else{window.scrollTo({top:0,behavior:"smooth"});}
+  if(menuTools){const stickyTop=parseFloat(getComputedStyle(menuTools).top)||0;const targetTop=menuTools.getBoundingClientRect().top+window.scrollY-stickyTop;window.scrollTo({top:Math.max(0,targetTop),behavior:"smooth"});}else{window.scrollTo({top:0,behavior:"smooth"});}
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
