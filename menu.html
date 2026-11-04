@@ -2288,59 +2288,23 @@ window.addEventListener("scroll",()=>{
 },{passive:true});
 window.addEventListener("resize",syncFoodTabToScroll);
 
-let foodJumpTimers=[];
-let menuScrollRequest=0;
-let menuScrollRestoreTimer=null;
-function cancelMenuScrolls(){
-  menuScrollRequest++;
-  foodJumpTimers.forEach(timer=>clearTimeout(timer));
-  foodJumpTimers=[];
-  if(menuScrollRestoreTimer!==null){
-    clearTimeout(menuScrollRestoreTimer);
-    menuScrollRestoreTimer=null;
-  }
-}
-function scrollMenuTarget(target, gap=12){
-  if(!target) return;
-  const request=++menuScrollRequest;
-  const root=document.scrollingElement||document.documentElement;
-  const html=document.documentElement;
-  const body=document.body;
-  const oldHtmlBehavior=html.style.scrollBehavior;
-  const oldBodyBehavior=body.style.scrollBehavior;
-  html.style.setProperty("scroll-behavior","auto","important");
-  body.style.setProperty("scroll-behavior","auto","important");
-  const moveToTarget=()=>{
-    if(request!==menuScrollRequest || !target.isConnected) return;
-    const toolbar=document.querySelector(".menu-tools");
-    const toolbarBottom=toolbar?.getBoundingClientRect().bottom||0;
-    const absoluteTop=target.getBoundingClientRect().top+root.scrollTop;
-    const destination=Math.max(0,absoluteTop-toolbarBottom-gap);
-    root.scrollTop=destination;
-    body.scrollTop=destination;
-    window.scrollTo(0,destination);
-  };
-  requestAnimationFrame(()=>{
-    moveToTarget();
-    requestAnimationFrame(moveToTarget);
-  });
-  menuScrollRestoreTimer=setTimeout(()=>{
-    if(request!==menuScrollRequest) return;
-    moveToTarget();
-    html.style.scrollBehavior=oldHtmlBehavior;
-    body.style.scrollBehavior=oldBodyBehavior;
-    menuScrollRestoreTimer=null;
-  },180);
-}
 function jumpToSubcategory(target){
   if(!target) return;
-  cancelMenuScrolls();
   foodTabs.forEach(x=>x.classList.toggle("active",x.dataset.foodTarget===target));
   const active=document.querySelector(".menu-group.active");
   if(!active) return;
   if(target==="all"){
-    const first=active.querySelector(":scope > .menu-section");
-    scrollMenuTarget(first,12);
+    const first=active.querySelector(".menu-section");
+    if(first){
+      const toolsBar=document.querySelector(".menu-tools");
+      const jumpAll=()=>{
+        const desired=(toolsBar?.getBoundingClientRect().bottom||0)+12;
+        const delta=first.getBoundingClientRect().top-desired;
+        if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
+      };
+      jumpAll();
+      setTimeout(jumpAll,450);
+    }
     return;
   }
   const section=[...active.querySelectorAll(":scope > .menu-section")].find(sec=>
@@ -2351,11 +2315,20 @@ function jumpToSubcategory(target){
   if(!section) return;
   const panel=document.querySelector("[data-addon-panel]");
   if(panel) panel.style.display="block";
-  scrollMenuTarget(section.querySelector("h2")||section,12);
+  const toolsBar=document.querySelector(".menu-tools");
+  const getOffset=()=>((toolsBar?.getBoundingClientRect().height||0)+12);
+  const jump=()=>{
+    const heading=section.querySelector("h2")||section;
+    const desired=(toolsBar?.getBoundingClientRect().bottom||0)+12;
+    const delta=heading.getBoundingClientRect().top-desired;
+    if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
+  };
+  jump();
+  setTimeout(jump,450);
+  setTimeout(jump,900);
 }
 
 function showGroup(id){
-  cancelMenuScrolls();
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
   const intro=document.getElementById("menuCategoryIntro");
@@ -2372,18 +2345,19 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  // Reset the actual page viewport by scrolling the top-level menu intro
-  // into view. scrollIntoView also traverses scrolling ancestors in embedded browsers.
-  const pageTop=document.querySelector(".menu-intro");
-  const resetPageTop=()=>{
-    if(pageTop?.isConnected) pageTop.scrollIntoView({block:"start",inline:"nearest",behavior:"instant"});
-    window.scrollTo({top:0,left:0,behavior:"instant"});
-    document.documentElement.scrollTop=0;
-    document.body.scrollTop=0;
+  const menuTools=document.querySelector(".menu-tools");
+  const categoryIntro=document.getElementById("menuCategoryIntro");
+  const resetMenuScroll=()=>{
+    if(!categoryIntro)return;
+    const stickyHeight=menuTools ? menuTools.getBoundingClientRect().height : 0;
+    categoryIntro.style.scrollMarginTop=(stickyHeight+8)+"px";
+    // Use the actual category heading as the anchor. This avoids calculating
+    // from a sticky element whose viewport position changes while scrolling.
+    categoryIntro.scrollIntoView({block:"start",inline:"nearest",behavior:"instant"});
   };
-  resetPageTop();
-  requestAnimationFrame(()=>requestAnimationFrame(resetPageTop));
-  [80,220,500].forEach(delay=>foodJumpTimers.push(setTimeout(resetPageTop,delay)));
+  resetMenuScroll();
+  requestAnimationFrame(resetMenuScroll);
+  requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
@@ -2412,23 +2386,10 @@ document.getElementById("foodSpotlightExplore")?.addEventListener("click",closeF
 document.getElementById("foodSpotlightClose")?.addEventListener("click",closeFoodSpotlight);
 foodSpotlight?.addEventListener("click",e=>{if(e.target===foodSpotlight) closeFoodSpotlight();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&foodSpotlight?.classList.contains("is-open")) closeFoodSpotlight();});
-// Reset before the browser processes the tapped tab focus/scroll behavior.
-function resetMenuViewportBeforeCategoryChange(){
-  const html=document.documentElement, body=document.body, root=document.scrollingElement||html;
-  html.style.setProperty("scroll-behavior","auto","important");
-  body.style.setProperty("scroll-behavior","auto","important");
-  html.style.setProperty("overflow-anchor","none","important");
-  body.style.setProperty("overflow-anchor","none","important");
-  if(document.activeElement instanceof HTMLElement) document.activeElement.blur();
-  root.scrollTop=0; html.scrollTop=0; body.scrollTop=0; window.scrollTo(0,0);
-}
-tabs.forEach(t=>{
-  t.addEventListener("pointerdown",resetMenuViewportBeforeCategoryChange,{capture:true,passive:true});
-  t.addEventListener("click",()=>{
-    if(t.dataset.target==="food"&&openFoodSpotlight()) return;
-    showGroup(t.dataset.target);
-  });
-});
+tabs.forEach(t=>t.addEventListener("click",()=>{
+  if(t.dataset.target==="food"&&openFoodSpotlight()) return;
+  showGroup(t.dataset.target);
+}));
 document.querySelectorAll("[data-fav-target]").forEach(a=>a.remove());
 
 function filter(q){
