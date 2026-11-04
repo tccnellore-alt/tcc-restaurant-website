@@ -2327,8 +2327,8 @@ function jumpToSubcategory(target){
     if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
   };
   jump();
-  setTimeout(jump,450);
-  setTimeout(jump,900);
+  foodJumpTimers.push(setTimeout(jump,450));
+  foodJumpTimers.push(setTimeout(jump,900));
 }
 
 function showGroup(id){
@@ -2352,6 +2352,9 @@ function showGroup(id){
   // back down after the user has switched to another main category.
   foodJumpTimers.forEach(timer=>clearTimeout(timer));
   foodJumpTimers=[];
+  // Stop any smooth scroll already in progress before resetting the category position.
+  const currentY=window.scrollY;
+  window.scrollTo({top:currentY,behavior:"instant"});
   const resetMenuScroll=()=>{
     const categoryIntro=document.getElementById("menuCategoryIntro");
     const menuTools=document.querySelector(".menu-tools");
