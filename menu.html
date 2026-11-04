@@ -2345,7 +2345,8 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  window.scrollTo({top:document.querySelector(".menu-tools").offsetTop-10,behavior:"smooth"});
+  const menuTools=document.querySelector(".menu-tools");
+  if(menuTools){const targetTop=window.scrollY+menuTools.getBoundingClientRect().top-76;window.scrollTo({top:Math.max(0,targetTop),behavior:"smooth"});}
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
