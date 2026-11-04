@@ -2250,6 +2250,7 @@ function buildSubTabs(id){
 }
 
 function syncFoodTabToScroll(){
+  if(menuCategoryScrollPending) return;
   if(!foodTabsWrap || !foodTabsWrap.classList.contains("visible")) return;
   const active=document.querySelector(".menu-group.active");
   if(!active) return;
@@ -2288,6 +2289,20 @@ window.addEventListener("scroll",()=>{
 },{passive:true});
 window.addEventListener("resize",syncFoodTabToScroll);
 
+let menuSubcategoryScrollTimers=[];
+let menuCategoryScrollPending=false;
+function clearMenuSubcategoryScrollTimers(){
+  menuSubcategoryScrollTimers.forEach(timer=>clearTimeout(timer));
+  menuSubcategoryScrollTimers=[];
+}
+function scheduleMenuSubcategoryScroll(callback,delay){
+  const timer=setTimeout(()=>{
+    menuSubcategoryScrollTimers=menuSubcategoryScrollTimers.filter(id=>id!==timer);
+    callback();
+  },delay);
+  menuSubcategoryScrollTimers.push(timer);
+}
+
 function jumpToSubcategory(target){
   if(!target) return;
   foodTabs.forEach(x=>x.classList.toggle("active",x.dataset.foodTarget===target));
@@ -2303,7 +2318,7 @@ function jumpToSubcategory(target){
         if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
       };
       jumpAll();
-      setTimeout(jumpAll,450);
+      scheduleMenuSubcategoryScroll(jumpAll,450);
     }
     return;
   }
@@ -2324,12 +2339,14 @@ function jumpToSubcategory(target){
     if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
   };
   jump();
-  setTimeout(jump,450);
-  setTimeout(jump,900);
+  scheduleMenuSubcategoryScroll(jump,450);
+  scheduleMenuSubcategoryScroll(jump,900);
 }
 
 let menuCategoryScrollToken=0;
 function showGroup(id){
+  clearMenuSubcategoryScrollTimers();
+  menuCategoryScrollPending=true;
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
   const intro=document.getElementById("menuCategoryIntro");
@@ -2373,7 +2390,13 @@ function showGroup(id){
     root.style.scrollBehavior=previousBehavior;
   };
   resetToFirstProduct();
-  requestAnimationFrame(()=>requestAnimationFrame(resetToFirstProduct));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    resetToFirstProduct();
+    if(scrollToken===menuCategoryScrollToken){
+      menuCategoryScrollPending=false;
+      syncFoodTabToScroll();
+    }
+  }));
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
