@@ -2346,13 +2346,17 @@ function showGroup(id){
   filter("");
   syncPastaAddon();
   const menuTools=document.querySelector(".menu-tools");
-  const menuContent=document.querySelector(".menu-content");
+  const menuIntro=document.querySelector(".menu-intro");
   const resetMenuScroll=()=>{
-    if(!menuTools||!menuContent){window.scrollTo(0,0);return;}
+    if(!menuTools||!menuIntro)return;
     const stickyTop=parseFloat(getComputedStyle(menuTools).top)||0;
-    const targetTop=menuContent.getBoundingClientRect().top+window.scrollY-menuTools.offsetHeight-stickyTop;
-    window.scrollTo(0,Math.max(0,targetTop));
+    // The intro is immediately above the sticky category bar. Use its
+    // document position, not the sticky bar's current viewport position.
+    const menuStart=menuIntro.getBoundingClientRect().bottom+window.scrollY;
+    document.documentElement.style.scrollBehavior="auto";
+    window.scrollTo(0,Math.max(0,menuStart-stickyTop));
   };
+  resetMenuScroll();
   requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
