@@ -256,3 +256,8 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
   body.open .overlay{z-index:10000!important}
   body.open .drawer{z-index:10001!important}
 }
+
+
+/* TCC Google review entry points — four-column mobile quick bar and footer CTA */
+.rate-us-footer{display:flex;flex-direction:column;align-items:center;gap:8px;margin:24px auto 0;padding:20px 16px;max-width:620px;border:1px solid rgba(183,154,90,.38);border-radius:16px;background:rgba(255,250,240,.07);text-align:center}.rate-us-footer strong{color:#fff;font:600 20px/1.2 'Cormorant Garamond',Georgia,serif}.rate-us-footer p{margin:0;color:#ddd5c4;font:12px/1.5 Manrope,Arial,sans-serif}.rate-us-footer a{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:10px 18px;border:1px solid #b79a5a;border-radius:999px;background:#b79a5a;color:#173c2b;font:800 10px/1 Manrope,Arial,sans-serif;letter-spacing:.08em;text-decoration:none;text-transform:uppercase}.mobile-bar a.rate-us-link{color:#f2d58f!important;background:rgba(183,154,90,.15);border-radius:11px}.mobile-bar a.rate-us-link .rate-star{font-size:14px;line-height:1}
+@media(max-width:799px){.mobile-bar{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:3px!important}.mobile-bar a{padding:9px 2px!important;font-size:9px!important;letter-spacing:.015em!important}.mobile-bar a.rate-us-link{font-size:9px!important}}
