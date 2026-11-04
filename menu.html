@@ -2346,18 +2346,25 @@ function showGroup(id){
   filter("");
   syncPastaAddon();
   const menuTools=document.querySelector(".menu-tools");
-  const menuIntro=document.querySelector(".menu-intro");
+  const menuContent=document.querySelector(".menu-content");
   const resetMenuScroll=()=>{
-    if(!menuTools||!menuIntro)return;
+    if(!menuTools||!menuContent)return;
     const stickyTop=parseFloat(getComputedStyle(menuTools).top)||0;
-    // The intro is immediately above the sticky category bar. Use its
-    // document position, not the sticky bar's current viewport position.
-    const menuStart=menuIntro.getBoundingClientRect().bottom+window.scrollY;
+    // Align the beginning of the newly selected category content directly
+    // below the sticky category navigation, regardless of prior scroll.
+    const contentTop=menuContent.getBoundingClientRect().top+window.scrollY;
+    const target=Math.max(0,contentTop-menuTools.offsetHeight-stickyTop);
     document.documentElement.style.scrollBehavior="auto";
-    window.scrollTo(0,Math.max(0,menuStart-stickyTop));
+    document.body.style.scrollBehavior="auto";
+    window.scrollTo({top:target,left:0,behavior:"instant"});
+    document.documentElement.scrollTop=target;
+    document.body.scrollTop=target;
   };
   resetMenuScroll();
+  requestAnimationFrame(resetMenuScroll);
   requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
+  setTimeout(resetMenuScroll,150);
+  setTimeout(resetMenuScroll,400);
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
