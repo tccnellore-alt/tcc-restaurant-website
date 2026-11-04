@@ -2412,10 +2412,23 @@ document.getElementById("foodSpotlightExplore")?.addEventListener("click",closeF
 document.getElementById("foodSpotlightClose")?.addEventListener("click",closeFoodSpotlight);
 foodSpotlight?.addEventListener("click",e=>{if(e.target===foodSpotlight) closeFoodSpotlight();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&foodSpotlight?.classList.contains("is-open")) closeFoodSpotlight();});
-tabs.forEach(t=>t.addEventListener("click",()=>{
-  if(t.dataset.target==="food"&&openFoodSpotlight()) return;
-  showGroup(t.dataset.target);
-}));
+// Reset before the browser processes the tapped tab focus/scroll behavior.
+function resetMenuViewportBeforeCategoryChange(){
+  const html=document.documentElement, body=document.body, root=document.scrollingElement||html;
+  html.style.setProperty("scroll-behavior","auto","important");
+  body.style.setProperty("scroll-behavior","auto","important");
+  html.style.setProperty("overflow-anchor","none","important");
+  body.style.setProperty("overflow-anchor","none","important");
+  if(document.activeElement instanceof HTMLElement) document.activeElement.blur();
+  root.scrollTop=0; html.scrollTop=0; body.scrollTop=0; window.scrollTo(0,0);
+}
+tabs.forEach(t=>{
+  t.addEventListener("pointerdown",resetMenuViewportBeforeCategoryChange,{capture:true,passive:true});
+  t.addEventListener("click",()=>{
+    if(t.dataset.target==="food"&&openFoodSpotlight()) return;
+    showGroup(t.dataset.target);
+  });
+});
 document.querySelectorAll("[data-fav-target]").forEach(a=>a.remove());
 
 function filter(q){
