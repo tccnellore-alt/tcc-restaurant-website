@@ -247,3 +247,12 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
 .menu-page .tcc-bestseller-crown{color:#e2c16d;font-size:12px;line-height:1}
 .menu-page .tcc-bestseller-label{display:inline}
 @media(max-width:480px){.menu-page .tcc-bestseller-badge{font-size:7px;padding:3px 5px;gap:3px}.menu-page .tcc-bestseller-crown{font-size:11px}}
+
+/* Keep the mobile navigation drawer and backdrop above sticky menu controls. */
+@media(max-width:849px){
+  .menu-tools{z-index:5!important}
+  .overlay{z-index:10000!important}
+  .drawer{z-index:10001!important}
+  body.open .overlay{z-index:10000!important}
+  body.open .drawer{z-index:10001!important}
+}
