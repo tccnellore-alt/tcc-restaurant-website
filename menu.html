@@ -2372,10 +2372,31 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  // The shared intro sits above the sticky category bar. Reset to the newly
-  // activated group's own top edge so every category starts at its content.
-  const activeGroup=document.getElementById(id);
-  scrollMenuTarget(activeGroup,8);
+  // Main category changes always return the entire page to the top,
+  // revealing the site header and menu introduction again.
+  cancelMenuScrolls();
+  const html=document.documentElement;
+  const body=document.body;
+  const root=document.scrollingElement||html;
+  const previousHtmlBehavior=html.style.scrollBehavior;
+  const previousBodyBehavior=body.style.scrollBehavior;
+  html.style.setProperty("scroll-behavior","auto","important");
+  body.style.setProperty("scroll-behavior","auto","important");
+  const resetPageTop=()=>{
+    root.scrollTop=0;
+    html.scrollTop=0;
+    body.scrollTop=0;
+    window.scrollTo(0,0);
+  };
+  resetPageTop();
+  requestAnimationFrame(()=>{
+    resetPageTop();
+    requestAnimationFrame(()=>{
+      resetPageTop();
+      html.style.scrollBehavior=previousHtmlBehavior;
+      body.style.scrollBehavior=previousBodyBehavior;
+    });
+  });
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
