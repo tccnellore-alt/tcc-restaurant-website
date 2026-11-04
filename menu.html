@@ -2372,41 +2372,18 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  // Main category changes always return the entire page to the top,
-  // revealing the site header and menu introduction again.
-  cancelMenuScrolls();
-  const html=document.documentElement;
-  const body=document.body;
-  const root=document.scrollingElement||html;
-  const previousHtmlBehavior=html.style.scrollBehavior;
-  const previousBodyBehavior=body.style.scrollBehavior;
-  const previousHtmlAnchor=html.style.overflowAnchor;
-  const previousBodyAnchor=body.style.overflowAnchor;
-  html.style.setProperty("scroll-behavior","auto","important");
-  body.style.setProperty("scroll-behavior","auto","important");
-  html.style.setProperty("overflow-anchor","none","important");
-  body.style.setProperty("overflow-anchor","none","important");
+  // Reset the actual page viewport by scrolling the top-level menu intro
+  // into view. scrollIntoView also traverses scrolling ancestors in embedded browsers.
+  const pageTop=document.querySelector(".menu-intro");
   const resetPageTop=()=>{
-    root.scrollTop=0;
-    html.scrollTop=0;
-    body.scrollTop=0;
+    if(pageTop?.isConnected) pageTop.scrollIntoView({block:"start",inline:"nearest",behavior:"instant"});
     window.scrollTo({top:0,left:0,behavior:"instant"});
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
   };
   resetPageTop();
-  // Re-apply after the browser finishes category visibility/layout updates;
-  // this prevents scroll anchoring from restoring the previous category offset.
-  [0,50,150,350,700].forEach(delay=>{
-    const timer=setTimeout(()=>{
-      resetPageTop();
-      if(delay===700){
-        html.style.scrollBehavior=previousHtmlBehavior;
-        body.style.scrollBehavior=previousBodyBehavior;
-        html.style.overflowAnchor=previousHtmlAnchor;
-        body.style.overflowAnchor=previousBodyAnchor;
-      }
-    },delay);
-    foodJumpTimers.push(timer);
-  });
+  requestAnimationFrame(()=>requestAnimationFrame(resetPageTop));
+  [80,220,500].forEach(delay=>foodJumpTimers.push(setTimeout(resetPageTop,delay)));
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
