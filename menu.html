@@ -2288,8 +2288,11 @@ window.addEventListener("scroll",()=>{
 },{passive:true});
 window.addEventListener("resize",syncFoodTabToScroll);
 
+let foodJumpTimers=[];
 function jumpToSubcategory(target){
   if(!target) return;
+  foodJumpTimers.forEach(timer=>clearTimeout(timer));
+  foodJumpTimers=[];
   foodTabs.forEach(x=>x.classList.toggle("active",x.dataset.foodTarget===target));
   const active=document.querySelector(".menu-group.active");
   if(!active) return;
@@ -2303,7 +2306,7 @@ function jumpToSubcategory(target){
         if(Math.abs(delta)>2) window.scrollBy({top:delta,behavior:"smooth"});
       };
       jumpAll();
-      setTimeout(jumpAll,450);
+      foodJumpTimers.push(setTimeout(jumpAll,450));
     }
     return;
   }
@@ -2345,19 +2348,29 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  const menuTools=document.querySelector(".menu-tools");
-  const categoryIntro=document.getElementById("menuCategoryIntro");
+  // Cancel any delayed subcategory scroll so it cannot pull the page
+  // back down after the user has switched to another main category.
+  foodJumpTimers.forEach(timer=>clearTimeout(timer));
+  foodJumpTimers=[];
   const resetMenuScroll=()=>{
+    const categoryIntro=document.getElementById("menuCategoryIntro");
+    const menuTools=document.querySelector(".menu-tools");
     if(!categoryIntro)return;
-    const stickyHeight=menuTools ? menuTools.getBoundingClientRect().height : 0;
-    categoryIntro.style.scrollMarginTop=(stickyHeight+8)+"px";
-    // Use the actual category heading as the anchor. This avoids calculating
-    // from a sticky element whose viewport position changes while scrolling.
-    categoryIntro.scrollIntoView({block:"start",inline:"nearest",behavior:"instant"});
+
+    // Temporarily disable the site's global smooth-scroll rule. Assigning
+    // the document scroll position directly avoids scrollIntoView animation
+    // and works even when the toolbar is currently sticky.
+    const root=document.documentElement;
+    const previousBehavior=root.style.scrollBehavior;
+    root.style.scrollBehavior="auto";
+    const introTop=categoryIntro.getBoundingClientRect().top+window.scrollY;
+    const toolbarBottom=menuTools?.getBoundingClientRect().bottom||0;
+    const destination=introTop-(toolbarBottom+8);
+    const scroller=document.scrollingElement||root;
+    scroller.scrollTop=Math.max(0,destination);
+    requestAnimationFrame(()=>{root.style.scrollBehavior=previousBehavior;});
   };
-  resetMenuScroll();
   requestAnimationFrame(resetMenuScroll);
-  requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
