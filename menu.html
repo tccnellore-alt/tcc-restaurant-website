@@ -2328,7 +2328,8 @@ function jumpToSubcategory(target){
   setTimeout(jump,900);
 }
 
-let menuCategoryScrollToken=0;\nfunction showGroup(id){
+let menuCategoryScrollToken=0;
+function showGroup(id){
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
   const intro=document.getElementById("menuCategoryIntro");
