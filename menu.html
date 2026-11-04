@@ -1045,9 +1045,10 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 }
 
 /* Food category featured-product spotlight — test branch only */
-.food-spotlight-backdrop{position:fixed;inset:0;z-index:300;background:rgba(8,25,17,.68);display:none;align-items:center;justify-content:center;padding:22px;backdrop-filter:blur(5px)}
-.food-spotlight-backdrop.is-open{display:flex;animation:spotlightFade .22s ease both}
-.food-spotlight-card{position:relative;width:min(100%,410px);overflow:hidden;border:1px solid rgba(183,154,90,.5);border-radius:23px;background:#fbf8f1;box-shadow:0 24px 80px rgba(0,0,0,.3);padding:30px 25px 25px;text-align:center;animation:spotlightRise .28s ease both}
+.food-spotlight-backdrop{position:fixed!important;inset:0!important;z-index:2147483000!important;isolation:isolate;display:none;align-items:center;justify-content:center;overflow-y:auto;padding:24px 18px;background:rgba(8,25,17,.72);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.food-spotlight-backdrop.is-open{display:flex!important;animation:spotlightFade .22s ease both}
+.food-spotlight-card{position:relative;flex:0 1 410px;width:min(100%,410px);max-height:calc(100dvh - 48px);overflow-y:auto;overscroll-behavior:contain;border:1px solid rgba(183,154,90,.5);border-radius:23px;background:#fbf8f1;box-shadow:0 24px 80px rgba(0,0,0,.3);padding:34px 25px 25px;text-align:center;animation:spotlightRise .28s ease both}
+@media(max-height:650px){.food-spotlight-card{padding-top:25px;padding-bottom:20px}.food-spotlight-card:before{margin-bottom:12px}.food-spotlight-card h2{font-size:30px}.food-spotlight-copy{margin-bottom:12px}.food-spotlight-price{margin-bottom:14px}}
 .food-spotlight-card:before{content:"";display:block;width:46px;height:3px;margin:0 auto 19px;background:#b79a5a}
 .food-spotlight-kicker{font:800 9px/1.4 Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#9a7c42}
 .food-spotlight-card h2{margin:10px 0 8px;color:#173c2b;font:500 clamp(31px,8vw,40px)/1.02 "Cormorant Garamond",Georgia,serif}
