@@ -1043,6 +1043,20 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 .takeaway-charge-notice .takeaway-charge-amount{font-size:clamp(11px,3.4vw,14px)!important;line-height:1.15!important}
 .takeaway-charge-notice .takeaway-charge-detail{font-size:8.5px!important;line-height:1.25!important}
 }
+
+/* Food category featured-product spotlight — test branch only */
+.food-spotlight-backdrop{position:fixed;inset:0;z-index:300;background:rgba(8,25,17,.68);display:none;align-items:center;justify-content:center;padding:22px;backdrop-filter:blur(5px)}
+.food-spotlight-backdrop.is-open{display:flex;animation:spotlightFade .22s ease both}
+.food-spotlight-card{position:relative;width:min(100%,410px);overflow:hidden;border:1px solid rgba(183,154,90,.5);border-radius:23px;background:#fbf8f1;box-shadow:0 24px 80px rgba(0,0,0,.3);padding:30px 25px 25px;text-align:center;animation:spotlightRise .28s ease both}
+.food-spotlight-card:before{content:"";display:block;width:46px;height:3px;margin:0 auto 19px;background:#b79a5a}
+.food-spotlight-kicker{font:800 9px/1.4 Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#9a7c42}
+.food-spotlight-card h2{margin:10px 0 8px;color:#173c2b;font:500 clamp(31px,8vw,40px)/1.02 "Cormorant Garamond",Georgia,serif}
+.food-spotlight-copy{margin:0 auto 19px;max-width:290px;color:#667168;font:14px/1.6 Arial,sans-serif}
+.food-spotlight-price{display:block;margin:0 0 21px;color:#98783c;font:700 18px Arial,sans-serif}
+.food-spotlight-action{width:100%;min-height:48px;border:0;border-radius:999px;background:#173c2b;color:#fff;font:800 10px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.food-spotlight-close{position:absolute;top:12px;right:13px;width:35px;height:35px;border:1px solid rgba(23,60,43,.13);border-radius:50%;background:transparent;color:#173c2b;font:24px/1 Arial;cursor:pointer}
+@keyframes spotlightFade{from{opacity:0}to{opacity:1}}@keyframes spotlightRise{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.food-spotlight-backdrop,.food-spotlight-card{animation:none}}
 </style>
 </head>
 <body>
@@ -1080,6 +1094,16 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
     <div class="food-tabs" id="foodTabs" aria-label="Category sections"></div>
     <input class="menu-search" id="menuSearch" type="search" placeholder="Search the entire menu…" aria-label="Search menu">
   </div>
+</div>
+<div class="food-spotlight-backdrop" id="foodSpotlight" aria-hidden="true">
+  <section class="food-spotlight-card" role="dialog" aria-modal="true" aria-labelledby="foodSpotlightTitle" aria-describedby="foodSpotlightCopy">
+    <button class="food-spotlight-close" type="button" id="foodSpotlightClose" aria-label="Close promotion">×</button>
+    <div class="food-spotlight-kicker">A little something new at TCC</div>
+    <h2 id="foodSpotlightTitle">Tuscan Honey Chicken</h2>
+    <p class="food-spotlight-copy" id="foodSpotlightCopy">A delicious new addition to our food menu. We think you’ll love it.</p>
+    <span class="food-spotlight-price">₹299</span>
+    <button class="food-spotlight-action" type="button" id="foodSpotlightExplore">Explore Food Menu</button>
+  </section>
 </div>
 <section class="menu-content">
   <div class="container">
@@ -2318,7 +2342,37 @@ function showGroup(id){
   syncPastaAddon();
   window.scrollTo({top:document.querySelector(".menu-tools").offsetTop-10,behavior:"smooth"});
 }
-tabs.forEach(t=>t.addEventListener("click",()=>showGroup(t.dataset.target)));
+const foodSpotlight=document.getElementById("foodSpotlight");
+const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
+let foodSpotlightPending=false;
+function openFoodSpotlight(){
+  if(!foodSpotlight) return false;
+  let seen=false;
+  try{seen=sessionStorage.getItem(foodSpotlightSeenKey)==="1";}catch(e){}
+  if(seen) return false;
+  foodSpotlightPending=true;
+  foodSpotlight.classList.add("is-open");
+  foodSpotlight.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+  try{sessionStorage.setItem(foodSpotlightSeenKey,"1");}catch(e){}
+  document.getElementById("foodSpotlightExplore")?.focus();
+  return true;
+}
+function closeFoodSpotlight(){
+  if(!foodSpotlight) return;
+  foodSpotlight.classList.remove("is-open");
+  foodSpotlight.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+  if(foodSpotlightPending){foodSpotlightPending=false;showGroup("food");}
+}
+document.getElementById("foodSpotlightExplore")?.addEventListener("click",closeFoodSpotlight);
+document.getElementById("foodSpotlightClose")?.addEventListener("click",closeFoodSpotlight);
+foodSpotlight?.addEventListener("click",e=>{if(e.target===foodSpotlight) closeFoodSpotlight();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&foodSpotlight?.classList.contains("is-open")) closeFoodSpotlight();});
+tabs.forEach(t=>t.addEventListener("click",()=>{
+  if(t.dataset.target==="food"&&openFoodSpotlight()) return;
+  showGroup(t.dataset.target);
+}));
 document.querySelectorAll("[data-fav-target]").forEach(a=>a.remove());
 
 function filter(q){
