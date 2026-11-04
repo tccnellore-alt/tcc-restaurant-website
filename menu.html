@@ -2372,7 +2372,10 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  scrollMenuTarget(intro,8);
+  // The shared intro sits above the sticky category bar. Reset to the newly
+  // activated group's own top edge so every category starts at its content.
+  const activeGroup=document.getElementById(id);
+  scrollMenuTarget(activeGroup,8);
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-food-spotlight-seen-v1";
