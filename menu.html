@@ -2052,6 +2052,23 @@ function addTccMenuPhotos(){
         wrap.classList.add('m-photo-placeholder-wrap');
         wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon" style="color:#173d31!important;-webkit-text-fill-color:#173d31!important">Photo Coming Soon</strong></div>';
       },{once:true});
+      // Test-only: rotate product-card images every 3 seconds without opening the lightbox.
+      if(Array.isArray(photo.gallery)&&photo.gallery.length>1){
+        const gallery=photo.gallery;
+        let galleryIndex=0;
+        let visible=false;
+        const observer=new IntersectionObserver(entries=>{
+          visible=entries[0].isIntersecting;
+        },{threshold:0.1});
+        observer.observe(wrap);
+        window.setInterval(()=>{
+          if(!visible||document.hidden||document.body.classList.contains('menu-text-mode')||!img.isConnected)return;
+          galleryIndex=(galleryIndex+1)%gallery.length;
+          // srcset otherwise overrides src and prevents the displayed image from changing.
+          img.removeAttribute('srcset');
+          img.src=gallery[galleryIndex];
+        },3000);
+      }
       wrap.appendChild(img);
     }else{
       wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon" style="color:#173d31!important;-webkit-text-fill-color:#173d31!important">Photo Coming Soon</strong></div>';
