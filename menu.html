@@ -1151,6 +1151,19 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 @media(max-width:480px){#tccDrinkPicker{padding:18px!important;border-radius:19px!important}#tccQuizOptions{grid-template-columns:1fr!important}#tccQuizOptions .tcc-quiz-option{min-height:56px;padding:13px 14px;font-size:13px}#tccQuizQuestion{font-size:19px}}
 @media(prefers-reduced-motion:reduce){#tccQuizFlow:not([hidden]),#tccQuizOptions .tcc-quiz-option,#tccStartDrinkQuiz{animation:none!important;transition:none!important}}
 
+
+/* TCC Drink Finder — recommendation alternatives */
+.tcc-drink-alternatives{margin-top:16px;padding-top:14px;border-top:1px solid rgba(23,61,49,.14)}
+.tcc-drink-alternatives h4{margin:0 0 10px;color:#173d31;font:800 13px Manrope,Arial,sans-serif}
+#tccDrinkAlternativeList{display:grid;gap:8px}
+.tcc-drink-alternative{display:block;width:100%;padding:12px 13px;border:1px solid rgba(23,61,49,.17);border-radius:12px;background:#fff;color:#173d31;text-align:left;cursor:pointer;transition:background .16s,border-color .16s,transform .16s;box-shadow:0 2px 5px rgba(23,61,49,.06)}
+.tcc-drink-alternative:active{transform:scale(.99)}
+.tcc-drink-alternative.is-selected{border-color:#b79a5a;background:#f4eedf;box-shadow:0 0 0 2px rgba(183,154,90,.16)}
+.tcc-drink-alternative-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tcc-drink-alternative strong{font:800 13px Manrope,Arial,sans-serif}
+.tcc-drink-alternative span{font:800 12px Manrope,Arial,sans-serif}
+.tcc-drink-alternative small{display:block;margin-top:4px;color:#68756c;font:11px Manrope,Arial,sans-serif}
+
 </style>
 </head>
 <body>
@@ -1222,9 +1235,10 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
         <div class="tcc-quiz-controls"><button type="button" id="tccQuizBack" disabled>Back</button><button type="button" id="tccQuizNext" disabled>Next</button></div>
         <button class="tcc-quiz-restart" type="button" id="tccQuizRestart">Start over</button>
         <div class="tcc-drink-pick-result" id="tccDrinkPickResult" aria-live="polite">
-          <div class="tcc-drink-pick-actions tcc-drink-pick-actions-top"><button type="button" id="tccViewPickedDrink">View in menu</button><button type="button" id="tccPickAnotherDrink">Find another match</button></div>
+          <div class="tcc-drink-pick-actions tcc-drink-pick-actions-top"><button type="button" id="tccViewPickedDrink">View in menu</button><button type="button" id="tccAdjustDrinkAnswers">Edit answers</button></div>
           <div class="tcc-drink-pick-visual" id="tccDrinkPickPhoto"></div>
-          <div class="tcc-drink-pick-meta"><div class="tcc-drink-pick-copy"><small id="tccDrinkPickEyebrow">YOUR TCC MATCH</small><strong id="tccDrinkPickName"></strong><p id="tccDrinkPickDescription"></p><p class="tcc-quiz-why" id="tccDrinkPickWhy"></p></div><span class="tcc-drink-pick-price" id="tccDrinkPickPrice"></span></div>
+          <div class="tcc-drink-pick-meta"><div class="tcc-drink-pick-copy"><small id="tccDrinkPickEyebrow">YOUR BEST MATCH</small><strong id="tccDrinkPickName"></strong><p id="tccDrinkPickDescription"></p><p class="tcc-quiz-why" id="tccDrinkPickWhy"></p></div><span class="tcc-drink-pick-price" id="tccDrinkPickPrice"></span></div>
+          <section class="tcc-drink-alternatives" id="tccDrinkAlternatives" aria-label="Other drink recommendations"><h4>Other drinks you may enjoy</h4><div id="tccDrinkAlternativeList"></div></section>
         </div>
       </div>
     </section>
@@ -2622,10 +2636,11 @@ function tccRenderQuizStep(){
 }
 function tccScoreDrink(drink){
  const p=drink.profile;if(!p)return -100;
- let score=0;const a=tccQuizAnswers;
- if(a.mood&&a.mood!=="any")score+=p.mood===a.mood?9:-18;
+ const a=tccQuizAnswers;let score=0,answered=0;
+ if(a.mood&&a.mood!=="any"){answered++;score+=p.mood===a.mood?12:-24;}
  const direction=a.direction;
  if(direction){
+  answered++;
   const match={
    bold:()=>p.mood==="coffee"&&p.sweetness==="none",
    smooth:()=>p.flavours.includes("creamy"),
@@ -2643,51 +2658,78 @@ function tccScoreDrink(drink){
    biscuit:()=>p.sweetness==="sweet"&&p.flavours.includes("creamy"),
    coffee:()=>p.flavours.includes("coffee")
   };
-  if(match[direction])score+=match[direction]()?7:-3;
+  if(match[direction])score+=match[direction]()?9:-8;
  }
  if(a.sweetness&&a.sweetness!=="any"){
-  const levels={none:0,light:1,medium:2,sweet:3};
-  score+=Math.max(-3,4-Math.abs(levels[p.sweetness]-levels[a.sweetness])*2);
+  answered++;const levels={none:0,light:1,medium:2,sweet:3};
+  const distance=Math.abs(levels[p.sweetness]-levels[a.sweetness]);
+  score+=distance===0?8:distance===1?2:-7;
  }
- if(a.temperature&&a.temperature!=="any")score+=p.temperature===a.temperature?4:(p.temperature==="any"?2:-1);
- if(a.flavour&&a.flavour!=="any")score+=p.flavours.includes(a.flavour)?5:-2;
- if(drink.item.querySelector(".tcc-bestseller-badge"))score+=1.5;
- return score;
+ if(a.temperature&&a.temperature!=="any"){
+  answered++;score+=p.temperature===a.temperature?7:p.temperature==="any"?3:-5;
+ }
+ if(a.flavour&&a.flavour!=="any"){
+  answered++;score+=p.flavours.includes(a.flavour)?8:-6;
+ }
+ return {score,answered};
 }
-function tccPickMatchedDrink(){
- const eligible=tccEligibleDrinks().filter(x=>x.profile);
- if(!eligible.length)return;
- const ranked=eligible.map(x=>({...x,score:tccScoreDrink(x)})).sort((a,b)=>b.score-a.score);
- const bestScore=ranked[0].score;
- const closeMatches=ranked.filter(x=>x.score>=bestScore-1.5);
- const chosen=closeMatches[Math.floor(Math.random()*closeMatches.length)];
- tccCurrentDrink=chosen;
- document.getElementById("tccDrinkPickName").textContent=chosen.name;
- document.getElementById("tccDrinkPickPrice").textContent=chosen.price;
- const description=chosen.item.querySelector(".m-item-info p, p");
- document.getElementById("tccDrinkPickDescription").textContent=description?.textContent.trim()||"Picked from the TCC menu to match the flavours you enjoy.";
- const why=[];
- if(tccQuizAnswers.mood!=="any")why.push(({coffee:"coffee",tea:"tea",fizzy:"refreshing",matcha:"matcha",shake:"shake"}[tccQuizAnswers.mood]||"") );
- if(tccQuizAnswers.sweetness!=="any")why.push(({none:"not-too-sweet",light:"lightly sweet",medium:"moderately sweet",sweet:"sweet"}[tccQuizAnswers.sweetness]||""));
- if(tccQuizAnswers.temperature!=="any")why.push(tccQuizAnswers.temperature);
- if(tccQuizAnswers.flavour!=="any")why.push(({chocolate:"chocolatey and creamy",fruity:"fruity",coffee:"coffee-forward",floral:"floral",tea:"tea and citrus"}[tccQuizAnswers.flavour]||""));
- if(tccQuizAnswers.direction)why.push(({bold:"strong coffee",smooth:"smooth and milky",indulgent:"an indulgent treat",refreshing:"a refreshing twist",citrus:"citrusy flavours",tropical:"tropical fruit",tea:"tea notes",cosy:"a cosy tea",iced:"an iced tea",fruity:"fruity flavours",classic:"classic matcha",creamy:"creamy flavours",chocolate:"chocolate",biscuit:"biscuit-like sweetness",coffee:"coffee and cream"}[tccQuizAnswers.direction]||"your chosen style"));
-  document.getElementById("tccDrinkPickWhy").textContent=why.length?"Why it fits: "+why.join(" · ")+".":"A little TCC surprise, chosen from our available drinks.";
+function tccDrinkReason(drink){
+ const p=drink.profile,a=tccQuizAnswers,reasons=[];
+ if(a.mood&&a.mood!=="any")reasons.push(({coffee:"coffee",tea:"tea",fizzy:"refreshing drinks",matcha:"matcha",shake:"creamy drinks"}[a.mood]||"your drink preference"));
+ if(a.direction)reasons.push(({bold:"strong coffee",smooth:"smooth and creamy flavours",indulgent:"a sweeter coffee",refreshing:"a lighter refreshing style",citrus:"citrus and fruity flavours",tropical:"fruity flavours",tea:"tea",cosy:"a hot drink",iced:"an iced drink",fruity:"fruity flavours",classic:"classic matcha",creamy:"creamy flavours",chocolate:"chocolate",biscuit:"Biscoff-style sweetness",coffee:"coffee flavour"}[a.direction]||"your chosen style"));
+ if(a.sweetness&&a.sweetness!=="any")reasons.push(({none:"less sweetness",light:"light sweetness",medium:"balanced sweetness",sweet:"a sweeter taste"}[a.sweetness]));
+ if(a.temperature&&a.temperature!=="any")reasons.push(a.temperature==="hot"?"a hot drink":"a cold drink");
+ if(a.flavour&&a.flavour!=="any")reasons.push(({chocolate:"chocolate",fruity:"fruity flavours",coffee:"coffee flavour",floral:"floral notes",tea:"tea and citrus"}[a.flavour]||"your flavour choice"));
+ return reasons.length?"Chosen to match your preference for "+reasons.slice(0,3).join(", ")+".":"A popular pick from our available drinks.";
+}
+function tccShowDrinkCard(drink){
+ tccCurrentDrink=drink;
+ document.getElementById("tccDrinkPickName").textContent=drink.name;
+ document.getElementById("tccDrinkPickPrice").textContent=drink.price;
+ const description=drink.item.querySelector(".m-item-info p, p");
+ document.getElementById("tccDrinkPickDescription").textContent=description?.textContent.trim()||"A favourite from the TCC drinks menu.";
+ document.getElementById("tccDrinkPickWhy").textContent=tccDrinkReason(drink);
  const photoBox=document.getElementById("tccDrinkPickPhoto");photoBox.replaceChildren();
- const sourcePhoto=chosen.item.querySelector(".m-photo-wrap");
+ const sourcePhoto=drink.item.querySelector(".m-photo-wrap");
  if(sourcePhoto){
   const clone=sourcePhoto.cloneNode(true);clone.style.width="100%";clone.style.height="100%";clone.style.aspectRatio="4 / 3";
   const img=clone.querySelector("img");if(img){img.removeAttribute("srcset");img.loading="eager";img.style.width="100%";img.style.height="100%";img.style.objectFit="contain";img.style.objectPosition="center";}
   photoBox.appendChild(clone);
  }else photoBox.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';
- document.getElementById("tccQuizStepMeta").textContent="YOUR PERSONAL TCC MATCH";
+}
+function tccPickMatchedDrink(){
+ const eligible=tccEligibleDrinks().filter(x=>x.profile);
+ const result=tccDrinkResult;
+ const list=document.getElementById("tccDrinkAlternativeList");list.replaceChildren();
+ if(!eligible.length){
+  document.getElementById("tccQuizQuestion").textContent="Let's try another combination.";
+  document.getElementById("tccQuizHint").textContent="We couldn't find a close match in the available drinks. Change an answer or explore the drinks menu.";
+  document.getElementById("tccQuizOptions").style.display="none";
+  document.querySelector(".tcc-quiz-controls").style.display="none";
+  result.classList.add("is-visible");return;
+ }
+ const ranked=eligible.map(x=>({...x,...tccScoreDrink(x)})).sort((a,b)=>b.score-a.score);
+ const chosen=ranked[0],alternatives=ranked.slice(1,3);
+ tccShowDrinkCard(chosen);
+ alternatives.forEach((drink,index)=>{
+  const card=document.createElement("button");card.type="button";card.className="tcc-drink-alternative";
+  const name=document.createElement("strong");name.textContent=drink.name;
+  const price=document.createElement("span");price.textContent=drink.price;
+  const note=document.createElement("small");note.textContent=index===0?"Another close match":"A different option to try";
+  const top=document.createElement("span");top.className="tcc-drink-alternative-top";top.append(name,price);
+  card.append(top,note);
+  card.addEventListener("click",()=>{tccShowDrinkCard(drink);list.querySelectorAll("button").forEach(x=>x.classList.toggle("is-selected",x===card));});
+  list.appendChild(card);
+ });
+ document.getElementById("tccQuizStepMeta").textContent="YOUR TCC DRINK PICKS";
  document.getElementById("tccQuizProgressFill").style.width="100%";
- document.getElementById("tccQuizQuestion").textContent="We found a drink for your mood.";
+ document.getElementById("tccQuizQuestion").textContent="Here are your best matches.";
+ document.getElementById("tccQuizHint").textContent="We matched your answers with drinks currently available at TCC.";
  document.getElementById("tccQuizOptions").style.display="none";
  document.querySelector(".tcc-quiz-controls").style.display="none";
- document.getElementById("tccQuizRestart").textContent="Try the quiz again";
- tccDrinkResult.classList.add("is-visible");
- requestAnimationFrame(()=>tccDrinkResult.scrollIntoView({behavior:"smooth",block:"start"}));
+ document.getElementById("tccQuizRestart").textContent="Start again";
+ result.classList.add("is-visible");
+ requestAnimationFrame(()=>result.scrollIntoView({behavior:"smooth",block:"start"}));
 }
 document.getElementById("tccQuizNext")?.addEventListener("click",()=>{
  const questions=tccQuestionsForAnswers();
@@ -2704,6 +2746,15 @@ function tccResetQuiz(){
  tccRenderQuizStep();
 }
 document.getElementById("tccQuizRestart")?.addEventListener("click",tccResetQuiz);
+document.getElementById("tccAdjustDrinkAnswers")?.addEventListener("click",()=>{
+ const questions=tccQuestionsForAnswers();tccQuizStep=Math.max(0,questions.length-1);
+ tccDrinkResult.classList.remove("is-visible");
+ document.getElementById("tccQuizOptions").style.display="grid";
+ document.querySelector(".tcc-quiz-controls").style.display="flex";
+ document.getElementById("tccQuizRestart").textContent="Start over";
+ tccRenderQuizStep();
+ document.getElementById("tccQuizFlow").scrollIntoView({behavior:"smooth",block:"start"});
+});
 document.getElementById("tccPickAnotherDrink")?.addEventListener("click",()=>{tccResetQuiz();tccQuizStep=0;tccRenderQuizStep();});
 function tccViewPickedDrink(){
  const chosen=tccCurrentDrink;if(!chosen?.item?.isConnected)return;
