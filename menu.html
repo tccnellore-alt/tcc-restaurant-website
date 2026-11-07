@@ -2596,6 +2596,27 @@ function tccScoreDrink(drink){
  const p=drink.profile;if(!p)return -100;
  let score=0;const a=tccQuizAnswers;
  if(a.mood&&a.mood!=="any")score+=p.mood===a.mood?9:-18;
+ const direction=a.direction;
+ if(direction){
+  const match={
+   bold:()=>p.mood==="coffee"&&p.sweetness==="none",
+   smooth:()=>p.flavours.includes("creamy"),
+   indulgent:()=>p.sweetness==="sweet"||p.flavours.includes("chocolate"),
+   refreshing:()=>p.temperature==="cold"||p.flavours.includes("fruity"),
+   citrus:()=>p.flavours.includes("fruity")||p.flavours.includes("tea"),
+   tropical:()=>p.flavours.includes("fruity"),
+   tea:()=>p.mood==="tea",
+   cosy:()=>p.mood==="tea"&&p.temperature==="hot",
+   iced:()=>p.mood==="tea"&&p.temperature==="cold",
+   fruity:()=>p.flavours.includes("fruity"),
+   classic:()=>p.mood==="matcha"&&p.flavours.includes("floral"),
+   creamy:()=>p.flavours.includes("creamy"),
+   chocolate:()=>p.flavours.includes("chocolate"),
+   biscuit:()=>p.sweetness==="sweet"&&p.flavours.includes("creamy"),
+   coffee:()=>p.flavours.includes("coffee")
+  };
+  if(match[direction])score+=match[direction]()?7:-3;
+ }
  if(a.sweetness&&a.sweetness!=="any"){
   const levels={none:0,light:1,medium:2,sweet:3};
   score+=Math.max(-3,4-Math.abs(levels[p.sweetness]-levels[a.sweetness])*2);
@@ -2622,7 +2643,8 @@ function tccPickMatchedDrink(){
  if(tccQuizAnswers.sweetness!=="any")why.push(({none:"not-too-sweet",light:"lightly sweet",medium:"moderately sweet",sweet:"sweet"}[tccQuizAnswers.sweetness]||""));
  if(tccQuizAnswers.temperature!=="any")why.push(tccQuizAnswers.temperature);
  if(tccQuizAnswers.flavour!=="any")why.push(({chocolate:"chocolatey and creamy",fruity:"fruity",coffee:"coffee-forward",floral:"floral",tea:"tea and citrus"}[tccQuizAnswers.flavour]||""));
- document.getElementById("tccDrinkPickWhy").textContent=why.length?"Why it fits: "+why.join(" · ")+".":"A little TCC surprise, chosen from our available drinks.";
+ if(tccQuizAnswers.direction)why.push(({bold:"strong coffee",smooth:"smooth and milky",indulgent:"an indulgent treat",refreshing:"a refreshing twist",citrus:"citrusy flavours",tropical:"tropical fruit",tea:"tea notes",cosy:"a cosy tea",iced:"an iced tea",fruity:"fruity flavours",classic:"classic matcha",creamy:"creamy flavours",chocolate:"chocolate",biscuit:"biscuit-like sweetness",coffee:"coffee and cream"}[tccQuizAnswers.direction]||"your chosen style"));
+  document.getElementById("tccDrinkPickWhy").textContent=why.length?"Why it fits: "+why.join(" · ")+".":"A little TCC surprise, chosen from our available drinks.";
  const photoBox=document.getElementById("tccDrinkPickPhoto");photoBox.replaceChildren();
  const sourcePhoto=chosen.item.querySelector(".m-photo-wrap");
  if(sourcePhoto){
