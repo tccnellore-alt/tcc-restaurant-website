@@ -1095,8 +1095,8 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 .tcc-drink-pick-result strong{display:block;margin-top:4px;color:#173d31;font:800 17px/1.25 Manrope,Arial,sans-serif}
 .tcc-drink-pick-result p{margin:5px 0 0;color:#69736a;font:12px/1.45 Manrope,Arial,sans-serif}
 .tcc-drink-pick-price{flex:none;padding:7px 9px;border-radius:999px;background:#f0e5cb;color:#876b31;font:800 13px Manrope,Arial,sans-serif}
-.tcc-drink-pick-actions{display:flex;gap:8px;margin-top:12px}
-.tcc-drink-pick-actions button{flex:1;min-height:40px;border:1px solid rgba(23,61,49,.18);border-radius:9px;background:#fff;color:#173d31;font:700 11px Manrope,Arial,sans-serif}
+.tcc-drink-pick-actions{display:flex;gap:8px;margin:0 0 11px;position:relative;z-index:2}
+.tcc-drink-pick-actions button{flex:1;min-height:44px;border:1px solid rgba(23,61,49,.18);border-radius:9px;background:#fff;color:#173d31;font:700 11px Manrope,Arial,sans-serif}
 .tcc-drink-pick-actions button:first-child{background:#173d31;color:#fffaf0}
 
 
@@ -1165,9 +1165,9 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <p class="tcc-drink-picker-copy">Let us pick one of our customer-favourite drinks for you.</p>
       <button class="tcc-drink-picker-button" type="button" id="tccPickDrink">Surprise Me with a Drink</button>
       <div class="tcc-drink-pick-result" id="tccDrinkPickResult" aria-live="polite">
+        <div class="tcc-drink-pick-actions tcc-drink-pick-actions-top"><button type="button" id="tccViewPickedDrink">View in menu</button><button type="button" id="tccPickAnotherDrink">Surprise Me Again</button></div>
         <div class="tcc-drink-pick-visual" id="tccDrinkPickPhoto"></div>
         <div class="tcc-drink-pick-meta"><div class="tcc-drink-pick-copy"><small>YOUR TCC PICK · BEST SELLER</small><strong id="tccDrinkPickName"></strong><p id="tccDrinkPickDescription"></p></div><span class="tcc-drink-pick-price" id="tccDrinkPickPrice"></span></div>
-        <div class="tcc-drink-pick-actions"><button type="button" id="tccViewPickedDrink">View in menu</button><button type="button" id="tccPickAnotherDrink">Surprise Me Again</button></div>
       </div>
     </section>
 
@@ -2429,7 +2429,7 @@ function tccEligibleDrinks(){
       item.querySelector(".tcc-bestseller-badge") &&
       !item.querySelector(".availability-status") &&
       !/sold\s*out/i.test(item.textContent)
-    ).map(item=>({item,name:(item.querySelector("h3")?.textContent||"").replace(/Best Seller/g,"").replace(/♛/g,"").trim(),price:item.querySelector("strong")?.textContent.trim()||"",group:groupId}));
+    ).map(item=>({item,name:(item.querySelector("h3")?.textContent||"").replace(/Best Seller/g,"").replace(/♛/g,"").trim(),price:[...item.children].find(el=>el.matches("strong"))?.textContent.trim()||"",group:groupId}));
   }).filter(x=>x.name);
 }
 function tccPickRandomDrink(){
@@ -2468,13 +2468,16 @@ function tccViewPickedDrink(){
   search.value="";
   showGroup(group.id);
   // Make the exact section and product visible after the category reset.
-  requestAnimationFrame(()=>{
+  // showGroup schedules its own category-heading scroll resets; wait until
+  // those finish before taking the customer to the exact recommended item.
+  setTimeout(()=>{
     section.style.display="block";
+    group.classList.add("active");
     chosen.item.style.setProperty("display","flex","important");
-    chosen.item.scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
     chosen.item.classList.add("tcc-drink-picked-focus");
-    setTimeout(()=>chosen.item.classList.remove("tcc-drink-picked-focus"),1800);
-  });
+    chosen.item.scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
+    setTimeout(()=>chosen.item.classList.remove("tcc-drink-picked-focus"),2400);
+  },500);
 }
 document.getElementById("tccViewPickedDrink")?.addEventListener("click",tccViewPickedDrink);
 function syncTccDrinkPicker(){
