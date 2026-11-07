@@ -1181,7 +1181,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <span>Classic brews, cold favourites and everyday comforts.</span>
     </div>
     <div id="noResults" class="no-results">No matching items found. Try another search.</div>
-    <section class="tcc-drink-picker is-visible" id="tccDrinkPicker" aria-label="TCC Drink Finder">
+    <section class="tcc-drink-picker" id="tccDrinkPicker" aria-label="TCC Drink Finder">
       <div class="tcc-drink-picker-top"><div><p class="tcc-drink-picker-kicker">THE TCC DRINK FINDER ✦</p><h3>Find your perfect sip</h3></div><span aria-hidden="true" style="font-size:27px">☕</span></div>
       <p class="tcc-drink-picker-copy">A few quick choices. One drink that feels just right.</p>
       <button class="tcc-drink-start" type="button" id="tccStartDrinkQuiz">Find me a drink <span aria-hidden="true">→</span></button>
@@ -2624,7 +2624,8 @@ function tccViewPickedDrink(){
 document.getElementById("tccViewPickedDrink")?.addEventListener("click",tccViewPickedDrink);
 function syncTccDrinkPicker(){
  const active=document.querySelector(".menu-group.active");
- const show=!!active&&["coffee","refreshers-and-tea","signatures"].includes(active.id)&&!search?.value.trim();
+ const drinkCategory=!!active&&["coffee","refreshers-and-tea","signatures"].includes(active.id);
+ const show=drinkCategory&&!search?.value.trim();
  tccDrinkPicker?.classList.toggle("is-visible",show);
 }
 document.getElementById("tccStartDrinkQuiz")?.addEventListener("click",()=>{
@@ -2649,6 +2650,7 @@ function showGroup(id){
     desserts:["06 · DESSERTS","Save room for something sweet.","Cakes, dessert tins and indulgent jars."]
   }[id];
   if(intro&&copy){intro.querySelector(".category-kicker").textContent=copy[0];intro.querySelector("h2").textContent=copy[1];intro.querySelector("span").textContent=copy[2];}
+  syncTccDrinkPicker();
   buildSubTabs(id);
   search.value="";
   filter("");
