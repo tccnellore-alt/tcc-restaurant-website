@@ -1064,6 +1064,24 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 .menu-section .tcc-signature-badge{display:inline-flex;align-items:center;gap:5px;width:max-content;margin:0 0 6px;padding:5px 9px;border-radius:999px;background:#173c2b;color:#f8e8bd;font:900 9px/1 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .menu-section .tcc-signature-badge:before{content:"✦";color:#d8bd7d}
 .food-spotlight-spice span{font:800 9px Arial,sans-serif;letter-spacing:.12em}.food-spotlight-spice strong{font-size:15px;letter-spacing:1px;white-space:nowrap}.food-spotlight-spice i{font-style:normal;opacity:.25}.food-spotlight-spice b{font:800 11px Arial,sans-serif;color:#9b8046}
+
+/* TCC Surprise Me drink picker */
+.tcc-drink-picker{display:none;margin:18px 0 22px;padding:18px;border:1px solid rgba(183,154,90,.38);border-radius:18px;background:linear-gradient(125deg,#173d31 0%,#205440 100%);color:#fffaf0;box-shadow:0 9px 24px rgba(23,61,49,.12)}
+.tcc-drink-picker.is-visible{display:block}
+.tcc-drink-picker-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tcc-drink-picker-kicker{margin:0 0 5px;color:#d9c58e;font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.tcc-drink-picker h3{margin:0;color:#fffaf0;font:700 20px/1.2 Manrope,Arial,sans-serif}
+.tcc-drink-picker-copy{margin:7px 0 14px;color:#e1e9e2;font:12px/1.5 Manrope,Arial,sans-serif}
+.tcc-drink-picker-button{width:100%;min-height:44px;border:1px solid #d4bd7d;border-radius:11px;background:#f3ead7;color:#173d31;font:800 13px Manrope,Arial,sans-serif;cursor:pointer}
+.tcc-drink-pick-result{display:none;margin-top:13px;padding:13px;border:1px solid rgba(232,213,158,.5);border-radius:12px;background:#fffaf0;color:#173d31}
+.tcc-drink-pick-result.is-visible{display:block}
+.tcc-drink-pick-result small{display:block;color:#8d7337;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.tcc-drink-pick-result strong{display:block;margin-top:4px;font:800 17px Manrope,Arial,sans-serif}
+.tcc-drink-pick-result p{margin:4px 0 10px;color:#6b746b;font:12px Manrope,Arial,sans-serif}
+.tcc-drink-pick-actions{display:flex;gap:8px}
+.tcc-drink-pick-actions button{flex:1;min-height:36px;border:1px solid rgba(23,61,49,.18);border-radius:9px;background:#fff;color:#173d31;font:700 11px Manrope,Arial,sans-serif}
+.tcc-drink-pick-actions button:first-child{background:#173d31;color:#fffaf0}
+
 </style>
 </head>
 <body>
@@ -1122,6 +1140,16 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <span>Classic brews, cold favourites and everyday comforts.</span>
     </div>
     <div id="noResults" class="no-results">No matching items found. Try another search.</div>
+    <section class="tcc-drink-picker" id="tccDrinkPicker" aria-label="Surprise me with a drink">
+      <div class="tcc-drink-picker-top"><div><p class="tcc-drink-picker-kicker">A LITTLE TCC SURPRISE ✨</p><h3>Not sure what to sip?</h3></div><span aria-hidden="true" style="font-size:27px">☕</span></div>
+      <p class="tcc-drink-picker-copy">Let us pick one of our customer-favourite drinks for you.</p>
+      <button class="tcc-drink-picker-button" type="button" id="tccPickDrink">Surprise Me with a Drink</button>
+      <div class="tcc-drink-pick-result" id="tccDrinkPickResult" aria-live="polite">
+        <small>YOUR TCC PICK</small><strong id="tccDrinkPickName"></strong><p id="tccDrinkPickPrice"></p>
+        <div class="tcc-drink-pick-actions"><button type="button" id="tccViewPickedDrink">View in menu</button><button type="button" id="tccPickAnotherDrink">Pick another</button></div>
+      </div>
+    </section>
+
 <div class="menu-group" id="coffee" data-group="Coffee">
         <section class="menu-addons-panel coffee-addons-panel" aria-label="Coffee add-ons">
           <div class="addons-heading">
@@ -2366,6 +2394,47 @@ function jumpToSubcategory(target){
   setTimeout(jump,900);
 }
 
+
+/* Random beverage recommendation: best sellers only, excluding sold-out items. */
+const tccDrinkPicker=document.getElementById("tccDrinkPicker");
+const tccDrinkResult=document.getElementById("tccDrinkPickResult");
+let tccCurrentDrink=null;
+let tccPreviousDrinkName="";
+function tccEligibleDrinks(){
+  return ["coffee","refreshers-and-tea","signatures"].flatMap(groupId=>{
+    const group=document.getElementById(groupId);
+    if(!group)return [];
+    return [...group.querySelectorAll(".m-item")].filter(item=>
+      item.querySelector(".tcc-bestseller-badge") &&
+      !item.querySelector(".availability-status") &&
+      !/sold\s*out/i.test(item.textContent)
+    ).map(item=>({item,name:(item.querySelector("h3")?.textContent||"").replace(/Best Seller/g,"").replace(/♛/g,"").trim(),price:item.querySelector("strong")?.textContent.trim()||"",group:groupId}));
+  }).filter(x=>x.name);
+}
+function tccPickRandomDrink(){
+  const eligible=tccEligibleDrinks();
+  if(!eligible.length)return;
+  let pool=eligible.filter(x=>x.name!==tccPreviousDrinkName);
+  if(!pool.length)pool=eligible;
+  const chosen=pool[Math.floor(Math.random()*pool.length)];
+  tccCurrentDrink=chosen;tccPreviousDrinkName=chosen.name;
+  document.getElementById("tccDrinkPickName").textContent=chosen.name;
+  document.getElementById("tccDrinkPickPrice").textContent=chosen.price;
+  tccDrinkResult.classList.add("is-visible");
+}
+document.getElementById("tccPickDrink")?.addEventListener("click",tccPickRandomDrink);
+document.getElementById("tccPickAnotherDrink")?.addEventListener("click",tccPickRandomDrink);
+document.getElementById("tccViewPickedDrink")?.addEventListener("click",()=>{
+  if(!tccCurrentDrink)return;
+  showGroup(tccCurrentDrink.group);
+  requestAnimationFrame(()=>tccCurrentDrink.item.scrollIntoView({behavior:"smooth",block:"center"}));
+});
+function syncTccDrinkPicker(){
+  const active=document.querySelector(".menu-group.active");
+  const show=!!active&&["coffee","refreshers-and-tea","signatures"].includes(active.id)&&!search?.value.trim();
+  tccDrinkPicker?.classList.toggle("is-visible",show);
+}
+
 function showGroup(id){
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
@@ -2382,6 +2451,7 @@ function showGroup(id){
   buildSubTabs(id);
   search.value="";
   filter("");
+  syncTccDrinkPicker();
   syncPastaAddon();
   const menuTools=document.querySelector(".menu-tools");
   const categoryIntro=document.getElementById("menuCategoryIntro");
@@ -2474,6 +2544,7 @@ function filter(q){
   }
   noResults.style.display=found?"none":"block";
   syncMenuFilterUI();
+  syncTccDrinkPicker();
   syncPastaAddon();
 }
 search.addEventListener("input",e=>{
