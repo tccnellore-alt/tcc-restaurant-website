@@ -1104,6 +1104,11 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 
 
 /* TCC Drink Finder — guided, mobile-first preference quiz */
+.tcc-drink-start{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:54px;margin-top:15px;padding:0 17px;border:1px solid #d8bd7d;border-radius:12px;background:#f3ead7;color:#173d31;font:800 14px Manrope,Arial,sans-serif;cursor:pointer;box-shadow:0 5px 16px rgba(0,0,0,.12);transition:transform .18s,background .18s}
+.tcc-drink-start:active{transform:scale(.985);background:#fff8e9}
+.tcc-drink-start span{font-size:21px;color:#8d7337}
+#tccQuizFlow[hidden]{display:none!important}
+
 .tcc-drink-picker{padding:19px!important;background:linear-gradient(135deg,#173d31,#245b45)!important}
 .tcc-quiz-progress{height:5px;margin:16px 0 10px;border-radius:9px;background:rgba(255,255,255,.2);overflow:hidden}
 .tcc-quiz-progress span{display:block;width:25%;height:100%;border-radius:9px;background:#d8bd7d;transition:width .25s ease}
@@ -1180,16 +1185,19 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
     <section class="tcc-drink-picker" id="tccDrinkPicker" aria-label="TCC Drink Finder">
       <div class="tcc-drink-picker-top"><div><p class="tcc-drink-picker-kicker">THE TCC DRINK FINDER ✦</p><h3>Find your perfect sip</h3></div><span aria-hidden="true" style="font-size:27px">☕</span></div>
       <p class="tcc-drink-picker-copy">A few quick choices. One drink that feels just right.</p>
-      <div class="tcc-quiz-progress" aria-label="Quiz progress"><span id="tccQuizProgressFill"></span></div>
-      <div class="tcc-quiz-step-meta" id="tccQuizStepMeta">QUESTION 1 OF 4</div>
-      <div class="tcc-quiz-question" id="tccQuizQuestion" aria-live="polite"></div>
-      <div class="tcc-quiz-options" id="tccQuizOptions"></div>
-      <div class="tcc-quiz-controls"><button type="button" id="tccQuizBack" disabled>Back</button><button type="button" id="tccQuizNext" disabled>Next</button></div>
-      <button class="tcc-quiz-restart" type="button" id="tccQuizRestart">Start over</button>
-      <div class="tcc-drink-pick-result" id="tccDrinkPickResult" aria-live="polite">
-        <div class="tcc-drink-pick-actions tcc-drink-pick-actions-top"><button type="button" id="tccViewPickedDrink">View in menu</button><button type="button" id="tccPickAnotherDrink">Find another match</button></div>
-        <div class="tcc-drink-pick-visual" id="tccDrinkPickPhoto"></div>
-        <div class="tcc-drink-pick-meta"><div class="tcc-drink-pick-copy"><small id="tccDrinkPickEyebrow">YOUR TCC MATCH</small><strong id="tccDrinkPickName"></strong><p id="tccDrinkPickDescription"></p><p class="tcc-quiz-why" id="tccDrinkPickWhy"></p></div><span class="tcc-drink-pick-price" id="tccDrinkPickPrice"></span></div>
+      <button class="tcc-drink-start" type="button" id="tccStartDrinkQuiz">Find me a drink <span aria-hidden="true">→</span></button>
+      <div id="tccQuizFlow" hidden>
+        <div class="tcc-quiz-progress" aria-label="Quiz progress"><span id="tccQuizProgressFill"></span></div>
+        <div class="tcc-quiz-step-meta" id="tccQuizStepMeta">QUESTION 1 OF 4</div>
+        <div class="tcc-quiz-question" id="tccQuizQuestion" aria-live="polite"></div>
+        <div class="tcc-quiz-options" id="tccQuizOptions"></div>
+        <div class="tcc-quiz-controls"><button type="button" id="tccQuizBack" disabled>Back</button><button type="button" id="tccQuizNext" disabled>Next</button></div>
+        <button class="tcc-quiz-restart" type="button" id="tccQuizRestart">Start over</button>
+        <div class="tcc-drink-pick-result" id="tccDrinkPickResult" aria-live="polite">
+          <div class="tcc-drink-pick-actions tcc-drink-pick-actions-top"><button type="button" id="tccViewPickedDrink">View in menu</button><button type="button" id="tccPickAnotherDrink">Find another match</button></div>
+          <div class="tcc-drink-pick-visual" id="tccDrinkPickPhoto"></div>
+          <div class="tcc-drink-pick-meta"><div class="tcc-drink-pick-copy"><small id="tccDrinkPickEyebrow">YOUR TCC MATCH</small><strong id="tccDrinkPickName"></strong><p id="tccDrinkPickDescription"></p><p class="tcc-quiz-why" id="tccDrinkPickWhy"></p></div><span class="tcc-drink-pick-price" id="tccDrinkPickPrice"></span></div>
+        </div>
       </div>
     </section>
 
@@ -2619,6 +2627,12 @@ function syncTccDrinkPicker(){
  const show=!!active&&["coffee","refreshers-and-tea","signatures"].includes(active.id)&&!search?.value.trim();
  tccDrinkPicker?.classList.toggle("is-visible",show);
 }
+document.getElementById("tccStartDrinkQuiz")?.addEventListener("click",()=>{
+  document.getElementById("tccStartDrinkQuiz").hidden=true;
+  document.getElementById("tccQuizFlow").hidden=false;
+  tccRenderQuizStep();
+});
+
 tccRenderQuizStep();
 
 function showGroup(id){
