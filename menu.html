@@ -1123,6 +1123,34 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 .tcc-quiz-restart{display:block;margin:10px auto 0;border:0;background:transparent;color:#e1d1a5;text-decoration:underline;font:600 11px Manrope,Arial,sans-serif;cursor:pointer}
 .tcc-quiz-why{margin-top:8px!important;padding:9px 10px;border-left:3px solid #b79a5a;border-radius:0 8px 8px 0;background:#f5efe1;color:#415347!important}
 @media(max-width:360px){.tcc-quiz-options{grid-template-columns:1fr}.tcc-drink-picker{padding:15px!important}}
+
+/* TCC Drink Finder — premium, thumb-friendly interaction polish */
+#tccDrinkPicker{border:1px solid rgba(216,189,125,.72)!important;border-radius:22px!important;padding:22px!important;box-shadow:0 16px 38px rgba(20,54,42,.18),inset 0 1px 0 rgba(255,255,255,.10)!important}
+#tccDrinkPicker .tcc-drink-picker-copy{font-size:13px;line-height:1.6;color:rgba(255,250,240,.86)}
+#tccStartDrinkQuiz{min-height:58px;border-radius:14px;border:1px solid #d8bd7d;box-shadow:0 5px 0 rgba(12,43,32,.28),0 9px 18px rgba(0,0,0,.12);font-size:14px;letter-spacing:.01em;transition:transform .16s,box-shadow .16s}
+#tccStartDrinkQuiz:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(12,43,32,.28)}
+#tccQuizFlow:not([hidden]){animation:tccQuizEnter .28s ease both}
+@keyframes tccQuizEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+#tccQuizFlow .tcc-quiz-progress{height:6px;margin:17px 0 12px;background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.10)}
+#tccQuizProgressFill{background:linear-gradient(90deg,#d8bd7d,#f2dfaa)!important;box-shadow:0 0 10px rgba(216,189,125,.25)}
+#tccQuizStepMeta{font-size:10px;letter-spacing:.14em;color:#e5d3a5}
+#tccQuizQuestion{font-size:20px;line-height:1.28;margin:9px 0 8px;letter-spacing:-.02em}
+#tccQuizHint{font-size:12px!important;line-height:1.5!important;color:rgba(255,250,240,.76)!important;margin:0 0 15px!important}
+#tccQuizOptions{gap:10px}
+#tccQuizOptions .tcc-quiz-option{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:62px;padding:14px 15px;border:1px solid rgba(239,231,211,.35);border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045));box-shadow:0 3px 0 rgba(8,35,26,.16),inset 0 1px 0 rgba(255,255,255,.07);font-size:13px;font-weight:700;line-height:1.35;text-align:left;transition:transform .16s,border-color .16s,background .16s,box-shadow .16s}
+#tccQuizOptions .tcc-quiz-option::after{content:"";flex:0 0 17px;width:17px;height:17px;border:1.5px solid rgba(255,250,240,.58);border-radius:50%;transition:all .16s}
+#tccQuizOptions .tcc-quiz-option[aria-pressed="true"]{border:1.5px solid #e4ca8b;background:linear-gradient(135deg,#f5ecd9,#e9ddc2);color:#173d31;box-shadow:0 4px 0 rgba(8,35,26,.22),0 0 0 2px rgba(228,202,139,.18);transform:translateY(-1px)}
+#tccQuizOptions .tcc-quiz-option[aria-pressed="true"]::after{border:5px solid #173d31;background:#e4ca8b;box-shadow:inset 0 0 0 2px #f5ecd9}
+#tccQuizOptions .tcc-quiz-option:focus-visible{outline:3px solid #f0d99e;outline-offset:3px}
+#tccQuizOptions .tcc-quiz-option:active{transform:scale(.985)}
+.tcc-quiz-controls{gap:10px!important;margin-top:16px!important}
+.tcc-quiz-controls button{min-height:48px!important;border-radius:12px!important;font-size:13px!important;box-shadow:0 3px 0 rgba(8,35,26,.16)}
+.tcc-quiz-controls button:last-child:not(:disabled){background:linear-gradient(135deg,#f5ecd9,#e8d7b2)!important;box-shadow:0 3px 0 rgba(8,35,26,.2)}
+.tcc-quiz-controls button:disabled{opacity:.38!important}
+.tcc-quiz-restart{font-size:12px!important;margin-top:13px!important;color:#ead9ad!important}
+@media(max-width:480px){#tccDrinkPicker{padding:18px!important;border-radius:19px!important}#tccQuizOptions{grid-template-columns:1fr!important}#tccQuizOptions .tcc-quiz-option{min-height:56px;padding:13px 14px;font-size:13px}#tccQuizQuestion{font-size:19px}}
+@media(prefers-reduced-motion:reduce){#tccQuizFlow:not([hidden]),#tccQuizOptions .tcc-quiz-option,#tccStartDrinkQuiz{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -1187,7 +1215,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <button class="tcc-drink-start" type="button" id="tccStartDrinkQuiz">Find me a drink <span aria-hidden="true">→</span></button>
       <div id="tccQuizFlow" hidden>
         <div class="tcc-quiz-progress" aria-label="Quiz progress"><span id="tccQuizProgressFill"></span></div>
-        <div class="tcc-quiz-step-meta" id="tccQuizStepMeta">QUESTION 1 OF 4</div>
+        <div class="tcc-quiz-step-meta" id="tccQuizStepMeta">STEP 1</div>
         <div class="tcc-quiz-question" id="tccQuizQuestion" aria-live="polite"></div>
         <p class="tcc-quiz-hint" id="tccQuizHint" style="margin:-5px 0 12px;color:#e1e9e2;font:11px/1.45 Manrope,Arial,sans-serif"></p>
         <div class="tcc-quiz-options" id="tccQuizOptions"></div>
@@ -2460,16 +2488,16 @@ const tccDrinkResult=document.getElementById("tccDrinkPickResult");
 let tccCurrentDrink=null;
 let tccQuizStep=0;
 let tccQuizAnswers={mood:null,direction:null,sweetness:null,temperature:null,flavour:null};
-const tccMoodQuestion={key:"mood",question:"What are you in the mood for?",hint:"Let's start with the kind of sip you're craving.",options:[["coffee","Coffee"],["tea","Tea"],["fizzy","Fizzy & refreshing"],["matcha","Matcha & signatures"],["shake","Something creamy"],["any","Surprise me"]]};
+const tccMoodQuestion={key:"mood",question:"What would you enjoy today?",hint:"Let's start with the kind of sip you're craving.",options:[["coffee","Coffee"],["tea","Tea"],["fizzy","Fizzy & refreshing"],["matcha","Matcha & signatures"],["shake","Something creamy"],["any","Surprise me"]]};
 function tccQuestionsForAnswers(){
  const a=tccQuizAnswers,questions=[tccMoodQuestion];
  if(!a.mood)return questions;
  const branches={
-  coffee:{key:"direction",question:"How do you like your coffee?",hint:"We'll use this to find the right coffee style.",options:[["bold","Strong & bold"],["smooth","Smooth and milky"],["indulgent","Sweet and indulgent"],["refreshing","Light and refreshing"]]},
-  fizzy:{key:"direction",question:"What kind of refreshment sounds best?",hint:"Pick the flavour direction that feels right.",options:[["citrus","Zesty and citrusy"],["tropical","Tropical and fruity"],["tea","A light iced tea"]]},
-  tea:{key:"direction",question:"What kind of tea moment are you after?",hint:"A cosy cup or something cool and fruity?",options:[["cosy","Warm and comforting"],["iced","Chilled and refreshing"],["fruity","Fruity iced tea"]]},
-  matcha:{key:"direction",question:"Which matcha style tempts you?",hint:"Choose the flavour that sounds most like you.",options:[["classic","Classic and delicate"],["creamy","Creamy and smooth"],["fruity","Fruity and bright"]]},
-  shake:{key:"direction",question:"Which treat would you reach for?",hint:"Let's narrow down your indulgent side.",options:[["chocolate","Chocolate-rich"],["biscuit","Biscuit and caramel notes"],["coffee","Coffee meets creamy"]]},
+  coffee:{key:"direction",question:"How do you enjoy your coffee?",hint:"We'll use this to find the right coffee style.",options:[["bold","Strong & rich"],["smooth","Smooth & creamy"],["indulgent","Sweet & rich"],["refreshing","Light & refreshing"]]},
+  fizzy:{key:"direction",question:"What kind of refreshing drink do you prefer?",hint:"Choose the flavour style you enjoy most.",options:[["citrus","Citrus & lemon"],["tropical","Fruity & tropical"],["tea","Iced tea"]]},
+  tea:{key:"direction",question:"What kind of tea would you like?",hint:"A cosy cup or something cool and fruity?",options:[["cosy","Hot & comforting"],["iced","Iced & refreshing"],["fruity","Fruity iced tea"]]},
+  matcha:{key:"direction",question:"Which matcha would you enjoy?",hint:"Choose the flavour that sounds most like you.",options:[["classic","Classic matcha"],["creamy","Creamy matcha"],["fruity","Fruity matcha"]]},
+  shake:{key:"direction",question:"What kind of shake do you prefer?",hint:"Let's narrow down your indulgent side.",options:[["chocolate","Chocolate"],["biscuit","Biscoff"],["coffee","Coffee flavour"]]},
   any:{key:"direction",question:"What sounds most tempting?",hint:"Choose a flavour and we'll take it from there.",options:[["refreshing","Fresh and fruity"],["creamy","Creamy and smooth"],["chocolate","Chocolatey"],["coffee","Rich coffee"]]}
  };
  questions.push(branches[a.mood]||branches.any);
@@ -2567,7 +2595,7 @@ function tccRenderQuizStep(){
  const questions=tccQuestionsForAnswers();
  tccQuizStep=Math.min(tccQuizStep,questions.length-1);
  const q=questions[tccQuizStep],options=document.getElementById("tccQuizOptions");
- document.getElementById("tccQuizStepMeta").textContent="QUESTION "+(tccQuizStep+1)+" · "+questions.length;
+ document.getElementById("tccQuizStepMeta").textContent="STEP "+(tccQuizStep+1)+" OF "+questions.length;
  document.getElementById("tccQuizProgressFill").style.width=((tccQuizStep+1)/questions.length*100)+"%";
  document.getElementById("tccQuizQuestion").textContent=q.question;
  const hint=document.getElementById("tccQuizHint");if(hint)hint.textContent=q.hint||"";
