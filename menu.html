@@ -1059,6 +1059,68 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 .food-spotlight-image{display:block;width:100%;height:auto;max-height:none;aspect-ratio:auto;object-fit:contain;border-radius:15px;margin:0 auto 18px}
 .food-spotlight-spice{display:flex;align-items:center;justify-content:center;gap:8px;margin:3px auto 9px;padding:7px 11px;width:max-content;max-width:100%;border:1px solid rgba(183,154,90,.35);border-radius:999px;background:#f4eee1;color:#173c2b}
 .food-spotlight-spice span{font:800 9px Arial,sans-serif;letter-spacing:.12em}.food-spotlight-spice strong{font-size:15px;letter-spacing:1px;white-space:nowrap}.food-spotlight-spice i{font-style:normal;opacity:.25}.food-spotlight-spice b{font:800 11px Arial,sans-serif;color:#9b8046}
+
+/* TCC Surprise Me drink picker */
+.tcc-drink-picker{display:none;margin:18px 0 22px;padding:18px;border:1px solid rgba(183,154,90,.38);border-radius:18px;background:linear-gradient(125deg,#173d31 0%,#205440 100%);color:#fffaf0;box-shadow:0 9px 24px rgba(23,61,49,.12)}
+.tcc-drink-picker.is-visible{display:block}
+.tcc-drink-picker-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tcc-drink-picker-kicker{margin:0 0 5px;color:#d9c58e;font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.tcc-drink-picker h3{margin:0;color:#fffaf0;font:700 20px/1.2 Manrope,Arial,sans-serif}
+.tcc-drink-picker-copy{margin:7px 0 14px;color:#e1e9e2;font:12px/1.5 Manrope,Arial,sans-serif}
+.tcc-drink-picker-button{width:100%;min-height:44px;border:1px solid #d4bd7d;border-radius:11px;background:#f3ead7;color:#173d31;font:800 13px Manrope,Arial,sans-serif;cursor:pointer}
+.tcc-drink-pick-result{display:none;margin-top:13px;padding:13px;border:1px solid rgba(232,213,158,.5);border-radius:12px;background:#fffaf0;color:#173d31}
+.tcc-drink-pick-result.is-visible{display:block}
+.tcc-drink-pick-result small{display:block;color:#8d7337;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.tcc-drink-pick-result strong{display:block;margin-top:4px;font:800 17px Manrope,Arial,sans-serif}
+.tcc-drink-pick-result p{margin:4px 0 10px;color:#6b746b;font:12px Manrope,Arial,sans-serif}
+.tcc-drink-pick-actions{display:flex;gap:8px}
+.tcc-drink-pick-actions button{flex:1;min-height:36px;border:1px solid rgba(23,61,49,.18);border-radius:9px;background:#fff;color:#173d31;font:700 11px Manrope,Arial,sans-serif}
+.tcc-drink-pick-actions button:first-child{background:#173d31;color:#fffaf0}
+
+
+/* Rich recommendation card */
+.tcc-drink-pick-result{display:none;margin-top:14px;padding:12px;border:1px solid rgba(212,189,125,.65);border-radius:14px;background:#fffaf0;color:#173d31;overflow:hidden}
+.tcc-drink-pick-result.is-visible{display:block}
+.tcc-drink-pick-result{scroll-margin-top:180px}
+.tcc-drink-pick-visual{width:100%;aspect-ratio:4/3;height:auto;min-height:0;overflow:hidden;border-radius:10px;background:#eee6d5;margin-bottom:11px}
+.tcc-drink-pick-visual .m-photo-wrap{width:100%!important;height:100%!important;min-height:0;aspect-ratio:4/3!important}
+.tcc-drink-pick-visual img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;background:#eee6d5}
+.tcc-drink-pick-visual .m-photo-placeholder{height:100%;min-height:0;aspect-ratio:4/3}
+.tcc-drink-pick-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.tcc-drink-pick-copy{min-width:0}
+.tcc-drink-pick-result small{display:block;color:#92783f;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.tcc-drink-pick-result strong{display:block;margin-top:4px;color:#173d31;font:800 17px/1.25 Manrope,Arial,sans-serif}
+.tcc-drink-pick-result p{margin:5px 0 0;color:#69736a;font:12px/1.45 Manrope,Arial,sans-serif}
+.tcc-drink-pick-price{flex:none;padding:7px 9px;border-radius:999px;background:#f0e5cb;color:#876b31;font:800 13px Manrope,Arial,sans-serif}
+.tcc-drink-pick-actions{display:flex;gap:8px;margin:0 0 11px;position:relative;z-index:2}
+.tcc-drink-pick-actions button{flex:1;min-height:44px;border:1px solid rgba(23,61,49,.18);border-radius:9px;background:#fff;color:#173d31;font:700 11px Manrope,Arial,sans-serif}
+.tcc-drink-pick-actions button:first-child{background:#173d31;color:#fffaf0}
+
+
+.menu-group .m-item.tcc-drink-picked-focus{outline:3px solid #b79a5a;outline-offset:3px;border-radius:14px;transition:outline-color .3s ease}
+
+
+/* TCC Drink Finder — guided, mobile-first preference quiz */
+.tcc-drink-start{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:54px;margin-top:15px;padding:0 17px;border:1px solid #d8bd7d;border-radius:12px;background:#f3ead7;color:#173d31;font:800 14px Manrope,Arial,sans-serif;cursor:pointer;box-shadow:0 5px 16px rgba(0,0,0,.12);transition:transform .18s,background .18s}
+.tcc-drink-start:active{transform:scale(.985);background:#fff8e9}
+.tcc-drink-start span{font-size:21px;color:#8d7337}
+#tccQuizFlow[hidden]{display:none!important}
+
+.tcc-drink-picker{padding:19px!important;background:linear-gradient(135deg,#173d31,#245b45)!important}
+.tcc-quiz-progress{height:5px;margin:16px 0 10px;border-radius:9px;background:rgba(255,255,255,.2);overflow:hidden}
+.tcc-quiz-progress span{display:block;width:25%;height:100%;border-radius:9px;background:#d8bd7d;transition:width .25s ease}
+.tcc-quiz-step-meta{color:#e1d1a5;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.15em}
+.tcc-quiz-question{margin:8px 0 13px;color:#fffaf0;font:700 18px/1.3 Manrope,Arial,sans-serif}
+.tcc-quiz-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.tcc-quiz-option{min-height:48px;padding:11px 10px;border:1px solid rgba(255,255,255,.28);border-radius:11px;background:rgba(255,255,255,.08);color:#fffaf0;text-align:left;font:700 12px/1.3 Manrope,Arial,sans-serif;cursor:pointer;transition:background .18s,border-color .18s}
+.tcc-quiz-option[aria-pressed="true"]{border-color:#e1c987;background:#f3ead7;color:#173d31;box-shadow:inset 0 0 0 1px #e1c987}
+.tcc-quiz-controls{display:flex;gap:9px;margin-top:14px}
+.tcc-quiz-controls button{flex:1;min-height:43px;border:1px solid #d8bd7d;border-radius:10px;background:#f3ead7;color:#173d31;font:800 12px Manrope,Arial,sans-serif;cursor:pointer}
+.tcc-quiz-controls button:disabled{opacity:.42;cursor:not-allowed}
+.tcc-quiz-controls button:first-child{background:transparent;color:#fffaf0;border-color:rgba(255,255,255,.35)}
+.tcc-quiz-restart{display:block;margin:10px auto 0;border:0;background:transparent;color:#e1d1a5;text-decoration:underline;font:600 11px Manrope,Arial,sans-serif;cursor:pointer}
+.tcc-quiz-why{margin-top:8px!important;padding:9px 10px;border-left:3px solid #b79a5a;border-radius:0 8px 8px 0;background:#f5efe1;color:#415347!important}
+@media(max-width:360px){.tcc-quiz-options{grid-template-columns:1fr}.tcc-drink-picker{padding:15px!important}}
 </style>
 </head>
 <body>
@@ -1117,6 +1179,24 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <span>Classic brews, cold favourites and everyday comforts.</span>
     </div>
     <div id="noResults" class="no-results">No matching items found. Try another search.</div>
+    <section class="tcc-drink-picker" id="tccDrinkPicker" aria-label="TCC Drink Finder">
+      <div class="tcc-drink-picker-top"><div><p class="tcc-drink-picker-kicker">THE TCC DRINK FINDER ✦</p><h3>Find your perfect sip</h3></div><span aria-hidden="true" style="font-size:27px">☕</span></div>
+      <p class="tcc-drink-picker-copy">A few quick choices. One drink that feels just right.</p>
+      <button class="tcc-drink-start" type="button" id="tccStartDrinkQuiz">Find me a drink <span aria-hidden="true">→</span></button>
+      <div id="tccQuizFlow" hidden>
+        <div class="tcc-quiz-progress" aria-label="Quiz progress"><span id="tccQuizProgressFill"></span></div>
+        <div class="tcc-quiz-step-meta" id="tccQuizStepMeta">QUESTION 1 OF 4</div>
+        <div class="tcc-quiz-question" id="tccQuizQuestion" aria-live="polite"></div>
+        <div class="tcc-quiz-options" id="tccQuizOptions"></div>
+        <div class="tcc-quiz-controls"><button type="button" id="tccQuizBack" disabled>Back</button><button type="button" id="tccQuizNext" disabled>Next</button></div>
+        <button class="tcc-quiz-restart" type="button" id="tccQuizRestart">Start over</button>
+        <div class="tcc-drink-pick-result" id="tccDrinkPickResult" aria-live="polite">
+          <div class="tcc-drink-pick-actions tcc-drink-pick-actions-top"><button type="button" id="tccViewPickedDrink">View in menu</button><button type="button" id="tccPickAnotherDrink">Find another match</button></div>
+          <div class="tcc-drink-pick-visual" id="tccDrinkPickPhoto"></div>
+          <div class="tcc-drink-pick-meta"><div class="tcc-drink-pick-copy"><small id="tccDrinkPickEyebrow">YOUR TCC MATCH</small><strong id="tccDrinkPickName"></strong><p id="tccDrinkPickDescription"></p><p class="tcc-quiz-why" id="tccDrinkPickWhy"></p></div><span class="tcc-drink-pick-price" id="tccDrinkPickPrice"></span></div>
+        </div>
+      </div>
+    </section>
 <div class="menu-group" id="coffee" data-group="Coffee">
         <section class="menu-addons-panel coffee-addons-panel" aria-label="Coffee add-ons">
           <div class="addons-heading">
@@ -2352,6 +2432,197 @@ function jumpToSubcategory(target){
   setTimeout(jump,450);
   setTimeout(jump,900);
 }
+
+/* TCC Drink Finder: match actual available menu drinks to customer preferences. */
+const tccDrinkPicker=document.getElementById("tccDrinkPicker");
+const tccDrinkResult=document.getElementById("tccDrinkPickResult");
+let tccCurrentDrink=null;
+let tccQuizStep=0;
+let tccQuizAnswers={mood:null,sweetness:null,temperature:null,flavour:null};
+const tccQuizQuestions=[
+ {key:"mood",question:"What are you in the mood for?",options:[["coffee","Coffee"],["tea","Tea"],["fizzy","Fizzy & refreshing"],["matcha","Matcha & signatures"],["shake","Shakes"],["any","Surprise me"]]},
+ {key:"sweetness",question:"How sweet do you like your drink?",options:[["none","Not sweet"],["light","Lightly sweet"],["medium","Moderately sweet"],["sweet","Love it sweet"],["any","No preference"]]},
+ {key:"temperature",question:"What would you prefer?",options:[["hot","Hot"],["cold","Cold"],["any","Either is fine"]]},
+ {key:"flavour",question:"Which flavour sounds best?",options:[["chocolate","Chocolate & creamy"],["fruity","Fruity & refreshing"],["coffee","Rich coffee"],["floral","Floral & delicate"],["tea","Tea & citrus"],["any","Surprise me"]]}
+];
+const tccDrinkProfiles={
+ "Ginger Honey Lemon Tea":{mood:"tea",sweetness:"light",temperature:"hot",flavours:["tea","floral"]},
+ "Espresso":{mood:"coffee",sweetness:"none",temperature:"hot",flavours:["coffee"]},
+ "Hot Americano":{mood:"coffee",sweetness:"none",temperature:"hot",flavours:["coffee"]},
+ "Latte":{mood:"coffee",sweetness:"light",temperature:"hot",flavours:["coffee","chocolate"]},
+ "Mocha":{mood:"coffee",sweetness:"medium",temperature:"hot",flavours:["coffee","chocolate"]},
+ "Spanish Latte":{mood:"coffee",sweetness:"sweet",temperature:"hot",flavours:["coffee","creamy"]},
+ "Cortado":{mood:"coffee",sweetness:"none",temperature:"hot",flavours:["coffee"]},
+ "Hot Chocolate":{mood:"shake",sweetness:"sweet",temperature:"hot",flavours:["chocolate","creamy"]},
+ "Affogato":{mood:"coffee",sweetness:"medium",temperature:"cold",flavours:["coffee","creamy"]},
+ "Cappuccino":{mood:"coffee",sweetness:"light",temperature:"hot",flavours:["coffee","creamy"]},
+ "Vietnamese Coffee":{mood:"coffee",sweetness:"sweet",temperature:"cold",flavours:["coffee","creamy"]},
+ "Tiramisu Latte":{mood:"coffee",sweetness:"medium",temperature:"cold",flavours:["coffee","chocolate","creamy"]},
+ "Iced Americano":{mood:"coffee",sweetness:"none",temperature:"cold",flavours:["coffee"]},
+ "Iced Latte":{mood:"coffee",sweetness:"light",temperature:"cold",flavours:["coffee","creamy"]},
+ "Iced Mocha":{mood:"coffee",sweetness:"medium",temperature:"cold",flavours:["coffee","chocolate"]},
+ "Classic Cold Coffee":{mood:"coffee",sweetness:"medium",temperature:"cold",flavours:["coffee","creamy"]},
+ "Spanish Iced Latte":{mood:"coffee",sweetness:"sweet",temperature:"cold",flavours:["coffee","creamy"]},
+ "Classic Cold Brew":{mood:"coffee",sweetness:"none",temperature:"cold",flavours:["coffee"]},
+ "Coco Brew":{mood:"coffee",sweetness:"light",temperature:"cold",flavours:["coffee","creamy"]},
+ "Mont Blanc":{mood:"coffee",sweetness:"medium",temperature:"cold",flavours:["coffee","creamy"]},
+ "Bird's Eye Pineapple":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["fruity"]},
+ "Cranberry Cold Brew":{mood:"coffee",sweetness:"light",temperature:"cold",flavours:["coffee","fruity"]},
+ "Orange Fizzy Brew":{mood:"coffee",sweetness:"medium",temperature:"cold",flavours:["coffee","fruity"]},
+ "Biscoff Shake":{mood:"shake",sweetness:"sweet",temperature:"cold",flavours:["creamy","chocolate"]},
+ "Nutella Shake":{mood:"shake",sweetness:"sweet",temperature:"cold",flavours:["chocolate","creamy"]},
+ "Lemon Cooler":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["fruity","tea"]},
+ "Elderflower Fizz / Peach Fizz":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["floral","fruity"]},
+ "Dry Mango Picante":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["fruity"]},
+ "Coco Rose Cooler":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["floral","fruity"]},
+ "Watermelon Fizzy":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["fruity"]},
+ "Blueberry Mojito":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["fruity"]},
+ "Virgin Mojito":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["fruity","tea"]},
+ "Orange Fizzy":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["fruity"]},
+ "Pineapple Fizzy":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["fruity"]},
+ "Mango Fizzy":{mood:"fizzy",sweetness:"medium",temperature:"cold",flavours:["fruity"]},
+ "Peach Iced Tea":{mood:"tea",sweetness:"medium",temperature:"cold",flavours:["tea","fruity"]},
+ "Lemon Iced Tea":{mood:"tea",sweetness:"light",temperature:"cold",flavours:["tea","fruity"]},
+ "Berry Iced Tea":{mood:"tea",sweetness:"medium",temperature:"cold",flavours:["tea","fruity"]},
+ "Classic Matcha (Hot / Cold)":{mood:"matcha",sweetness:"light",temperature:"any",flavours:["floral","creamy"]},
+ "Coconut Matcha Cloud":{mood:"matcha",sweetness:"medium",temperature:"cold",flavours:["creamy","floral"]},
+ "Mango Passion Matcha":{mood:"matcha",sweetness:"medium",temperature:"cold",flavours:["fruity","floral"]},
+ "Strawberry Matcha":{mood:"matcha",sweetness:"medium",temperature:"cold",flavours:["fruity","creamy"]},
+ "Pour Over":{mood:"coffee",sweetness:"none",temperature:"hot",flavours:["coffee"]},
+ "French Press":{mood:"coffee",sweetness:"none",temperature:"hot",flavours:["coffee"]},
+ "Apple Pie Latte":{mood:"coffee",sweetness:"medium",temperature:"hot",flavours:["creamy","fruity"]},
+ "Honey Rose Merry Latte":{mood:"coffee",sweetness:"medium",temperature:"hot",flavours:["floral","creamy"]},
+ "Biscoff Latte":{mood:"coffee",sweetness:"sweet",temperature:"hot",flavours:["creamy","chocolate"]},
+ "Nutella Latte":{mood:"coffee",sweetness:"sweet",temperature:"hot",flavours:["chocolate","creamy"]},
+ "Coconut Cold":{mood:"fizzy",sweetness:"light",temperature:"cold",flavours:["creamy","fruity"]},
+ "Orange Espresso":{mood:"coffee",sweetness:"light",temperature:"cold",flavours:["coffee","fruity"]},
+ "Pineapple Float":{mood:"fizzy",sweetness:"sweet",temperature:"cold",flavours:["fruity","creamy"]}
+};
+function tccCleanDrinkName(item){
+ const h=item.querySelector("h3");
+ return (h?.cloneNode(true).textContent||"").replace(/Best Seller|NEW ARRIVAL|♛/gi,"").replace(/\s+/g," ").trim();
+}
+function tccEligibleDrinks(){
+ return ["coffee","refreshers-and-tea","signatures"].flatMap(groupId=>{
+  const group=document.getElementById(groupId);if(!group)return [];
+  return [...group.querySelectorAll(".m-item")].filter(item=>
+   !item.querySelector(".availability-status")&&!/sold\s*out|temporarily unavailable/i.test(item.textContent)
+  ).map(item=>{
+   const name=tccCleanDrinkName(item);
+   return {item,name,price:[...item.children].find(el=>el.matches("strong"))?.textContent.trim()||"",profile:tccDrinkProfiles[name]||null};
+  });
+ }).filter(x=>x.name);
+}
+function tccRenderQuizStep(){
+ const q=tccQuizQuestions[tccQuizStep],options=document.getElementById("tccQuizOptions");
+ document.getElementById("tccQuizStepMeta").textContent="QUESTION "+(tccQuizStep+1)+" OF "+tccQuizQuestions.length;
+ document.getElementById("tccQuizProgressFill").style.width=((tccQuizStep+1)/tccQuizQuestions.length*100)+"%";
+ document.getElementById("tccQuizQuestion").textContent=q.question;
+ options.replaceChildren();
+ q.options.forEach(([value,label])=>{
+  const b=document.createElement("button");b.type="button";b.className="tcc-quiz-option";b.textContent=label;
+  b.setAttribute("aria-pressed",String(tccQuizAnswers[q.key]===value));
+  b.addEventListener("click",()=>{
+   tccQuizAnswers[q.key]=value;
+   options.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+   document.getElementById("tccQuizNext").disabled=false;
+   document.getElementById("tccQuizNext").textContent=tccQuizStep===tccQuizQuestions.length-1?"Find my drink":"Next";
+  });
+  options.appendChild(b);
+ });
+ document.getElementById("tccQuizBack").disabled=tccQuizStep===0;
+ const next=document.getElementById("tccQuizNext");
+ next.disabled=!tccQuizAnswers[q.key];
+ next.textContent=tccQuizStep===tccQuizQuestions.length-1?"Find my drink":"Next";
+}
+function tccScoreDrink(drink){
+ const p=drink.profile;if(!p)return -100;
+ let score=0;const a=tccQuizAnswers;
+ if(a.mood&&a.mood!=="any")score+=p.mood===a.mood?9:-18;
+ if(a.sweetness&&a.sweetness!=="any"){
+  const levels={none:0,light:1,medium:2,sweet:3};
+  score+=Math.max(-3,4-Math.abs(levels[p.sweetness]-levels[a.sweetness])*2);
+ }
+ if(a.temperature&&a.temperature!=="any")score+=p.temperature===a.temperature?4:(p.temperature==="any"?2:-1);
+ if(a.flavour&&a.flavour!=="any")score+=p.flavours.includes(a.flavour)?5:-2;
+ if(drink.item.querySelector(".tcc-bestseller-badge"))score+=1.5;
+ return score;
+}
+function tccPickMatchedDrink(){
+ const eligible=tccEligibleDrinks().filter(x=>x.profile);
+ if(!eligible.length)return;
+ const ranked=eligible.map(x=>({...x,score:tccScoreDrink(x)})).sort((a,b)=>b.score-a.score);
+ const bestScore=ranked[0].score;
+ const closeMatches=ranked.filter(x=>x.score>=bestScore-1.5);
+ const chosen=closeMatches[Math.floor(Math.random()*closeMatches.length)];
+ tccCurrentDrink=chosen;
+ document.getElementById("tccDrinkPickName").textContent=chosen.name;
+ document.getElementById("tccDrinkPickPrice").textContent=chosen.price;
+ const description=chosen.item.querySelector(".m-item-info p, p");
+ document.getElementById("tccDrinkPickDescription").textContent=description?.textContent.trim()||"Picked from the TCC menu to match the flavours you enjoy.";
+ const why=[];
+ if(tccQuizAnswers.mood!=="any")why.push(({coffee:"coffee",tea:"tea",fizzy:"refreshing",matcha:"matcha",shake:"shake"}[tccQuizAnswers.mood]||"") );
+ if(tccQuizAnswers.sweetness!=="any")why.push(({none:"not-too-sweet",light:"lightly sweet",medium:"moderately sweet",sweet:"sweet"}[tccQuizAnswers.sweetness]||""));
+ if(tccQuizAnswers.temperature!=="any")why.push(tccQuizAnswers.temperature);
+ if(tccQuizAnswers.flavour!=="any")why.push(({chocolate:"chocolatey and creamy",fruity:"fruity",coffee:"coffee-forward",floral:"floral",tea:"tea and citrus"}[tccQuizAnswers.flavour]||""));
+ document.getElementById("tccDrinkPickWhy").textContent=why.length?"Why it fits: "+why.join(" · ")+".":"A little TCC surprise, chosen from our available drinks.";
+ const photoBox=document.getElementById("tccDrinkPickPhoto");photoBox.replaceChildren();
+ const sourcePhoto=chosen.item.querySelector(".m-photo-wrap");
+ if(sourcePhoto){
+  const clone=sourcePhoto.cloneNode(true);clone.style.width="100%";clone.style.height="100%";clone.style.aspectRatio="4 / 3";
+  const img=clone.querySelector("img");if(img){img.removeAttribute("srcset");img.loading="eager";img.style.width="100%";img.style.height="100%";img.style.objectFit="contain";img.style.objectPosition="center";}
+  photoBox.appendChild(clone);
+ }else photoBox.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';
+ document.getElementById("tccQuizStepMeta").textContent="YOUR PERSONAL TCC MATCH";
+ document.getElementById("tccQuizProgressFill").style.width="100%";
+ document.getElementById("tccQuizQuestion").textContent="We found a drink for your mood.";
+ document.getElementById("tccQuizOptions").style.display="none";
+ document.querySelector(".tcc-quiz-controls").style.display="none";
+ document.getElementById("tccQuizRestart").textContent="Try the quiz again";
+ tccDrinkResult.classList.add("is-visible");
+ requestAnimationFrame(()=>tccDrinkResult.scrollIntoView({behavior:"smooth",block:"start"}));
+}
+document.getElementById("tccQuizNext")?.addEventListener("click",()=>{
+ if(tccQuizStep<tccQuizQuestions.length-1){tccQuizStep++;tccRenderQuizStep();}
+ else tccPickMatchedDrink();
+});
+document.getElementById("tccQuizBack")?.addEventListener("click",()=>{if(tccQuizStep>0){tccQuizStep--;tccRenderQuizStep();}});
+function tccResetQuiz(){
+ tccQuizStep=0;tccQuizAnswers={mood:null,sweetness:null,temperature:null,flavour:null};
+ tccDrinkResult.classList.remove("is-visible");
+ document.getElementById("tccQuizOptions").style.display="grid";
+ document.querySelector(".tcc-quiz-controls").style.display="flex";
+ document.getElementById("tccQuizRestart").textContent="Start over";
+ tccRenderQuizStep();
+}
+document.getElementById("tccQuizRestart")?.addEventListener("click",tccResetQuiz);
+document.getElementById("tccPickAnotherDrink")?.addEventListener("click",()=>{tccResetQuiz();tccQuizStep=0;tccRenderQuizStep();});
+function tccViewPickedDrink(){
+ const chosen=tccCurrentDrink;if(!chosen?.item?.isConnected)return;
+ const group=chosen.item.closest(".menu-group"),section=chosen.item.closest(".menu-section");if(!group||!section)return;
+ search.value="";showGroup(group.id);
+ setTimeout(()=>{
+  section.style.display="block";group.classList.add("active");
+  chosen.item.style.setProperty("display","flex","important");
+  chosen.item.classList.add("tcc-drink-picked-focus");
+  chosen.item.scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
+  setTimeout(()=>chosen.item.classList.remove("tcc-drink-picked-focus"),2400);
+ },500);
+}
+document.getElementById("tccViewPickedDrink")?.addEventListener("click",tccViewPickedDrink);
+function syncTccDrinkPicker(){
+ const active=document.querySelector(".menu-group.active");
+ const show=!!active&&["coffee","refreshers-and-tea","signatures"].includes(active.id)&&!search?.value.trim();
+ tccDrinkPicker?.classList.toggle("is-visible",show);
+}
+document.getElementById("tccStartDrinkQuiz")?.addEventListener("click",()=>{
+  document.getElementById("tccStartDrinkQuiz").hidden=true;
+  document.getElementById("tccQuizFlow").hidden=false;
+  tccRenderQuizStep();
+});
+
+tccRenderQuizStep();
+
 
 function showGroup(id){
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
