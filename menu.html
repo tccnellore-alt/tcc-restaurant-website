@@ -1206,6 +1206,19 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
  .tcc-drink-pick-meta{min-height:88px}
 }
 
+
+/* Recommendation photo sizing and CTA visibility refinement */
+#tccDrinkPickPhoto{float:left!important;width:116px!important;height:116px!important;aspect-ratio:1!important;margin:0 13px 9px 0!important;border-radius:12px!important;overflow:hidden!important;box-shadow:0 3px 10px rgba(23,61,49,.12)}
+#tccDrinkPickPhoto .m-photo-wrap{width:100%!important;height:100%!important;aspect-ratio:1!important;min-height:0!important}
+#tccDrinkPickPhoto img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important}
+#tccDrinkPickPhoto .m-photo-placeholder{width:100%!important;height:100%!important;min-height:0!important;aspect-ratio:1!important}
+#tccDrinkPickPhoto~.tcc-drink-pick-meta{min-height:116px!important}
+#tccStartDrinkQuiz[hidden]{display:none!important}
+@media(max-width:480px){
+ #tccDrinkPickPhoto{width:112px!important;height:112px!important;margin-right:12px!important}
+ #tccDrinkPickPhoto~.tcc-drink-pick-meta{min-height:112px!important}
+}
+
 </style>
 </head>
 <body>
