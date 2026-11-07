@@ -290,8 +290,10 @@
 
 
 /* Temporary stock status for pizza and burger items */
-.menu-group .availability-status{display:inline-flex!important;align-items:center;width:max-content;max-width:100%;margin:7px 0 0!important;padding:5px 9px;border:1px solid rgba(141,115,55,.22);border-radius:999px;background:#f5efe1;color:#80672f!important;font:700 10px/1.25 Manrope,Arial,sans-serif!important;letter-spacing:.035em}
+.menu-group .availability-status{display:inline-flex!important;align-items:center;width:max-content;max-width:100%;margin:7px 0 0!important;padding:5px 9px;border:1px solid rgba(180,35,24,.22)!important;border-radius:999px;background:#fff0ef!important;color:#b42318!important;font:800 10px/1.25 Manrope,Arial,sans-serif!important;letter-spacing:.035em}
+.menu-group .m-item:has(.availability-status){background:#f1f1ed!important}
 .menu-group .m-item:has(.availability-status) h3{color:#68756b!important}
+.menu-group .m-item:has(.availability-status) .m-photo-wrap{filter:grayscale(1);opacity:.65}
 
 /* Authoritative mobile menu layout reset: keep toolbar and content flow predictable. */
 .menu-tools{position:sticky!important;top:66px!important;z-index:100!important;padding:10px 0!important}
@@ -1774,6 +1776,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>Italian Margherita<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span>
           <p>Mozzarella cheese, tomato sauce, basil leaves.</p>
         </div>
         <strong>₹249</strong>
@@ -1781,6 +1784,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>The Farmer&#x27;s Pizza<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span>
           <p>Red onions, bell peppers, jalapeno, black olive, feta cheese.</p>
         </div>
         <strong>₹299</strong>
@@ -1788,6 +1792,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>Pizza Verde</h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span>
           <p>Basil pesto, broccoli, black olive, jalapeno, zucchini, mozzarella cheese.</p>
         </div>
         <strong>₹329</strong>
@@ -1795,6 +1800,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>Pesto Pizza</h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span>
           <p>Pesto sauce, tomato sauce, fresh tomatoes.</p>
         </div>
         <strong>₹329</strong>
@@ -1806,6 +1812,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>BBQ Chicken Pizza<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span>
           <p>BBQ chicken, red onion, mozzarella cheese.</p>
         </div>
         <strong>₹399</strong>
@@ -1813,6 +1820,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>Pesto Chicken Pizza</h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span>
           <p>Grilled chicken, jalapeno, mozzarella cheese, basil pesto.</p>
         </div>
         <strong>₹449</strong>
@@ -1820,6 +1828,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>Chicken Pizzaiola</h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span>
           <p>Red paprika, black olive, mozzarella cheese, grilled chicken.</p>
         </div>
         <strong>₹429</strong>
@@ -1840,6 +1849,7 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>Grilled Paneer Burger<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span>
           
           <p class="food-serving-note">Served with fries 🍟</p>
           <p>Grilled paneer, tomato sauce &amp; cheese, onion, tomato.</p>
@@ -1934,8 +1944,10 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item"><div><h3>Coffee Cashew Cake Tin<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3></div><strong>₹230</strong></article>
       <article class="m-item"><div><h3>Mini Cake</h3><p>Please check display for available flavors.</p></div><strong>₹250</strong></article>
       <article class="m-item"><div><h3>Moist Chocolate Slice<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3></div><strong>₹229</strong></article>
-      <article class="m-item"><div><h3>Butter Croissant</h3></div><strong>₹152</strong></article>
-      <article class="m-item"><div><h3>Chocolate Croissant</h3></div><strong>₹199</strong></article>
+      <article class="m-item"><div><h3>Butter Croissant</h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span></div><strong>₹152</strong></article>
+      <article class="m-item"><div><h3>Chocolate Croissant</h3>
+          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span></div><strong>₹199</strong></article>
           </div>
         </section>
       </div>
