@@ -1086,9 +1086,11 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 /* Rich recommendation card */
 .tcc-drink-pick-result{display:none;margin-top:14px;padding:12px;border:1px solid rgba(212,189,125,.65);border-radius:14px;background:#fffaf0;color:#173d31;overflow:hidden}
 .tcc-drink-pick-result.is-visible{display:block}
-.tcc-drink-pick-visual{width:100%;height:154px;overflow:hidden;border-radius:10px;background:#eee6d5;margin-bottom:11px}
-.tcc-drink-pick-visual img{display:block;width:100%;height:100%;object-fit:cover}
-.tcc-drink-pick-visual .m-photo-placeholder{height:154px;min-height:154px}
+.tcc-drink-pick-result{scroll-margin-top:180px}
+.tcc-drink-pick-visual{width:100%;aspect-ratio:4/3;height:auto;min-height:0;overflow:hidden;border-radius:10px;background:#eee6d5;margin-bottom:11px}
+.tcc-drink-pick-visual .m-photo-wrap{width:100%!important;height:100%!important;min-height:0;aspect-ratio:4/3!important}
+.tcc-drink-pick-visual img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;background:#eee6d5}
+.tcc-drink-pick-visual .m-photo-placeholder{height:100%;min-height:0;aspect-ratio:4/3}
 .tcc-drink-pick-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .tcc-drink-pick-copy{min-width:0}
 .tcc-drink-pick-result small{display:block;color:#92783f;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase}
@@ -2582,8 +2584,8 @@ function tccPickMatchedDrink(){
  const photoBox=document.getElementById("tccDrinkPickPhoto");photoBox.replaceChildren();
  const sourcePhoto=chosen.item.querySelector(".m-photo-wrap");
  if(sourcePhoto){
-  const clone=sourcePhoto.cloneNode(true);clone.style.width="100%";clone.style.height="154px";clone.style.aspectRatio="auto";
-  const img=clone.querySelector("img");if(img){img.removeAttribute("srcset");img.loading="eager";img.style.width="100%";img.style.height="154px";img.style.objectFit="cover";}
+  const clone=sourcePhoto.cloneNode(true);clone.style.width="100%";clone.style.height="100%";clone.style.aspectRatio="4 / 3";
+  const img=clone.querySelector("img");if(img){img.removeAttribute("srcset");img.loading="eager";img.style.width="100%";img.style.height="100%";img.style.objectFit="contain";img.style.objectPosition="center";}
   photoBox.appendChild(clone);
  }else photoBox.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';
  document.getElementById("tccQuizStepMeta").textContent="YOUR PERSONAL TCC MATCH";
@@ -2593,6 +2595,7 @@ function tccPickMatchedDrink(){
  document.querySelector(".tcc-quiz-controls").style.display="none";
  document.getElementById("tccQuizRestart").textContent="Try the quiz again";
  tccDrinkResult.classList.add("is-visible");
+ requestAnimationFrame(()=>tccDrinkResult.scrollIntoView({behavior:"smooth",block:"start"}));
 }
 document.getElementById("tccQuizNext")?.addEventListener("click",()=>{
  if(tccQuizStep<tccQuizQuestions.length-1){tccQuizStep++;tccRenderQuizStep();}
