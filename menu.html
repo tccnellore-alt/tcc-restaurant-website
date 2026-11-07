@@ -2733,6 +2733,7 @@ function filter(q){
   noResults.style.display=found?"none":"block";
   syncMenuFilterUI();
   syncPastaAddon();
+  syncTccDrinkPicker();
 }
 search.addEventListener("input",e=>{
   const q=e.target.value.trim();
