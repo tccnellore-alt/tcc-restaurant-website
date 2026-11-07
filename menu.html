@@ -1058,6 +1058,11 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 @media(prefers-reduced-motion:reduce){.food-spotlight-backdrop,.food-spotlight-card{animation:none}}
 .food-spotlight-image{display:block;width:100%;height:auto;max-height:none;aspect-ratio:auto;object-fit:contain;border-radius:15px;margin:0 auto 18px}
 .food-spotlight-spice{display:flex;align-items:center;justify-content:center;gap:8px;margin:3px auto 9px;padding:7px 11px;width:max-content;max-width:100%;border:1px solid rgba(183,154,90,.35);border-radius:999px;background:#f4eee1;color:#173c2b}
+.menu-section .m-item.tcc-signature-highlight{position:relative;border:1.5px solid #b79a5a!important;border-radius:16px!important;background:linear-gradient(145deg,#fffdf7 0%,#f4efe2 100%)!important;box-shadow:0 7px 22px rgba(23,60,43,.12),inset 0 0 0 2px rgba(183,154,90,.12)!important;overflow:hidden}
+.menu-section .m-item.tcc-signature-highlight .m-photo-wrap{position:relative}
+.menu-section .m-item.tcc-signature-highlight .m-photo-wrap:after{content:"TCC SIGNATURE";position:absolute;left:9px;top:9px;z-index:2;padding:6px 9px;border:1px solid rgba(216,189,125,.8);border-radius:999px;background:#173c2b;color:#f8e8bd;font:900 9px/1 Arial,sans-serif;letter-spacing:.12em;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.menu-section .tcc-signature-badge{display:inline-flex;align-items:center;gap:5px;width:max-content;margin:0 0 6px;padding:5px 9px;border-radius:999px;background:#173c2b;color:#f8e8bd;font:900 9px/1 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.menu-section .tcc-signature-badge:before{content:"✦";color:#d8bd7d}
 .food-spotlight-spice span{font:800 9px Arial,sans-serif;letter-spacing:.12em}.food-spotlight-spice strong{font-size:15px;letter-spacing:1px;white-space:nowrap}.food-spotlight-spice i{font-style:normal;opacity:.25}.food-spotlight-spice b{font:800 11px Arial,sans-serif;color:#9b8046}
 </style>
 </head>
@@ -1107,17 +1112,6 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
     <div class="food-spotlight-spice" aria-label="Spice level 1 out of 5: Very mild"><span>SPICE LEVEL</span><strong>🌶️</strong><b>1/5 · VERY MILD</b></div>
     <span class="food-spotlight-price">₹299</span>
     <button class="food-spotlight-action" type="button" id="foodSpotlightExplore">Explore Food Menu</button>
-  </section>
-</div>
-<div class="food-spotlight-backdrop" id="coffeeSpotlight" aria-hidden="true">
-  <section class="food-spotlight-card" role="dialog" aria-modal="true" aria-labelledby="coffeeSpotlightTitle" aria-describedby="coffeeSpotlightCopy">
-    <button class="food-spotlight-close" type="button" id="coffeeSpotlightClose" aria-label="Close promotion">×</button>
-    <img src="images/menu/optimized/tiramisu-latte-800.webp" alt="Tiramisu Latte" class="food-spotlight-image" loading="eager" decoding="async">
-    <div class="food-spotlight-kicker">TCC SIGNATURE SPOTLIGHT</div>
-    <h2 id="coffeeSpotlightTitle">Tiramisu Latte</h2>
-    <p class="food-spotlight-copy" id="coffeeSpotlightCopy">Coffee, creaminess and the irresistible charm of tiramisu.</p>
-    <span class="food-spotlight-price">₹299</span>
-    <button class="food-spotlight-action" type="button" id="coffeeSpotlightExplore">Explore Coffee &amp; Tea</button>
   </section>
 </div>
 <section class="menu-content">
@@ -2070,6 +2064,14 @@ function addTccMenuPhotos(){
     const cleanTitle=title.cloneNode(true);
     cleanTitle.querySelectorAll('.food-badge,.best-seller,.availability-status,[class*="badge"]').forEach(el=>el.remove());
     const name=cleanTitle.textContent.replace(/\s+/g,' ').trim();
+    const isTccSignature=name==="Tiramisu Latte";
+    if(isTccSignature){
+      item.classList.add("tcc-signature-highlight");
+      const signature=document.createElement("span");
+      signature.className="tcc-signature-badge";
+      signature.textContent="TCC Signature";
+      title.parentElement.insertBefore(signature,title);
+    }
     const photo=TCC_VERIFIED_PHOTOS[name];
     const wrap=document.createElement('div');
     wrap.className='m-photo-wrap'+(photo?'':' m-photo-placeholder-wrap');
@@ -2097,7 +2099,7 @@ function addTccMenuPhotos(){
     item.insertBefore(wrap,item.firstChild);
     const info=document.createElement('div'); info.className='m-item-info';
     const sourceBlock=title.parentElement;
-    sourceBlock.querySelectorAll('h3,p,.availability-status').forEach(el=>info.appendChild(el));
+    sourceBlock.querySelectorAll('.tcc-signature-badge,h3,p,.availability-status').forEach(el=>info.appendChild(el));
     sourceBlock.replaceWith(info);
   });
 }
@@ -2396,19 +2398,18 @@ function showGroup(id){
   requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
-const promotionSeenKey="tcc-menu-promotion-shown-v1";
 const foodSpotlightSeenKey="tcc-chefs-special-chicken-alfredo-v1";
 let foodSpotlightPending=false;
 function openFoodSpotlight(){
   if(!foodSpotlight) return false;
   let seen=false;
-  try{seen=sessionStorage.getItem(promotionSeenKey)==="1"||sessionStorage.getItem(foodSpotlightSeenKey)==="1";}catch(e){}
+  try{seen=sessionStorage.getItem(foodSpotlightSeenKey)==="1";}catch(e){}
   if(seen) return false;
   foodSpotlightPending=true;
   foodSpotlight.classList.add("is-open");
   foodSpotlight.setAttribute("aria-hidden","false");
   document.body.style.overflow="hidden";
-  try{sessionStorage.setItem(promotionSeenKey,"1");sessionStorage.setItem(foodSpotlightSeenKey,"1");}catch(e){}
+  try{sessionStorage.setItem(foodSpotlightSeenKey,"1");}catch(e){}
   document.getElementById("foodSpotlightExplore")?.focus();
   return true;
 }
@@ -2423,39 +2424,10 @@ document.getElementById("foodSpotlightExplore")?.addEventListener("click",closeF
 document.getElementById("foodSpotlightClose")?.addEventListener("click",closeFoodSpotlight);
 foodSpotlight?.addEventListener("click",e=>{if(e.target===foodSpotlight) closeFoodSpotlight();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&foodSpotlight?.classList.contains("is-open")) closeFoodSpotlight();});
-let anotherCategoryOpened=false;
 tabs.forEach(t=>t.addEventListener("click",()=>{
-  anotherCategoryOpened=true;
   if(t.dataset.target==="food"&&openFoodSpotlight()) return;
   showGroup(t.dataset.target);
 }));
-const coffeeSpotlight=document.getElementById("coffeeSpotlight");
-const coffeeSpotlightSeenKey="tcc-signature-tiramisu-latte-v1";
-function openCoffeeSpotlight(){
-  if(!coffeeSpotlight||anotherCategoryOpened) return;
-  let seen=false;
-  try{seen=sessionStorage.getItem(promotionSeenKey)==="1"||sessionStorage.getItem(coffeeSpotlightSeenKey)==="1"||sessionStorage.getItem(foodSpotlightSeenKey)==="1";}catch(e){}
-  if(seen) return;
-  coffeeSpotlight.classList.add("is-open");
-  coffeeSpotlight.setAttribute("aria-hidden","false");
-  document.body.style.overflow="hidden";
-  try{sessionStorage.setItem(promotionSeenKey,"1");sessionStorage.setItem(coffeeSpotlightSeenKey,"1");}catch(e){}
-  document.getElementById("coffeeSpotlightExplore")?.focus();
-}
-function closeCoffeeSpotlight(){
-  if(!coffeeSpotlight) return;
-  coffeeSpotlight.classList.remove("is-open");
-  coffeeSpotlight.setAttribute("aria-hidden","true");
-  document.body.style.overflow="";
-}
-document.getElementById("coffeeSpotlightExplore")?.addEventListener("click",closeCoffeeSpotlight);
-document.getElementById("coffeeSpotlightClose")?.addEventListener("click",closeCoffeeSpotlight);
-coffeeSpotlight?.addEventListener("click",e=>{if(e.target===coffeeSpotlight) closeCoffeeSpotlight();});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&coffeeSpotlight?.classList.contains("is-open")) closeCoffeeSpotlight();});
-window.setTimeout(()=>{
-  const activeCoffee=document.querySelector('.menu-tab[data-target="coffee"]')?.classList.contains("active");
-  if(activeCoffee&&!anotherCategoryOpened) openCoffeeSpotlight();
-},8000);
 document.querySelectorAll("[data-fav-target]").forEach(a=>a.remove());
 
 function filter(q){
