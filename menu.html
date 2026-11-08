@@ -2747,8 +2747,20 @@ function tccShowDrinkCard(drink){
  const photoBox=document.getElementById("tccDrinkPickPhoto");photoBox.replaceChildren();
  const sourcePhoto=drink.item.querySelector(".m-photo-wrap");
  if(sourcePhoto){
-  const clone=sourcePhoto.cloneNode(true);clone.style.width="100%";clone.style.height="100%";clone.style.aspectRatio="4 / 3";
-  const img=clone.querySelector("img");if(img){img.removeAttribute("srcset");img.loading="eager";img.style.width="100%";img.style.height="100%";img.style.objectFit="contain";img.style.objectPosition="center";}
+  const clone=sourcePhoto.cloneNode(true);clone.style.width="100%";clone.style.height="100%";clone.style.aspectRatio="1 / 1";
+  const img=clone.querySelector("img");
+  if(img){
+   const verifiedPhoto=TCC_VERIFIED_PHOTOS[drink.name];
+   img.removeAttribute("srcset");img.removeAttribute("sizes");
+   if(verifiedPhoto){
+    img.src=verifiedPhoto.url;
+    img.srcset=verifiedPhoto.url+" 400w, "+verifiedPhoto.large+" 800w";
+    img.sizes="112px";
+   }
+   img.loading="eager";img.decoding="async";img.fetchPriority="high";
+   img.style.width="100%";img.style.height="100%";img.style.objectFit="cover";img.style.objectPosition="center";
+   img.alt=drink.name+" — TCC drink recommendation";
+  }
   photoBox.appendChild(clone);
  }else photoBox.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';
 }
