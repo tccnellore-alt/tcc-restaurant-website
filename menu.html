@@ -2556,40 +2556,31 @@ const tccDrinkPicker=document.getElementById("tccDrinkPicker");
 const tccDrinkResult=document.getElementById("tccDrinkPickResult");
 let tccCurrentDrink=null;
 let tccQuizStep=0;
-let tccQuizAnswers={mood:null,direction:null,sweetness:null,temperature:null,flavour:null};
-const tccMoodQuestion={key:"mood",question:"What would you enjoy today?",hint:"Let's start with the kind of sip you're craving.",options:[["coffee","Coffee"],["tea","Tea"],["fizzy","Fizzy & refreshing"],["matcha","Matcha & signatures"],["shake","Something creamy"],["any","Surprise me"]]};
+let tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null};
 function tccQuestionsForAnswers(){
- const a=tccQuizAnswers,questions=[tccMoodQuestion];
- if(!a.mood)return questions;
- const branches={
-  coffee:{key:"direction",question:"How do you enjoy your coffee?",hint:"We'll use this to find the right coffee style.",options:[["bold","Strong & rich"],["smooth","Smooth & creamy"],["indulgent","Sweet & rich"],["refreshing","Light & refreshing"]]},
-  fizzy:{key:"direction",question:"What kind of refreshing drink do you prefer?",hint:"Choose the flavour style you enjoy most.",options:[["citrus","Citrus & lemon"],["tropical","Fruity & tropical"],["tea","Iced tea"]]},
-  tea:{key:"direction",question:"What kind of tea would you like?",hint:"A cosy cup or something cool and fruity?",options:[["cosy","Hot & comforting"],["iced","Iced & refreshing"],["fruity","Fruity iced tea"]]},
-  matcha:{key:"direction",question:"Which matcha would you enjoy?",hint:"Choose the flavour that sounds most like you.",options:[["classic","Classic matcha"],["creamy","Creamy matcha"],["fruity","Fruity matcha"]]},
-  shake:{key:"direction",question:"What kind of shake do you prefer?",hint:"Let's narrow down your indulgent side.",options:[["chocolate","Chocolate"],["biscuit","Biscoff"],["coffee","Coffee flavour"]]},
-  any:{key:"direction",question:"What sounds most tempting?",hint:"Choose a flavour and we'll take it from there.",options:[["refreshing","Fresh and fruity"],["creamy","Creamy and smooth"],["chocolate","Chocolatey"],["coffee","Rich coffee"]]}
- };
- questions.push(branches[a.mood]||branches.any);
- if(!a.direction)return questions;
- const followups={
-  bold:{key:"temperature",question:"How would you like that bold coffee?",hint:"One last detail before we find your match.",options:[["hot","Hot and comforting"],["cold","Iced and crisp"],["any","Surprise me"]]},
-  smooth:{key:"sweetness",question:"How much sweetness feels right?",hint:"We'll keep the recommendation smooth, just how you like it.",options:[["none","No added sweetness"],["light","A little sweetness"],["medium","Balanced sweetness"],["sweet","Make it a treat"]]},
-  indulgent:{key:"temperature",question:"Hot indulgence or an iced treat?",hint:"Choose the finish for your sweet craving.",options:[["hot","Warm and cosy"],["cold","Cold and creamy"],["any","Either works"]]},
-  refreshing:{key:"flavour",question:"Which refreshing note do you prefer?",hint:"This helps us separate coffee classics from fruity twists.",options:[["coffee","Clean coffee flavour"],["fruity","A fruity twist"],["floral","Floral and delicate"]]},
-  citrus:{key:"sweetness",question:"How sweet should your refresher be?",hint:"We'll balance the zing to your taste.",options:[["none","Not sweet"],["light","Lightly sweet"],["medium","Balanced"],["sweet","On the sweeter side"]]},
-  tropical:{key:"sweetness",question:"How sweet should your tropical sip be?",hint:"A quick sweetness check helps us choose.",options:[["light","Light and subtle"],["medium","Balanced"],["sweet","Sweet and juicy"],["any","No preference"]]},
-  tea:{key:"temperature",question:"Would you like your tea iced?",hint:"Just one final preference.",options:[["cold","Iced tea"],["hot","Hot tea"],["any","Surprise me"]]},
-  cosy:{key:"sweetness",question:"How sweet do you enjoy your tea?",hint:"We'll keep it cosy and balanced.",options:[["none","Not sweet"],["light","Lightly sweet"],["medium","Moderately sweet"],["any","No preference"]]},
-  iced:{key:"flavour",question:"Which iced tea flavour sounds best?",hint:"Choose the note you'd enjoy most.",options:[["tea","Tea-forward and citrusy"],["fruity","Fruity and mellow"],["floral","Floral and delicate"]]},
-  fruity:{key:"sweetness",question:"How sweet should it be?",hint:"We'll find a fruity tea that fits.",options:[["light","Lightly sweet"],["medium","Balanced"],["sweet","Sweet and fruity"],["any","No preference"]]},
-  classic:{key:"temperature",question:"Hot or iced matcha today?",hint:"Your matcha, your way.",options:[["hot","Hot"],["cold","Iced"],["any","Either"]]},
-  creamy:{key:"sweetness",question:"How much sweetness do you want?",hint:"We'll find the right creamy balance.",options:[["light","Lightly sweet"],["medium","Balanced"],["sweet","A little indulgent"]]},
-  chocolate:{key:"temperature",question:"A warm chocolate comfort or a cold shake?",hint:"One last choice.",options:[["hot","Warm and cosy"],["cold","Cold and creamy"],["any","Surprise me"]]},
-  biscuit:{key:"sweetness",question:"How sweet should your treat be?",hint:"We'll match your sweet tooth.",options:[["medium","Just balanced"],["sweet","Sweet and indulgent"],["any","No preference"]]},
-  coffee:{key:"temperature",question:"Hot coffee comfort or an iced treat?",hint:"Choose the temperature you feel like.",options:[["hot","Hot"],["cold","Iced"],["any","Either"]]},
-  refreshing:{key:"temperature",question:"Would you prefer it chilled?",hint:"A final touch to personalise your pick.",options:[["cold","Chilled"],["any","No preference"]]}
- };
- if(followups[a.direction])questions.push(followups[a.direction]);
+ const pool=tccEligibleDrinks().filter(x=>x.profile);
+ const answers=tccQuizAnswers;
+ const dimensions=[
+  {key:"mood",weight:5,title:"What kind of drink are you in the mood for?",hint:"Choose a drink style to get started.",labels:{coffee:"Coffee",tea:"Tea",fizzy:"Refreshing drinks",matcha:"Matcha",shake:"Shakes"}},
+  {key:"temperature",weight:4,title:"Would you prefer it hot or cold?",hint:"We'll narrow it down to the drinks that suit you.",labels:{hot:"Hot",cold:"Cold",any:"Either"}},
+  {key:"sweetness",weight:3,title:"How sweet do you like your drink?",hint:"Choose the sweetness you usually enjoy.",labels:{none:"Not sweet",light:"Lightly sweet",medium:"Medium sweet",sweet:"Sweet"}},
+  {key:"flavour",weight:2,title:"Which flavour sounds best?",hint:"One more detail can help us find a closer match.",labels:{coffee:"Coffee",creamy:"Smooth & creamy",chocolate:"Chocolate",fruity:"Fruity",floral:"Floral",tea:"Tea"}}
+ ];
+ const questions=[];let candidates=pool.slice(),used=[];
+ for(let step=0;step<4;step++){
+  const ranked=dimensions.filter(d=>!used.includes(d.key)&&!answers[d.key]).map(d=>{
+   const values=[...new Set(candidates.map(x=>d.key==="flavour"?x.profile.flavours:x.profile[d.key]).flat().filter(Boolean))];
+   const splits=values.length;
+   return {...d,values,utility:splits>1?Math.min(splits,4)*d.weight:0};
+  }).filter(d=>d.utility>0).sort((a,b)=>b.utility-a.utility);
+  if(!ranked.length)break;
+  const d=ranked[0];used.push(d.key);
+  const values=d.values;
+  const opts=values.map(value=>[value,d.labels[value]||value]);
+  questions.push({key:d.key,question:d.title,hint:d.hint,options:opts});
+  const chosen=answers[d.key];
+  if(chosen)candidates=candidates.filter(x=>d.key==="flavour"?x.profile.flavours.includes(chosen):x.profile[d.key]===chosen);
+ }
  return questions;
 }
 const tccDrinkProfiles={
@@ -2675,7 +2666,7 @@ function tccRenderQuizStep(){
   b.addEventListener("click",()=>{
    const prior=tccQuizAnswers[q.key];tccQuizAnswers[q.key]=value;
    if(prior!==value){
-    const order=["mood","direction","temperature","sweetness","flavour"];
+    const order=["mood","temperature","sweetness","flavour"];
     order.slice(order.indexOf(q.key)+1).forEach(key=>{tccQuizAnswers[key]=null;});
    }
    options.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
@@ -2690,52 +2681,20 @@ function tccRenderQuizStep(){
  next.textContent=tccQuizStep===questions.length-1?"Find my drink":"Next";
 }
 function tccScoreDrink(drink){
- const p=drink.profile;if(!p)return -100;
- const a=tccQuizAnswers;let score=0,answered=0;
- if(a.mood&&a.mood!=="any"){answered++;score+=p.mood===a.mood?12:-24;}
- const direction=a.direction;
- if(direction){
-  answered++;
-  const match={
-   bold:()=>p.mood==="coffee"&&p.sweetness==="none",
-   smooth:()=>p.flavours.includes("creamy"),
-   indulgent:()=>p.sweetness==="sweet"||p.flavours.includes("chocolate"),
-   refreshing:()=>p.temperature==="cold"||p.flavours.includes("fruity"),
-   citrus:()=>p.flavours.includes("fruity")||p.flavours.includes("tea"),
-   tropical:()=>p.flavours.includes("fruity"),
-   tea:()=>p.mood==="tea",
-   cosy:()=>p.mood==="tea"&&p.temperature==="hot",
-   iced:()=>p.mood==="tea"&&p.temperature==="cold",
-   fruity:()=>p.flavours.includes("fruity"),
-   classic:()=>p.mood==="matcha"&&p.flavours.includes("floral"),
-   creamy:()=>p.flavours.includes("creamy"),
-   chocolate:()=>p.flavours.includes("chocolate"),
-   biscuit:()=>p.sweetness==="sweet"&&p.flavours.includes("creamy"),
-   coffee:()=>p.flavours.includes("coffee")
-  };
-  if(match[direction])score+=match[direction]()?9:-8;
- }
- if(a.sweetness&&a.sweetness!=="any"){
-  answered++;const levels={none:0,light:1,medium:2,sweet:3};
-  const distance=Math.abs(levels[p.sweetness]-levels[a.sweetness]);
-  score+=distance===0?8:distance===1?2:-7;
- }
- if(a.temperature&&a.temperature!=="any"){
-  answered++;score+=p.temperature===a.temperature?7:p.temperature==="any"?3:-5;
- }
- if(a.flavour&&a.flavour!=="any"){
-  answered++;score+=p.flavours.includes(a.flavour)?8:-6;
- }
+ const p=drink.profile,a=tccQuizAnswers;let score=0,answered=0;
+ ["mood","temperature","sweetness"].forEach(key=>{
+  if(a[key]){answered++;const actual=p[key];score+=actual===a[key]?10:(actual==="any"?4:-9);}
+ });
+ if(a.flavour){answered++;score+=p.flavours.includes(a.flavour)?9:-7;}
  return {score,answered};
 }
 function tccDrinkReason(drink){
- const p=drink.profile,a=tccQuizAnswers,reasons=[];
- if(a.mood&&a.mood!=="any")reasons.push(({coffee:"coffee",tea:"tea",fizzy:"refreshing drinks",matcha:"matcha",shake:"creamy drinks"}[a.mood]||"your drink preference"));
- if(a.direction)reasons.push(({bold:"strong coffee",smooth:"smooth and creamy flavours",indulgent:"a sweeter coffee",refreshing:"a lighter refreshing style",citrus:"citrus and fruity flavours",tropical:"fruity flavours",tea:"tea",cosy:"a hot drink",iced:"an iced drink",fruity:"fruity flavours",classic:"classic matcha",creamy:"creamy flavours",chocolate:"chocolate",biscuit:"Biscoff-style sweetness",coffee:"coffee flavour"}[a.direction]||"your chosen style"));
- if(a.sweetness&&a.sweetness!=="any")reasons.push(({none:"less sweetness",light:"light sweetness",medium:"balanced sweetness",sweet:"a sweeter taste"}[a.sweetness]));
- if(a.temperature&&a.temperature!=="any")reasons.push(a.temperature==="hot"?"a hot drink":"a cold drink");
- if(a.flavour&&a.flavour!=="any")reasons.push(({chocolate:"chocolate",fruity:"fruity flavours",coffee:"coffee flavour",floral:"floral notes",tea:"tea and citrus"}[a.flavour]||"your flavour choice"));
- return reasons.length?"Chosen to match your preference for "+reasons.slice(0,3).join(", ")+".":"A popular pick from our available drinks.";
+ const a=tccQuizAnswers,reasons=[];
+ if(a.mood)reasons.push(({coffee:"coffee",tea:"tea",fizzy:"refreshing drinks",matcha:"matcha",shake:"shakes"}[a.mood]||"your chosen drink style"));
+ if(a.temperature)reasons.push(a.temperature==="hot"?"a hot drink":a.temperature==="cold"?"a cold drink":"either temperature");
+ if(a.sweetness)reasons.push(({none:"no added sweetness",light:"light sweetness",medium:"balanced sweetness",sweet:"a sweeter taste"}[a.sweetness]));
+ if(a.flavour)reasons.push(({coffee:"coffee flavour",creamy:"creamy texture",chocolate:"chocolate",fruity:"fruity flavours",floral:"floral notes",tea:"tea flavour"}[a.flavour]||a.flavour));
+ return reasons.length?"Matched to your preference for "+reasons.slice(0,3).join(", ")+".":"A recommended drink from the available TCC menu.";
 }
 function tccShowDrinkCard(drink){
  tccCurrentDrink=drink;
