@@ -399,15 +399,18 @@
 
 
 /* Coffee add-ons: shared panel shown once after the Coffee & Tea menu. */
-.menu-group#coffee .coffee-addons-panel{display:block!important;margin:24px 0 6px;padding:18px 16px 16px;background:#f3ecdc;border:1px solid rgba(23,60,43,.16);border-radius:16px}
-.menu-group#coffee .coffee-addons-panel .addons-heading{display:block;margin-bottom:5px}
-.menu-group#coffee .coffee-addons-panel .addons-heading .eyebrow{display:block;margin-bottom:7px;font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.15em;color:#8d7337}
-.menu-group#coffee .coffee-addons-panel .addons-heading strong{font:700 20px/1.2 Manrope,Arial,sans-serif;color:#173c2b}
-.menu-group#coffee .coffee-addons-subtitle{margin:0 0 13px;color:#526057;font:13px/1.5 Manrope,Arial,sans-serif}
-.menu-group#coffee .coffee-addons-panel .addons-row{display:flex;flex-wrap:wrap;gap:8px;overflow:visible}
-.menu-group#coffee .coffee-addons-panel .addons-row span{display:flex;align-items:center;gap:7px;flex:0 1 auto;padding:9px 10px;border:1px solid rgba(23,60,43,.12);border-radius:10px;background:#fff;color:#526057;font:500 11px/1.3 Manrope,Arial,sans-serif}
-.menu-group#coffee .coffee-addons-panel .addons-row b{color:#8d7337;font-weight:800;white-space:nowrap}
-@media(max-width:480px){.menu-group#coffee .coffee-addons-panel{padding:15px 12px}.menu-group#coffee .coffee-addons-panel .addons-row span{font-size:10.5px;padding:8px 9px}}
+/* Compact, aligned two-column coffee add-on cards */
+.menu-group#coffee .coffee-addons-panel{display:block!important;margin:16px 0 4px;padding:13px 12px 12px;background:#f3ecdc;border:1px solid rgba(23,60,43,.16);border-radius:14px}
+.menu-group#coffee .coffee-addons-panel .addons-heading{display:block;margin-bottom:3px}
+.menu-group#coffee .coffee-addons-panel .addons-heading .eyebrow{display:block;margin-bottom:4px;font:800 8px/1.2 Manrope,Arial,sans-serif;letter-spacing:.14em;color:#8d7337}
+.menu-group#coffee .coffee-addons-panel .addons-heading strong{font:700 17px/1.2 Manrope,Arial,sans-serif;color:#173c2b}
+.menu-group#coffee .coffee-addons-subtitle{margin:0 0 9px;color:#526057;font:12px/1.35 Manrope,Arial,sans-serif}
+.menu-group#coffee .coffee-addons-panel .addons-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;overflow:visible}
+.menu-group#coffee .coffee-addons-panel .addons-row>span{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:3px;min-width:0;min-height:52px;padding:7px 9px;border:1px solid rgba(23,60,43,.11);border-radius:9px;background:#fff;color:#526057;font:600 10.5px/1.25 Manrope,Arial,sans-serif}
+.menu-group#coffee .coffee-addons-panel .addon-name{display:block;min-width:0;overflow-wrap:anywhere}
+.menu-group#coffee .coffee-addons-panel .addon-meta{display:flex;align-items:center;justify-content:space-between;gap:6px;color:#7a8078;font:500 9.5px/1.2 Manrope,Arial,sans-serif}
+.menu-group#coffee .coffee-addons-panel .addon-meta b{color:#8d7337;font:800 10.5px/1.2 Manrope,Arial,sans-serif;white-space:nowrap}
+@media(max-width:360px){.menu-group#coffee .coffee-addons-panel{padding:11px 9px}.menu-group#coffee .coffee-addons-panel .addons-row{gap:6px}.menu-group#coffee .coffee-addons-panel .addons-row>span{padding:7px;min-height:49px;font-size:10px}}
 
 
 
@@ -1305,13 +1308,13 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
           </div>
           <p class="coffee-addons-subtitle">Add a little extra to your favourite coffee.</p>
           <div class="addons-row">
-            <span>Hazelnut Syrup · 30 ml <b>₹50</b></span>
-            <span>Caramel Syrup · 30 ml <b>₹50</b></span>
-            <span>Vanilla Syrup · 30 ml <b>₹50</b></span>
-            <span>Irish Syrup · 30 ml <b>₹50</b></span>
-            <span>Vanilla Ice Cream · 30 ml <b>₹50</b></span>
-            <span>Chocolate Ice Cream · 30 ml <b>₹50</b></span>
-            <span>Honey · 30 ml <b>₹50</b></span>
+            <span><span class="addon-name">Hazelnut Syrup</span><span class="addon-meta">30 ml<b>₹50</b></span></span>
+            <span><span class="addon-name">Caramel Syrup</span><span class="addon-meta">30 ml<b>₹50</b></span></span>
+            <span><span class="addon-name">Vanilla Syrup</span><span class="addon-meta">30 ml<b>₹50</b></span></span>
+            <span><span class="addon-name">Irish Syrup</span><span class="addon-meta">30 ml<b>₹50</b></span></span>
+            <span><span class="addon-name">Vanilla Ice Cream</span><span class="addon-meta">30 ml<b>₹50</b></span></span>
+            <span><span class="addon-name">Chocolate Ice Cream</span><span class="addon-meta">30 ml<b>₹50</b></span></span>
+            <span><span class="addon-name">Honey</span><span class="addon-meta">30 ml<b>₹50</b></span></span>
           </div>
         </section>
         
