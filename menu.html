@@ -2571,7 +2571,7 @@ function tccQuestionsForAnswers(){
   const ranked=dimensions.filter(d=>!used.includes(d.key)).map(d=>{
    const values=[...new Set(candidates.map(x=>d.key==="flavour"?x.profile.flavours:x.profile[d.key]).flat().filter(Boolean))];
    const splits=values.length;
-   const distribution=values.map(value=>candidates.filter(x=>(d.key==="flavour"?x.profile.flavours:x.profile[d.key]).includes?x.profile[d.key].includes(value):(d.key==="flavour"?x.profile.flavours.includes(value):x.profile[d.key]===value)).length).filter(Boolean);
+   const distribution=values.map(value=>candidates.filter(x=>d.key==="flavour"?x.profile.flavours.includes(value):x.profile[d.key]===value).length).filter(Boolean);
    const total=distribution.reduce((sum,n)=>sum+n,0);
    const entropy=total?distribution.reduce((sum,n)=>{const p=n/total;return sum-p*Math.log2(p);},0):0;
    return {...d,values,utility:splits>1?entropy*d.weight:0};
