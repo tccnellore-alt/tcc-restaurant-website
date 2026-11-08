@@ -2556,7 +2556,7 @@ const tccDrinkPicker=document.getElementById("tccDrinkPicker");
 const tccDrinkResult=document.getElementById("tccDrinkPickResult");
 let tccCurrentDrink=null;
 let tccQuizStep=0;
-let tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null};
+let tccQuizAnswers={mood:null,temperature:null,sweetness:null,taste:null};
 function tccQuestionsForAnswers(){
  const pool=tccEligibleDrinks().filter(x=>x.profile);
  const answers=tccQuizAnswers;
@@ -2564,14 +2564,14 @@ function tccQuestionsForAnswers(){
   {key:"mood",weight:5,title:"What kind of drink are you in the mood for?",hint:"Choose a drink style to get started.",labels:{coffee:"Coffee",tea:"Tea",fizzy:"Refreshing drinks",matcha:"Matcha",shake:"Shakes"}},
   {key:"temperature",weight:4,title:"Would you prefer it hot or cold?",hint:"We'll narrow it down to the drinks that suit you.",labels:{hot:"Hot",cold:"Cold",any:"Either"}},
   {key:"sweetness",weight:3,title:"How sweet do you like your drink?",hint:"Choose the sweetness you usually enjoy.",labels:{none:"Not sweet",light:"Lightly sweet",medium:"Medium sweet",sweet:"Sweet"}},
-  {key:"flavour",weight:2,title:"Which flavour sounds best?",hint:"One more detail can help us find a closer match.",labels:{coffee:"Coffee",creamy:"Smooth & creamy",chocolate:"Chocolate",fruity:"Fruity",floral:"Floral",tea:"Tea"}}
+  {key:"taste",weight:3,title:"Which flavour profile sounds best?",hint:"Choose the taste you'd most enjoy. We'll only show options that lead to a distinct match.",labels:{"coffee":"Coffee-forward","chocolate":"Chocolate","chocolate-hazelnut":"Chocolate & hazelnut","biscuit":"Biscoff & biscuit","tea":"Tea","citrus":"Citrus","fruity":"Fruity","floral":"Floral","matcha":"Matcha","coconut":"Coconut","pineapple":"Pineapple","berry":"Berry","mango":"Mango","apple-pie":"Apple & warm spice","rose":"Rose","orange-coffee":"Orange & coffee"}}
  ];
  const questions=[];let candidates=pool.slice(),used=[];
  for(let step=0;step<4;step++){
   const ranked=dimensions.filter(d=>!used.includes(d.key)).map(d=>{
-   const values=[...new Set(candidates.map(x=>d.key==="flavour"?x.profile.flavours:x.profile[d.key]).flat().filter(Boolean))];
+   const values=[...new Set(candidates.map(x=>x[d.key]||x.profile[d.key]).filter(Boolean))];
    const splits=values.length;
-   const distribution=values.map(value=>candidates.filter(x=>d.key==="flavour"?x.profile.flavours.includes(value):x.profile[d.key]===value).length).filter(Boolean);
+   const distribution=values.map(value=>candidates.filter(x=>(x[d.key]||x.profile[d.key])===value).length).filter(Boolean);
    const total=distribution.reduce((sum,n)=>sum+n,0);
    const entropy=total?distribution.reduce((sum,n)=>{const p=n/total;return sum-p*Math.log2(p);},0):0;
    return {...d,values,utility:splits>1?entropy*d.weight:0};
@@ -2582,7 +2582,7 @@ function tccQuestionsForAnswers(){
   const opts=values.map(value=>[value,d.labels[value]||value]);
   questions.push({key:d.key,question:d.title,hint:d.hint,options:opts});
   const chosen=answers[d.key];
-  if(chosen)candidates=candidates.filter(x=>d.key==="flavour"?x.profile.flavours.includes(chosen):x.profile[d.key]===chosen);
+  if(chosen)candidates=candidates.filter(x=>(x[d.key]||x.profile[d.key])===chosen);
  }
  return questions;
 }
@@ -2639,6 +2639,9 @@ const tccDrinkProfiles={
  "Orange Espresso":{mood:"coffee",sweetness:"light",temperature:"cold",flavours:["coffee","fruity"]},
  "Pineapple Float":{mood:"fizzy",sweetness:"sweet",temperature:"cold",flavours:["fruity","creamy"]}
 };
+const tccDrinkTaste={
+ "Ginger Honey Lemon Tea":"tea","Espresso":"coffee","Hot Americano":"coffee","Latte":"coffee","Mocha":"chocolate","Spanish Latte":"coffee","Cortado":"coffee","Hot Chocolate":"chocolate","Affogato":"coffee","Cappuccino":"coffee","Vietnamese Coffee":"coffee","Tiramisu Latte":"coffee","Iced Americano":"coffee","Iced Latte":"coffee","Iced Mocha":"chocolate","Classic Cold Coffee":"coffee","Spanish Iced Latte":"coffee","Classic Cold Brew":"coffee","Coco Brew":"coconut","Mont Blanc":"coffee","Bird's Eye Pineapple":"pineapple","Cranberry Cold Brew":"berry","Orange Fizzy Brew":"orange-coffee","Biscoff Shake":"biscuit","Nutella Shake":"chocolate-hazelnut","Lemon Cooler":"citrus","Elderflower Fizz / Peach Fizz":"floral","Dry Mango Picante":"mango","Coco Rose Cooler":"coconut","Watermelon Fizzy":"fruity","Blueberry Mojito":"berry","Virgin Mojito":"citrus","Orange Fizzy":"citrus","Pineapple Fizzy":"pineapple","Mango Fizzy":"mango","Peach Iced Tea":"fruity","Lemon Iced Tea":"citrus","Berry Iced Tea":"berry","Classic Matcha (Hot / Cold)":"matcha","Coconut Matcha Cloud":"coconut","Mango Passion Matcha":"mango","Strawberry Matcha":"berry","Pour Over":"coffee","French Press":"coffee","Apple Pie Latte":"apple-pie","Honey Rose Merry Latte":"rose","Biscoff Latte":"biscuit","Nutella Latte":"chocolate-hazelnut","Coconut Cold":"coconut","Orange Espresso":"orange-coffee","Pineapple Float":"pineapple"
+};
 function tccCleanDrinkName(item){
  const h=item.querySelector("h3");
  return (h?.cloneNode(true).textContent||"").replace(/Best Seller|NEW ARRIVAL|♛/gi,"").replace(/\s+/g," ").trim();
@@ -2650,7 +2653,7 @@ function tccEligibleDrinks(){
    !item.querySelector(".availability-status")&&!/sold\s*out|temporarily unavailable/i.test(item.textContent)
   ).map(item=>{
    const name=tccCleanDrinkName(item);
-   return {item,name,price:[...item.children].find(el=>el.matches("strong"))?.textContent.trim()||"",profile:tccDrinkProfiles[name]||null};
+   return {item,name,price:[...item.children].find(el=>el.matches("strong"))?.textContent.trim()||"",profile:tccDrinkProfiles[name]||null,taste:tccDrinkTaste[name]||null};
   });
  }).filter(x=>x.name);
 }
@@ -2669,7 +2672,7 @@ function tccRenderQuizStep(){
   b.addEventListener("click",()=>{
    const prior=tccQuizAnswers[q.key];tccQuizAnswers[q.key]=value;
    if(prior!==value){
-    const order=["mood","temperature","sweetness","flavour"];
+    const order=["mood","temperature","sweetness","taste"];
     order.slice(order.indexOf(q.key)+1).forEach(key=>{tccQuizAnswers[key]=null;});
    }
    options.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
@@ -2688,7 +2691,7 @@ function tccScoreDrink(drink){
  ["mood","temperature","sweetness"].forEach(key=>{
   if(a[key]){answered++;const actual=p[key];score+=actual===a[key]?10:(actual==="any"?4:-9);}
  });
- if(a.flavour){answered++;score+=p.flavours.includes(a.flavour)?9:-7;}
+ if(a.taste){answered++;score+=drink.taste===a.taste?12:-10;}
  return {score,answered};
 }
 function tccDrinkReason(drink){
@@ -2696,7 +2699,7 @@ function tccDrinkReason(drink){
  if(a.mood)reasons.push(({coffee:"coffee",tea:"tea",fizzy:"refreshing drinks",matcha:"matcha",shake:"shakes"}[a.mood]||"your chosen drink style"));
  if(a.temperature)reasons.push(a.temperature==="hot"?"a hot drink":a.temperature==="cold"?"a cold drink":"either temperature");
  if(a.sweetness)reasons.push(({none:"no added sweetness",light:"light sweetness",medium:"balanced sweetness",sweet:"a sweeter taste"}[a.sweetness]));
- if(a.flavour)reasons.push(({coffee:"coffee flavour",creamy:"creamy texture",chocolate:"chocolate",fruity:"fruity flavours",floral:"floral notes",tea:"tea flavour"}[a.flavour]||a.flavour));
+ if(a.taste)reasons.push(({coffee:"coffee-forward flavours",chocolate:"chocolate","chocolate-hazelnut":"chocolate and hazelnut",biscuit:"Biscoff and biscuit",tea:"tea",citrus:"citrus",fruity:"fruity flavours",floral:"floral notes",matcha:"matcha",coconut:"coconut",pineapple:"pineapple",berry:"berry",mango:"mango","apple-pie":"apple and warm spice",rose:"rose","orange-coffee":"orange and coffee"}[a.taste]||a.taste));
  return reasons.length?"Matched to your preference for "+reasons.slice(0,3).join(", ")+".":"A recommended drink from the available TCC menu.";
 }
 function tccShowDrinkCard(drink){
@@ -2767,7 +2770,7 @@ document.getElementById("tccQuizNext")?.addEventListener("click",()=>{
 });
 document.getElementById("tccQuizBack")?.addEventListener("click",()=>{if(tccQuizStep>0){tccQuizStep--;tccRenderQuizStep();}});
 function tccResetQuiz(){
- tccQuizStep=0;tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null};
+ tccQuizStep=0;tccQuizAnswers={mood:null,temperature:null,sweetness:null,taste:null};
  tccDrinkResult.classList.remove("is-visible");
  document.getElementById("tccQuizOptions").style.display="grid";
  document.querySelector(".tcc-quiz-controls").style.display="flex";
