@@ -2764,7 +2764,7 @@ document.getElementById("tccQuizNext")?.addEventListener("click",()=>{
 });
 document.getElementById("tccQuizBack")?.addEventListener("click",()=>{if(tccQuizStep>0){tccQuizStep--;tccRenderQuizStep();}});
 function tccResetQuiz(){
- tccQuizStep=0;tccQuizAnswers={mood:null,direction:null,sweetness:null,temperature:null,flavour:null};
+ tccQuizStep=0;tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null};
  tccDrinkResult.classList.remove("is-visible");
  document.getElementById("tccQuizOptions").style.display="grid";
  document.querySelector(".tcc-quiz-controls").style.display="flex";
