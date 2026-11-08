@@ -2558,31 +2558,26 @@ let tccCurrentDrink=null;
 let tccQuizStep=0;
 let tccQuizAnswers={mood:null,temperature:null,sweetness:null,taste:null};
 function tccQuestionsForAnswers(){
- const pool=tccEligibleDrinks().filter(x=>x.profile);
+ const pool=tccEligibleDrinks().filter(x=>x.profile&&x.taste);
  const answers=tccQuizAnswers;
  const dimensions=[
-  {key:"mood",weight:5,title:"What kind of drink are you in the mood for?",hint:"Choose a drink style to get started.",labels:{coffee:"Coffee",tea:"Tea",fizzy:"Refreshing drinks",matcha:"Matcha",shake:"Shakes"}},
-  {key:"temperature",weight:4,title:"Would you prefer it hot or cold?",hint:"We'll narrow it down to the drinks that suit you.",labels:{hot:"Hot",cold:"Cold",any:"Either"}},
-  {key:"sweetness",weight:3,title:"How sweet do you like your drink?",hint:"Choose the sweetness you usually enjoy.",labels:{none:"Not sweet",light:"Lightly sweet",medium:"Medium sweet",sweet:"Sweet"}},
-  {key:"taste",weight:3,title:"Which flavour profile sounds best?",hint:"Choose the taste you'd most enjoy. We'll only show options that lead to a distinct match.",labels:{"coffee":"Coffee-forward","chocolate":"Chocolate","chocolate-hazelnut":"Chocolate & hazelnut","biscuit":"Biscoff & biscuit","tea":"Tea","citrus":"Citrus","fruity":"Fruity","floral":"Floral","matcha":"Matcha","coconut":"Coconut","pineapple":"Pineapple","berry":"Berry","mango":"Mango","apple-pie":"Apple & warm spice","rose":"Rose","orange-coffee":"Orange & coffee"}}
+  {key:"mood",title:"What kind of drink are you in the mood for?",hint:"Pick the kind of drink you feel like.",labels:{coffee:"Coffee",tea:"Tea",fizzy:"Refreshing",matcha:"Matcha",shake:"Shakes"}},
+  {key:"temperature",title:"Hot or cold?",hint:"Choose how you'd like it served.",labels:{hot:"Hot",cold:"Cold",any:"Either"}},
+  {key:"sweetness",title:"How sweet do you like it?",hint:"Choose your preferred sweetness.",labels:{none:"Not sweet",light:"A little sweet",medium:"Medium sweet",sweet:"Sweet"}},
+  {key:"taste",title:"Which flavour do you prefer?",hint:"Just one last choice to find your closest match.",labels:{"coffee":"Coffee","chocolate":"Chocolate","chocolate-hazelnut":"Chocolate & hazelnut","biscuit":"Biscoff","tea":"Tea","citrus":"Citrus","fruity":"Fruity","floral":"Floral","matcha":"Matcha","coconut":"Coconut","pineapple":"Pineapple","berry":"Berry","mango":"Mango","apple-pie":"Apple & spice","rose":"Rose","orange-coffee":"Orange & coffee"}}
  ];
- const questions=[];let candidates=pool.slice(),used=[];
- for(let step=0;step<4;step++){
-  const ranked=dimensions.filter(d=>!used.includes(d.key)).map(d=>{
-   const values=[...new Set(candidates.map(x=>x[d.key]||x.profile[d.key]).filter(Boolean))];
-   const splits=values.length;
-   const distribution=values.map(value=>candidates.filter(x=>(x[d.key]||x.profile[d.key])===value).length).filter(Boolean);
-   const total=distribution.reduce((sum,n)=>sum+n,0);
-   const entropy=total?distribution.reduce((sum,n)=>{const p=n/total;return sum-p*Math.log2(p);},0):0;
-   return {...d,values,utility:splits>1?entropy*d.weight:0};
-  }).filter(d=>d.utility>0).sort((a,b)=>b.utility-a.utility);
-  if(!ranked.length)break;
-  const d=ranked[0];used.push(d.key);
-  const values=d.values;
-  const opts=values.map(value=>[value,d.labels[value]||value]);
-  questions.push({key:d.key,question:d.title,hint:d.hint,options:opts});
-  const chosen=answers[d.key];
-  if(chosen)candidates=candidates.filter(x=>(x[d.key]||x.profile[d.key])===chosen);
+ const questions=[];
+ let candidates=pool.slice();
+ for(const d of dimensions){
+  const values=[...new Set(candidates.map(x=>d.key==="taste"?x.taste:x.profile[d.key]).filter(Boolean))];
+  if(values.length<2) {
+   // A question with only one possible answer adds no value; skip it.
+   if(answers[d.key]) candidates=candidates.filter(x=>(d.key==="taste"?x.taste:x.profile[d.key])===answers[d.key]);
+   continue;
+  }
+  const options=values.map(value=>[value,d.labels[value]||value]);
+  questions.push({key:d.key,question:d.title,hint:d.hint,options});
+  if(answers[d.key]) candidates=candidates.filter(x=>(d.key==="taste"?x.taste:x.profile[d.key])===answers[d.key]);
  }
  return questions;
 }
