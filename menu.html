@@ -2786,16 +2786,36 @@ document.getElementById("tccAdjustDrinkAnswers")?.addEventListener("click",()=>{
 });
 document.getElementById("tccPickAnotherDrink")?.addEventListener("click",()=>{tccResetQuiz();tccQuizStep=0;tccRenderQuizStep();});
 function tccViewPickedDrink(){
- const chosen=tccCurrentDrink;if(!chosen?.item?.isConnected)return;
- const group=chosen.item.closest(".menu-group"),section=chosen.item.closest(".menu-section");if(!group||!section)return;
- search.value="";showGroup(group.id);
- setTimeout(()=>{
-  section.style.display="block";group.classList.add("active");
-  chosen.item.style.setProperty("display","flex","important");
-  chosen.item.classList.add("tcc-drink-picked-focus");
-  chosen.item.scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
-  setTimeout(()=>chosen.item.classList.remove("tcc-drink-picked-focus"),2400);
- },500);
+ const chosen=tccCurrentDrink;
+ if(!chosen?.name)return;
+ // Resolve the live menu row by its exact displayed name. This avoids relying
+ // on a stale DOM node if the menu has been re-rendered since the quiz began.
+ const groupsToSearch=["coffee","refreshers-and-tea","signatures"];
+ let item=chosen.item?.isConnected?chosen.item:null;
+ if(!item){
+  for(const id of groupsToSearch){
+   const group=document.getElementById(id);if(!group)continue;
+   item=[...group.querySelectorAll(".m-item")].find(row=>tccCleanDrinkName(row)===chosen.name);
+   if(item)break;
+  }
+ }
+ if(!item)return;
+ const group=item.closest(".menu-group"),section=item.closest(".menu-section");
+ if(!group||!section)return;
+ // Clear any active search/subcategory filter before switching to the drink.
+ if(search){search.value="";search.classList.remove("global-search-active");}
+ showGroup(group.id);
+ const revealAndScroll=()=>{
+  groups.forEach(g=>g.classList.toggle("active",g===group));
+  group.classList.add("active");
+  section.style.setProperty("display","block","important");
+  item.style.setProperty("display","flex","important");
+  item.classList.add("tcc-drink-picked-focus");
+  item.scrollIntoView({behavior:"smooth",block:"center",inline:"nearest"});
+  setTimeout(()=>item.classList.remove("tcc-drink-picked-focus"),2600);
+ };
+ requestAnimationFrame(()=>requestAnimationFrame(revealAndScroll));
+ setTimeout(revealAndScroll,450);
 }
 document.getElementById("tccViewPickedDrink")?.addEventListener("click",tccViewPickedDrink);
 function syncTccDrinkPicker(){
