@@ -2644,7 +2644,7 @@ const tccDrinkTaste={
 };
 function tccCleanDrinkName(item){
  const h=item.querySelector("h3");
- return (h?.cloneNode(true).textContent||"").replace(/Best Seller|NEW ARRIVAL|♛/gi,"").replace(/\s+/g," ").trim();
+ return (h?.cloneNode(true).textContent||"").replace(/Best Seller|NEW ARRIVAL|♛|✦/gi,"").replace(/\s+/g," ").trim();
 }
 function tccEligibleDrinks(){
  return ["coffee","refreshers-and-tea","signatures"].flatMap(groupId=>{
