@@ -2941,7 +2941,7 @@ function filter(q){
     buildSubTabs(active.id);
   }
   noResults.style.display=found?"none":"block";
-  syncMenuFilterUI();
+  // No syncMenuFilterUI helper exists in this menu build; avoid aborting filter/navigation.
   syncPastaAddon();
   syncTccDrinkPicker();
 }
