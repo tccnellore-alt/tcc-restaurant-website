@@ -2684,12 +2684,40 @@ function tccRenderQuizStep(){
  next.textContent=tccQuizStep===questions.length-1?"Find my drink":"Next";
 }
 function tccScoreDrink(drink){
- const p=drink.profile,a=tccQuizAnswers;let score=0,answered=0;
+ const p=drink.profile,a=tccQuizAnswers;
+ let score=0,answered=0,hardMatch=true;
+ // Drink type and temperature are strong constraints.
+ if(a.mood){answered++;if(p.mood===a.mood)score+=32;else{score-=36;hardMatch=false;}}
+ if(a.temperature){
+  answered++;
+  if(p.temperature===a.temperature)score+=26;
+  else if(p.temperature==="any")score+=18;
+  else{score-=32;hardMatch=false;}
+ }
+ // Sweetness is a gradient: a nearby level can still be a reasonable fit.
+ const sweetnessOrder={none:0,light:1,medium:2,sweet:3};
+ if(a.sweetness&&p.sweetness){
+  answered++;
+  const distance=Math.abs(sweetnessOrder[a.sweetness]-sweetnessOrder[p.sweetness]);
+  score+=distance===0?18:distance===1?7:-5;
+ }
+ if(a.flavour){answered++;score+=p.flavours.includes(a.flavour)?20:-3;}
+ // Bestseller status is only a tiny tie-breaker, never the main match signal.
+ if(drink.item?.querySelector(".tcc-bestseller-badge"))score+=1;
+ return {score,answered,hardMatch};
+}
+function tccDrinkSimilarity(a,b){
+ const pa=a.profile,pb=b.profile;let same=0,total=0;
  ["mood","temperature","sweetness"].forEach(key=>{
-  if(a[key]){answered++;const actual=p[key];score+=actual===a[key]?10:(actual==="any"?4:-9);}
+  if(pa[key]&&pb[key]){total++;if(pa[key]===pb[key]||(key==="temperature"&&(pa[key]==="any"||pb[key]==="any")))same++;}
  });
- if(a.flavour){answered++;score+=p.flavours.includes(a.flavour)?9:-7;}
- return {score,answered};
+ const fa=pa.flavours||[],fb=pb.flavours||[];
+ if(fa.length&&fb.length){total++;if(fa.some(x=>fb.includes(x)))same++;}
+ return total?same/total:0;
+}
+function tccAlternativeNote(drink,best,index){
+ if(index===0)return "Closest alternative to your choices";
+ return tccDrinkSimilarity(drink,best)<=0.5?"A different taste to explore":"Another drink that fits your mood";
 }
 function tccDrinkReason(drink){
  const a=tccQuizAnswers,reasons=[];
@@ -2738,16 +2766,34 @@ function tccPickMatchedDrink(){
   result.classList.add("is-visible");return;
  }
  const ranked=eligible.map(x=>({...x,...tccScoreDrink(x)})).sort((a,b)=>b.score-a.score);
- const chosen=ranked[0],alternatives=ranked.slice(1,3);
+ // Respect selected drink type and temperature whenever the menu has an exact fit.
+ const strictPool=ranked.filter(x=>x.hardMatch);
+ const pool=strictPool.length?strictPool:ranked;
+ const chosen=pool[0];
+ const remaining=pool.filter(x=>x.name!==chosen.name);
+ const closeMatch=remaining.slice().sort((a,b)=>{
+  const diff=b.score-a.score;
+  if(Math.abs(diff)>8)return diff;
+  return tccDrinkSimilarity(b,chosen)-tccDrinkSimilarity(a,chosen);
+ })[0];
+ const discovery=remaining.filter(x=>x.name!==closeMatch?.name).sort((a,b)=>{
+  const diversity=tccDrinkSimilarity(a,chosen)-tccDrinkSimilarity(b,chosen);
+  if(Math.abs(diversity)>0.05)return diversity;
+  return b.score-a.score;
+ })[0];
+ const alternatives=[closeMatch,discovery].filter(Boolean);
  tccShowDrinkCard(chosen);
  alternatives.forEach((drink,index)=>{
   const card=document.createElement("button");card.type="button";card.className="tcc-drink-alternative";
   const name=document.createElement("strong");name.textContent=drink.name;
   const price=document.createElement("span");price.textContent=drink.price;
-  const note=document.createElement("small");note.textContent=index===0?"Another close match":"A different option to try";
+  const note=document.createElement("small");note.textContent=tccAlternativeNote(drink,chosen,index);
   const top=document.createElement("span");top.className="tcc-drink-alternative-top";top.append(name,price);
   card.append(top,note);
-  card.addEventListener("click",()=>{tccShowDrinkCard(drink);list.querySelectorAll("button").forEach(x=>x.classList.toggle("is-selected",x===card));});
+  card.addEventListener("click",()=>{
+   tccShowDrinkCard(drink);
+   list.querySelectorAll("button").forEach(x=>x.classList.toggle("is-selected",x===card));
+  });
   list.appendChild(card);
  });
  document.getElementById("tccQuizStepMeta").textContent="YOUR TCC DRINK PICKS";
