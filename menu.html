@@ -2570,11 +2570,9 @@ function tccQuestionsForAnswers(){
  let candidates=pool.slice();
  for(const d of dimensions){
   const values=[...new Set(candidates.map(x=>d.key==="taste"?x.taste:x.profile[d.key]).filter(Boolean))];
-  if(values.length<2) {
-   // A question with only one possible answer adds no value; skip it.
-   if(answers[d.key]) candidates=candidates.filter(x=>(d.key==="taste"?x.taste:x.profile[d.key])===answers[d.key]);
-   continue;
-  }
+  if(values.length<2&&!answers[d.key]) continue;
+  // Keep answered steps in the sequence so the step index never jumps
+  // when later answers narrow the remaining candidate set.
   const options=values.map(value=>[value,d.labels[value]||value]);
   questions.push({key:d.key,question:d.title,hint:d.hint,options});
   if(answers[d.key]) candidates=candidates.filter(x=>(d.key==="taste"?x.taste:x.profile[d.key])===answers[d.key]);
