@@ -1273,11 +1273,11 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 <div class="food-spotlight-backdrop" id="foodSpotlight" aria-hidden="true">
   <section class="food-spotlight-card" role="dialog" aria-modal="true" aria-labelledby="foodSpotlightTitle" aria-describedby="foodSpotlightCopy">
     <button class="food-spotlight-close" type="button" id="foodSpotlightClose" aria-label="Close promotion">×</button>
-    <img src="images/menu/optimized/chicken-alfredo-bliss-800.webp" alt="Chicken Alfredo Bliss" class="food-spotlight-image" loading="eager" decoding="async">
+    <img src="images/menu/optimized/tuscan-honey-chicken-800.webp" alt="Tuscan Honey Chicken" class="food-spotlight-image" loading="eager" decoding="async">
     <div class="food-spotlight-kicker">TCC CHEF'S SPECIAL</div>
-    <h2 id="foodSpotlightTitle">Chicken Alfredo Bliss</h2>
-    <p class="food-spotlight-copy" id="foodSpotlightCopy">A special pick from our kitchen. Treat yourself to Chicken Alfredo Bliss.</p>
-    <div class="food-spotlight-spice" aria-label="Spice level 1 out of 5: Very mild"><span>SPICE LEVEL</span><strong>🌶️</strong><b>1/5 · VERY MILD</b></div>
+    <h2 id="foodSpotlightTitle">Tuscan Honey Chicken</h2>
+    <p class="food-spotlight-copy" id="foodSpotlightCopy">A sweet-and-savory TCC favourite with a gentle kick. Try our Tuscan Honey Chicken.</p>
+    <div class="food-spotlight-spice" aria-label="Spice level 4 out of 5: Hot"><span>SPICE LEVEL</span><strong>🌶️🌶️🌶️🌶️</strong><b>4/5 · HOT</b></div>
     <span class="food-spotlight-price">₹299</span>
     <button class="food-spotlight-action" type="button" id="foodSpotlightExplore">Explore Food Menu</button>
   </section>
@@ -1808,7 +1808,6 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
       <article class="m-item">
         <div>
           <h3>Tuscan Honey Chicken</h3>
-          <span class="availability-status" role="status" aria-label="Temporarily sold out">Temporarily Sold Out</span>
         </div>
         <strong>₹299</strong>
       </article>
@@ -2935,7 +2934,7 @@ function showGroup(id){
   requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
-const foodSpotlightSeenKey="tcc-chefs-special-chicken-alfredo-v1";
+const foodSpotlightSeenKey="tcc-chefs-special-tuscan-honey-chicken-v1";
 let foodSpotlightPending=false;
 function openFoodSpotlight(){
   if(!foodSpotlight) return false;
