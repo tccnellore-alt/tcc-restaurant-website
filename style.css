@@ -375,3 +375,11 @@ a:focus-visible,button:focus-visible{outline:3px solid #b79a5a;outline-offset:4p
 @media(max-width:850px){.v2-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.v2-category-card{min-height:170px;padding:17px 15px}.v2-category-card>strong{font-size:32px}.v2-menu-explorer-bottom{align-items:flex-start;flex-direction:column}.v2-product-meta{min-height:138px}.tcc-lightbox{padding:12px}}
 @media(max-width:420px){.v2-category-card{min-height:150px;padding:14px 12px}.v2-category-card>span{font-size:7px}.v2-category-card>strong{font-size:28px}.v2-category-card>small{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.v2-category-card,.v2-category-card:after,.v2-product-card,.v2-gallery-strip img{transition:none!important}}
+
+
+/* Inner-page scroll reveal, accessible focus states and motion-safe defaults */
+.tcc-section-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.tcc-section-visible{opacity:1;transform:none}
+.v2-category-card:focus-visible,.v2-product-card:focus-visible,.v2-button:focus-visible,.v2-underlink:focus-visible{outline:2px solid #b79a5a;outline-offset:5px}
+body.lightbox-open{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.tcc-section-reveal{opacity:1;transform:none;transition:none}}
