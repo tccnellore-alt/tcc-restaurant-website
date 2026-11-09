@@ -383,3 +383,8 @@ a:focus-visible,button:focus-visible{outline:3px solid #b79a5a;outline-offset:4p
 .v2-category-card:focus-visible,.v2-product-card:focus-visible,.v2-button:focus-visible,.v2-underlink:focus-visible{outline:2px solid #b79a5a;outline-offset:5px}
 body.lightbox-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.tcc-section-reveal{opacity:1;transform:none;transition:none}}
+
+/* Ensure non-home sections animate in only when they enter view. */
+.tcc-section-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.tcc-section-visible{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.tcc-section-reveal{opacity:1;transform:none;transition:none}}
