@@ -47,7 +47,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false);if(e.
  const lbImage=lightbox.querySelector('img'),lbCaption=lightbox.querySelector('.tcc-lightbox-caption'),lbClose=lightbox.querySelector('button');let priorFocus=null;
  const closeLightbox=()=>{lightbox.classList.remove('is-open');document.body.classList.remove('lightbox-open');lbImage.removeAttribute('src');priorFocus?.focus?.()};
  const openLightbox=img=>{if(!img||!img.src)return;priorFocus=document.activeElement;lbImage.src=img.currentSrc||img.src;lbImage.alt=img.alt||'TCC photograph';lbCaption.textContent=img.alt||'TCC · The Coffee Club';lightbox.classList.add('is-open');document.body.classList.add('lightbox-open');lbClose.focus()};
- document.addEventListener('click',e=>{const img=e.target.closest('.gallery-wall img,.web-product-grid img,[data-gallery-strip] img,.v2-intro-photo img,.v2-manifesto-image img');if(img){e.preventDefault();openLightbox(img)}});
+ const galleryImages=[...document.querySelectorAll('.gallery-wall img,.web-product-grid img,[data-gallery-strip] img,.v2-intro-photo img,.v2-manifesto-image img')];
+ galleryImages.forEach(img=>{img.style.cursor='zoom-in';img.setAttribute('tabindex','0');img.setAttribute('role','button');img.setAttribute('aria-label','Enlarge '+(img.alt||'TCC photograph'));img.addEventListener('click',()=>openLightbox(img));img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox(img)}})});
  lbClose.addEventListener('click',closeLightbox);lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&lightbox.classList.contains('is-open'))closeLightbox()});
  // Category links from the homepage open the matching menu category directly.
