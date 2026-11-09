@@ -24,3 +24,32 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false);if(e.
  const strips=[...document.querySelectorAll('[data-gallery-strip]')];strips.forEach(strip=>{let down=false,x=0,left=0;strip.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')return;down=true;x=e.clientX;left=strip.scrollLeft;strip.setPointerCapture?.(e.pointerId)});strip.addEventListener('pointermove',e=>{if(down)strip.scrollLeft=left-(e.clientX-x)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>strip.addEventListener(ev,()=>down=false))});
  document.querySelector('[data-back-top]')?.addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})});
 })();
+
+
+/* TCC global experience interactions */
+(()=>{
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ // Add subtle section reveals to inner pages without changing their content or layout.
+ if(!document.body.classList.contains('home-v2')){
+  const sections=[...document.querySelectorAll('main > section')];
+  if('IntersectionObserver' in window && !reduce){
+   const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('tcc-section-visible');io.unobserve(entry.target)}}),{threshold:.08,rootMargin:'0px 0px -25px 0px'});
+   sections.forEach(section=>{section.classList.add('tcc-section-reveal');io.observe(section)});
+  }
+ }
+ // Image lightbox: enlarge real café and product photos without navigating away.
+ let lightbox=document.querySelector('.tcc-lightbox');
+ if(!lightbox){
+  lightbox=document.createElement('div');lightbox.className='tcc-lightbox';lightbox.setAttribute('role','dialog');lightbox.setAttribute('aria-modal','true');lightbox.setAttribute('aria-label','Expanded TCC photograph');
+  lightbox.innerHTML='<button type="button" aria-label="Close image">×</button><img alt=""><div class="tcc-lightbox-caption"></div>';
+  document.body.appendChild(lightbox);
+ }
+ const lbImage=lightbox.querySelector('img'),lbCaption=lightbox.querySelector('.tcc-lightbox-caption'),lbClose=lightbox.querySelector('button');let priorFocus=null;
+ const closeLightbox=()=>{lightbox.classList.remove('is-open');document.body.classList.remove('lightbox-open');lbImage.removeAttribute('src');priorFocus?.focus?.()};
+ const openLightbox=img=>{if(!img||!img.src)return;priorFocus=document.activeElement;lbImage.src=img.currentSrc||img.src;lbImage.alt=img.alt||'TCC photograph';lbCaption.textContent=img.alt||'TCC · The Coffee Club';lightbox.classList.add('is-open');document.body.classList.add('lightbox-open');lbClose.focus()};
+ document.addEventListener('click',e=>{const img=e.target.closest('.gallery-wall img,.web-product-grid img,[data-gallery-strip] img,.v2-intro-photo img,.v2-manifesto-image img');if(img){e.preventDefault();openLightbox(img)}});
+ lbClose.addEventListener('click',closeLightbox);lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&lightbox.classList.contains('is-open'))closeLightbox()});
+ // Category links from the homepage open the matching menu category directly.
+ if(location.pathname.endsWith('menu.html')&&location.hash){const id=decodeURIComponent(location.hash.slice(1));const tab=document.querySelector('.menu-tab[data-target="'+CSS.escape(id)+'"]');if(tab)setTimeout(()=>tab.click(),80)}
+})();
