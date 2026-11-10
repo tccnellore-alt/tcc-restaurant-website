@@ -1679,7 +1679,7 @@ html{scroll-behavior:smooth}
     </div>
     <button type="button" class="tcc-game-launch" id="tccGameLaunch">
       <span class="tcc-game-launch-icon" aria-hidden="true">🎯</span>
-      <span><strong>PLAY THE PERFECT 10</strong><small>5 chances · Win 10% OFF any one beverage</small></span>
+      <span><strong>PLAY THE PERFECT 10</strong><small>5 chances every hour · Win 10% OFF any one beverage</small></span>
       <span class="tcc-game-launch-arrow" aria-hidden="true">→</span>
     </button>
   </div>
@@ -1700,9 +1700,9 @@ html{scroll-behavior:smooth}
       <button type="button" class="tcc-game-button tcc-game-stop" id="tccGameStop" disabled>■&nbsp; STOP</button>
     </div>
     <p class="tcc-game-feedback" id="tccGameFeedback" aria-live="polite">Ready? Take a breath and trust your timing.</p>
-    <p class="tcc-game-attempts" id="tccGameAttempts">5 attempts remaining</p>
+    <p class="tcc-game-attempts" id="tccGameAttempts">5 attempts remaining this hour</p>
     <div class="tcc-game-prize"><span aria-hidden="true">☕</span><div><strong>WIN 10% OFF</strong><small>Any one beverage</small></div></div>
-    <div class="tcc-game-rules"><span>5 attempts per player</span><span>1 discount per table</span></div>
+    <div class="tcc-game-rules"><span>5 attempts per hour</span><span>1 discount per table</span></div>
     <div class="tcc-game-claim" id="tccGameClaim" hidden>
       <strong>YOU NAILED THE PERFECT 10!</strong>
       <span>Your table's reward code</span>
@@ -3709,17 +3709,30 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   const againButton=byId("tccGameAgain");
   const claim=byId("tccGameClaim");
   const storageKey="tcc-perfect10-table-won-v1";
-  const attemptsKey="tcc-perfect10-attempts-v1";
+  const attemptsKeyPrefix="tcc-perfect10-attempts-hour-v1-";
   const maxAttempts=5;
   const attemptsDisplay=byId("tccGameAttempts");
   let attempts=0,running=false,startedAt=0,frame=0,lastElapsed=0;
-  try{attempts=Math.min(maxAttempts,Math.max(0,Number(localStorage.getItem(attemptsKey))||0));}catch(e){}
-  function updateAttempts(){
-    const remaining=Math.max(0,maxAttempts-attempts);
-    attemptsDisplay.textContent=remaining+" attempt"+(remaining===1?"":"s")+" remaining";
-    if(remaining===0&&!running&&!claim.hidden){
-      startButton.hidden=true;
+  let attemptsKey="",activeAttemptsKey="";
+  function getCurrentHourKey(){
+    const now=new Date();
+    const pad=value=>String(value).padStart(2,"0");
+    return attemptsKeyPrefix+now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate())+"-"+pad(now.getHours());
+  }
+  function refreshHourlyAttempts(){
+    const key=getCurrentHourKey();
+    if(key!==attemptsKey){
+      attemptsKey=key;
+      try{attempts=Math.min(maxAttempts,Math.max(0,Number(localStorage.getItem(attemptsKey))||0));}
+      catch(e){attempts=0;}
     }
+  }
+  function updateAttempts(){
+    refreshHourlyAttempts();
+    const remaining=Math.max(0,maxAttempts-attempts);
+    attemptsDisplay.textContent=remaining+" attempt"+(remaining===1?"":"s")+" remaining this hour";
+    if(remaining===0&&!running&&claim.hidden)startButton.hidden=true;
+    else if(remaining>0&&claim.hidden)startButton.hidden=false;
   }
   updateAttempts();
   // Display seconds and hundredths only; keep full millisecond precision for judging.
@@ -3748,7 +3761,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     lastElapsed=elapsed;
     timeDisplay.textContent=format(elapsed);
     attempts=Math.min(maxAttempts,attempts+1);
-    try{localStorage.setItem(attemptsKey,String(attempts));}catch(e){}
+    try{localStorage.setItem(activeAttemptsKey||attemptsKey,String(attempts));}catch(e){}
     updateAttempts();
     startButton.disabled=false;stopButton.disabled=true;
     againButton.hidden=false;
@@ -3786,8 +3799,9 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     }
   }
   function startGame(){
+    updateAttempts();
     if(attempts>=maxAttempts){
-      feedback.textContent="You've used all 5 attempts for this player.";
+      feedback.textContent="You've used all 5 attempts for this hour.";
       startButton.hidden=true;stopButton.disabled=true;againButton.hidden=true;
       return;
     }
@@ -3799,6 +3813,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       feedback.textContent="This table has already unlocked its reward.";
       return;
     }
+    activeAttemptsKey=attemptsKey;
     running=true;modal.classList.add("tcc-game-running");startedAt=performance.now();lastElapsed=0;
     timeDisplay.textContent="00.00";
     feedback.textContent="Timer is running. Stop when you feel 10.00 seconds has passed.";
@@ -3808,8 +3823,9 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   function resetGame(){
     if(running){running=false;modal.classList.remove("tcc-game-running");cancelAnimationFrame(frame);}
     timeDisplay.textContent="00.00";
+    updateAttempts();
     feedback.textContent=attempts>=maxAttempts
-      ? "You've used all 5 attempts for this player."
+      ? "You've used all 5 attempts for this hour."
       : "Ready? Take a breath and trust your timing.";
     startButton.disabled=false;startButton.hidden=attempts>=maxAttempts;stopButton.disabled=true;
     againButton.hidden=true;claim.hidden=true;updateAttempts();
