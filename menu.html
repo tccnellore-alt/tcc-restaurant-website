@@ -3696,6 +3696,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   const svg=byId("tccWheelSvg"),rotor=byId("tccWheelRotor"),spinButton=byId("tccWheelSpin");
   const feedback=byId("tccWheelFeedback"),count=byId("tccWheelCount");
   const prizes=["5% OFF · One beverage","Better Luck Next Time","10% OFF · One beverage","5% OFF · Beverage bill","FREE · Hide & Seek Milano","Better Luck Next Time","Better Luck Next Time","Better Luck Next Time","5% OFF · Complete food bill","10% OFF · One food item","EXTRA SPIN · Spin again","Better Luck Next Time"],labels=[["5% OFF","1 DRINK"],["TRY AGAIN","NEXT TIME"],["10% OFF","1 DRINK"],["5% OFF","DRINK BILL"],["FREE","HIDE & SEEK"],["TRY AGAIN","NEXT TIME"],["TRY AGAIN","NEXT TIME"],["TRY AGAIN","NEXT TIME"],["5% OFF","FOOD BILL"],["10% OFF","1 FOOD ITEM"],["EXTRA SPIN","SPIN AGAIN"],["TRY AGAIN","NEXT TIME"]];
+  const fullLines=[["5% OFF","ON ONE","BEVERAGE"],["BETTER LUCK","NEXT TIME",""],["10% OFF","ON ONE","BEVERAGE"],["5% OFF ON","BEVERAGES","BILL"],["FREE HIDE &","SEEK MILANO",""],["BETTER LUCK","NEXT TIME",""],["BETTER LUCK","NEXT TIME",""],["BETTER LUCK","NEXT TIME",""],["5% OFF ON","COMPLETE FOOD","BILL"],["10% OFF ON","ONE FOOD","ITEM"],["EXTRA SPIN","SPIN AGAIN",""],["BETTER LUCK","NEXT TIME",""]];
   const colors=["#17452f","#e9d7aa","#b58d49","#f6edda","#2c6748","#d8bd7c","#214f38","#f1e4c7","#9f773b","#e6d4a7","#315d42","#f7efdf"];
   const NS="http://www.w3.org/2000/svg",center=360,radius=350,step=30;
   let rotation=0,spinning=false,spins=0,extraSpinAvailable=false,finished=false;
@@ -3704,19 +3705,22 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   function point(angle,r){const rad=angle*Math.PI/180;return{x:center+Math.cos(rad)*r,y:center+Math.sin(rad)*r};}
   function drawWheel(){
     svg.replaceChildren();
+    const labelGroups=[];
     for(let i=0;i<12;i++){
       const start=-90+i*step,end=start+step,mid=start+step/2,p1=point(start,radius),p2=point(end,radius);
       svg.appendChild(el("path",{d:`M ${center} ${center} L ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A ${radius} ${radius} 0 0 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} Z`,fill:colors[i],stroke:"#f8edcf","stroke-width":"5","stroke-linejoin":"round"}));
-      // Horizontal labels at each wedge's visual centre avoid the rotated-text collision.
-      const p=point(mid,218),darkText=i%2===1;
-      const group=el("g",{});
-      const primary=el("text",{x:p.x,y:p.y-5,"text-anchor":"middle","dominant-baseline":"middle",fill:darkText?"#173c2b":"#fff8e7","font-family":"Arial, sans-serif","font-size":"15","font-weight":"900","letter-spacing":".2"});
-      primary.textContent=labels[i][0];
-      const secondary=el("text",{x:p.x,y:p.y+13,"text-anchor":"middle","dominant-baseline":"middle",fill:darkText?"#173c2b":"#fff8e7","font-family":"Arial, sans-serif","font-size":"11.5","font-weight":"800","letter-spacing":".15"});
-      secondary.textContent=labels[i][1];
-      group.append(primary,secondary);svg.appendChild(group);
+      const p=point(mid,222),darkText=i%2===1;
+      const group=el("g",{class:"tcc-wheel-label-group"});
+      const text=el("text",{x:p.x,y:p.y-(fullLines[i].length===3?11:5),"text-anchor":"middle","dominant-baseline":"middle",fill:darkText?"#173c2b":"#fff8e7","font-family":"Arial, sans-serif","font-size":"12.5","font-weight":"900","letter-spacing":".1",class:"tcc-wheel-label-text"});
+      fullLines[i].forEach((line,j)=>{
+        const span=el("tspan",{x:p.x,dy:j===0?"0":"14"});
+        span.textContent=line;
+        text.appendChild(span);
+      });
+      group.appendChild(text);svg.appendChild(group);labelGroups.push(text);
     }
     svg.appendChild(el("circle",{cx:center,cy:center,r:radius,fill:"none",stroke:"#d7b66e","stroke-width":"9"}));
+    rotor._labelNodes=labelGroups;
   }
   function setOpen(open){modal.classList.toggle("is-open",open);modal.setAttribute("aria-hidden",String(!open));document.body.classList.toggle("tcc-game-open",open);if(open)byId("tccGameClose").focus();}
   function readState(){try{return JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){return null;}}
@@ -3732,6 +3736,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     const index=Math.floor(Math.random()*12),target=(360-(index*30+15)+360)%360;
     const current=((rotation%360)+360)%360,delta=(target-current+360)%360;
     rotation+=360*6+delta;rotor.style.transform="rotate("+rotation+"deg)";
+    (rotor._labelNodes||[]).forEach(node=>{node.style.transform="rotate("+(-rotation)+"deg)";});
     window.setTimeout(()=>{
       spinning=false;spins++;
       let result=prizes[index];
