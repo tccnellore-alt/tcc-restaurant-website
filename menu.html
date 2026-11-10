@@ -3547,7 +3547,7 @@ function initTccScrollPhotography(){
       const rect=img.parentElement.getBoundingClientRect();
       const viewport=window.innerHeight||document.documentElement.clientHeight;
       const progress=(rect.top+rect.height/2-viewport/2)/(viewport/2+rect.height/2);
-      const offset=Math.max(-1,Math.min(1,progress))*-5;
+      const offset=Math.max(-1,Math.min(1,progress))*-18;
       img.style.setProperty("--tcc-photo-shift",offset.toFixed(2)+"px");
     });
   };
