@@ -3675,7 +3675,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   }
   function stopGame(){
     if(!running)return;
-    running=false;cancelAnimationFrame(frame);
+    running=false;modal.classList.remove("tcc-game-running");cancelAnimationFrame(frame);
     const elapsed=performance.now()-startedAt;
     lastElapsed=elapsed;
     timeDisplay.textContent=format(elapsed);
@@ -3731,14 +3731,14 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       feedback.textContent="This table has already unlocked its reward.";
       return;
     }
-    running=true;startedAt=performance.now();lastElapsed=0;
+    running=true;modal.classList.add("tcc-game-running");startedAt=performance.now();lastElapsed=0;
     timeDisplay.textContent="00.00.00";
     feedback.textContent="Timer is running. Stop when you feel 10.00.00 seconds has passed.";
     startButton.disabled=true;stopButton.disabled=false;againButton.hidden=true;
     frame=requestAnimationFrame(render);
   }
   function resetGame(){
-    if(running){running=false;cancelAnimationFrame(frame);}
+    if(running){running=false;modal.classList.remove("tcc-game-running");cancelAnimationFrame(frame);}
     timeDisplay.textContent="00.00.00";
     feedback.textContent=attempts>=maxAttempts
       ? "You've used all 5 attempts for this player."
