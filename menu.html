@@ -2609,10 +2609,8 @@ html{scroll-behavior:smooth}
       const active=document.querySelector(".menu-group.active");
       if(active){
         active.querySelectorAll(".m-item").forEach(item=>{
-          const hiddenByBaseFilter=item.style.display==="none";
           const hiddenBySaved=favouritesOnly&&!favourites.has(itemKey(item));
           item.classList.toggle("tcc-favourite-hidden",hiddenBySaved);
-          if(hiddenByBaseFilter&&!hiddenBySaved)item.style.removeProperty("display");
         });
         active.querySelectorAll(".menu-section").forEach(section=>{
           const items=Array.from(section.querySelectorAll(".m-item"));
