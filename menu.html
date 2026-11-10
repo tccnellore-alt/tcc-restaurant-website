@@ -3523,7 +3523,28 @@ search.addEventListener("input",e=>{
   search.classList.toggle("global-search-active",!!q);
   filter(q);
 });
-document.addEventListener("DOMContentLoaded",()=>{addTccMenuPhotos();window.__foodCategory="all";showGroup("coffee")});
+document.addEventListener("DOMContentLoaded",()=>{
+  addTccMenuPhotos();
+  initTccScrollPhotography();
+  window.__foodCategory="all";
+  showGroup("coffee");
+});
+
+/* One-time photo reveal only — no parallax, zoom or scroll movement. */
+function initTccScrollPhotography(){
+  const images=[...document.querySelectorAll(".menu-group .m-photo-wrap .m-photo")];
+  if(!images.length)return;
+  const reveal=img=>img.classList.add("tcc-photo-ready");
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window)){
+    images.forEach(reveal);return;
+  }
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){reveal(entry.target);observer.unobserve(entry.target);}
+    });
+  },{root:null,rootMargin:"40px 0px",threshold:0.05});
+  images.forEach(img=>observer.observe(img));
+}
 
 
 
