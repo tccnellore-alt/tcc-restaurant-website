@@ -3523,7 +3523,54 @@ search.addEventListener("input",e=>{
   search.classList.toggle("global-search-active",!!q);
   filter(q);
 });
-document.addEventListener("DOMContentLoaded",()=>{addTccMenuPhotos();window.__foodCategory="all";showGroup("coffee")});
+document.addEventListener("DOMContentLoaded",()=>{
+  addTccMenuPhotos();
+  initTccScrollPhotography();
+  window.__foodCategory="all";
+  showGroup("coffee");
+});
+
+/* Subtle editorial photo motion: reveal on entry + restrained scroll parallax. */
+function initTccScrollPhotography(){
+  const images=[...document.querySelectorAll(".menu-group .m-photo-wrap .m-photo")];
+  if(!images.length) return;
+  const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduceMotion){
+    images.forEach(img=>img.classList.add("tcc-photo-ready"));
+    return;
+  }
+  const active=new Set();
+  let frame=0;
+  const updateParallax=()=>{
+    frame=0;
+    active.forEach(img=>{
+      const rect=img.parentElement.getBoundingClientRect();
+      const viewport=window.innerHeight||document.documentElement.clientHeight;
+      const progress=(rect.top+rect.height/2-viewport/2)/(viewport/2+rect.height/2);
+      const offset=Math.max(-1,Math.min(1,progress))*-5;
+      img.style.setProperty("--tcc-photo-shift",offset.toFixed(2)+"px");
+    });
+  };
+  const requestParallax=()=>{
+    if(!frame) frame=requestAnimationFrame(updateParallax);
+  };
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      const img=entry.target;
+      if(entry.isIntersecting){
+        img.classList.add("tcc-photo-ready");
+        active.add(img);
+      }else{
+        active.delete(img);
+      }
+    });
+    requestParallax();
+  },{root:null,rootMargin:"90px 0px",threshold:0});
+  images.forEach(img=>observer.observe(img));
+  window.addEventListener("scroll",requestParallax,{passive:true});
+  window.addEventListener("resize",requestParallax,{passive:true});
+  requestParallax();
+}
 
 
 
