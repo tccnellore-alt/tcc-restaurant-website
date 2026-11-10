@@ -1626,7 +1626,7 @@ html{scroll-behavior:smooth}
     <p class="tcc-game-intro">Trust your instinct. Stop the timer at exactly 10.00 seconds.</p>
     <div class="tcc-game-clock" id="tccGameClock" aria-live="off">
       <span class="tcc-game-clock-label">YOUR TIME</span>
-      <strong id="tccGameTime">00.00</strong>
+      <strong id="tccGameTime">00.00.00</strong>
       <span class="tcc-game-clock-unit">SECONDS</span>
     </div>
     <div class="tcc-game-actions">
@@ -1634,8 +1634,9 @@ html{scroll-behavior:smooth}
       <button type="button" class="tcc-game-button tcc-game-stop" id="tccGameStop" disabled>■&nbsp; STOP</button>
     </div>
     <p class="tcc-game-feedback" id="tccGameFeedback" aria-live="polite">Ready? Take a breath and trust your timing.</p>
+    <p class="tcc-game-attempts" id="tccGameAttempts">5 attempts remaining</p>
     <div class="tcc-game-prize"><span aria-hidden="true">☕</span><div><strong>WIN 10% OFF</strong><small>Any one beverage</small></div></div>
-    <div class="tcc-game-rules"><span>∞ Multiple attempts</span><span>1 discount per table</span></div>
+    <div class="tcc-game-rules"><span>5 attempts per player</span><span>1 discount per table</span></div>
     <div class="tcc-game-claim" id="tccGameClaim" hidden>
       <strong>YOU NAILED THE PERFECT 10!</strong>
       <span>Your table's reward code</span>
@@ -3657,7 +3658,19 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   const againButton=byId("tccGameAgain");
   const claim=byId("tccGameClaim");
   const storageKey="tcc-perfect10-table-won-v1";
-  let running=false,startedAt=0,frame=0,lastElapsed=0;
+  const attemptsKey="tcc-perfect10-attempts-v1";
+  const maxAttempts=5;
+  const attemptsDisplay=byId("tccGameAttempts");
+  let attempts=0,running=false,startedAt=0,frame=0,lastElapsed=0;
+  try{attempts=Math.min(maxAttempts,Math.max(0,Number(localStorage.getItem(attemptsKey))||0));}catch(e){}
+  function updateAttempts(){
+    const remaining=Math.max(0,maxAttempts-attempts);
+    attemptsDisplay.textContent=remaining+" attempt"+(remaining===1?"":"s")+" remaining";
+    if(remaining===0&&!running&&!claim.hidden){
+      startButton.hidden=true;
+    }
+  }
+  updateAttempts();
   // Display seconds.hundredths.single-millisecond: 00.00.00 → 10.00.00.
   const format=ms=>{
     const whole=Math.floor(ms/1000);
@@ -3684,6 +3697,9 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     const elapsed=performance.now()-startedAt;
     lastElapsed=elapsed;
     timeDisplay.textContent=format(elapsed);
+    attempts=Math.min(maxAttempts,attempts+1);
+    try{localStorage.setItem(attemptsKey,String(attempts));}catch(e){}
+    updateAttempts();
     startButton.disabled=false;stopButton.disabled=true;
     againButton.hidden=false;
     if(elapsed>=9990&&elapsed<=10010){
@@ -3695,12 +3711,20 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       startButton.hidden=true;
     }else{
       const difference=Math.abs(elapsed-10000)/1000;
-      feedback.textContent=elapsed<10000
-        ? "Too early! You stopped "+difference.toFixed(3)+"s before 10.00.00. Give it another try."
-        : "Too late! You went "+difference.toFixed(3)+"s past 10.00.00. You can try again.";
+      feedback.textContent=attempts>=maxAttempts
+        ? "That was your fifth attempt. Better luck next time!"
+        : elapsed<10000
+          ? "Too early! You stopped "+difference.toFixed(3)+"s before 10.00.00. Give it another try."
+          : "Too late! You went "+difference.toFixed(3)+"s past 10.00.00. You can try again.";
+      if(attempts>=maxAttempts){startButton.hidden=true;againButton.hidden=true;}
     }
   }
   function startGame(){
+    if(attempts>=maxAttempts){
+      feedback.textContent="You've used all 5 attempts for this player.";
+      startButton.hidden=true;stopButton.disabled=true;againButton.hidden=true;
+      return;
+    }
     let existing=null;
     try{existing=JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){}
     if(existing?.code){
@@ -3717,10 +3741,12 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   }
   function resetGame(){
     if(running){running=false;cancelAnimationFrame(frame);}
-    timeDisplay.textContent="00.00";
-    feedback.textContent="Ready? Take a breath and trust your timing.";
-    startButton.disabled=false;startButton.hidden=false;stopButton.disabled=true;
-    againButton.hidden=true;claim.hidden=true;
+    timeDisplay.textContent="00.00.00";
+    feedback.textContent=attempts>=maxAttempts
+      ? "You've used all 5 attempts for this player."
+      : "Ready? Take a breath and trust your timing.";
+    startButton.disabled=false;startButton.hidden=attempts>=maxAttempts;stopButton.disabled=true;
+    againButton.hidden=true;claim.hidden=true;updateAttempts();
   }
   byId("tccGameLaunch").addEventListener("click",()=>{setOpen(true);resetGame();});
   byId("tccGameClose").addEventListener("click",()=>{setOpen(false);resetGame();});
