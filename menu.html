@@ -1232,6 +1232,337 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
  #tccDrinkPickPhoto~.tcc-drink-pick-meta{min-height:112px!important}
 }
 
+
+/* Image-menu product cards — refined champagne-gold frame */
+body:not(.menu-text-mode) .menu-section .m-item:not(:has(.availability-status)),
+body:not(.menu-text-mode) .menu-group .m-item:not(:has(.availability-status)){
+  border:1px solid rgba(183,154,90,.68)!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,250,240,.9),
+    0 5px 16px rgba(23,61,49,.07)!important;
+  background:#fffdf8!important;
+}
+@media(hover:hover){
+  body:not(.menu-text-mode) .menu-section .m-item:not(:has(.availability-status)):hover,
+  body:not(.menu-text-mode) .menu-group .m-item:not(:has(.availability-status)):hover{
+    border-color:rgba(157,123,54,.9)!important;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,250,240,.95),
+      0 8px 22px rgba(23,61,49,.11)!important;
+    transform:translateY(-2px);
+  }
+}
+
+
+/* IMAGE MENU — premium product information, depth, badges and alignment
+   Photography is intentionally unchanged in this pass. */
+/* Image Menu: premium editorial Best Seller ribbon — understated, not promotional. */
+body:not(.menu-text-mode) .menu-section .m-item,
+body:not(.menu-text-mode) .menu-group .m-item{position:relative!important}
+body:not(.menu-text-mode) .menu-section .m-item .tcc-bestseller-badge,
+body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge{
+ position:absolute!important;top:0!important;left:0!important;right:0!important;z-index:20!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;
+ width:100%!important;max-width:none!important;box-sizing:border-box!important;
+ margin:0!important;padding:5px 10px!important;
+ border:0!important;border-bottom:1px solid rgba(199,164,93,.75)!important;
+ border-radius:16px 16px 0 0!important;
+ background:linear-gradient(90deg,rgba(17,48,34,.97),rgba(29,68,49,.96),rgba(17,48,34,.97))!important;
+ color:#ead9ac!important;
+ box-shadow:0 2px 8px rgba(20,38,27,.14)!important;
+ font:700 8px/1.2 Manrope,Arial,sans-serif!important;letter-spacing:.2em!important;
+ text-transform:uppercase!important;white-space:nowrap!important
+}
+body:not(.menu-text-mode) .tcc-bestseller-crown{
+ display:inline-block!important;color:#d7b66d!important;font-size:11px!important;line-height:1!important
+}
+/* Text Menu retains the small inline seal beside the product name. */
+body.menu-text-mode .menu-section .m-item .tcc-bestseller-badge,
+body.menu-text-mode .menu-group .m-item .tcc-bestseller-badge{
+ position:static!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ vertical-align:middle!important;width:max-content!important;max-width:100%!important;
+ margin:0 0 0 6px!important;padding:4px 8px!important;
+ border:1px solid #c5a45d!important;border-radius:999px!important;
+ background:linear-gradient(135deg,#214c37,#143626)!important;color:#f7e8b8!important;
+ font:800 8px/1.15 Manrope,Arial,sans-serif!important;letter-spacing:.035em!important;text-transform:none!important
+}
+/* IMAGE MENU — compact, predictable card layout. Product photos and framing stay unchanged. */
+body:not(.menu-text-mode) .menu-section .m-list,
+body:not(.menu-text-mode) .menu-group .m-list{align-items:stretch!important;grid-auto-rows:auto!important;gap:12px!important}
+body:not(.menu-text-mode) .menu-section .m-item,
+body:not(.menu-text-mode) .menu-group .m-item{
+ box-sizing:border-box!important;height:100%!important;min-height:0!important;
+ border:1.6px solid rgba(164,128,58,.78)!important;border-radius:18px!important;
+ background:linear-gradient(155deg,#fffefa 0%,#fbf7ed 100%)!important;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.92),0 7px 18px rgba(34,48,37,.09),0 2px 5px rgba(164,128,58,.08)!important;
+ transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease!important
+}
+body:not(.menu-text-mode) .menu-section .m-item-info,
+body:not(.menu-text-mode) .menu-group .m-item-info{
+ display:flex!important;flex:1 1 auto!important;flex-direction:column!important;
+ align-items:stretch!important;justify-content:flex-start!important;min-height:0!important;
+ padding:13px 14px 5px!important
+}
+body:not(.menu-text-mode) .menu-section .m-item h3,
+body:not(.menu-text-mode) .menu-group .m-item h3{
+ display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:6px!important;
+ width:100%!important;min-height:0!important;margin:0!important;color:#173c2b!important;
+ font:800 14px/1.35 Manrope,Arial,sans-serif!important;letter-spacing:-.02em!important
+}
+body:not(.menu-text-mode) .menu-section .m-item p,
+body:not(.menu-text-mode) .menu-group .m-item p{
+ min-height:0!important;margin:7px 0 0!important;color:#657168!important;
+ font:500 11px/1.5 Manrope,Arial,sans-serif!important
+}
+body:not(.menu-text-mode) .menu-section .m-item .spice-level,
+body:not(.menu-text-mode) .menu-group .m-item .spice-level{
+ display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:5px!important;
+ width:auto!important;max-width:100%!important;min-height:0!important;margin:8px 0 2px!important;
+ padding:4px 8px!important;border:1px solid rgba(183,154,90,.24)!important;
+ border-radius:999px!important;background:#f8f1e3!important
+}
+body:not(.menu-text-mode) .menu-section .m-item .spice-copy,
+body:not(.menu-text-mode) .menu-group .m-item .spice-copy{color:#805044!important;font:800 10px/1.25 Manrope,Arial,sans-serif!important}
+body:not(.menu-text-mode) .menu-section .m-item > strong,
+body:not(.menu-text-mode) .menu-group .m-item > strong{
+ align-self:flex-start!important;margin:10px 14px 13px!important;padding:7px 12px!important;
+ border:1px solid rgba(183,154,90,.35)!important;border-radius:999px!important;
+ background:linear-gradient(135deg,#f5ead2,#eee0bf)!important;color:#80632c!important;
+ box-shadow:0 2px 5px rgba(126,98,43,.09)!important;font:800 13px/1.2 Manrope,Arial,sans-serif!important
+}
+/* Full-width banner must override compact badge defaults below. */
+body:not(.menu-text-mode) .menu-section .m-item .tcc-bestseller-badge,
+body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge{
+ position:absolute!important;top:0!important;left:0!important;right:0!important;z-index:20!important;
+ display:flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:center!important;gap:7px!important;
+ width:100%!important;max-width:none!important;box-sizing:border-box!important;
+ margin:0!important;padding:7px 10px!important;
+ border:0!important;border-bottom:1px solid rgba(214,184,112,.9)!important;border-radius:16px 16px 0 0!important;
+ background:linear-gradient(90deg,#143626 0%,#24583f 50%,#143626 100%)!important;
+ color:#f8edcc!important;box-shadow:0 3px 10px rgba(16,44,29,.2)!important;
+ font:800 10px/1.2 Manrope,Arial,sans-serif!important;letter-spacing:.13em!important;
+ text-transform:uppercase!important;white-space:nowrap!important
+}
+body:not(.menu-text-mode) .tcc-bestseller-crown{color:#f0ce78!important;font-size:10px!important}
+body:not(.menu-text-mode) .tcc-new-arrival-badge{
+ border-color:#c5a45d!important;background:linear-gradient(135deg,#214c37,#143626)!important;
+ color:#f7e8b8!important;box-shadow:0 2px 6px rgba(23,60,43,.15)!important
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.availability-status),
+body:not(.menu-text-mode) .menu-group .m-item:has(.availability-status){
+ border:1.5px solid #d6d7d1!important;border-radius:18px!important;background:#f0f0ed!important;
+ box-shadow:0 3px 10px rgba(35,42,37,.055)!important
+}
+@media(hover:hover){
+ body:not(.menu-text-mode) .menu-section .m-item:not(:has(.availability-status)):hover,
+ body:not(.menu-text-mode) .menu-group .m-item:not(:has(.availability-status)):hover{
+  transform:translateY(-2px)!important;border-color:#a9843f!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.95),0 10px 20px rgba(34,48,37,.12)!important
+ }
+}
+@media(max-width:480px){
+ body:not(.menu-text-mode) .menu-section .m-item-info,
+ body:not(.menu-text-mode) .menu-group .m-item-info{padding:12px 12px 4px!important}
+ body:not(.menu-text-mode) .menu-section .m-item h3,
+ body:not(.menu-text-mode) .menu-group .m-item h3{font-size:13px!important}
+ body:not(.menu-text-mode) .menu-section .m-item > strong,
+ body:not(.menu-text-mode) .menu-group .m-item > strong{margin:9px 12px 12px!important}
+ body:not(.menu-text-mode) .tcc-bestseller-badge{font-size:7px!important;padding:3px 6px!important}
+}
+
+
+/* TCC IMAGE MENU — luxury double champagne frame */
+body:not(.menu-text-mode) .menu-section .m-item,
+body:not(.menu-text-mode) .menu-group .m-item{
+  position:relative!important;
+  isolation:isolate!important;
+  border:1.5px solid transparent!important;
+  border-radius:19px!important;
+  background:
+    linear-gradient(155deg,#fffefa 0%,#fbf7ed 58%,#f8f1e4 100%) padding-box,
+    linear-gradient(135deg,#d9c58f 0%,#a98545 24%,#eee1bd 48%,#b18d4d 74%,#d8c18a 100%) border-box!important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 8px 22px rgba(30,48,36,.075),
+    0 2px 5px rgba(144,111,53,.09)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item::before,
+body:not(.menu-text-mode) .menu-group .m-item::before{
+  content:""!important;
+  position:absolute!important;
+  inset:4px!important;
+  z-index:4!important;
+  pointer-events:none!important;
+  border:1px solid rgba(181,148,83,.27)!important;
+  border-radius:14px!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.58)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.availability-status),
+body:not(.menu-text-mode) .menu-group .m-item:has(.availability-status){
+  border:1.5px solid #d8d8cf!important;
+  background:linear-gradient(155deg,#f5f5f0 0%,#ededE7 100%) padding-box,linear-gradient(135deg,#d9d9d0,#bfc2b7,#e4e4dc) border-box!important;
+  box-shadow:0 4px 12px rgba(35,42,37,.045)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.availability-status)::before,
+body:not(.menu-text-mode) .menu-group .m-item:has(.availability-status)::before{
+  border-color:rgba(150,153,143,.2)!important;
+}
+@media(hover:hover){
+  body:not(.menu-text-mode) .menu-section .m-item:not(:has(.availability-status)):hover,
+  body:not(.menu-text-mode) .menu-group .m-item:not(:has(.availability-status)):hover{
+    border-color:transparent!important;
+    background:
+      linear-gradient(155deg,#fffefa 0%,#fbf7ed 58%,#f8f1e4 100%) padding-box,
+      linear-gradient(135deg,#e5d5aa 0%,#96713a 24%,#f3e7c9 48%,#a27d40 74%,#e5d3a3 100%) border-box!important;
+    box-shadow:0 1px 0 rgba(255,255,255,.98) inset,0 12px 27px rgba(30,48,36,.105),0 3px 8px rgba(144,111,53,.12)!important;
+  }
+}
+
+
+/* TCC IMAGE MENU — elevated luxury product framing
+   Stronger separation and product focus; photography/cropping and Best Seller ribbon stay untouched. */
+body:not(.menu-text-mode) .menu-section .m-list,
+body:not(.menu-text-mode) .menu-group .m-list{
+  column-gap:16px!important;
+  row-gap:17px!important;
+  align-items:stretch!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item,
+body:not(.menu-text-mode) .menu-group .m-item{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  border:2px solid transparent!important;
+  border-radius:20px!important;
+  background:
+    linear-gradient(155deg,#fffefa 0%,#fffdf7 48%,#f8f1e5 100%) padding-box,
+    linear-gradient(145deg,#f0e4c4 0%,#b89553 18%,#e7d5a8 38%,#98713a 58%,#e9d9b2 78%,#b18b49 100%) border-box!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 0 0 1px rgba(255,255,255,.45),
+    0 2px 4px rgba(64,49,24,.06),
+    0 10px 25px rgba(29,48,35,.105),
+    0 2px 9px rgba(158,123,58,.12)!important;
+  transition:transform .24s ease,box-shadow .24s ease,filter .24s ease!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item::before,
+body:not(.menu-text-mode) .menu-group .m-item::before{
+  content:""!important;
+  position:absolute!important;
+  inset:5px!important;
+  z-index:4!important;
+  pointer-events:none!important;
+  border:1px solid rgba(177,143,76,.38)!important;
+  border-radius:14px!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.82),
+    0 0 0 1px rgba(255,255,255,.24)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item-info,
+body:not(.menu-text-mode) .menu-group .m-item-info{
+  background:linear-gradient(180deg,rgba(255,254,249,.96),rgba(250,246,236,.98))!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item h3,
+body:not(.menu-text-mode) .menu-group .m-item h3{
+  color:#153b2a!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.9)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item > strong,
+body:not(.menu-text-mode) .menu-group .m-item > strong{
+  border:1px solid rgba(164,127,57,.48)!important;
+  background:linear-gradient(145deg,#fff8e8 0%,#f0dfb9 100%)!important;
+  color:#745727!important;
+  box-shadow:0 2px 0 rgba(255,255,255,.8) inset,0 3px 8px rgba(111,82,34,.12)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.availability-status),
+body:not(.menu-text-mode) .menu-group .m-item:has(.availability-status){
+  border:1.5px solid #d1d1c8!important;
+  background:linear-gradient(155deg,#f3f3ee 0%,#e9eae3 100%) padding-box,linear-gradient(145deg,#d8d8cf,#b7b9ae,#e5e4dc) border-box!important;
+  box-shadow:0 4px 13px rgba(35,42,37,.055)!important;
+}
+@media(hover:hover){
+  body:not(.menu-text-mode) .menu-section .m-item:not(:has(.availability-status)):hover,
+  body:not(.menu-text-mode) .menu-group .m-item:not(:has(.availability-status)):hover{
+    transform:translateY(-3px)!important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.98),
+      0 3px 7px rgba(64,49,24,.07),
+      0 15px 31px rgba(29,48,35,.14),
+      0 3px 12px rgba(158,123,58,.17)!important;
+  }
+}
+@media(max-width:480px){
+  body:not(.menu-text-mode) .menu-section .m-list,
+  body:not(.menu-text-mode) .menu-group .m-list{column-gap:12px!important;row-gap:14px!important}
+  body:not(.menu-text-mode) .menu-section .m-item,
+  body:not(.menu-text-mode) .menu-group .m-item{border-radius:18px!important}
+}
+
+
+/* FINAL IMAGE MENU POLISH — remove haze/overlays; use crisp premium separation. */
+body:not(.menu-text-mode) .menu-section .m-item::before,
+body:not(.menu-text-mode) .menu-group .m-item::before{
+  content:none!important;
+  display:none!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item,
+body:not(.menu-text-mode) .menu-group .m-item{
+  border:1.5px solid #c8ad72!important;
+  border-radius:18px!important;
+  background:#fffdf7!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.98),
+    0 2px 4px rgba(44,39,26,.045),
+    0 8px 18px rgba(28,48,35,.085)!important;
+  filter:none!important;
+  opacity:1!important;
+  overflow:hidden!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item-info,
+body:not(.menu-text-mode) .menu-group .m-item-info{
+  background:#fffdf7!important;
+  opacity:1!important;
+  filter:none!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item h3,
+body:not(.menu-text-mode) .menu-group .m-item h3,
+body:not(.menu-text-mode) .menu-section .m-item p,
+body:not(.menu-text-mode) .menu-group .m-item p{
+  opacity:1!important;
+  filter:none!important;
+  text-shadow:none!important;
+  background:transparent!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item .tcc-bestseller-badge,
+body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge{
+  top:0!important;left:0!important;right:0!important;
+  min-height:27px!important;
+  padding:5px 9px!important;
+  border-radius:16px 16px 0 0!important;
+  border-bottom:1px solid rgba(199,164,93,.78)!important;
+  background:#173c2b!important;
+  box-shadow:0 2px 5px rgba(20,38,27,.12)!important;
+  font:700 8px/1.15 Manrope,Arial,sans-serif!important;
+  letter-spacing:.16em!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item > strong,
+body:not(.menu-text-mode) .menu-group .m-item > strong{
+  background:#f3e7ca!important;
+  border:1px solid #c9ae75!important;
+  box-shadow:0 1px 2px rgba(111,82,34,.07)!important;
+}
+@media(hover:hover){
+ body:not(.menu-text-mode) .menu-section .m-item:not(:has(.availability-status)):hover,
+ body:not(.menu-text-mode) .menu-group .m-item:not(:has(.availability-status)):hover{
+   transform:translateY(-2px)!important;
+   box-shadow:inset 0 0 0 1px rgba(255,255,255,.98),0 11px 22px rgba(28,48,35,.12)!important;
+ }
+}
+
+
+
 </style>
 </head>
 <body>
@@ -2974,7 +3305,8 @@ function filter(q){
   let found=0;
   const active=document.querySelector(".menu-group.active");
   if(!active) return;
-  const applyFilters=g=>g.id==="food"&&hasActiveFoodFilters();
+  // No active food-filter controls are present in this menu build; keep category/search filtering functional without calling missing helpers.
+  const applyFilters=g=>false;
   if(q){
     groups.forEach(g=>{
       let groupFound=0;
