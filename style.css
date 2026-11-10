@@ -281,3 +281,173 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
     transform: none !important;
   }
 }
+
+ 
+/* TCC image-branch sync: quiet one-time menu-photo reveal */
+.menu-page .m-photo-wrap .m-photo{
+  opacity:0;
+  transform:none!important;
+  transition:opacity 520ms ease!important;
+  will-change:opacity;
+}
+.menu-page .m-photo-wrap .m-photo.tcc-photo-ready{
+  opacity:1;
+  transform:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .menu-page .m-photo-wrap .m-photo,
+  .menu-page .m-photo-wrap .m-photo.tcc-photo-ready{
+    opacity:1!important;transform:none!important;transition:none!important;will-change:auto!important;
+  }
+}
+
+/* PREMIUM PRODUCT DETAIL LIGHTBOX — IMAGE BRANCH */
+.menu-page .menu-image-lightbox{
+  padding:clamp(12px,3vw,28px);
+  background:rgba(8,19,14,.88);
+  backdrop-filter:blur(12px);
+}
+.menu-page .menu-lightbox-card{
+  position:relative;
+  width:min(100%,620px);
+  max-height:min(90dvh,900px);
+  gap:0;
+  overflow:auto;
+  padding:10px;
+  border:1px solid rgba(190,158,91,.7);
+  border-radius:23px;
+  background:#fffaf0;
+  box-shadow:0 28px 90px rgba(0,0,0,.42),inset 0 0 0 3px rgba(190,158,91,.16);
+  scrollbar-width:thin;
+  scrollbar-color:rgba(141,115,55,.45) transparent;
+}
+.menu-page .menu-image-lightbox img{
+  display:block;
+  width:100%;
+  max-width:100%;
+  max-height:58dvh;
+  height:auto;
+  object-fit:contain;
+  border-radius:15px;
+  background:#eee6d6;
+}
+.menu-page .menu-lightbox-details{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  column-gap:14px;
+  row-gap:7px;
+  padding:18px 10px 7px;
+  color:#173c2b;
+}
+.menu-page .menu-lightbox-name{
+  grid-column:1;
+  margin:0;
+  font:700 clamp(21px,4vw,27px)/1.12 Manrope,Arial,sans-serif;
+  letter-spacing:-.035em;
+  color:#173c2b;
+}
+.menu-page .menu-lightbox-description{
+  grid-column:1/-1;
+  margin:1px 0 0;
+  max-width:58ch;
+  color:#73786e;
+  font:400 13px/1.55 Manrope,Arial,sans-serif;
+}
+.menu-page .menu-lightbox-spice{
+  grid-column:1/-1;
+  margin:3px 0 0;
+  padding-top:9px;
+  border-top:1px solid rgba(23,60,43,.09);
+}
+.menu-page .menu-lightbox-price{
+  grid-column:2;
+  grid-row:1;
+  justify-self:end;
+  margin:0;
+  padding:0;
+  border-radius:0;
+  background:transparent;
+  color:#8d7337;
+  font:800 20px/1 Manrope,Arial,sans-serif;
+  white-space:nowrap;
+}
+.menu-page .menu-lightbox-addons{
+  margin:13px 4px 4px;
+  padding:13px 14px 14px;
+  border:1px solid rgba(183,154,90,.28);
+  border-radius:15px;
+  background:linear-gradient(135deg,#f5efdf,#fbf7ed);
+}
+.menu-page .menu-lightbox-addons-title{
+  margin:0 0 10px;
+  color:#173c2b;
+  font:800 10px/1.2 Manrope,Arial,sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.menu-page .menu-lightbox-addons-row{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px;
+}
+.menu-page .menu-lightbox-addons-row span{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  min-width:0;
+  padding:9px 10px;
+  border:1px solid rgba(23,60,43,.09);
+  border-radius:10px;
+  background:rgba(255,255,255,.82);
+  color:#58675d;
+  font:600 11px/1.35 Manrope,Arial,sans-serif;
+}
+.menu-page .menu-lightbox-addons-row b{
+  flex:0 0 auto;
+  color:#8d7337;
+  font-weight:800;
+}
+.menu-page .menu-image-lightbox-close{
+  position:fixed;
+  top:max(14px,env(safe-area-inset-top));
+  right:max(14px,env(safe-area-inset-right));
+  z-index:2;
+  width:40px;
+  height:40px;
+  border:1px solid rgba(230,210,164,.62);
+  border-radius:50%;
+  background:rgba(12,35,24,.72);
+  color:#fffaf0;
+  font-size:24px;
+  line-height:1;
+  box-shadow:0 5px 20px rgba(0,0,0,.2);
+  backdrop-filter:blur(8px);
+}
+@media(max-width:520px){
+  .menu-page .menu-image-lightbox{padding:12px}
+  .menu-page .menu-lightbox-card{
+    width:100%;
+    max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding:9px;
+    border-radius:20px;
+  }
+  .menu-page .menu-image-lightbox img{
+    max-height:54dvh;
+    border-radius:13px;
+  }
+  .menu-page .menu-lightbox-details{padding:15px 8px 6px;column-gap:10px}
+  .menu-page .menu-lightbox-name{font-size:21px}
+  .menu-page .menu-lightbox-price{font-size:18px}
+  .menu-page .menu-lightbox-description{font-size:12px}
+  .menu-page .menu-lightbox-addons{margin:11px 2px 3px;padding:11px}
+  .menu-page .menu-lightbox-addons-row{gap:6px}
+  .menu-page .menu-lightbox-addons-row span{padding:8px 8px;font-size:10px}
+}
+@media(max-width:360px){
+  .menu-page .menu-lightbox-addons-row{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .menu-page .menu-image-lightbox,.menu-page .menu-lightbox-card{backdrop-filter:none}
+}
