@@ -3696,8 +3696,8 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   const wheelRotor=byId("tccWheelRotor"),labelRotor=byId("tccWheelLabelRotor");
   const wheelSvg=byId("tccWheelSvg");
   const spinButton=byId("tccWheelSpin"),feedback=byId("tccWheelFeedback"),count=byId("tccWheelCount");
-  const prizes=["5% OFF · One beverage","Better Luck Next Time","10% OFF · One beverage","5% OFF on beverages bill","Free Hide & Seek Milano","Better Luck Next Time","Better Luck Next Time","Better Luck Next Time","5% OFF on complete food bill","10% OFF on one food item","Extra Spin – Spin Again","Better Luck Next Time"];
-  const fullLines=[["5% OFF","ON ONE","BEVERAGE"],["BETTER LUCK","NEXT TIME"],["10% OFF","ON ONE","BEVERAGE"],["5% OFF","ON","BEVERAGES BILL"],["FREE HIDE &","SEEK MILANO"],["BETTER LUCK","NEXT TIME"],["BETTER LUCK","NEXT TIME"],["BETTER LUCK","NEXT TIME"],["5% OFF","COMPLETE FOOD","BILL"],["10% OFF","ONE FOOD","ITEM"],["EXTRA SPIN","SPIN AGAIN"],["BETTER LUCK","NEXT TIME"]];
+  const prizes=["10% OFF · One beverage","Better Luck Next Time","5% OFF on beverages bill","Better Luck Next Time","Free Hide & Seek Milano","Better Luck Next Time","5% OFF on complete food bill","Better Luck Next Time","10% OFF on one food item","Better Luck Next Time","Extra Spin – Spin Again","Better Luck Next Time"];
+  const fullLines=[["10% OFF","ON ONE","BEVERAGE"],["BETTER LUCK","NEXT TIME"],["5% OFF ON","BEVERAGES","BILL"],["BETTER LUCK","NEXT TIME"],["FREE HIDE &","SEEK MILANO"],["BETTER LUCK","NEXT TIME"],["5% OFF","COMPLETE FOOD","BILL"],["BETTER LUCK","NEXT TIME"],["10% OFF","ONE FOOD","ITEM"],["BETTER LUCK","NEXT TIME"],["EXTRA SPIN","SPIN AGAIN"],["BETTER LUCK","NEXT TIME"]];
   const colors=["#17452f","#e9d7aa","#b58d49","#f6edda","#2c6748","#d8bd7c","#214f38","#f1e4c7","#9f773b","#e6d4a7","#315d42","#f7efdf"];
   const NS="http://www.w3.org/2000/svg",center=360,radius=350,step=30;
   let rotation=0,spinning=false,spins=0,extraSpinAvailable=false,finished=false;
@@ -3710,9 +3710,10 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       const startAngle=-90+i*step,endAngle=startAngle+step,mid=startAngle+step/2;
       const p1=polar(startAngle,radius),p2=polar(endAngle,radius);
       wheelSvg.appendChild(svgEl("path",{d:`M ${center} ${center} L ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A ${radius} ${radius} 0 0 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} Z`,fill:colors[i],stroke:"#fff4dc","stroke-width":"5","stroke-linejoin":"round"}));
-      const p=polar(mid,218),dark=i%2===1;
+      const p=polar(mid,210),dark=i%2===1;
       const group=svgEl("g",{class:"tcc-wheel-prize-label",transform:`rotate(${mid} ${p.x} ${p.y})`});
-      const text=svgEl("text",{x:p.x,y:p.y-(fullLines[i].length===3?21:10),"text-anchor":"middle","dominant-baseline":"middle",fill:dark?"#173c2b":"#fff8e7","font-family":"Arial, sans-serif","font-size":"25","font-weight":"800","letter-spacing":".1"});
+      const threeLines=fullLines[i].length===3;
+      const text=svgEl("text",{x:p.x,y:p.y-(threeLines?26:13),"text-anchor":"middle","dominant-baseline":"middle",fill:dark?"#173c2b":"#fff8e7","font-family":"Arial, sans-serif","font-size":"25","font-weight":"800","letter-spacing":".1"});
       fullLines[i].forEach((line,j)=>{
         const span=svgEl("tspan",{x:p.x,dy:j===0?"0":"26"});
         span.textContent=line;text.appendChild(span);
