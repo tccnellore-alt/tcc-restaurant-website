@@ -706,3 +706,14 @@ body.tcc-game-open{overflow:hidden}
 .tcc-wheel-feedback{min-height:48px;margin:14px auto 7px;color:#244b34;font:800 15px/1.45 Arial,sans-serif}.tcc-wheel-count{margin:0 auto 8px;color:#8b784e;font:700 11px Arial}.tcc-wheel-rules{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:10px;color:#778174;font:11px Arial}
 @media(max-width:480px){.tcc-wheel-dialog{padding:22px 12px 16px}.tcc-wheel-wrap{width:min(100%,300px,calc(100dvh - 390px));margin-top:8px}.tcc-wheel-pointer{border-left-width:14px;border-right-width:14px;border-bottom-width:28px}}
 @media(prefers-reduced-motion:reduce){.tcc-wheel-canvas{transition-duration:.01ms!important}}
+
+
+/* TCC SPIN WHEEL — SVG rebuild */
+.tcc-wheel-wrap{position:relative;isolation:isolate;width:min(100%,340px,calc(100dvh - 390px));aspect-ratio:1;margin:8px auto 20px;padding:8px;box-sizing:border-box;border:5px solid #c9a65e;border-radius:50%;background:linear-gradient(145deg,#f5e4b8,#a9823e 48%,#f7e8bd);box-shadow:0 12px 28px rgba(23,60,43,.2),inset 0 2px 5px rgba(255,255,255,.8)}
+.tcc-wheel-rotor{position:absolute;inset:8px;border-radius:50%;overflow:hidden;transform:rotate(0deg);transition:transform 5.2s cubic-bezier(.12,.72,.12,1);will-change:transform}
+.tcc-wheel-svg{display:block;width:100%;height:100%;overflow:visible}
+.tcc-wheel-pointer{position:absolute;z-index:4;top:-13px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:0;border-bottom:36px solid #173c2b;filter:drop-shadow(0 3px 2px rgba(0,0,0,.24))}
+.tcc-wheel-hub{position:absolute;z-index:5;top:50%;left:50%;display:grid;place-items:center;width:21%;aspect-ratio:1;transform:translate(-50%,-50%);border:6px solid #d7b66e;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8e7,#d8bd7c);color:#173c2b;font:900 clamp(15px,4vw,22px) Arial;box-shadow:0 4px 12px rgba(0,0,0,.24)}
+.tcc-wheel-spin{margin-top:4px}
+@media(max-width:480px){.tcc-wheel-wrap{width:min(100%,310px,calc(100dvh - 390px));margin:8px auto 16px}.tcc-wheel-pointer{border-left-width:15px;border-right-width:15px;border-bottom-width:30px}}
+@media(prefers-reduced-motion:reduce){.tcc-wheel-rotor{transition-duration:.01ms!important}}
