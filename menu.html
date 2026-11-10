@@ -1232,6 +1232,27 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
  #tccDrinkPickPhoto~.tcc-drink-pick-meta{min-height:112px!important}
 }
 
+
+/* Image-menu product cards — refined champagne-gold frame */
+body:not(.menu-text-mode) .menu-section .m-item:not(:has(.availability-status)),
+body:not(.menu-text-mode) .menu-group .m-item:not(:has(.availability-status)){
+  border:1px solid rgba(183,154,90,.68)!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,250,240,.9),
+    0 5px 16px rgba(23,61,49,.07)!important;
+  background:#fffdf8!important;
+}
+@media(hover:hover){
+  body:not(.menu-text-mode) .menu-section .m-item:not(:has(.availability-status)):hover,
+  body:not(.menu-text-mode) .menu-group .m-item:not(:has(.availability-status)):hover{
+    border-color:rgba(157,123,54,.9)!important;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,250,240,.95),
+      0 8px 22px rgba(23,61,49,.11)!important;
+    transform:translateY(-2px);
+  }
+}
+
 </style>
 </head>
 <body>
