@@ -2802,6 +2802,11 @@ tccImageLightbox.addEventListener("click",event=>{
   if(event.target===tccImageLightbox) closeTccImageLightbox();
 });
 window.addEventListener("popstate",()=>{
+  // Close the topmost menu overlay first; keep the menu page itself open.
+  if(typeof foodSpotlight!=="undefined"&&foodSpotlight?.classList.contains("is-open")){
+    closeFoodSpotlight(true);
+    return;
+  }
   if(tccImageLightbox.classList.contains("is-open")) hideTccImageLightbox();
 });
 document.addEventListener("keydown",event=>{
@@ -3430,6 +3435,11 @@ function openFoodSpotlight(){
   try{seen=sessionStorage.getItem(foodSpotlightSeenKey)==="1";}catch(e){}
   if(seen) return false;
   foodSpotlightPending=true;
+  // Add a lightweight history entry so Android/iOS Back dismisses this
+  // promotion instead of navigating away from the menu page.
+  if(!history.state?.tccFoodSpotlight){
+    history.pushState({...history.state,tccFoodSpotlight:true},"",window.location.href);
+  }
   foodSpotlight.classList.add("is-open");
   foodSpotlight.setAttribute("aria-hidden","false");
   document.body.style.overflow="hidden";
@@ -3437,8 +3447,14 @@ function openFoodSpotlight(){
   document.getElementById("foodSpotlightExplore")?.focus();
   return true;
 }
-function closeFoodSpotlight(){
-  if(!foodSpotlight) return;
+function closeFoodSpotlight(fromPopState=false){
+  if(!foodSpotlight||!foodSpotlight.classList.contains("is-open")) return;
+  // For an explicit close button/backdrop tap, consume the modal's history
+  // entry. The popstate path closes directly and must not call history.back().
+  if(!fromPopState&&history.state?.tccFoodSpotlight){
+    history.back();
+    return;
+  }
   foodSpotlight.classList.remove("is-open");
   foodSpotlight.setAttribute("aria-hidden","true");
   document.body.style.overflow="";
