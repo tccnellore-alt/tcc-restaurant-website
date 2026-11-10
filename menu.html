@@ -3704,7 +3704,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       const start=-Math.PI/2+i*step,end=start+step,mid=start+step/2;
       ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,start,end);ctx.closePath();ctx.fillStyle=colors[i];ctx.fill();
       ctx.lineWidth=4;ctx.strokeStyle="#f8edcf";ctx.stroke();
-      ctx.save();ctx.translate(c,c);ctx.rotate(mid);ctx.textAlign="right";ctx.textBaseline="middle";
+      ctx.save();ctx.translate(c,c);ctx.rotate(mid);const upsideDown=mid>Math.PI/2&&mid<3*Math.PI/2;if(upsideDown){ctx.rotate(Math.PI);ctx.textAlign="left";}else{ctx.textAlign="right";}ctx.textBaseline="middle";
       const words=label.split(" · ");ctx.fillStyle=(i===1||i===3||i===5||i===7||i===9||i===11)?"#173c2b":"#fff8e7";
       ctx.font="800 22px Arial";
       if(words.length>1){ctx.fillText(words[0],r-35,-13);ctx.font="700 17px Arial";ctx.fillText(words.slice(1).join(" "),r-35,12);}
