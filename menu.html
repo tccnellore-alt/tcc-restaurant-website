@@ -1589,6 +1589,75 @@ html{scroll-behavior:smooth}
 @keyframes tccPhotoShimmer{to{background-position-x:-200%}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.menu-tabs .menu-tab,.food-tabs .food-tab,.m-photo-wrap .m-photo{transition:none}.m-photo-wrap.is-loading{animation:none}.menu-group.active .menu-section{animation:none}}
 
+
+/* PERFECT 10 launch card — mobile grid fix: keep both notices fully visible. */
+@media(max-width:849px){
+  .menu-intro{padding-bottom:14px!important}
+  .menu-intro .container{
+    grid-template-columns:repeat(12,minmax(0,1fr))!important;
+    grid-template-rows:66px 72px!important;
+    column-gap:7px!important;
+    row-gap:10px!important;
+  }
+  .takeaway-charge-notice{
+    grid-column:1 / 7!important;
+    grid-row:2!important;
+    height:72px!important;
+    min-height:72px!important;
+    padding:8px 9px!important;
+    gap:7px!important;
+  }
+  .tcc-game-launch{
+    grid-column:7 / 13!important;
+    grid-row:2!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:72px!important;
+    height:72px!important;
+    margin:0!important;
+    padding:8px 9px!important;
+    gap:7px!important;
+    box-sizing:border-box!important;
+    border-radius:12px!important;
+    overflow:hidden!important;
+  }
+  .tcc-game-launch-icon{
+    flex:0 0 28px!important;
+    width:28px!important;
+    height:28px!important;
+    border-radius:9px!important;
+    font-size:17px!important;
+  }
+  .tcc-game-launch>span:nth-child(2){flex:1 1 auto!important;min-width:0!important}
+  .tcc-game-launch strong{
+    font-size:clamp(8px,2.2vw,10px)!important;
+    line-height:1.2!important;
+    letter-spacing:.055em!important;
+    overflow-wrap:normal!important;
+  }
+  .tcc-game-launch small{
+    margin-top:4px!important;
+    font-size:clamp(8px,2vw,9px)!important;
+    line-height:1.25!important;
+  }
+  .tcc-game-launch-arrow{
+    flex:0 0 auto!important;
+    margin-left:0!important;
+    font-size:20px!important;
+    line-height:1!important;
+  }
+}
+@media(max-width:380px){
+  .tcc-game-launch{gap:5px!important;padding:7px!important}
+  .tcc-game-launch-icon{flex-basis:25px!important;width:25px!important;height:25px!important;font-size:15px!important}
+  .tcc-game-launch strong{font-size:8px!important;letter-spacing:.025em!important}
+  .tcc-game-launch small{font-size:7.5px!important}
+  .tcc-game-launch-arrow{font-size:17px!important}
+}
+
 </style>
 </head>
 <body>
