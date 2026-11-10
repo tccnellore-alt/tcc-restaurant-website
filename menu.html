@@ -3112,7 +3112,8 @@ function filter(q){
   let found=0;
   const active=document.querySelector(".menu-group.active");
   if(!active) return;
-  const applyFilters=g=>g.id==="food"&&hasActiveFoodFilters();
+  // No active food-filter controls are present in this menu build; keep category/search filtering functional without calling missing helpers.
+  const applyFilters=g=>false;
   if(q){
     groups.forEach(g=>{
       let groupFound=0;
