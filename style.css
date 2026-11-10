@@ -615,3 +615,11 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
     margin-top:8px!important;
   }
 }
+
+
+/* Small breathing room between mobile search and first menu content */
+@media(max-width:849px){
+  .menu-page .menu-content{
+    padding-top:6px!important;
+  }
+}
