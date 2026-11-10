@@ -522,3 +522,27 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
   font-size:11px!important;
   line-height:1!important;
 }
+
+
+/* Final typography lock: Best Seller text must visually match New Arrival */
+body:not(.menu-text-mode) .menu-section .m-item .tcc-bestseller-badge .tcc-bestseller-label,
+body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestseller-label{
+  display:inline-block!important;
+  color:#f8edcc!important;
+  font-family:Manrope,Arial,sans-serif!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+  letter-spacing:.13em!important;
+  text-transform:uppercase!important;
+  white-space:nowrap!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item .tcc-bestseller-badge .tcc-bestseller-crown,
+body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestseller-crown{
+  display:inline-block!important;
+  color:#f0ce78!important;
+  font-family:Manrope,Arial,sans-serif!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  line-height:1!important;
+}
