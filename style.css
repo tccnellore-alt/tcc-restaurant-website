@@ -451,3 +451,35 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
 @media(prefers-reduced-motion:reduce){
   .menu-page .menu-image-lightbox,.menu-page .menu-lightbox-card{backdrop-filter:none}
 }
+
+
+/* Image menu: spice rating as quiet inline metadata, not a separate pill */
+body:not(.menu-text-mode) .menu-page .menu-section .m-item .spice-level,
+body:not(.menu-text-mode) .menu-page .menu-group .m-item .spice-level,
+body:not(.menu-text-mode) .menu-section .m-item .spice-level,
+body:not(.menu-text-mode) .menu-group .m-item .spice-level{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:5px!important;
+  width:auto!important;
+  min-height:0!important;
+  margin:7px 0 0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item .spice-chillies,
+body:not(.menu-text-mode) .menu-group .m-item .spice-chillies{
+  font-size:14px!important;
+  line-height:1!important;
+  letter-spacing:-2px!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item .spice-copy,
+body:not(.menu-text-mode) .menu-group .m-item .spice-copy{
+  color:#806052!important;
+  font:700 10px/1.35 Manrope,Arial,sans-serif!important;
+  letter-spacing:.01em!important;
+}
