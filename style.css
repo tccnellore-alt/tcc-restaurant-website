@@ -623,3 +623,42 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
     padding-top:6px!important;
   }
 }
+
+
+/* TCC PERFECT 10 GAME */
+.tcc-game-launch{display:flex;align-items:center;gap:13px;width:min(100%,650px);margin:22px auto 0;padding:14px 17px;border:1px solid rgba(218,190,128,.72);border-radius:16px;background:linear-gradient(110deg,#0d2b1d,#24543b);color:#f8f1e4;text-align:left;cursor:pointer;box-shadow:0 10px 26px rgba(4,25,15,.18)}
+.tcc-game-launch-icon{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:13px;background:rgba(221,190,124,.16);color:#e7c77f;font-size:24px}
+.tcc-game-launch strong,.tcc-game-launch small{display:block}
+.tcc-game-launch strong{font:800 11px/1.35 Arial,sans-serif;letter-spacing:.13em}
+.tcc-game-launch small{margin-top:4px;color:#e1e6dc;font:12px/1.4 Arial,sans-serif}
+.tcc-game-launch-arrow{margin-left:auto;color:#e7c77f;font:26px Arial}
+.tcc-game-backdrop{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(5,23,15,.82);backdrop-filter:blur(10px);overflow-y:auto}
+.tcc-game-backdrop.is-open{display:flex}
+body.tcc-game-open{overflow:hidden}
+.tcc-game-dialog{position:relative;width:min(100%,460px);max-height:calc(100dvh - 36px);overflow-y:auto;padding:30px 24px 24px;border:1px solid #d5bd83;border-radius:25px;background:linear-gradient(155deg,#fffaf0,#f1e7d2);color:#173c2b;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.32)}
+.tcc-game-close{position:absolute;top:12px;right:14px;width:36px;height:36px;border:1px solid rgba(23,60,43,.15);border-radius:50%;background:#fffaf0;color:#173c2b;font:26px/1 Arial;cursor:pointer}
+.tcc-game-kicker{color:#9b7b3d;font:800 10px Arial;letter-spacing:.22em}
+.tcc-game-dialog h2{margin:8px 0 7px;color:#173c2b;font-size:clamp(32px,8vw,42px);line-height:1.05}
+.tcc-game-intro{max-width:320px;margin:0 auto 20px;color:#69746b;font:13px/1.5 Arial,sans-serif}
+.tcc-game-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;width:224px;height:224px;max-width:65vw;max-height:65vw;margin:0 auto 20px;border:8px solid #d9e2ce;border-top-color:#1b5a3d;border-right-color:#1b5a3d;border-radius:50%;background:#fffdf7;box-shadow:inset 0 0 0 1px rgba(23,60,43,.06),0 8px 25px rgba(23,60,43,.08)}
+.tcc-game-clock-label{color:#8c784e;font:800 10px Arial;letter-spacing:.18em}
+.tcc-game-clock strong{margin:5px 0;color:#102f21;font:800 clamp(48px,12vw,62px)/1 Arial,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.055em}
+.tcc-game-clock-unit{color:#788274;font:800 9px Arial;letter-spacing:.22em}
+.tcc-game-actions{display:flex;justify-content:center;gap:10px}
+.tcc-game-button{min-width:130px;min-height:48px;padding:12px 18px;border:1px solid #173c2b;border-radius:999px;background:#173c2b;color:#fffaf0;font:800 11px Arial;letter-spacing:.1em;cursor:pointer}
+.tcc-game-stop{background:#b28f4d;border-color:#b28f4d}
+.tcc-game-button:disabled{opacity:.4;cursor:not-allowed}
+.tcc-game-feedback{min-height:40px;margin:15px auto 14px;color:#58665b;font:13px/1.5 Arial,sans-serif}
+.tcc-game-prize{display:flex;align-items:center;justify-content:center;gap:13px;margin:0 auto;padding:13px;border:1px solid #e2cf9e;border-radius:16px;background:#f8edcf;text-align:left}
+.tcc-game-prize>span{font-size:30px}
+.tcc-game-prize strong,.tcc-game-prize small{display:block}
+.tcc-game-prize strong{color:#173c2b;font:900 19px Arial;letter-spacing:.02em}
+.tcc-game-prize small{margin-top:3px;color:#625735;font:13px Arial}
+.tcc-game-rules{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin:14px 0 0;color:#657166;font:11px Arial}
+.tcc-game-claim{display:grid;gap:8px;margin-top:15px;padding:15px;border:1px solid #b79a5a;border-radius:15px;background:#e8f0df}
+.tcc-game-claim strong{color:#174b32;font:900 14px Arial;letter-spacing:.06em}
+.tcc-game-claim span,.tcc-game-claim small{color:#58665b;font:12px/1.45 Arial}
+.tcc-game-claim code{color:#173c2b;font:900 22px Arial;letter-spacing:.12em}
+.tcc-game-again{margin-top:14px;padding:10px 18px;border:1px solid #173c2b;border-radius:999px;background:transparent;color:#173c2b;font:800 10px Arial;letter-spacing:.12em;cursor:pointer}
+@media(max-width:480px){.tcc-game-dialog{padding:28px 18px 20px}.tcc-game-clock{width:205px;height:205px}.tcc-game-launch{gap:10px;padding:12px}.tcc-game-launch small{font-size:11px}.tcc-game-actions{gap:8px}.tcc-game-button{min-width:0;flex:1}}
+@media(prefers-reduced-motion:reduce){.tcc-game-backdrop{backdrop-filter:none}}
