@@ -667,3 +667,5 @@ body.tcc-game-open{overflow:hidden}
 .tcc-game-dialog [hidden]{
   display:none!important;
 }
+
+.tcc-game-attempts{margin:-8px auto 10px;color:#8b784e;font:800 11px Arial,sans-serif;letter-spacing:.06em}
