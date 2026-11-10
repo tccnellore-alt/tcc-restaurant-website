@@ -662,3 +662,8 @@ body.tcc-game-open{overflow:hidden}
 .tcc-game-again{margin-top:14px;padding:10px 18px;border:1px solid #173c2b;border-radius:999px;background:transparent;color:#173c2b;font:800 10px Arial;letter-spacing:.12em;cursor:pointer}
 @media(max-width:480px){.tcc-game-dialog{padding:28px 18px 20px}.tcc-game-clock{width:205px;height:205px}.tcc-game-launch{gap:10px;padding:12px}.tcc-game-launch small{font-size:11px}.tcc-game-actions{gap:8px}.tcc-game-button{min-width:0;flex:1}}
 @media(prefers-reduced-motion:reduce){.tcc-game-backdrop{backdrop-filter:none}}
+
+/* Respect the hidden state for game reward and retry panels */
+.tcc-game-dialog [hidden]{
+  display:none!important;
+}
