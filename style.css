@@ -256,3 +256,28 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
   body.open .overlay{z-index:10000!important}
   body.open .drawer{z-index:10001!important}
 }
+
+
+/* Smooth category changes — soft fade and a restrained upward settle */
+@keyframes tccCategoryEnter {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes tccCategoryHeadingEnter {
+  from { opacity: 0; transform: translate3d(0, 7px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.menu-page .menu-group.active {
+  animation: tccCategoryEnter 360ms cubic-bezier(.22,.61,.36,1) both;
+  will-change: opacity, transform;
+}
+.menu-page #menuCategoryIntro {
+  animation: tccCategoryHeadingEnter 320ms cubic-bezier(.22,.61,.36,1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-page .menu-group.active,
+  .menu-page #menuCategoryIntro {
+    animation: none !important;
+    transform: none !important;
+  }
+}
