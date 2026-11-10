@@ -3827,7 +3827,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     timeDisplay.textContent="00.00";
     updateAttempts();
     feedback.textContent=attempts>=maxAttempts
-      ? "You've used all 3 attempts for this hour."
+      ? "You've used all 3 attempts in this 3-hour window."
       : "Ready? Take a breath and trust your timing.";
     startButton.disabled=false;startButton.hidden=attempts>=maxAttempts;stopButton.disabled=true;
     againButton.hidden=true;claim.hidden=true;updateAttempts();
