@@ -3274,8 +3274,8 @@ function tccShowDrinkCard(drink){
   let img=photoWrap.querySelector("img");
   if(!img){img=document.createElement("img");photoWrap.replaceChildren(img);}
   const normalizePhotoPath=value=>{
-   if(!value||value.startsWith("data:")||/^https?:\\/\\//i.test(value)||value.startsWith("/"))return value;
-   return "/"+value.replace(/^\\.\\//,"");
+   if(!value||value.startsWith("data:")||/^https?:\/\//i.test(value)||value.startsWith("/"))return value;
+   return "/"+value.replace(/^\\.\//,"");
   };
   const smallUrl=normalizePhotoPath(verifiedPhoto.url);
   const largeUrl=normalizePhotoPath(verifiedPhoto.large);
@@ -3307,7 +3307,7 @@ function tccShowDrinkCard(drink){
   const img=photoWrap.querySelector("img");
   if(img){
    const original=img.currentSrc||img.src||img.getAttribute("data-src");
-   if(original)img.src=original.startsWith("data:")||/^https?:\\/\\//i.test(original)||original.startsWith("/")?original:"/"+original.replace(/^\\.\\//,"");
+   if(original)img.src=original.startsWith("data:")||/^https?:\/\//i.test(original)||original.startsWith("/")?original:"/"+original.replace(/^\\.\//,"");
    img.removeAttribute("srcset");
    img.removeAttribute("sizes");
    img.loading="eager";
