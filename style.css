@@ -717,3 +717,9 @@ body.tcc-game-open{overflow:hidden}
 .tcc-wheel-spin{margin-top:4px}
 @media(max-width:480px){.tcc-wheel-wrap{width:min(100%,310px,calc(100dvh - 390px));margin:8px auto 16px}.tcc-wheel-pointer{border-left-width:15px;border-right-width:15px;border-bottom-width:30px}}
 @media(prefers-reduced-motion:reduce){.tcc-wheel-rotor{transition-duration:.01ms!important}}
+
+/* Pointer tip faces down into the wheel; labels counter-rotate to stay upright. */
+.tcc-wheel-pointer{border-bottom:0!important;border-top:36px solid #173c2b!important}
+.tcc-wheel-label-text{transform-box:fill-box;transform-origin:center;transition:transform 5.2s cubic-bezier(.12,.72,.12,1)}
+@media(max-width:480px){.tcc-wheel-pointer{border-bottom:0!important;border-top:30px solid #173c2b!important}}
+@media(prefers-reduced-motion:reduce){.tcc-wheel-label-text{transition-duration:.01ms!important}}
