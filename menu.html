@@ -1603,17 +1603,14 @@ html{scroll-behavior:smooth}
     <div class="eyebrow">THE TCC MENU</div>
     <h1>The TCC Menu</h1>
     <p>Coffee, food, signatures and more.</p>
-    <div class="menu-view-switch" role="group" aria-label="Choose menu view">
-      <button type="button" class="menu-view-option" data-menu-view="text" aria-label="Text Menu" aria-pressed="false">Text Menu</button>
-      <button type="button" class="menu-view-option is-active" data-menu-view="image" aria-label="Image Menu" aria-pressed="true">Image Menu</button>
-    </div>
+
     <div class="takeaway-charge-notice" role="note" aria-label="Takeaway packaging charge">
       <span class="takeaway-charge-icon" aria-hidden="true">🛍</span>
       <span><strong>TAKEAWAY ORDERS</strong><small class="takeaway-charge-amount">₹10 Packaging Charge</small><small class="takeaway-charge-detail">Per product on takeaway orders</small></span>
     </div>
     <button type="button" class="tcc-game-launch" id="tccGameLaunch">
-      <span class="tcc-game-launch-icon" aria-hidden="true">✦</span>
-      <span><strong>THE PERFECT 10 CHALLENGE</strong><small>Stop the timer at exactly 10.00 seconds · Win 10% off a beverage</small></span>
+      <span class="tcc-game-launch-icon" aria-hidden="true">🎯</span>
+      <span><strong>PLAY THE PERFECT 10</strong><small>5 chances · Win 10% OFF any one beverage</small></span>
       <span class="tcc-game-launch-arrow" aria-hidden="true">→</span>
     </button>
   </div>
@@ -2745,22 +2742,7 @@ function addTccMenuPhotos(){
     sourceBlock.replaceWith(info);
   });
 }
-// Text / image menu view switch
-(function initTccMenuViewSwitch(){
-  const buttons=[...document.querySelectorAll("[data-menu-view]")];
-  if(!buttons.length) return;
-  function setMenuView(view){
-    const textMode=view==="text";
-    document.body.classList.toggle("menu-text-mode",textMode);
-    buttons.forEach(button=>{
-      const active=button.dataset.menuView===view;
-      button.classList.toggle("is-active",active);
-      button.setAttribute("aria-pressed",active?"true":"false");
-    });
-  }
-  buttons.forEach(button=>button.addEventListener("click",()=>setMenuView(button.dataset.menuView)));
-  setMenuView("image");
-})();
+// Image menu is the single permanent menu presentation; view toggle removed.
 
 // Tap any menu photo to view it larger; tap outside or close to return.
 const tccImageLightbox=document.createElement("div");
@@ -3702,7 +3684,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     updateAttempts();
     startButton.disabled=false;stopButton.disabled=true;
     againButton.hidden=false;
-    if(elapsed>=9990&&elapsed<=10010){
+    if(elapsed>=9999&&elapsed<=10001){
       let code="TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase();
       try{localStorage.setItem(storageKey,JSON.stringify({code,wonAt:Date.now()}));}catch(e){}
       byId("tccGameCode").textContent=code;
@@ -3711,12 +3693,28 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       startButton.hidden=true;
     }else{
       const difference=Math.abs(elapsed-10000)/1000;
-      feedback.textContent=attempts>=maxAttempts
-        ? "That was your fifth attempt. Better luck next time!"
-        : elapsed<10000
-          ? "Too early! You stopped "+difference.toFixed(3)+"s before 10.00.00. Give it another try."
-          : "Too late! You went "+difference.toFixed(3)+"s past 10.00.00. You can try again.";
-      if(attempts>=maxAttempts){startButton.hidden=true;againButton.hidden=true;}
+      const loseMessages=elapsed<10000
+        ? [
+          ["😭","Your finger got excited before the clock did!"],
+          ["🥲","So close! The timer said ‘not today, bestie.’"],
+          ["🐢","Even the turtle was waiting for you to stop!"],
+          ["🫠","Oops… your timing melted a little early."]
+        ]
+        : [
+          ["😂","You waited for the next episode! 10 seconds was already gone."],
+          ["🥹","The perfect 10 waved goodbye while you were thinking."],
+          ["🐌","A little late! Were you ordering another coffee?"],
+          ["🙈","The timer crossed 10… and you kept believing!"]
+        ];
+      const joke=loseMessages[(attempts-1)%loseMessages.length];
+      feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">'+joke[0]+'</span><strong>'+joke[1]+'</strong><small>'+(elapsed<10000?"Too early":"Too late")+" · "+difference.toFixed(3)+"s away from 10.00.00</small>";
+      modal.classList.remove("tcc-game-miss");
+      void modal.offsetWidth;
+      modal.classList.add("tcc-game-miss");
+      if(attempts>=maxAttempts){
+        feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">🎁</span><strong>That’s all 5 chances! The timer wins this round. 😅</strong><small>Don’t be sad — your next coffee is still waiting for you.</small>';
+        startButton.hidden=true;againButton.hidden=true;
+      }
     }
   }
   function startGame(){
