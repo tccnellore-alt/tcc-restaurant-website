@@ -662,3 +662,38 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
     row-gap:7px!important;
   }
 }
+
+
+/* IMAGE MENU — tighter mobile layout, preserving readable tap targets */
+@media(max-width:849px){
+  .menu-page .menu-tools{
+    padding-top:0!important;
+    padding-bottom:0!important;
+  }
+  .menu-page .menu-tabs{
+    gap:4px!important;
+    margin:0 0 2px!important;
+  }
+  .menu-page .food-tabs{
+    margin-top:0!important;
+    gap:4px!important;
+  }
+  .menu-page .menu-search{
+    margin-top:1px!important;
+  }
+  .menu-page .menu-content{
+    padding-top:0!important;
+  }
+  .menu-page .menu-group .menu-section{
+    margin-top:3px!important;
+    margin-bottom:7px!important;
+  }
+  .menu-page .menu-group .menu-section h2{
+    margin-bottom:6px!important;
+    padding-bottom:2px!important;
+  }
+  .menu-page .menu-group .m-list{
+    gap:6px!important;
+    row-gap:6px!important;
+  }
+}
