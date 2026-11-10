@@ -1256,6 +1256,29 @@ body:not(.menu-text-mode) .menu-group .m-item:not(:has(.availability-status)){
 
 /* IMAGE MENU — premium product information, depth, badges and alignment
    Photography is intentionally unchanged in this pass. */
+/* Image Menu: park Best Seller badges in the reserved top-right card space.
+   Keep the badge in the heading DOM so Text Menu and lightbox semantics stay intact. */
+body:not(.menu-text-mode) .menu-section .m-item,
+body:not(.menu-text-mode) .menu-group .m-item{position:relative!important}
+body:not(.menu-text-mode) .menu-section .m-item .tcc-bestseller-badge,
+body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge{
+ position:absolute!important;top:10px!important;right:10px!important;z-index:5!important;
+ display:inline-flex!important;align-items:center!important;gap:4px!important;
+ width:max-content!important;max-width:calc(100% - 20px)!important;
+ margin:0!important;padding:4px 8px!important;
+ border:1px solid #c5a45d!important;border-radius:999px!important;
+ background:linear-gradient(135deg,#214c37,#143626)!important;color:#f7e8b8!important;
+ box-shadow:0 2px 7px rgba(23,60,43,.2)!important;
+ font:800 8px/1.15 Manrope,Arial,sans-serif!important;letter-spacing:.035em!important;
+ white-space:nowrap!important
+}
+body:not(.menu-text-mode) .tcc-bestseller-crown{color:#f0ce78!important;font-size:11px!important}
+/* In Text Menu the photo card is hidden, so restore the badge beside the title. */
+body.menu-text-mode .menu-section .m-item .tcc-bestseller-badge,
+body.menu-text-mode .menu-group .m-item .tcc-bestseller-badge{
+ position:static!important;display:inline-flex!important;vertical-align:middle!important;
+ margin:0 0 0 6px!important;max-width:100%!important
+}
 /* IMAGE MENU — compact, predictable card layout. Product photos and framing stay unchanged. */
 body:not(.menu-text-mode) .menu-section .m-list,
 body:not(.menu-text-mode) .menu-group .m-list{align-items:stretch!important;grid-auto-rows:auto!important;gap:12px!important}
