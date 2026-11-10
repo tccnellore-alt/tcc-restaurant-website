@@ -283,23 +283,16 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
 }
 
 
-/* TCC editorial scroll photography — gentle reveal and restrained parallax */
-.menu-page .m-photo-wrap{isolation:isolate}
+/* TCC menu photos — quiet, one-time fade-in; image remains static while scrolling. */
 .menu-page .m-photo-wrap .m-photo{
-  --tcc-photo-shift:0px;
   opacity:0;
-  transform:translate3d(0,calc(var(--tcc-photo-shift) + 9px),0) scale(1.07);
-  transition:opacity 800ms cubic-bezier(.22,.61,.36,1),transform 120ms linear;
-  will-change:transform,opacity;
+  transform:none!important;
+  transition:opacity 520ms ease;
+  will-change:opacity;
 }
 .menu-page .m-photo-wrap .m-photo.tcc-photo-ready{
   opacity:1;
-  transform:translate3d(0,var(--tcc-photo-shift),0) scale(1.07);
-}
-@media(hover:hover){
-  .menu-page .m-item:hover .m-photo.tcc-photo-ready{
-    transform:translate3d(0,var(--tcc-photo-shift),0) scale(1.085);
-  }
+  transform:none!important;
 }
 @media(prefers-reduced-motion:reduce){
   .menu-page .m-photo-wrap .m-photo,
