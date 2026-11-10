@@ -253,6 +253,13 @@
 .m-photo{cursor:zoom-in}
 .m-photo:focus-visible{outline:3px solid #b79a5a;outline-offset:-3px}
 @media(max-width:480px){.menu-image-lightbox{padding:12px}.menu-image-lightbox img{max-height:calc(100vh - 24px)}}
+/* iPhone-style press-and-hold photo peek */
+.menu-photo-peek{position:fixed;inset:0;z-index:13000;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(10,16,13,.76);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility .18s ease}
+.menu-photo-peek.is-visible{opacity:1;visibility:visible}
+.menu-photo-peek img{display:block;max-width:min(88vw,560px);max-height:78vh;width:auto;height:auto;object-fit:contain;border:1px solid rgba(207,183,126,.78);border-radius:16px;background:#fffaf0;box-shadow:0 24px 80px rgba(0,0,0,.42);transform:scale(.88);transition:transform .22s cubic-bezier(.2,.85,.25,1)}
+.menu-photo-peek.is-visible img{transform:scale(1)}
+@media(prefers-reduced-motion:reduce){.menu-photo-peek,.menu-photo-peek img{transition:none}}
+
 .m-photo-wrap{position:relative;display:block;overflow:hidden;width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#e8dfca,#f7f1e4)}
 .m-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .35s ease}
 .m-photo-credit{display:none!important}
@@ -2739,6 +2746,76 @@ window.addEventListener("popstate",()=>{
 document.addEventListener("keydown",event=>{
   if(event.key==="Escape"&&tccImageLightbox.classList.contains("is-open")) closeTccImageLightbox();
 });
+
+// Hold a menu photo to preview it temporarily; releasing the pointer restores the card.
+(function initTccPressAndHoldPhotoPeek(){
+  const peek=document.createElement("div");
+  peek.className="menu-photo-peek";
+  peek.setAttribute("aria-hidden","true");
+  const preview=document.createElement("img");
+  preview.alt="";
+  peek.appendChild(preview);
+  document.body.appendChild(peek);
+  let holdTimer=null,activePointer=null,startX=0,startY=0,openedByHold=false,suppressClickUntil=0;
+  const HOLD_DELAY=280,MOVE_LIMIT=12;
+  function clearHoldTimer(){if(holdTimer){clearTimeout(holdTimer);holdTimer=null;}}
+  function closePeek(){
+    clearHoldTimer();
+    if(activePointer!==null&&openedByHold){
+      try{if(peek.hasPointerCapture?.(activePointer))peek.releasePointerCapture(activePointer);}catch(e){}
+    }
+    peek.classList.remove("is-visible");
+    peek.setAttribute("aria-hidden","true");
+    preview.removeAttribute("src");
+    activePointer=null;
+    openedByHold=false;
+  }
+  function openPeek(photo){
+    if(!photo?.src||photo.closest(".m-photo-placeholder-wrap"))return;
+    preview.src=photo.currentSrc||photo.src;
+    preview.alt=photo.alt||"Enlarged TCC menu photo";
+    peek.classList.add("is-visible");
+    peek.setAttribute("aria-hidden","false");
+    openedByHold=true;
+  }
+  document.addEventListener("pointerdown",event=>{
+    const photo=event.target.closest?.(".m-photo");
+    if(!photo||event.button!==0||tccImageLightbox.classList.contains("is-open"))return;
+    clearHoldTimer();
+    activePointer=event.pointerId;startX=event.clientX;startY=event.clientY;openedByHold=false;
+    holdTimer=setTimeout(()=>{if(activePointer===event.pointerId)openPeek(photo);},HOLD_DELAY);
+  },{passive:true});
+  document.addEventListener("pointermove",event=>{
+    if(activePointer!==event.pointerId)return;
+    if(Math.hypot(event.clientX-startX,event.clientY-startY)>MOVE_LIMIT){
+      clearHoldTimer();
+      if(openedByHold)closePeek();
+      else activePointer=null;
+    }
+  },{passive:true});
+  function finishPointer(event){
+    if(activePointer!==event.pointerId)return;
+    const wasPeekOpen=openedByHold;
+    clearHoldTimer();
+    if(wasPeekOpen){suppressClickUntil=Date.now()+650;closePeek();}
+    else activePointer=null;
+  }
+  document.addEventListener("pointerup",finishPointer,{passive:true});
+  document.addEventListener("pointercancel",finishPointer,{passive:true});
+  document.addEventListener("click",event=>{
+    if(Date.now()<suppressClickUntil&&event.target.closest?.(".m-photo")){
+      event.preventDefault();event.stopImmediatePropagation();
+    }
+  },true);
+  document.addEventListener("contextmenu",event=>{
+    if(event.target.closest?.(".m-photo"))event.preventDefault();
+  });
+  document.addEventListener("dragstart",event=>{
+    if(event.target.closest?.(".m-photo"))event.preventDefault();
+  });
+  window.addEventListener("blur",closePeek);
+})();
+
 
 document.querySelectorAll(".menu-section").forEach(sec=>{
   const title=(sec.querySelector("h2")?.textContent||"").toLowerCase();
