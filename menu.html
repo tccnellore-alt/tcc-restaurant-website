@@ -3744,9 +3744,8 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     rotation+=360*6+delta;
     wheelRotor.style.transform="rotate("+rotation+"deg)";
     labelRotor.style.transform="rotate("+rotation+"deg)";
-    labelsSvg.querySelectorAll(".tcc-wheel-label-group").forEach((group,i)=>{
-      const p=polar(-90+i*30+15,224);
-      group.setAttribute("transform",`rotate(${-rotation} ${p.x} ${p.y})`);
+    labelsSvg.querySelectorAll(".tcc-wheel-label-group").forEach(group=>{
+      group.style.transform="rotate("+(-rotation)+"deg)";
     });
     window.setTimeout(()=>{
       spinning=false;spins++;
