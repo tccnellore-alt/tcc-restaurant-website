@@ -505,3 +505,20 @@ body:not(.menu-text-mode) .menu-section .m-item .tcc-new-arrival-badge span:firs
 body:not(.menu-text-mode) .menu-group .m-item .tcc-new-arrival-badge span:first-child{
   display:inline-block!important;color:#f0ce78!important;font-size:11px!important;line-height:1!important;
 }
+
+
+/* Match Best Seller ribbon text to the New Arrival ribbon */
+body:not(.menu-text-mode) .menu-section .m-item .tcc-bestseller-badge .tcc-bestseller-label,
+body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestseller-label{
+  color:inherit!important;
+  font:inherit!important;
+  letter-spacing:inherit!important;
+  line-height:inherit!important;
+  text-transform:inherit!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item .tcc-bestseller-badge .tcc-bestseller-crown,
+body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestseller-crown{
+  color:#f0ce78!important;
+  font-size:11px!important;
+  line-height:1!important;
+}
