@@ -3724,7 +3724,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   updateAttempts();
   // Display seconds and hundredths only; keep full millisecond precision for judging.
   const format=ms=>{
-    const totalHundredths=Math.floor(Math.max(0,ms)/10);
+    const totalHundredths=Math.round(Math.max(0,ms)/10);
     const whole=Math.floor(totalHundredths/100);
     const hundredths=totalHundredths%100;
     return String(whole).padStart(2,"0")+"."+String(hundredths).padStart(2,"0");
