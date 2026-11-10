@@ -3700,28 +3700,25 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   function drawWheel(){
     const size=canvas.width,c=size/2,r=size/2-7,step=Math.PI*2/prizes.length;
     const labelLines=[
-      ["5% OFF","ONE BEVERAGE"],["BETTER LUCK","NEXT TIME"],["10% OFF","ONE BEVERAGE"],
-      ["5% OFF","BEVERAGES BILL"],["FREE","HIDE & SEEK"],["BETTER LUCK","NEXT TIME"],
-      ["BETTER LUCK","NEXT TIME"],["BETTER LUCK","NEXT TIME"],["5% OFF","FOOD BILL"],
-      ["10% OFF","ONE FOOD ITEM"],["EXTRA SPIN","SPIN AGAIN"],["BETTER LUCK","NEXT TIME"]
+      ["5% OFF","1 DRINK"],["TRY AGAIN","NEXT TIME"],["10% OFF","1 DRINK"],
+      ["5% OFF","DRINK BILL"],["FREE","HIDE & SEEK"],["TRY AGAIN","NEXT TIME"],
+      ["TRY AGAIN","NEXT TIME"],["TRY AGAIN","NEXT TIME"],["5% OFF","FOOD BILL"],
+      ["10% OFF","1 FOOD ITEM"],["EXTRA SPIN","SPIN AGAIN"],["TRY AGAIN","NEXT TIME"]
     ];
     ctx.clearRect(0,0,size,size);
     prizes.forEach((label,i)=>{
       const start=-Math.PI/2+i*step,end=start+step,mid=start+step/2;
       ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,start,end);ctx.closePath();ctx.fillStyle=colors[i];ctx.fill();
       ctx.lineWidth=4;ctx.strokeStyle="#f8edcf";ctx.stroke();
-      ctx.save();
-      ctx.translate(c,c);
-      ctx.rotate(mid);
+      ctx.save();ctx.translate(c,c);ctx.rotate(mid);
       if(mid>Math.PI/2&&mid<3*Math.PI/2)ctx.rotate(Math.PI);
-      ctx.textAlign="center";
-      ctx.textBaseline="middle";
+      ctx.textAlign="center";ctx.textBaseline="middle";
       ctx.fillStyle=(i===1||i===3||i===5||i===7||i===9||i===11)?"#173c2b":"#fff8e7";
-      const labelX=r*0.66;
-      ctx.font="900 15px Arial";
-      ctx.fillText(labelLines[i][0],labelX,-10,112);
-      ctx.font="700 12px Arial";
-      ctx.fillText(labelLines[i][1],labelX,10,112);
+      const labelX=r*0.68;
+      ctx.font="900 12px Arial";
+      ctx.fillText(labelLines[i][0],labelX,-8,88);
+      ctx.font="800 9px Arial";
+      ctx.fillText(labelLines[i][1],labelX,8,88);
       ctx.restore();
     });
     ctx.beginPath();ctx.arc(c,c,r,0,Math.PI*2);ctx.lineWidth=8;ctx.strokeStyle="#d7b66e";ctx.stroke();
