@@ -3768,12 +3768,14 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     startButton.disabled=false;stopButton.disabled=true;
     againButton.hidden=false;
     if(Math.abs(elapsed-10000)<=1){
-      let code="TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase();
-      try{localStorage.setItem(storageKey,JSON.stringify({code,wonAt:Date.now()}));}catch(e){}
+      let reward=null;
+      try{reward=JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){}
+      const code=reward?.code||("TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase());
+      if(!reward?.code){try{localStorage.setItem(storageKey,JSON.stringify({code,wonAt:Date.now()}));}catch(e){}}
       byId("tccGameCode").textContent=code;
       claim.hidden=false;againButton.hidden=true;
-      feedback.textContent="PERFECT TIMING! Your 10% beverage discount is unlocked.";
-      startButton.hidden=true;
+      feedback.textContent="PERFECT TIMING! Your 10% beverage discount is unlocked. Keep playing with your remaining attempts!";
+      startButton.hidden=attempts>=maxAttempts;
     }else{
       const difference=Math.abs(elapsed-10000)/1000;
       const loseMessages=elapsed<10000
@@ -3811,9 +3813,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     try{existing=JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){}
     if(existing?.code){
       byId("tccGameCode").textContent=existing.code;
-      claim.hidden=false;startButton.hidden=true;stopButton.disabled=true;
-      feedback.textContent="This table has already unlocked its reward.";
-      return;
+      claim.hidden=false;
     }
     activeAttemptsKey=attemptsKey;
     running=true;modal.classList.add("tcc-game-running");startedAt=performance.now();lastElapsed=0;
@@ -3826,9 +3826,14 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     if(running){running=false;modal.classList.remove("tcc-game-running");cancelAnimationFrame(frame);}
     timeDisplay.textContent="00.00";
     updateAttempts();
+    let existingReward=null;
+    try{existingReward=JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){}
+    if(existingReward?.code){byId("tccGameCode").textContent=existingReward.code;claim.hidden=false;}
     feedback.textContent=attempts>=maxAttempts
       ? "You've used all 3 attempts in this 3-hour window."
-      : "Ready? Take a breath and trust your timing.";
+      : existingReward?.code
+        ? "Your discount is unlocked! You can keep playing with your remaining attempts."
+        : "Ready? Take a breath and trust your timing.";
     startButton.disabled=false;startButton.hidden=attempts>=maxAttempts;stopButton.disabled=true;
     againButton.hidden=true;claim.hidden=true;updateAttempts();
   }
