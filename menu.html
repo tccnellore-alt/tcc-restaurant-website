@@ -1692,7 +1692,7 @@ html{scroll-behavior:smooth}
     <p class="tcc-game-intro">Trust your instinct. Stop the timer at exactly 10.00 seconds.</p>
     <div class="tcc-game-clock" id="tccGameClock" aria-live="off">
       <span class="tcc-game-clock-label">YOUR TIME</span>
-      <strong id="tccGameTime">00.00.00</strong>
+      <strong id="tccGameTime">00.00</strong>
       <span class="tcc-game-clock-unit">SECONDS</span>
     </div>
     <div class="tcc-game-actions">
@@ -3722,13 +3722,12 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     }
   }
   updateAttempts();
-  // Display seconds.hundredths.single-millisecond: 00.00.00 → 10.00.00.
+  // Display seconds and hundredths only; keep full millisecond precision for judging.
   const format=ms=>{
-    const whole=Math.floor(ms/1000);
-    const remainder=Math.max(0,Math.floor(ms)%1000);
-    const hundredths=Math.floor(remainder/10);
-    const milliseconds=remainder%10;
-    return String(whole).padStart(2,"0")+"."+String(hundredths).padStart(2,"0")+"."+String(milliseconds).padStart(2,"0");
+    const totalHundredths=Math.floor(Math.max(0,ms)/10);
+    const whole=Math.floor(totalHundredths/100);
+    const hundredths=totalHundredths%100;
+    return String(whole).padStart(2,"0")+"."+String(hundredths).padStart(2,"0");
   };
   function render(now){
     if(!running)return;
@@ -3753,7 +3752,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     updateAttempts();
     startButton.disabled=false;stopButton.disabled=true;
     againButton.hidden=false;
-    if(elapsed>=9999&&elapsed<=10001){
+    if(Math.abs(elapsed-10000)<=1){
       let code="TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase();
       try{localStorage.setItem(storageKey,JSON.stringify({code,wonAt:Date.now()}));}catch(e){}
       byId("tccGameCode").textContent=code;
@@ -3776,7 +3775,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
           ["🙈","The timer crossed 10… and you kept believing!"]
         ];
       const joke=loseMessages[(attempts-1)%loseMessages.length];
-      feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">'+joke[0]+'</span><strong>'+joke[1]+'</strong><small>'+(elapsed<10000?"Too early":"Too late")+" · "+difference.toFixed(3)+"s away from 10.00.00</small>";
+      feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">'+joke[0]+'</span><strong>'+joke[1]+'</strong><small>'+(elapsed<10000?"Too early":"Too late")+" · "+difference.toFixed(3)+"s away from 10.00</small>";
       modal.classList.remove("tcc-game-miss");
       void modal.offsetWidth;
       modal.classList.add("tcc-game-miss");
@@ -3801,14 +3800,14 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       return;
     }
     running=true;modal.classList.add("tcc-game-running");startedAt=performance.now();lastElapsed=0;
-    timeDisplay.textContent="00.00.00";
-    feedback.textContent="Timer is running. Stop when you feel 10.00.00 seconds has passed.";
+    timeDisplay.textContent="00.00";
+    feedback.textContent="Timer is running. Stop when you feel 10.00 seconds has passed.";
     startButton.disabled=true;stopButton.disabled=false;againButton.hidden=true;
     frame=requestAnimationFrame(render);
   }
   function resetGame(){
     if(running){running=false;modal.classList.remove("tcc-game-running");cancelAnimationFrame(frame);}
-    timeDisplay.textContent="00.00.00";
+    timeDisplay.textContent="00.00";
     feedback.textContent=attempts>=maxAttempts
       ? "You've used all 5 attempts for this player."
       : "Ready? Take a breath and trust your timing.";
