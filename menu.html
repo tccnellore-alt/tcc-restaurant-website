@@ -3708,12 +3708,19 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   const feedback=byId("tccGameFeedback");
   const againButton=byId("tccGameAgain");
   const claim=byId("tccGameClaim");
-  const storageKey="tcc-perfect10-table-won-v1";
   const attemptsKeyPrefix="tcc-perfect10-attempts-3hour-v2-";
+  const rewardKeyPrefix="tcc-perfect10-table-won-3hour-v2-";
   const maxAttempts=3;
   const attemptsDisplay=byId("tccGameAttempts");
   let attempts=0,running=false,startedAt=0,frame=0,lastElapsed=0;
-  let attemptsKey="",activeAttemptsKey="";
+  let attemptsKey="",activeAttemptsKey="",activeRewardKey="";
+  function getCurrentThreeHourWindowId(){
+    const now=new Date();
+    const pad=value=>String(value).padStart(2,"0");
+    const windowStartHour=Math.floor(now.getHours()/3)*3;
+    return now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate())+"-"+pad(windowStartHour);
+  }
+  function getCurrentRewardKey(){return rewardKeyPrefix+getCurrentThreeHourWindowId();}
   function getCurrentThreeHourKey(){
     const now=new Date();
     const pad=value=>String(value).padStart(2,"0");
@@ -3769,9 +3776,9 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     againButton.hidden=false;
     if(Math.abs(elapsed-10000)<=1){
       let reward=null;
-      try{reward=JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){}
+      try{reward=JSON.parse(localStorage.getItem(activeRewardKey||getCurrentRewardKey())||"null");}catch(e){}
       const code=reward?.code||("TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase());
-      if(!reward?.code){try{localStorage.setItem(storageKey,JSON.stringify({code,wonAt:Date.now()}));}catch(e){}}
+      if(!reward?.code){try{localStorage.setItem(activeRewardKey||getCurrentRewardKey(),JSON.stringify({code,wonAt:Date.now()}));}catch(e){}}
       byId("tccGameCode").textContent=code;
       claim.hidden=false;againButton.hidden=true;
       feedback.textContent="PERFECT TIMING! Your 10% beverage discount is unlocked. Keep playing with your remaining attempts!";
@@ -3810,12 +3817,13 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       return;
     }
     let existing=null;
-    try{existing=JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){}
+    try{existing=JSON.parse(localStorage.getItem(getCurrentRewardKey())||"null");}catch(e){}
     if(existing?.code){
       byId("tccGameCode").textContent=existing.code;
       claim.hidden=false;
     }
     activeAttemptsKey=attemptsKey;
+    activeRewardKey=getCurrentRewardKey();
     running=true;modal.classList.add("tcc-game-running");startedAt=performance.now();lastElapsed=0;
     timeDisplay.textContent="00.00";
     feedback.textContent="Timer is running. Stop when you feel 10.00 seconds has passed.";
@@ -3827,15 +3835,16 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     timeDisplay.textContent="00.00";
     updateAttempts();
     let existingReward=null;
-    try{existingReward=JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){}
-    if(existingReward?.code){byId("tccGameCode").textContent=existingReward.code;claim.hidden=false;}
+    try{existingReward=JSON.parse(localStorage.getItem(getCurrentRewardKey())||"null");}catch(e){}
+    claim.hidden=!existingReward?.code;
+    if(existingReward?.code){byId("tccGameCode").textContent=existingReward.code;}
     feedback.textContent=attempts>=maxAttempts
       ? "You've used all 3 attempts in this 3-hour window."
       : existingReward?.code
         ? "Your discount is unlocked! You can keep playing with your remaining attempts."
         : "Ready? Take a breath and trust your timing.";
     startButton.disabled=false;startButton.hidden=attempts>=maxAttempts;stopButton.disabled=true;
-    againButton.hidden=true;claim.hidden=true;updateAttempts();
+    againButton.hidden=true;updateAttempts();
   }
   byId("tccGameLaunch").addEventListener("click",()=>{setOpen(true);resetGame();});
   byId("tccGameClose").addEventListener("click",()=>{setOpen(false);resetGame();});
