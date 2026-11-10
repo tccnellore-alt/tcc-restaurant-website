@@ -2630,7 +2630,7 @@ const TCC_VERIFIED_PHOTOS = {
   "Classic Matcha (Hot / Cold)": {url:"images/menu/optimized/classic-matcha-400.webp",large:"images/menu/optimized/classic-matcha-800.webp"},
   "French Fries Classic": {url:"images/menu/optimized/french-fries-classic-400.webp",large:"images/menu/optimized/french-fries-classic-800.webp"},
   "Iced Latte": {url:"images/menu/optimized/iced-latte-400.webp",large:"images/menu/optimized/iced-latte-800.webp"},
-  "Iced Mocha": {url:"images/menu/optimized/ iced-mocha-400.webp",large:"images/menu/optimized/ iced-mocha-800.webp"},
+  "Iced Mocha": {url:"images/menu/optimized/iced-mocha-400.webp",large:"images/menu/optimized/iced-mocha-800.webp"},
   "Iced Americano": {url:"images/menu/optimized/iced-americano-400.webp",large:"images/menu/optimized/iced-americano-800.webp"},
   "Corn Ribs": {url:"images/menu/optimized/corn-ribs-400.webp",large:"images/menu/optimized/corn-ribs-800.webp"},
   "Maska Bun": {url:"images/menu/optimized/maska-bun-400.webp",large:"images/menu/optimized/maska-bun-800.webp"},
@@ -3274,8 +3274,8 @@ function tccShowDrinkCard(drink){
   let img=photoWrap.querySelector("img");
   if(!img){img=document.createElement("img");photoWrap.replaceChildren(img);}
   const normalizePhotoPath=value=>{
-   if(!value||value.startsWith("data:")||/^https?:\/\//i.test(value)||value.startsWith("/"))return value;
-   return "/"+value.replace(/^\\.\//,"");
+   if(!value||value.startsWith("data:")||/^https?:\/\//i.test(value))return value;
+   return value.startsWith("/")?value:"/"+value.replace(/^\.\/+/, "");
   };
   const smallUrl=normalizePhotoPath(verifiedPhoto.url);
   const largeUrl=normalizePhotoPath(verifiedPhoto.large);
@@ -3286,11 +3286,14 @@ function tccShowDrinkCard(drink){
    img.srcset=smallUrl+" 400w, "+largeUrl+" 800w";
    img.sizes="(max-width: 600px) 112px, 180px";
   }
+  img.classList.remove("tcc-photo-ready");
+  img.addEventListener("load",()=>img.classList.add("tcc-photo-ready"),{once:true});
   img.loading="eager";
   img.decoding="async";
   img.fetchPriority="high";
   img.style.cssText="display:block;width:100%;height:100%;object-fit:cover;object-position:center";
   img.alt=drink.name+" — TCC drink recommendation";
+  if(img.complete&&img.naturalWidth>0)img.classList.add("tcc-photo-ready");
   img.onerror=()=>{
    img.removeAttribute("srcset");
    img.removeAttribute("sizes");
@@ -3307,13 +3310,16 @@ function tccShowDrinkCard(drink){
   const img=photoWrap.querySelector("img");
   if(img){
    const original=img.currentSrc||img.src||img.getAttribute("data-src");
-   if(original)img.src=original.startsWith("data:")||/^https?:\/\//i.test(original)||original.startsWith("/")?original:"/"+original.replace(/^\\.\//,"");
+   if(original)img.src=original.startsWith("data:")||/^https?:\/\//i.test(original)?original:(original.startsWith("/")?original:"/"+original.replace(/^\.\/+/, ""));
    img.removeAttribute("srcset");
    img.removeAttribute("sizes");
+   img.classList.remove("tcc-photo-ready");
+   img.addEventListener("load",()=>img.classList.add("tcc-photo-ready"),{once:true});
    img.loading="eager";
    img.decoding="async";
    img.style.cssText="display:block;width:100%;height:100%;object-fit:cover;object-position:center";
    img.alt=drink.name+" — TCC drink recommendation";
+   if(img.complete&&img.naturalWidth>0)img.classList.add("tcc-photo-ready");
    img.onerror=()=>{photoWrap.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';};
   }
   photoBox.appendChild(photoWrap);
