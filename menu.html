@@ -1575,6 +1575,31 @@ body:not(.menu-text-mode) .menu-group .m-item > strong{
 
 
 
+/* TCC MENU EXPERIENCE ENHANCEMENTS v1 */
+html{scroll-behavior:smooth}
+.menu-group .menu-section{scroll-margin-top:190px}
+.menu-tabs .menu-tab,.food-tabs .food-tab{transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease}
+.menu-tabs .menu-tab:active,.food-tabs .food-tab:active{transform:scale(.97)}
+.menu-experience-tools{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;margin-top:9px}
+.menu-experience-tools button{min-height:36px;padding:8px 12px;border:1px solid rgba(23,60,43,.16);border-radius:999px;background:#fff;color:#31513f;font:700 10px/1.2 Manrope,Arial,sans-serif;letter-spacing:.04em;cursor:pointer;transition:all .2s ease}
+.menu-experience-tools button[aria-pressed=true]{background:#173c2b;border-color:#173c2b;color:#fffaf0}
+.menu-experience-tools .menu-filter-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.menu-experience-tools .menu-filter-label{color:#7b806f;font:700 9px Manrope,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.menu-experience-tools .menu-fav-toggle{display:inline-flex;align-items:center;gap:6px}
+.menu-experience-tools .menu-fav-count{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 4px;border-radius:20px;background:#e9dfc9;color:#173c2b;font-size:9px}
+.m-item{position:relative}
+.m-favourite-button{position:absolute;z-index:3;top:9px;right:9px;display:grid;place-items:center;width:35px;height:35px;padding:0;border:1px solid rgba(255,255,255,.75);border-radius:50%;background:rgba(255,250,240,.94);color:#526057;box-shadow:0 3px 12px rgba(0,0,0,.12);font:22px/1 Arial,sans-serif;cursor:pointer;transition:transform .2s ease,background .2s ease,color .2s ease}
+.m-favourite-button:active{transform:scale(.88)}
+.m-favourite-button[aria-pressed=true]{background:#173c2b;color:#e8c98a;border-color:#e8c98a}
+.m-item.is-favourite{border-color:rgba(183,154,90,.65)!important}
+.menu-search-status{min-height:15px;margin:6px 2px 0;color:#7b806f;font:11px/1.3 Manrope,Arial,sans-serif}
+.m-photo-wrap.is-loading{background:linear-gradient(100deg,#eee6d5 20%,#faf5e9 38%,#eee6d5 56%);background-size:200% 100%;animation:tccPhotoShimmer 1.25s ease-in-out infinite}
+.m-photo-wrap.is-loading .m-photo{opacity:0}
+.m-photo-wrap .m-photo{transition:opacity .25s ease,transform .35s ease}
+.m-photo-wrap.is-loaded .m-photo{opacity:1}
+@keyframes tccPhotoShimmer{to{background-position-x:-200%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.menu-tabs .menu-tab,.food-tabs .food-tab,.m-favourite-button,.m-photo-wrap .m-photo{transition:none}.m-photo-wrap.is-loading{animation:none}.menu-group.active .menu-section{animation:none}}
+@media(max-width:480px){.menu-experience-tools{align-items:flex-start}.menu-experience-tools .menu-filter-group{gap:5px}.menu-experience-tools button{padding:8px 10px;font-size:9px}.m-favourite-button{width:33px;height:33px;top:8px;right:8px}}
 </style>
 </head>
 <body>
@@ -1611,6 +1636,16 @@ body:not(.menu-text-mode) .menu-group .m-item > strong{
     </div>
     <div class="food-tabs" id="foodTabs" aria-label="Category sections"></div>
     <input class="menu-search" id="menuSearch" type="search" placeholder="Search the entire menu…" aria-label="Search menu">
+<div class="menu-experience-tools" id="menuExperienceTools" aria-label="Menu quick filters">
+  <div class="menu-filter-group" id="menuDietFilters" aria-label="Dietary filter">
+    <span class="menu-filter-label">Food</span>
+    <button type="button" data-diet-filter="all" aria-pressed="true">All</button>
+    <button type="button" data-diet-filter="VEG" aria-pressed="false">Veg</button>
+    <button type="button" data-diet-filter="NON-VEG" aria-pressed="false">Non-veg</button>
+  </div>
+  <button type="button" class="menu-fav-toggle" id="menuFavToggle" aria-pressed="false">♡ Saved <span class="menu-fav-count" id="menuFavCount">0</span></button>
+</div>
+<div class="menu-search-status" id="menuSearchStatus" aria-live="polite"></div>
   </div>
 </div>
 <div class="food-spotlight-backdrop" id="foodSpotlight" aria-hidden="true">
@@ -2524,7 +2559,126 @@ body:not(.menu-text-mode) .menu-group .m-item > strong{
   </div>
 </footer>
 <nav class="mobile-bar" aria-label="Quick actions"><a href="tel:+919059059553">☎ Call</a><a class="accent" href="menu.html">☕ Menu</a><a href="https://maps.app.goo.gl/LTdYTXNZPJU4qetv6?g_st=ac" target="_blank" rel="noopener">⌖ Map</a><a href="https://search.google.com/local/writereview?placeid=ChIJRY3c3XnzTDoRMsXmWvt_FMg" target="_blank" rel="noopener" aria-label="Rate TCC on Google">★ Rate Us</a></nav>
-<script src="script.js"></script>
+<script src="script.js">/* TCC MENU EXPERIENCE ENHANCEMENTS v1 */
+(function initTccMenuExperience(){
+  const start=()=>{
+    const root=document.querySelector(".menu-content");
+    const dietBar=document.getElementById("menuDietFilters");
+    const favToggle=document.getElementById("menuFavToggle");
+    const status=document.getElementById("menuSearchStatus");
+    const searchInput=document.getElementById("menuSearch");
+    if(!root||!dietBar||!favToggle||!searchInput)return;
+    const storageKey="tcc-menu-favourites-v1";
+    let favourites=new Set(),dietMode="all",favouritesOnly=false;
+    try{favourites=new Set(JSON.parse(localStorage.getItem(storageKey)||"[]"));}catch(e){}
+    const cards=()=>Array.from(root.querySelectorAll(".m-item"));
+    const cleanName=item=>{
+      const h=item.querySelector("h3");if(!h)return "";
+      const clone=h.cloneNode(true);
+      clone.querySelectorAll(".food-badge,.tcc-bestseller-badge,.tcc-new-arrival-badge,.availability-status,[class*='badge']").forEach(x=>x.remove());
+      return clone.textContent.replace(/\s+/g," ").trim();
+    };
+    const itemKey=item=>cleanName(item)+"::"+(item.closest(".menu-section")?.querySelector("h2")?.textContent.trim()||"");
+    const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify(Array.from(favourites)));}catch(e){}};
+    const updateCount=()=>{
+      const count=document.getElementById("menuFavCount");
+      if(count)count.textContent=String(favourites.size);
+    };
+    function addFavouriteButtons(){
+      cards().forEach(item=>{
+        const key=itemKey(item);
+        item.classList.toggle("is-favourite",favourites.has(key));
+        let button=item.querySelector(".m-favourite-button");
+        if(!button){
+          button=document.createElement("button");
+          button.type="button";button.className="m-favourite-button";
+          item.appendChild(button);
+        }
+        const saved=favourites.has(key);
+        button.setAttribute("aria-pressed",String(saved));
+        button.setAttribute("aria-label",saved?"Remove "+cleanName(item)+" from saved items":"Save "+cleanName(item));
+        button.textContent=saved?"♥":"♡";
+      });
+      updateCount();
+    }
+    addFavouriteButtons();
+    document.addEventListener("click",event=>{
+      const button=event.target.closest(".m-favourite-button");if(!button)return;
+      event.preventDefault();event.stopPropagation();
+      const item=button.closest(".m-item");if(!item)return;
+      const key=itemKey(item);
+      if(favourites.has(key))favourites.delete(key);else favourites.add(key);
+      save();addFavouriteButtons();
+    });
+    const originalFilter=window.filter;
+    const applyFilters=()=>{
+      const active=document.querySelector(".menu-group.active");
+      if(active?.id==="food"&&dietMode!=="all"){
+        active.querySelectorAll(".m-item").forEach(item=>{
+          if(item.style.display!=="none"&&item.dataset.foodType!==dietMode)item.style.setProperty("display","none","important");
+        });
+        active.querySelectorAll(".menu-section").forEach(section=>{
+          section.style.display=Array.from(section.querySelectorAll(".m-item")).some(item=>item.style.display!=="none")?"block":"none";
+        });
+      }
+      if(favouritesOnly&&active){
+        active.querySelectorAll(".m-item").forEach(item=>{
+          if(item.style.display!=="none"&&!favourites.has(itemKey(item)))item.style.setProperty("display","none","important");
+        });
+        active.querySelectorAll(".menu-section").forEach(section=>{
+          section.style.display=Array.from(section.querySelectorAll(".m-item")).some(item=>item.style.display!=="none")?"block":"none";
+        });
+      }
+      const visible=Array.from(root.querySelectorAll(".menu-group.active .m-item")).filter(item=>item.style.display!=="none");
+      const q=searchInput.value.trim();
+      if(status){
+        if(favouritesOnly)status.textContent=visible.length+" saved item"+(visible.length===1?"":"s")+" in this category";
+        else if(q)status.textContent=visible.length+" matching item"+(visible.length===1?"":"s");
+        else status.textContent="";
+      }
+      const noResults=document.getElementById("noResults");
+      if(noResults&&(favouritesOnly||dietMode!=="all"))noResults.style.display=visible.length?"none":"block";
+    };
+    if(typeof originalFilter==="function")window.filter=function(q){originalFilter(q);applyFilters();};
+    dietBar.addEventListener("click",event=>{
+      const button=event.target.closest("[data-diet-filter]");if(!button)return;
+      dietMode=button.dataset.dietFilter;
+      dietBar.querySelectorAll("[data-diet-filter]").forEach(x=>x.setAttribute("aria-pressed",String(x===button)));
+      if(document.querySelector(".menu-group.active")?.id!=="food"&&status)status.textContent="Choose Food to apply this dietary filter.";
+      window.filter(searchInput.value);
+    });
+    favToggle.addEventListener("click",()=>{
+      favouritesOnly=!favouritesOnly;
+      favToggle.setAttribute("aria-pressed",String(favouritesOnly));
+      favToggle.innerHTML=(favouritesOnly?"♥":"♡")+' Saved <span class="menu-fav-count" id="menuFavCount">'+favourites.size+"</span>";
+      window.filter(searchInput.value);
+      if(favouritesOnly&&favourites.size===0&&status)status.textContent="You haven't saved any menu items yet.";
+    });
+    searchInput.addEventListener("keydown",event=>{
+      if(event.key==="Escape"){
+        searchInput.value="";
+        searchInput.dispatchEvent(new Event("input",{bubbles:true}));
+        window.filter("");
+      }
+    });
+    document.addEventListener("click",event=>{
+      if(event.target.closest(".menu-tab")||event.target.closest(".food-tab")){
+        requestAnimationFrame(()=>{addFavouriteButtons();applyFilters();});
+      }
+    });
+    root.querySelectorAll(".m-photo-wrap").forEach(wrap=>{
+      const img=wrap.querySelector(".m-photo");if(!img)return;
+      const done=()=>{wrap.classList.remove("is-loading");if(img.naturalWidth)wrap.classList.add("is-loaded");};
+      if(img.complete&&img.naturalWidth){wrap.classList.add("is-loaded");return;}
+      wrap.classList.add("is-loading");
+      img.addEventListener("load",done,{once:true});
+      img.addEventListener("error",done,{once:true});
+    });
+    updateCount();
+  };
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});else start();
+})();
+</script>
 <script>
 
 /* Strict menu-photo audit: only source pages that identify the named dish are allowed. */
