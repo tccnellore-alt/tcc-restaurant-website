@@ -3658,7 +3658,14 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   const claim=byId("tccGameClaim");
   const storageKey="tcc-perfect10-table-won-v1";
   let running=false,startedAt=0,frame=0,lastElapsed=0;
-  const format=ms=>(ms/1000).toFixed(2);
+  // Display seconds.hundredths.single-millisecond: 00.00.00 → 10.00.00.
+  const format=ms=>{
+    const whole=Math.floor(ms/1000);
+    const remainder=Math.max(0,Math.floor(ms)%1000);
+    const hundredths=Math.floor(remainder/10);
+    const milliseconds=remainder%10;
+    return String(whole).padStart(2,"0")+"."+String(hundredths).padStart(2,"0")+"."+String(milliseconds).padStart(2,"0");
+  };
   function render(now){
     if(!running)return;
     lastElapsed=now-startedAt;
@@ -3689,8 +3696,8 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     }else{
       const difference=Math.abs(elapsed-10000)/1000;
       feedback.textContent=elapsed<10000
-        ? "Too early! You stopped "+difference.toFixed(2)+"s before 10.00. Give it another try."
-        : "Too late! You went "+difference.toFixed(2)+"s past 10.00. You can try again.";
+        ? "Too early! You stopped "+difference.toFixed(3)+"s before 10.00.00. Give it another try."
+        : "Too late! You went "+difference.toFixed(3)+"s past 10.00.00. You can try again.";
     }
   }
   function startGame(){
@@ -3703,8 +3710,8 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       return;
     }
     running=true;startedAt=performance.now();lastElapsed=0;
-    timeDisplay.textContent="00.00";
-    feedback.textContent="Timer is running. Stop when you feel 10.00 seconds has passed.";
+    timeDisplay.textContent="00.00.00";
+    feedback.textContent="Timer is running. Stop when you feel 10.00.00 seconds has passed.";
     startButton.disabled=true;stopButton.disabled=false;againButton.hidden=true;
     frame=requestAnimationFrame(render);
   }
