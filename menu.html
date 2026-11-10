@@ -1694,6 +1694,9 @@ html{scroll-behavior:smooth}
       <div class="tcc-wheel-rotor" id="tccWheelRotor">
         <svg id="tccWheelSvg" class="tcc-wheel-svg" viewBox="0 0 720 720" role="img" aria-label="Prize wheel with twelve equal sections"></svg>
       </div>
+      <div class="tcc-wheel-label-rotor" id="tccWheelLabelRotor" aria-hidden="true">
+        <svg id="tccWheelLabels" class="tcc-wheel-labels" viewBox="0 0 720 720"></svg>
+      </div>
       <div class="tcc-wheel-pointer" aria-hidden="true"></div>
       <div class="tcc-wheel-hub" aria-hidden="true">TCC</div>
     </div>
@@ -3689,38 +3692,41 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
 </script>
 
 <script>
-/* TCC SPIN THE WHEEL — SVG rebuild / personal test version */
+/* TCC SPIN THE WHEEL — independent label layer */
 (function(){
   const byId=id=>document.getElementById(id),modal=byId("tccGame");
   if(!modal)return;
-  const svg=byId("tccWheelSvg"),rotor=byId("tccWheelRotor"),spinButton=byId("tccWheelSpin");
-  const feedback=byId("tccWheelFeedback"),count=byId("tccWheelCount");
-  const prizes=["5% OFF · One beverage","Better Luck Next Time","10% OFF · One beverage","5% OFF · Beverage bill","FREE · Hide & Seek Milano","Better Luck Next Time","Better Luck Next Time","Better Luck Next Time","5% OFF · Complete food bill","10% OFF · One food item","EXTRA SPIN · Spin again","Better Luck Next Time"],labels=[["5% OFF","1 DRINK"],["TRY AGAIN","NEXT TIME"],["10% OFF","1 DRINK"],["5% OFF","DRINK BILL"],["FREE","HIDE & SEEK"],["TRY AGAIN","NEXT TIME"],["TRY AGAIN","NEXT TIME"],["TRY AGAIN","NEXT TIME"],["5% OFF","FOOD BILL"],["10% OFF","1 FOOD ITEM"],["EXTRA SPIN","SPIN AGAIN"],["TRY AGAIN","NEXT TIME"]];
-  const fullLines=[["5% OFF","ON ONE","BEVERAGE"],["BETTER LUCK","NEXT TIME",""],["10% OFF","ON ONE","BEVERAGE"],["5% OFF ON","BEVERAGES","BILL"],["FREE HIDE &","SEEK MILANO",""],["BETTER LUCK","NEXT TIME",""],["BETTER LUCK","NEXT TIME",""],["BETTER LUCK","NEXT TIME",""],["5% OFF ON","COMPLETE FOOD","BILL"],["10% OFF ON","ONE FOOD","ITEM"],["EXTRA SPIN","SPIN AGAIN",""],["BETTER LUCK","NEXT TIME",""]];
+  const wheelRotor=byId("tccWheelRotor"),labelRotor=byId("tccWheelLabelRotor");
+  const wheelSvg=byId("tccWheelSvg"),labelsSvg=byId("tccWheelLabels");
+  const spinButton=byId("tccWheelSpin"),feedback=byId("tccWheelFeedback"),count=byId("tccWheelCount");
+  const prizes=["5% OFF · One beverage","Better Luck Next Time","10% OFF · One beverage","5% OFF on beverages bill","Free Hide & Seek Milano","Better Luck Next Time","Better Luck Next Time","Better Luck Next Time","5% OFF on complete food bill","10% OFF on one food item","Extra Spin – Spin Again","Better Luck Next Time"];
+  const fullLines=[["5% OFF","ON ONE","BEVERAGE"],["BETTER LUCK","NEXT TIME"],["10% OFF","ON ONE","BEVERAGE"],["5% OFF","ON","BEVERAGES BILL"],["FREE HIDE &","SEEK MILANO"],["BETTER LUCK","NEXT TIME"],["BETTER LUCK","NEXT TIME"],["BETTER LUCK","NEXT TIME"],["5% OFF","COMPLETE FOOD","BILL"],["10% OFF","ONE FOOD","ITEM"],["EXTRA SPIN","SPIN AGAIN"],["BETTER LUCK","NEXT TIME"]];
   const colors=["#17452f","#e9d7aa","#b58d49","#f6edda","#2c6748","#d8bd7c","#214f38","#f1e4c7","#9f773b","#e6d4a7","#315d42","#f7efdf"];
   const NS="http://www.w3.org/2000/svg",center=360,radius=350,step=30;
   let rotation=0,spinning=false,spins=0,extraSpinAvailable=false,finished=false;
   const storageKey="tcc-wheel-game3-test-state-v1";
-  function el(tag,attrs){const node=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,String(v)));return node;}
-  function point(angle,r){const rad=angle*Math.PI/180;return{x:center+Math.cos(rad)*r,y:center+Math.sin(rad)*r};}
+  function svgEl(tag,attrs){const node=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,String(v)));return node;}
+  function polar(degrees,r){const a=degrees*Math.PI/180;return{x:center+Math.cos(a)*r,y:center+Math.sin(a)*r};}
   function drawWheel(){
-    svg.replaceChildren();
-    const labelGroups=[];
+    wheelSvg.replaceChildren();labelsSvg.replaceChildren();
     for(let i=0;i<12;i++){
-      const start=-90+i*step,end=start+step,mid=start+step/2,p1=point(start,radius),p2=point(end,radius);
-      svg.appendChild(el("path",{d:`M ${center} ${center} L ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A ${radius} ${radius} 0 0 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} Z`,fill:colors[i],stroke:"#f8edcf","stroke-width":"5","stroke-linejoin":"round"}));
-      const p=point(mid,222),darkText=i%2===1;
-      const group=el("g",{class:"tcc-wheel-label-group"});
-      const text=el("text",{x:p.x,y:p.y-(fullLines[i].length===3?11:5),"text-anchor":"middle","dominant-baseline":"middle",fill:darkText?"#173c2b":"#fff8e7","font-family":"Arial, sans-serif","font-size":"12.5","font-weight":"900","letter-spacing":".1",class:"tcc-wheel-label-text"});
+      const start=-90+i*step,end=start+step,mid=start+step/2;
+      const p1=polar(start,radius),p2=polar(end,radius);
+      wheelSvg.appendChild(svgEl("path",{d:`M ${center} ${center} L ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A ${radius} ${radius} 0 0 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} Z`,fill:colors[i],stroke:"#fff4dc","stroke-width":"5","stroke-linejoin":"round"}));
+      const p=polar(mid,224),dark=i%2===1;
+      const group=svgEl("g",{class:"tcc-wheel-label-group","data-index":i});
+      const text=svgEl("text",{x:p.x,y:p.y-(fullLines[i].length===3?17:9),"text-anchor":"middle","dominant-baseline":"middle",fill:dark?"#173c2b":"#fff8e7","font-family":"Arial, sans-serif","font-size":"19","font-weight":"800","letter-spacing":".15"});
       fullLines[i].forEach((line,j)=>{
-        const span=el("tspan",{x:p.x,dy:j===0?"0":"14"});
-        span.textContent=line;
-        text.appendChild(span);
+        const span=svgEl("tspan",{x:p.x,dy:j===0?"0":"21"});
+        span.textContent=line;text.appendChild(span);
       });
-      group.appendChild(text);svg.appendChild(group);labelGroups.push(text);
+      group.appendChild(text);labelsSvg.appendChild(group);
     }
-    svg.appendChild(el("circle",{cx:center,cy:center,r:radius,fill:"none",stroke:"#d7b66e","stroke-width":"9"}));
-    rotor._labelNodes=labelGroups;
+    wheelSvg.appendChild(svgEl("circle",{cx:center,cy:center,r:radius,fill:"none",stroke:"#d7b66e","stroke-width":"10"}));
+    labelsSvg.querySelectorAll(".tcc-wheel-label-group").forEach((group,i)=>{
+      const mid=-90+i*30+15,p=polar(mid,224);
+      group.setAttribute("transform",`rotate(0 ${p.x} ${p.y})`);
+    });
   }
   function setOpen(open){modal.classList.toggle("is-open",open);modal.setAttribute("aria-hidden",String(!open));document.body.classList.toggle("tcc-game-open",open);if(open)byId("tccGameClose").focus();}
   function readState(){try{return JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){return null;}}
@@ -3735,12 +3741,17 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     spinning=true;spinButton.disabled=true;feedback.textContent="The wheel is spinning… good luck!";
     const index=Math.floor(Math.random()*12),target=(360-(index*30+15)+360)%360;
     const current=((rotation%360)+360)%360,delta=(target-current+360)%360;
-    rotation+=360*6+delta;rotor.style.transform="rotate("+rotation+"deg)";
-    (rotor._labelNodes||[]).forEach(node=>{node.style.transform="rotate("+(-rotation)+"deg)";});
+    rotation+=360*6+delta;
+    wheelRotor.style.transform="rotate("+rotation+"deg)";
+    labelRotor.style.transform="rotate("+rotation+"deg)";
+    labelsSvg.querySelectorAll(".tcc-wheel-label-group").forEach((group,i)=>{
+      const p=polar(-90+i*30+15,224);
+      group.setAttribute("transform",`rotate(${-rotation} ${p.x} ${p.y})`);
+    });
     window.setTimeout(()=>{
       spinning=false;spins++;
       let result=prizes[index];
-      feedback.textContent=result.startsWith("EXTRA SPIN")?"🎉 EXTRA SPIN! Go ahead and spin again!":result.startsWith("Better Luck")?"😅 Better luck next time!":"🎊 Congratulations! "+result;saveState({spins,lastResult:result,history:[...(readState()?.history||[]),result].slice(-30)});renderState();spinButton.disabled=false;
+      feedback.textContent=result.startsWith("Extra Spin")?"🎉 EXTRA SPIN! Go ahead and spin again!":result.startsWith("Better Luck")?"😅 Better luck next time!":"🎊 Congratulations! "+result;saveState({spins,lastResult:result,history:[...(readState()?.history||[]),result].slice(-30)});renderState();spinButton.disabled=false;
     },5350);
   }
   drawWheel();renderState();
