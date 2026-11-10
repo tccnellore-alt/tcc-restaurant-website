@@ -3480,7 +3480,7 @@ document.getElementById("tccStartDrinkQuiz")?.addEventListener("click",()=>{
 tccRenderQuizStep();
 
 
-function showGroup(id){
+function showGroup(id,scrollToCategory=true){
   tabs.forEach(t=>t.classList.toggle("active",t.dataset.target===id));
   groups.forEach(g=>g.classList.toggle("active",g.id===id));
   const intro=document.getElementById("menuCategoryIntro");
@@ -3498,19 +3498,20 @@ function showGroup(id){
   search.value="";
   filter("");
   syncPastaAddon();
-  const menuTools=document.querySelector(".menu-tools");
-  const categoryIntro=document.getElementById("menuCategoryIntro");
-  const resetMenuScroll=()=>{
-    if(!categoryIntro)return;
-    const stickyHeight=menuTools ? menuTools.getBoundingClientRect().height : 0;
-    categoryIntro.style.scrollMarginTop=(stickyHeight+8)+"px";
-    // Use the actual category heading as the anchor. This avoids calculating
-    // from a sticky element whose viewport position changes while scrolling.
-    categoryIntro.scrollIntoView({block:"start",inline:"nearest",behavior:"instant"});
-  };
-  resetMenuScroll();
-  requestAnimationFrame(resetMenuScroll);
-  requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
+  if(scrollToCategory){
+    const menuTools=document.querySelector(".menu-tools");
+    const categoryIntro=document.getElementById("menuCategoryIntro");
+    const resetMenuScroll=()=>{
+      if(!categoryIntro)return;
+      const stickyHeight=menuTools ? menuTools.getBoundingClientRect().height : 0;
+      categoryIntro.style.scrollMarginTop=(stickyHeight+8)+"px";
+      // Keep category switching anchored below the sticky menu navigation.
+      categoryIntro.scrollIntoView({block:"start",inline:"nearest",behavior:"instant"});
+    };
+    resetMenuScroll();
+    requestAnimationFrame(resetMenuScroll);
+    requestAnimationFrame(()=>requestAnimationFrame(resetMenuScroll));
+  }
 }
 const foodSpotlight=document.getElementById("foodSpotlight");
 const foodSpotlightSeenKey="tcc-chefs-special-tuscan-honey-chicken-v1";
@@ -3613,7 +3614,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   addTccMenuPhotos();
   initTccScrollPhotography();
   window.__foodCategory="all";
-  showGroup("coffee");
+  showGroup("coffee",false);
 });
 
 /* One-time photo reveal only — no parallax, zoom or scroll movement. */
