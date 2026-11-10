@@ -288,17 +288,17 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
 .menu-page .m-photo-wrap .m-photo{
   --tcc-photo-shift:0px;
   opacity:0;
-  transform:translate3d(0,calc(var(--tcc-photo-shift) + 5px),0) scale(1.025);
-  transition:opacity 650ms cubic-bezier(.22,.61,.36,1),transform 700ms cubic-bezier(.22,.61,.36,1);
+  transform:translate3d(0,calc(var(--tcc-photo-shift) + 9px),0) scale(1.07);
+  transition:opacity 800ms cubic-bezier(.22,.61,.36,1),transform 120ms linear;
   will-change:transform,opacity;
 }
 .menu-page .m-photo-wrap .m-photo.tcc-photo-ready{
   opacity:1;
-  transform:translate3d(0,var(--tcc-photo-shift),0) scale(1);
+  transform:translate3d(0,var(--tcc-photo-shift),0) scale(1.07);
 }
 @media(hover:hover){
   .menu-page .m-item:hover .m-photo.tcc-photo-ready{
-    transform:translate3d(0,var(--tcc-photo-shift),0) scale(1.025);
+    transform:translate3d(0,var(--tcc-photo-shift),0) scale(1.085);
   }
 }
 @media(prefers-reduced-motion:reduce){
