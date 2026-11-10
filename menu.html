@@ -1611,6 +1611,38 @@ html{scroll-behavior:smooth}
       <span class="takeaway-charge-icon" aria-hidden="true">🛍</span>
       <span><strong>TAKEAWAY ORDERS</strong><small class="takeaway-charge-amount">₹10 Packaging Charge</small><small class="takeaway-charge-detail">Per product on takeaway orders</small></span>
     </div>
+    <button type="button" class="tcc-game-launch" id="tccGameLaunch">
+      <span class="tcc-game-launch-icon" aria-hidden="true">✦</span>
+      <span><strong>THE PERFECT 10 CHALLENGE</strong><small>Stop the timer at exactly 10.00 seconds · Win 10% off a beverage</small></span>
+      <span class="tcc-game-launch-arrow" aria-hidden="true">→</span>
+    </button>
+  </div>
+</section>
+<section class="tcc-game-backdrop" id="tccGame" aria-hidden="true">
+  <div class="tcc-game-dialog" role="dialog" aria-modal="true" aria-labelledby="tccGameTitle">
+    <button class="tcc-game-close" id="tccGameClose" type="button" aria-label="Close game">×</button>
+    <div class="tcc-game-kicker">TCC MINI GAME</div>
+    <h2 id="tccGameTitle">The Perfect 10</h2>
+    <p class="tcc-game-intro">Trust your instinct. Stop the timer at exactly 10.00 seconds.</p>
+    <div class="tcc-game-clock" id="tccGameClock" aria-live="off">
+      <span class="tcc-game-clock-label">YOUR TIME</span>
+      <strong id="tccGameTime">00.00</strong>
+      <span class="tcc-game-clock-unit">SECONDS</span>
+    </div>
+    <div class="tcc-game-actions">
+      <button type="button" class="tcc-game-button" id="tccGameStart">▶&nbsp; START</button>
+      <button type="button" class="tcc-game-button tcc-game-stop" id="tccGameStop" disabled>■&nbsp; STOP</button>
+    </div>
+    <p class="tcc-game-feedback" id="tccGameFeedback" aria-live="polite">Ready? Take a breath and trust your timing.</p>
+    <div class="tcc-game-prize"><span aria-hidden="true">☕</span><div><strong>WIN 10% OFF</strong><small>Any one beverage</small></div></div>
+    <div class="tcc-game-rules"><span>∞ Multiple attempts</span><span>1 discount per table</span></div>
+    <div class="tcc-game-claim" id="tccGameClaim" hidden>
+      <strong>YOU NAILED THE PERFECT 10!</strong>
+      <span>Your table's reward code</span>
+      <code id="tccGameCode"></code>
+      <small>Show this screen to our team before placing your order. One beverage only.</small>
+    </div>
+    <button type="button" class="tcc-game-again" id="tccGameAgain" hidden>TRY AGAIN</button>
   </div>
 </section>
 <div class="menu-tools">
@@ -3611,5 +3643,93 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
 });
 
 </script>
+
+<script>
+/* TCC THE PERFECT 10 — count-up timing challenge */
+(function(){
+  const byId=id=>document.getElementById(id);
+  const modal=byId("tccGame");
+  if(!modal)return;
+  const timeDisplay=byId("tccGameTime");
+  const startButton=byId("tccGameStart");
+  const stopButton=byId("tccGameStop");
+  const feedback=byId("tccGameFeedback");
+  const againButton=byId("tccGameAgain");
+  const claim=byId("tccGameClaim");
+  const storageKey="tcc-perfect10-table-won-v1";
+  let running=false,startedAt=0,frame=0,lastElapsed=0;
+  const format=ms=>(ms/1000).toFixed(2);
+  function render(now){
+    if(!running)return;
+    lastElapsed=now-startedAt;
+    timeDisplay.textContent=format(lastElapsed);
+    frame=requestAnimationFrame(render);
+  }
+  function setOpen(open){
+    modal.classList.toggle("is-open",open);
+    modal.setAttribute("aria-hidden",String(!open));
+    document.body.classList.toggle("tcc-game-open",open);
+    if(open)byId("tccGameClose").focus();
+  }
+  function stopGame(){
+    if(!running)return;
+    running=false;cancelAnimationFrame(frame);
+    const elapsed=performance.now()-startedAt;
+    lastElapsed=elapsed;
+    timeDisplay.textContent=format(elapsed);
+    startButton.disabled=false;stopButton.disabled=true;
+    againButton.hidden=false;
+    if(elapsed>=9990&&elapsed<=10010){
+      let code="TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase();
+      try{localStorage.setItem(storageKey,JSON.stringify({code,wonAt:Date.now()}));}catch(e){}
+      byId("tccGameCode").textContent=code;
+      claim.hidden=false;againButton.hidden=true;
+      feedback.textContent="PERFECT TIMING! Your 10% beverage discount is unlocked.";
+      startButton.hidden=true;
+    }else{
+      const difference=Math.abs(elapsed-10000)/1000;
+      feedback.textContent=elapsed<10000
+        ? "Too early! You stopped "+difference.toFixed(2)+"s before 10.00. Give it another try."
+        : "Too late! You went "+difference.toFixed(2)+"s past 10.00. You can try again.";
+    }
+  }
+  function startGame(){
+    let existing=null;
+    try{existing=JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){}
+    if(existing?.code){
+      byId("tccGameCode").textContent=existing.code;
+      claim.hidden=false;startButton.hidden=true;stopButton.disabled=true;
+      feedback.textContent="This table has already unlocked its reward.";
+      return;
+    }
+    running=true;startedAt=performance.now();lastElapsed=0;
+    timeDisplay.textContent="00.00";
+    feedback.textContent="Timer is running. Stop when you feel 10.00 seconds has passed.";
+    startButton.disabled=true;stopButton.disabled=false;againButton.hidden=true;
+    frame=requestAnimationFrame(render);
+  }
+  function resetGame(){
+    if(running){running=false;cancelAnimationFrame(frame);}
+    timeDisplay.textContent="00.00";
+    feedback.textContent="Ready? Take a breath and trust your timing.";
+    startButton.disabled=false;startButton.hidden=false;stopButton.disabled=true;
+    againButton.hidden=true;claim.hidden=true;
+  }
+  byId("tccGameLaunch").addEventListener("click",()=>{setOpen(true);resetGame();});
+  byId("tccGameClose").addEventListener("click",()=>{setOpen(false);resetGame();});
+  modal.addEventListener("click",e=>{if(e.target===modal){setOpen(false);resetGame();}});
+  startButton.addEventListener("click",startGame);
+  stopButton.addEventListener("click",stopGame);
+  againButton.addEventListener("click",resetGame);
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("is-open")){setOpen(false);resetGame();}});
+  try{
+    const existing=JSON.parse(localStorage.getItem(storageKey)||"null");
+    if(existing?.code){
+      // Reward state is retained on this device for the table's visit.
+    }
+  }catch(e){}
+})();
+</script>
+
 </body>
 </html>
