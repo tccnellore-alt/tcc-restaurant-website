@@ -736,3 +736,11 @@ body.tcc-game-open{overflow:hidden}
 @media(max-width:480px){.tcc-wheel-wrap{width:min(100%,310px,calc(100dvh - 390px));margin:8px auto 16px}.tcc-wheel-pointer{border-left-width:15px;border-right-width:15px;border-top-width:30px!important}}
 @media(max-width:360px){.tcc-wheel-wrap{width:min(100%,286px,calc(100dvh - 390px))}.tcc-wheel-labels text{font-size:18px}}
 @media(prefers-reduced-motion:reduce){.tcc-wheel-rotor,.tcc-wheel-label-rotor{transition-duration:.01ms!important}}
+
+
+/* Final mobile legibility and synchronized upright label animation */
+.tcc-wheel-label-group{transform-box:fill-box;transform-origin:center;transition:transform 5.2s cubic-bezier(.12,.72,.12,1);will-change:transform}
+.tcc-wheel-label-group text{font-size:20px!important;letter-spacing:0!important}
+.tcc-wheel-wrap{width:min(100%,300px)!important}
+@media(max-width:360px){.tcc-wheel-wrap{width:min(100%,286px)!important}.tcc-wheel-label-group text{font-size:19px!important}}
+@media(prefers-reduced-motion:reduce){.tcc-wheel-label-group{transition-duration:.01ms!important}}
