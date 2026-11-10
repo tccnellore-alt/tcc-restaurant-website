@@ -546,3 +546,41 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
   font-weight:800!important;
   line-height:1!important;
 }
+
+
+/* IMAGE MENU — reclaim wasted vertical space, especially below sticky search */
+.menu-page .menu-content{
+  padding-top:8px!important;
+}
+.menu-page .menu-group .menu-section{
+  margin-top:14px!important;
+}
+.menu-page .menu-group .menu-section h2{
+  padding-bottom:6px!important;
+  margin-bottom:0!important;
+}
+.menu-page .menu-group .m-list{
+  row-gap:9px!important;
+}
+@media(max-width:849px){
+  .menu-page .menu-tools{
+    padding-top:7px!important;
+    padding-bottom:4px!important;
+  }
+  .menu-page .menu-search{
+    margin-top:6px!important;
+  }
+  .menu-page .menu-content{
+    padding-top:6px!important;
+    padding-bottom:112px!important;
+  }
+  .menu-page .menu-group .menu-section{
+    margin-top:12px!important;
+  }
+  .menu-page .menu-group .menu-section h2{
+    padding-bottom:5px!important;
+  }
+  .menu-page .menu-group .m-list{
+    gap:9px!important;
+  }
+}
