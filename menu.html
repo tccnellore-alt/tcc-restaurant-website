@@ -1679,7 +1679,7 @@ html{scroll-behavior:smooth}
     </div>
     <button type="button" class="tcc-game-launch" id="tccGameLaunch">
       <span class="tcc-game-launch-icon" aria-hidden="true">🎯</span>
-      <span><strong>PLAY THE PERFECT 10</strong><small>3 chances every hour · Win 10% OFF any one beverage</small></span>
+      <span><strong>PLAY THE PERFECT 10</strong><small>3 chances every 3 hours · Win 10% OFF any one beverage</small></span>
       <span class="tcc-game-launch-arrow" aria-hidden="true">→</span>
     </button>
   </div>
@@ -1700,9 +1700,9 @@ html{scroll-behavior:smooth}
       <button type="button" class="tcc-game-button tcc-game-stop" id="tccGameStop" disabled>■&nbsp; STOP</button>
     </div>
     <p class="tcc-game-feedback" id="tccGameFeedback" aria-live="polite">Ready? Take a breath and trust your timing.</p>
-    <p class="tcc-game-attempts" id="tccGameAttempts">5 attempts remaining this hour</p>
+    <p class="tcc-game-attempts" id="tccGameAttempts">3 attempts remaining in this 3-hour window</p>
     <div class="tcc-game-prize"><span aria-hidden="true">☕</span><div><strong>WIN 10% OFF</strong><small>Any one beverage</small></div></div>
-    <div class="tcc-game-rules"><span>3 attempts per hour</span><span>1 discount per table</span></div>
+    <div class="tcc-game-rules"><span>3 attempts every 3 hours</span><span>1 discount per table</span></div>
     <div class="tcc-game-claim" id="tccGameClaim" hidden>
       <strong>YOU NAILED THE PERFECT 10!</strong>
       <span>Your table's reward code</span>
@@ -3709,18 +3709,19 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   const againButton=byId("tccGameAgain");
   const claim=byId("tccGameClaim");
   const storageKey="tcc-perfect10-table-won-v1";
-  const attemptsKeyPrefix="tcc-perfect10-attempts-hour-v1-";
+  const attemptsKeyPrefix="tcc-perfect10-attempts-3hour-v2-";
   const maxAttempts=3;
   const attemptsDisplay=byId("tccGameAttempts");
   let attempts=0,running=false,startedAt=0,frame=0,lastElapsed=0;
   let attemptsKey="",activeAttemptsKey="";
-  function getCurrentHourKey(){
+  function getCurrentThreeHourKey(){
     const now=new Date();
     const pad=value=>String(value).padStart(2,"0");
-    return attemptsKeyPrefix+now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate())+"-"+pad(now.getHours());
+    const windowStartHour=Math.floor(now.getHours()/3)*3;
+    return attemptsKeyPrefix+now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate())+"-"+pad(windowStartHour);
   }
-  function refreshHourlyAttempts(){
-    const key=getCurrentHourKey();
+  function refreshThreeHourAttempts(){
+    const key=getCurrentThreeHourKey();
     if(key!==attemptsKey){
       attemptsKey=key;
       try{attempts=Math.min(maxAttempts,Math.max(0,Number(localStorage.getItem(attemptsKey))||0));}
@@ -3728,9 +3729,9 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     }
   }
   function updateAttempts(){
-    refreshHourlyAttempts();
+    refreshThreeHourAttempts();
     const remaining=Math.max(0,maxAttempts-attempts);
-    attemptsDisplay.textContent=remaining+" attempt"+(remaining===1?"":"s")+" remaining this hour";
+    attemptsDisplay.textContent=remaining+" attempt"+(remaining===1?"":"s")+" remaining in this 3-hour window";
     if(remaining===0&&!running&&claim.hidden)startButton.hidden=true;
     else if(remaining>0&&claim.hidden)startButton.hidden=false;
   }
@@ -3802,7 +3803,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   function startGame(){
     updateAttempts();
     if(attempts>=maxAttempts){
-      feedback.textContent="You've used all 3 attempts for this hour.";
+      feedback.textContent="You've used all 3 attempts in this 3-hour window.";
       startButton.hidden=true;stopButton.disabled=true;againButton.hidden=true;
       return;
     }
