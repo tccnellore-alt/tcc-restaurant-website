@@ -1691,8 +1691,10 @@ html{scroll-behavior:smooth}
     <h2 id="tccGameTitle">Spin the TCC Wheel</h2>
     <p class="tcc-game-intro">A little spin, a little surprise. What will you win today?</p>
     <div class="tcc-wheel-wrap">
+      <div class="tcc-wheel-rotor" id="tccWheelRotor">
+        <svg id="tccWheelSvg" class="tcc-wheel-svg" viewBox="0 0 720 720" role="img" aria-label="Prize wheel with twelve equal sections"></svg>
+      </div>
       <div class="tcc-wheel-pointer" aria-hidden="true"></div>
-      <canvas id="tccWheelCanvas" class="tcc-wheel-canvas" width="720" height="720" role="img" aria-label="Prize wheel with twelve equal sections"></canvas>
       <div class="tcc-wheel-hub" aria-hidden="true">TCC</div>
     </div>
     <button type="button" class="tcc-wheel-spin" id="tccWheelSpin">SPIN THE WHEEL</button>
@@ -3687,83 +3689,61 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
 </script>
 
 <script>
-/* TCC SPIN THE WHEEL — one table spin + one Extra Spin bonus */
+/* TCC SPIN THE WHEEL — SVG rebuild / customer version */
 (function(){
-  const byId=id=>document.getElementById(id);
-  const modal=byId("tccGame");if(!modal)return;
-  const canvas=byId("tccWheelCanvas"),ctx=canvas.getContext("2d");
-  const spinButton=byId("tccWheelSpin"),feedback=byId("tccWheelFeedback"),count=byId("tccWheelCount");
-  const prizes=["5% OFF · One beverage","Better Luck Next Time","10% OFF · One beverage","5% OFF · Beverage bill","FREE · Hide & Seek Milano","Better Luck Next Time","Better Luck Next Time","Better Luck Next Time","5% OFF · Complete food bill","10% OFF · One food item","EXTRA SPIN · Spin again","Better Luck Next Time"];
+  const byId=id=>document.getElementById(id),modal=byId("tccGame");
+  if(!modal)return;
+  const svg=byId("tccWheelSvg"),rotor=byId("tccWheelRotor"),spinButton=byId("tccWheelSpin");
+  const feedback=byId("tccWheelFeedback"),count=byId("tccWheelCount");
+  const prizes=["5% OFF · One beverage","Better Luck Next Time","10% OFF · One beverage","5% OFF · Beverage bill","FREE · Hide & Seek Milano","Better Luck Next Time","Better Luck Next Time","Better Luck Next Time","5% OFF · Complete food bill","10% OFF · One food item","EXTRA SPIN · Spin again","Better Luck Next Time"],labels=[["5% OFF","1 DRINK"],["TRY AGAIN","NEXT TIME"],["10% OFF","1 DRINK"],["5% OFF","DRINK BILL"],["FREE","HIDE & SEEK"],["TRY AGAIN","NEXT TIME"],["TRY AGAIN","NEXT TIME"],["TRY AGAIN","NEXT TIME"],["5% OFF","FOOD BILL"],["10% OFF","1 FOOD ITEM"],["EXTRA SPIN","SPIN AGAIN"],["TRY AGAIN","NEXT TIME"]];
   const colors=["#17452f","#e9d7aa","#b58d49","#f6edda","#2c6748","#d8bd7c","#214f38","#f1e4c7","#9f773b","#e6d4a7","#315d42","#f7efdf"];
+  const NS="http://www.w3.org/2000/svg",center=360,radius=350,step=30;
   let rotation=0,spinning=false,spins=0,extraSpinAvailable=false,finished=false;
   const storageKey="tcc-wheel-game2-table-state-v1";
+  function el(tag,attrs){const node=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,String(v)));return node;}
+  function point(angle,r){const rad=angle*Math.PI/180;return{x:center+Math.cos(rad)*r,y:center+Math.sin(rad)*r};}
   function drawWheel(){
-    const size=canvas.width,c=size/2,r=size/2-7,step=Math.PI*2/prizes.length;
-    const labelLines=[
-      ["5% OFF","1 DRINK"],["TRY AGAIN","NEXT TIME"],["10% OFF","1 DRINK"],
-      ["5% OFF","DRINK BILL"],["FREE","HIDE & SEEK"],["TRY AGAIN","NEXT TIME"],
-      ["TRY AGAIN","NEXT TIME"],["TRY AGAIN","NEXT TIME"],["5% OFF","FOOD BILL"],
-      ["10% OFF","1 FOOD ITEM"],["EXTRA SPIN","SPIN AGAIN"],["TRY AGAIN","NEXT TIME"]
-    ];
-    ctx.clearRect(0,0,size,size);
-    prizes.forEach((label,i)=>{
-      const start=-Math.PI/2+i*step,end=start+step,mid=start+step/2;
-      ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,start,end);ctx.closePath();ctx.fillStyle=colors[i];ctx.fill();
-      ctx.lineWidth=4;ctx.strokeStyle="#f8edcf";ctx.stroke();
-      ctx.save();
-      ctx.translate(c,c);
-      ctx.rotate(mid);
-      if(mid>Math.PI/2&&mid<3*Math.PI/2)ctx.rotate(Math.PI);
-      ctx.textAlign="center";
-      ctx.textBaseline="middle";
-      ctx.fillStyle=(i===1||i===3||i===5||i===7||i===9||i===11)?"#173c2b":"#fff8e7";
-      // Keep every label centred within its own wedge, with clear space from the hub and rim.
-      const labelX=r*0.56;
-      ctx.font="900 13px Arial";
-      ctx.fillText(labelLines[i][0],labelX,-9,68);
-      ctx.font="800 10px Arial";
-      ctx.fillText(labelLines[i][1],labelX,10,68);
-      ctx.restore();
-    });
-    ctx.beginPath();ctx.arc(c,c,r,0,Math.PI*2);ctx.lineWidth=8;ctx.strokeStyle="#d7b66e";ctx.stroke();
+    svg.replaceChildren();
+    for(let i=0;i<12;i++){
+      const start=-90+i*step,end=start+step,mid=start+step/2,p1=point(start,radius),p2=point(end,radius);
+      svg.appendChild(el("path",{d:`M ${center} ${center} L ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A ${radius} ${radius} 0 0 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} Z`,fill:colors[i],stroke:"#f8edcf","stroke-width":"5","stroke-linejoin":"round"}));
+      // Horizontal labels at each wedge's visual centre avoid the rotated-text collision.
+      const p=point(mid,218),darkText=i%2===1;
+      const group=el("g",{});
+      const primary=el("text",{x:p.x,y:p.y-5,"text-anchor":"middle","dominant-baseline":"middle",fill:darkText?"#173c2b":"#fff8e7","font-family":"Arial, sans-serif","font-size":"15","font-weight":"900","letter-spacing":".2"});
+      primary.textContent=labels[i][0];
+      const secondary=el("text",{x:p.x,y:p.y+13,"text-anchor":"middle","dominant-baseline":"middle",fill:darkText?"#173c2b":"#fff8e7","font-family":"Arial, sans-serif","font-size":"11.5","font-weight":"800","letter-spacing":".15"});
+      secondary.textContent=labels[i][1];
+      group.append(primary,secondary);svg.appendChild(group);
+    }
+    svg.appendChild(el("circle",{cx:center,cy:center,r:radius,fill:"none",stroke:"#d7b66e","stroke-width":"9"}));
   }
-  function open(open){modal.classList.toggle("is-open",open);modal.setAttribute("aria-hidden",String(!open));document.body.classList.toggle("tcc-game-open",open);if(open)byId("tccGameClose").focus();}
+  function setOpen(open){modal.classList.toggle("is-open",open);modal.setAttribute("aria-hidden",String(!open));document.body.classList.toggle("tcc-game-open",open);if(open)byId("tccGameClose").focus();}
   function readState(){try{return JSON.parse(localStorage.getItem(storageKey)||"null");}catch(e){return null;}}
   function saveState(state){try{localStorage.setItem(storageKey,JSON.stringify(state));}catch(e){}}
   function renderState(){
     const state=readState();
-    if(state){spins=Number(state.spins)||0;extraSpinAvailable=!!state.extraSpinAvailable;finished=!!state.finished;
-      if(state.lastResult)feedback.textContent="Last result: "+state.lastResult;
-      spinButton.disabled=finished&&!extraSpinAvailable;
-      spinButton.textContent=finished?"SPIN USED":"SPIN THE WHEEL";
-      count.textContent=finished?"This table's spin has been used.":extraSpinAvailable?"Extra Spin available — one final spin!":"One spin per table";
-    }else{spins=0;extraSpinAvailable=false;finished=false;spinButton.disabled=false;spinButton.textContent="SPIN THE WHEEL";count.textContent="One spin per table";}
+    if(state){spins=Number(state.spins)||0;extraSpinAvailable=!!state.extraSpinAvailable;finished=!!state.finished;if(state.lastResult)feedback.textContent="Last result: "+state.lastResult;spinButton.disabled=finished&&!extraSpinAvailable;spinButton.textContent=finished?"SPIN USED":"SPIN THE WHEEL";count.textContent=finished?"This table's spin has been used.":extraSpinAvailable?"Extra Spin unlocked — one final spin":"One spin per table";}else{spins=0;extraSpinAvailable=false;finished=false;spinButton.disabled=false;spinButton.textContent="SPIN THE WHEEL";count.textContent="One spin per table";}
   }
   function spin(){
     if(spinning)return;
-    if(finished&&!extraSpinAvailable)return;
-    if(spins>0&&!extraSpinAvailable)return;
+    if(finished&&!extraSpinAvailable)return;if(spins>0&&!extraSpinAvailable)return;
     spinning=true;spinButton.disabled=true;feedback.textContent="The wheel is spinning… good luck!";
-    const index=Math.floor(Math.random()*prizes.length),target=(360-(index+.5)*30+360)%360;
+    const index=Math.floor(Math.random()*12),target=(360-(index*30+15)+360)%360;
     const current=((rotation%360)+360)%360,delta=(target-current+360)%360;
-    rotation+=360*6+delta;canvas.style.transform="rotate("+rotation+"deg)";
+    rotation+=360*6+delta;rotor.style.transform="rotate("+rotation+"deg)";
     window.setTimeout(()=>{
       spinning=false;spins++;
       let result=prizes[index];
-      if(extraSpinAvailable){extraSpinAvailable=false;finished=true;if(result.startsWith("EXTRA SPIN"))result="Better Luck Next Time";}
-      else if(result.startsWith("EXTRA SPIN")){extraSpinAvailable=true;finished=false;}
-      else finished=true;
-      feedback.textContent=result.startsWith("EXTRA SPIN")?"🎉 EXTRA SPIN! You get one more chance.":result.startsWith("Better Luck")?"😅 Better luck next time!":"🎊 Congratulations! "+result;
-      saveState({spins,lastResult:result,extraSpinAvailable,finished});renderState();
-      spinButton.disabled=finished&&!extraSpinAvailable;
+      if(extraSpinAvailable){extraSpinAvailable=false;finished=true;if(result.startsWith("EXTRA SPIN"))result="Better Luck Next Time";}else if(result.startsWith("EXTRA SPIN")){extraSpinAvailable=true;finished=false;}else finished=true;feedback.textContent=result.startsWith("EXTRA SPIN")?"🎉 EXTRA SPIN! You get one more chance.":result.startsWith("Better Luck")?"😅 Better luck next time!":"🎊 Congratulations! "+result;saveState({spins,lastResult:result,extraSpinAvailable,finished});renderState();spinButton.disabled=finished&&!extraSpinAvailable;
     },5350);
   }
   drawWheel();renderState();
-  byId("tccGameLaunch").addEventListener("click",()=>{open(true);renderState();});
-  byId("tccGameClose").addEventListener("click",()=>open(false));
-  modal.addEventListener("click",e=>{if(e.target===modal)open(false);});
+  byId("tccGameLaunch").addEventListener("click",()=>{setOpen(true);renderState();});
+  byId("tccGameClose").addEventListener("click",()=>setOpen(false));
+  modal.addEventListener("click",e=>{if(e.target===modal)setOpen(false);});
   spinButton.addEventListener("click",spin);
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("is-open"))open(false);});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("is-open"))setOpen(false);});
 })();
 </script>
 
