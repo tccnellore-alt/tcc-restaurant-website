@@ -3710,15 +3710,19 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
       const start=-Math.PI/2+i*step,end=start+step,mid=start+step/2;
       ctx.beginPath();ctx.moveTo(c,c);ctx.arc(c,c,r,start,end);ctx.closePath();ctx.fillStyle=colors[i];ctx.fill();
       ctx.lineWidth=4;ctx.strokeStyle="#f8edcf";ctx.stroke();
-      ctx.save();ctx.translate(c,c);ctx.rotate(mid);
+      ctx.save();
+      ctx.translate(c,c);
+      ctx.rotate(mid);
       if(mid>Math.PI/2&&mid<3*Math.PI/2)ctx.rotate(Math.PI);
-      ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      ctx.textBaseline="middle";
       ctx.fillStyle=(i===1||i===3||i===5||i===7||i===9||i===11)?"#173c2b":"#fff8e7";
-      const labelX=r*0.68;
-      ctx.font="900 12px Arial";
-      ctx.fillText(labelLines[i][0],labelX,-8,88);
-      ctx.font="800 9px Arial";
-      ctx.fillText(labelLines[i][1],labelX,8,88);
+      // Keep every label centred within its own wedge, with clear space from the hub and rim.
+      const labelX=r*0.56;
+      ctx.font="900 13px Arial";
+      ctx.fillText(labelLines[i][0],labelX,-9,68);
+      ctx.font="800 10px Arial";
+      ctx.fillText(labelLines[i][1],labelX,10,68);
       ctx.restore();
     });
     ctx.beginPath();ctx.arc(c,c,r,0,Math.PI*2);ctx.lineWidth=8;ctx.strokeStyle="#d7b66e";ctx.stroke();
