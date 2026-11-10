@@ -3258,25 +3258,68 @@ function tccShowDrinkCard(drink){
  const description=drink.item.querySelector(".m-item-info p, p");
  document.getElementById("tccDrinkPickDescription").textContent=description?.textContent.trim()||"A favourite from the TCC drinks menu.";
  document.getElementById("tccDrinkPickWhy").textContent=tccDrinkReason(drink);
- const photoBox=document.getElementById("tccDrinkPickPhoto");photoBox.replaceChildren();
+ const photoBox=document.getElementById("tccDrinkPickPhoto");
+ photoBox.replaceChildren();
+ const verifiedPhoto=TCC_VERIFIED_PHOTOS[drink.name];
  const sourcePhoto=drink.item.querySelector(".m-photo-wrap");
- if(sourcePhoto){
-  const clone=sourcePhoto.cloneNode(true);clone.style.width="100%";clone.style.height="100%";clone.style.aspectRatio="1 / 1";
-  const img=clone.querySelector("img");
-  if(img){
-   const verifiedPhoto=TCC_VERIFIED_PHOTOS[drink.name];
-   img.removeAttribute("srcset");img.removeAttribute("sizes");
-   if(verifiedPhoto){
-    img.src=verifiedPhoto.url;
-    img.srcset=verifiedPhoto.url+" 400w, "+verifiedPhoto.large+" 800w";
-    img.sizes="112px";
-   }
-   img.loading="eager";img.decoding="async";img.fetchPriority="high";
-   img.style.width="100%";img.style.height="100%";img.style.objectFit="cover";img.style.objectPosition="center";
-   img.alt=drink.name+" — TCC drink recommendation";
+ let photoWrap;
+ if(verifiedPhoto){
+  // Some menu entries intentionally have no inline photo markup. Build the
+  // recommendation image directly from the verified photo map in that case.
+  photoWrap=sourcePhoto?sourcePhoto.cloneNode(true):document.createElement("div");
+  photoWrap.classList.add("m-photo-wrap");
+  photoWrap.style.width="100%";
+  photoWrap.style.height="100%";
+  photoWrap.style.aspectRatio="1 / 1";
+  let img=photoWrap.querySelector("img");
+  if(!img){img=document.createElement("img");photoWrap.replaceChildren(img);}
+  const normalizePhotoPath=value=>{
+   if(!value||value.startsWith("data:")||/^https?:\\/\\//i.test(value)||value.startsWith("/"))return value;
+   return "/"+value.replace(/^\\.\\//,"");
+  };
+  const smallUrl=normalizePhotoPath(verifiedPhoto.url);
+  const largeUrl=normalizePhotoPath(verifiedPhoto.large);
+  img.removeAttribute("srcset");
+  img.removeAttribute("sizes");
+  img.src=smallUrl;
+  if(!smallUrl.startsWith("data:")&&largeUrl){
+   img.srcset=smallUrl+" 400w, "+largeUrl+" 800w";
+   img.sizes="(max-width: 600px) 112px, 180px";
   }
-  photoBox.appendChild(clone);
- }else photoBox.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';
+  img.loading="eager";
+  img.decoding="async";
+  img.fetchPriority="high";
+  img.style.cssText="display:block;width:100%;height:100%;object-fit:cover;object-position:center";
+  img.alt=drink.name+" — TCC drink recommendation";
+  img.onerror=()=>{
+   img.removeAttribute("srcset");
+   img.removeAttribute("sizes");
+   photoWrap.classList.add("is-photo-missing");
+   img.remove();
+   photoWrap.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';
+  };
+  photoBox.appendChild(photoWrap);
+ }else if(sourcePhoto){
+  photoWrap=sourcePhoto.cloneNode(true);
+  photoWrap.style.width="100%";
+  photoWrap.style.height="100%";
+  photoWrap.style.aspectRatio="1 / 1";
+  const img=photoWrap.querySelector("img");
+  if(img){
+   const original=img.currentSrc||img.src||img.getAttribute("data-src");
+   if(original)img.src=original.startsWith("data:")||/^https?:\\/\\//i.test(original)||original.startsWith("/")?original:"/"+original.replace(/^\\.\\//,"");
+   img.removeAttribute("srcset");
+   img.removeAttribute("sizes");
+   img.loading="eager";
+   img.decoding="async";
+   img.style.cssText="display:block;width:100%;height:100%;object-fit:cover;object-position:center";
+   img.alt=drink.name+" — TCC drink recommendation";
+   img.onerror=()=>{photoWrap.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';};
+  }
+  photoBox.appendChild(photoWrap);
+ }else{
+  photoBox.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';
+ }
 }
 function tccPickMatchedDrink(){
  const eligible=tccEligibleDrinks().filter(x=>x.profile);
