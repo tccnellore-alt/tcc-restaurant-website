@@ -669,3 +669,28 @@ body.tcc-game-open{overflow:hidden}
 }
 
 .tcc-game-attempts{margin:-8px auto 10px;color:#8b784e;font:800 11px Arial,sans-serif;letter-spacing:.06em}
+
+
+/* PERFECT 10 — playful, polished game moments */
+.tcc-game-launch{position:relative;overflow:hidden;min-height:66px;border-radius:18px;background:linear-gradient(110deg,#0c2c1e 0%,#1c5037 58%,#0e3525 100%);box-shadow:0 8px 22px rgba(4,25,15,.2),inset 0 1px 0 rgba(255,255,255,.12);transition:transform .2s,box-shadow .2s}
+.tcc-game-launch:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.09) 48%,transparent 75%);transform:translateX(-110%);animation:tccGameShimmer 5s ease-in-out infinite}
+.tcc-game-launch:active{transform:scale(.985)}
+.tcc-game-launch-icon{background:linear-gradient(145deg,#f5dfaa,#c59d54);color:#183c2b;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.tcc-game-launch strong{font-size:12px;letter-spacing:.14em}
+.tcc-game-launch small{font-size:12px}
+.tcc-game-dialog{background:radial-gradient(circle at 50% 0%,#fffdf7 0%,#f7f0e2 52%,#efe5d1 100%);border:1px solid #d9c18b;box-shadow:0 28px 90px rgba(0,0,0,.38),inset 0 1px 0 #fff}
+.tcc-game-clock{position:relative;border-color:#dce6d3;border-top-color:#1b5a3d;border-right-color:#1b5a3d;transition:border-color .25s,box-shadow .25s}
+.tcc-game-clock:after{content:"";position:absolute;inset:7px;border:1px dashed rgba(183,154,90,.3);border-radius:50%;pointer-events:none}
+.tcc-game-running .tcc-game-clock{border-color:#c6d9bd;border-top-color:#b79a5a;border-right-color:#1b5a3d;box-shadow:0 0 0 7px rgba(183,154,90,.09),0 10px 30px rgba(23,60,43,.13);animation:tccClockPulse 1.4s ease-in-out infinite}
+.tcc-game-feedback{display:flex;min-height:62px;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.tcc-game-feedback strong{color:#314b3a;font:800 13px/1.35 Arial,sans-serif}
+.tcc-game-feedback small{color:#788174;font:11px/1.4 Arial,sans-serif}
+.tcc-game-loss-emoji{display:block;font-size:29px;line-height:1.1;filter:drop-shadow(0 3px 2px rgba(50,40,20,.12))}
+.tcc-game-miss .tcc-game-feedback{animation:tccMissWiggle .42s ease}
+.tcc-game-miss .tcc-game-clock{border-color:#e4d7c2;border-top-color:#c49b68;border-right-color:#c49b68}
+.tcc-game-claim{box-shadow:0 6px 18px rgba(37,83,48,.08)}
+.tcc-game-claim code{display:inline-block;padding:9px 12px;border:1px dashed #b79a5a;border-radius:10px;background:#fffaf0}
+@keyframes tccGameShimmer{0%,65%,100%{transform:translateX(-110%)}82%{transform:translateX(110%)}}
+@keyframes tccClockPulse{0%,100%{box-shadow:0 0 0 5px rgba(183,154,90,.07),0 8px 25px rgba(23,60,43,.08)}50%{box-shadow:0 0 0 10px rgba(183,154,90,.13),0 10px 32px rgba(23,60,43,.14)}}
+@keyframes tccMissWiggle{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@media(prefers-reduced-motion:reduce){.tcc-game-launch:before,.tcc-game-running .tcc-game-clock,.tcc-game-miss .tcc-game-feedback{animation:none!important}}
