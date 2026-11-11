@@ -34,7 +34,7 @@ test("food category order and Pizza to Burgers to Sandwiches navigation stay cor
   expect(burgers).toBeGreaterThan(pizza);
   expect(sandwiches).toBeGreaterThan(burgers);
   await page.locator('#foodTabs .food-tab[data-food-target="Pizzas"]').click();
-  await expect(page.getByText("Italian Margherita", { exact: true })).toBeVisible();
+  await expect(page.locator(".menu-group.active .m-item").filter({ hasText: "Italian Margherita" }).first()).toBeVisible();
 });
 
 test("Drink Finder completes and its result opens the matching menu category", async ({ page }) => {
