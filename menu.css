@@ -1580,57 +1580,57 @@ html{scroll-behavior:smooth}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.menu-tabs .menu-tab,.food-tabs .food-tab,.m-photo-wrap .m-photo{transition:none}.m-photo-wrap.is-loading{animation:none}.menu-group.active .menu-section{animation:none}}
 
 /* Accessibility and responsive refinements */
-.menu-page .menu-tab,
-.menu-page .food-tab,
-.menu-page .menu-search,
+.menu-tab,
+.food-tab,
+.menu-search,
 .menu-page .tcc-quiz-option,
 .menu-page .tcc-quiz-controls button,
 .menu-page .tcc-drink-start,
-.menu-page .menu-image-lightbox-close {
+.menu-image-lightbox-close {
   min-height:44px;
 }
-.menu-page .menu-tab,
-.menu-page .food-tab {
+.menu-tab,
+.food-tab {
   flex:0 0 auto;
   scroll-snap-align:start;
 }
-.menu-page .menu-tabs,
-.menu-page .food-tabs {
+.menu-tabs,
+.food-tabs {
   -webkit-overflow-scrolling:touch;
   scroll-snap-type:x proximity;
 }
-.menu-page .menu-search {
+.menu-search {
   min-height:48px;
 }
 .menu-page .m-photo[role="button"] {
   cursor:zoom-in;
 }
 .menu-page .m-photo[role="button"]:focus-visible,
-.menu-page .menu-tab:focus-visible,
-.menu-page .food-tab:focus-visible,
+.menu-tab:focus-visible,
+.food-tab:focus-visible,
 .menu-page .tcc-quiz-option:focus-visible,
 .menu-page .menu-image-lightbox-close:focus-visible {
   outline:3px solid #80652e;
   outline-offset:3px;
 }
-.menu-page .menu-image-lightbox {
+.menu-image-lightbox {
   padding-top:max(12px,env(safe-area-inset-top));
   padding-bottom:max(12px,env(safe-area-inset-bottom));
 }
-.menu-page .menu-lightbox-card {
+.menu-lightbox-card {
   overscroll-behavior:contain;
 }
 @media (max-width: 600px) {
-  .menu-page .menu-tools {
+  .menu-tools {
     top:calc(66px + env(safe-area-inset-top));
   }
-  .menu-page .menu-tabs,
-  .menu-page .food-tabs {
+  .menu-tabs,
+  .food-tabs {
     gap:7px;
     padding:3px 1px 5px;
   }
-  .menu-page .menu-tab,
-  .menu-page .food-tab {
+  .menu-tab,
+  .food-tab {
     min-height:44px;
     padding:11px 14px;
     font-size:11px;
@@ -1642,10 +1642,10 @@ html{scroll-behavior:smooth}
   .menu-page .m-item h3 {
     overflow-wrap:anywhere;
   }
-  .menu-page .menu-search {
+  .menu-search {
     font-size:16px;
   }
-  .menu-page .menu-image-lightbox {
+  .menu-image-lightbox {
     padding-left:10px;
     padding-right:10px;
   }
