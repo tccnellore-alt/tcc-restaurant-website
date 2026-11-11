@@ -3770,7 +3770,8 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     running=false;modal.classList.remove("tcc-game-running");cancelAnimationFrame(frame);
     const elapsed=performance.now()-startedAt;
     lastElapsed=elapsed;
-    timeDisplay.textContent=format(elapsed);
+    const perfectWindow=elapsed>=9991 && elapsed<=10009;
+    timeDisplay.textContent=perfectWindow?"10.00":format(elapsed);
     if(practiceMode){practiceAttempts++;try{localStorage.setItem("tcc-perfect10-practice-count",String(practiceAttempts));}catch(e){}}
     else{attempts=Math.min(maxAttempts,attempts+1);try{localStorage.setItem(activeAttemptsKey||attemptsKey,String(attempts));}catch(e){}}
     const attemptNumber=attempts;
@@ -3778,7 +3779,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     startButton.disabled=false;stopButton.disabled=true;
     againButton.hidden=false;
     if(practiceMode){feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">🎮</span><strong>Practice round complete!</strong><small>Practice only · No discount or reward in fun mode</small>';againButton.hidden=true;startButton.hidden=false;startButton.textContent="▶ PLAY AGAIN";practiceButton.hidden=false;}
-    else if(elapsed>=9995 && elapsed<=10004){
+    else if(perfectWindow){
       let reward=null;
       try{reward=JSON.parse(localStorage.getItem(activeRewardKey||getCurrentRewardKey())||"null");}catch(e){}
       const code=reward?.code||("TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase());
