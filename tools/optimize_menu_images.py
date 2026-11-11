@@ -7,6 +7,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "images" / "menu"
 OUTPUT = SOURCE / "optimized"
 LOGO_SOURCE = ROOT / "images" / "logo.png"
+INTERIOR_SOURCE = ROOT / "images"
+INTERIOR_OUTPUT = INTERIOR_SOURCE / "optimized"
 SIZES = (400, 800)
 SUPPORTED = {".jpg", ".jpeg", ".png", ".webp"}
 
@@ -38,6 +40,20 @@ def save_responsive_logo():
             )
 
 
+
+def save_interior_photos():
+    INTERIOR_OUTPUT.mkdir(parents=True, exist_ok=True)
+    count = 0
+    for path in sorted(INTERIOR_SOURCE.glob("space-*.jpg")):
+        with Image.open(path) as original:
+            image = ImageOps.exif_transpose(original).convert("RGB")
+            image.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
+            target = INTERIOR_OUTPUT / f"{path.stem}.webp"
+            image.save(target, "WEBP", quality=82, method=6)
+            print(f"{target.relative_to(ROOT)}: {target.stat().st_size:,} bytes")
+            count += 1
+    print(f"Generated {count} optimized café interior photos.")
+
 def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
     count = 0
@@ -63,7 +79,8 @@ def main():
                 count += 1
 
     save_responsive_logo()
-    print(f"Generated {count} responsive menu images and 2 logo variants.")
+    save_interior_photos()
+    print(f"Generated {count} responsive menu images, 2 logo variants, and optimized café photos.")
 
 
 if __name__ == "__main__":
