@@ -194,10 +194,13 @@ const tccLightboxPrice=tccImageLightbox.querySelector(".menu-lightbox-price");
 const tccLightboxAddons=tccImageLightbox.querySelector(".menu-lightbox-addons");
 const tccLightboxAddonsRow=tccImageLightbox.querySelector(".menu-lightbox-addons-row");
 const tccLightboxClose=tccImageLightbox.querySelector("button");
+let tccLightboxTrigger=null;
 function hideTccImageLightbox(){
   tccImageLightbox.classList.remove("is-open");
   tccLightboxImage.removeAttribute("src");
   document.body.style.overflow="";
+  if(tccLightboxTrigger?.isConnected) tccLightboxTrigger.focus();
+  tccLightboxTrigger=null;
 }
 function closeTccImageLightbox(){
   if(history.state&&history.state.tccImageLightbox){
@@ -209,6 +212,7 @@ function closeTccImageLightbox(){
 document.addEventListener("click",event=>{
   const photo=event.target.closest(".m-photo");
   if(photo){
+    tccLightboxTrigger=photo;
     if(!tccImageLightbox.classList.contains("is-open")){
       history.pushState({tccImageLightbox:true},"",window.location.href);
     }
@@ -261,7 +265,21 @@ window.addEventListener("popstate",()=>{
   if(tccImageLightbox.classList.contains("is-open")) hideTccImageLightbox();
 });
 document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"&&tccImageLightbox.classList.contains("is-open")) closeTccImageLightbox();
+  if(event.target?.matches?.(".m-photo")&&(event.key==="Enter"||event.key===" ")){
+    event.preventDefault();
+    event.target.click();
+    return;
+  }
+  if(!tccImageLightbox.classList.contains("is-open")) return;
+  if(event.key==="Escape"){
+    event.preventDefault();
+    closeTccImageLightbox();
+    return;
+  }
+  if(event.key==="Tab"){
+    event.preventDefault();
+    tccLightboxClose.focus();
+  }
 });
 
 // Hold a menu photo to preview it temporarily; releasing the pointer restores the card.
