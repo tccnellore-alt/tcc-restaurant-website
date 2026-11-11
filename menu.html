@@ -3822,10 +3822,11 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     }
     let existing=null;
     try{existing=JSON.parse(localStorage.getItem(getCurrentRewardKey())||"null");}catch(e){}
-    if(existing?.code){
+    if(existing?.code&&!practiceMode){
       byId("tccGameCode").textContent=existing.code;
       claim.hidden=false;
     }
+    if(practiceMode)claim.hidden=true;
     activeAttemptsKey=attemptsKey;
     activeRewardKey=getCurrentRewardKey();
     running=true;modal.classList.add("tcc-game-running");startedAt=performance.now();lastElapsed=0;
