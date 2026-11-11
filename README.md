@@ -4,7 +4,7 @@ Static, mobile-first website for TCC – The Coffee Club, Nellore.
 
 ## Build
 
-The Cloudflare Pages build creates a lean `dist/` directory containing only public pages, styles, scripts, the optimized logo, café interior photos, and menu WebP images referenced by the menu.
+The Cloudflare Pages build creates a lean `dist/` directory containing only public pages, styles, scripts, the optimized logo, optimized café interior photos, and menu WebP images referenced by the menu.
 
 ```bash
 python3 -m pip install Pillow
@@ -31,4 +31,4 @@ The static suite checks repository structure, retired feedback removal, menu ord
 
 ## Image workflow
 
-The GitHub Actions image workflow generates responsive WebP menu photos plus 512px and 1024px TCC logo variants. Source images remain unchanged.
+The GitHub Actions image workflow generates responsive WebP menu photos, optimized café-interior photos, and 512px and 1024px TCC logo variants. Source images remain unchanged.
