@@ -925,7 +925,7 @@ function showGroup(id,scrollToCategory=true){
     coffee:["01 · COFFEE & TEA","Slow down. Sip well.","Classic brews, cold favourites and everyday comforts."],
     "refreshers-and-tea":["02 · REFRESHERS","Bright. Cold. Refreshing.","Iced teas, coolers and South Indian favourites."],
     signatures:["03 · SIGNATURES","Made the TCC way.","Matcha, pour-over and house favourites."],
-    food:["04 · FOOD","Good food, no fuss.","Starters and pasta, while we refine the TCC food menu."],
+    food:["04 · FOOD","Good food, no fuss.","Soups, starters, pasta, pizzas, burgers and sandwiches, all in one place."],
     "ice-creams":["05 · ICE CREAMS","A little scoop of joy.","Classic flavours and frozen favourites."],
     desserts:["06 · DESSERTS","Save room for something sweet.","Cakes, dessert tins and indulgent jars."]
   }[id];
