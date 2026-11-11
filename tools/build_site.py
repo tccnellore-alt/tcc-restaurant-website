@@ -77,7 +77,7 @@ def main() -> None:
         copy_file(logo_png, DIST / "images" / "logo.png")
 
     # Copy only the café-interior images referenced by the public pages.
-    page_bundle = "\\n".join(source_text[name] for name in PAGES)
+    page_bundle = "\n".join(source_text[name] for name in PAGES)
     interior_images = sorted(set(re.findall(
         r"images/(?:space-[A-Za-z0-9._-]+[.]jpg|optimized/space-[A-Za-z0-9._-]+[.]webp)",
         page_bundle,
