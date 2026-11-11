@@ -75,7 +75,7 @@ def main() -> None:
     # optimized WebP variants referenced by the menu are shipped to customers.
     menu_bundle = source_text["menu.html"] + "\n" + source_text["menu.js"] + "\n" + source_text["menu.css"]
     menu_images = sorted(set(re.findall(
-        r"images/menu/optimized/([A-Za-z0-9._-]+\\.webp)",
+        r"images/menu/optimized/([A-Za-z0-9._-]+[.]webp)",
         menu_bundle,
     )))
     for filename in menu_images:
