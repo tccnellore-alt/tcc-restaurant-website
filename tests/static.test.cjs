@@ -34,7 +34,7 @@ test("menu presentation and interaction code are external assets", () => {
 test("all seven pizza items reflect the latest in-stock menu state", () => {
   const html = read("menu.html");
   const names = ["Italian Margherita", "The Farmer", "Pizza Verde", "Pesto Pizza", "BBQ Chicken Pizza", "Pesto Chicken Pizza", "Chicken Pizzaiola"];
-  const cards = [...html.matchAll(/<article class="m-item">[\\s\\S]*?<\\/article>/g)].map((match) => match[0]);
+  const cards = html.split('<article class="m-item">').slice(1).map((card) => card.split("</article>")[0]);
   for (const name of names) {
     const card = cards.find((item) => item.includes(name));
     assert.ok(card, name);
@@ -90,8 +90,8 @@ test("site navigation exposes state and drawer controls", () => {
 test("all public page images have alt text", () => {
   for (const page of publicPages) {
     const html = read(page);
-    const images = [...html.matchAll(/<img\\b([^>]*)>/gi)].map((match) => match[1]);
-    for (const attributes of images) assert.match(attributes, /\\balt\\s*=/, page);
+    const images = html.split("<img").slice(1).map((tag) => tag.split(">")[0]);
+    for (const attributes of images) assert.ok(attributes.includes("alt="), page);
   }
 });
 
