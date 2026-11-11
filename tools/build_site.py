@@ -53,6 +53,16 @@ def main() -> None:
             for name, text in source_text.items()
         }
 
+    # Prefer compressed WebP café-interior photos when available.
+    for relative in re.findall(r"images/(space-[A-Za-z0-9._-]+[.]jpg)", "\n".join(source_text[name] for name in PAGES)):
+        stem = Path(relative).stem
+        optimized_relative = f"images/optimized/{stem}.webp"
+        if (IMAGES / "optimized" / f"{stem}.webp").is_file():
+            source_text = {
+                name: content.replace(relative, optimized_relative)
+                for name, content in source_text.items()
+            }
+
     for name, content in source_text.items():
         target = DIST / name
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -66,10 +76,14 @@ def main() -> None:
     else:
         copy_file(logo_png, DIST / "images" / "logo.png")
 
-    # Copy only the café-interior photos referenced by the public pages.
-    page_bundle = "\n".join(source_text[name] for name in PAGES)
-    for relative in sorted(set(re.findall(r'images/(space-[^"\'\s)]+\.(?:jpg|jpeg|webp))', page_bundle))):
-        copy_file(IMAGES / Path(relative).name, DIST / relative)
+    # Copy only the café-interior images referenced by the public pages.
+    page_bundle = "\\n".join(source_text[name] for name in PAGES)
+    interior_images = sorted(set(re.findall(
+        r"images/(?:space-[A-Za-z0-9._-]+[.]jpg|optimized/space-[A-Za-z0-9._-]+[.]webp)",
+        page_bundle,
+    )))
+    for relative in interior_images:
+        copy_file(IMAGES / relative.removeprefix("images/"), DIST / relative)
 
     # Product originals stay in the repository for future edits. Only the
     # optimized WebP variants referenced by the menu are shipped to customers.
