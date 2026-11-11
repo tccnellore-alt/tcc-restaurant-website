@@ -30,10 +30,12 @@ test("food category order and Pizza to Burgers to Sandwiches navigation stay cor
     await page.locator("#foodSpotlightExplore").click();
   }
   await expect(page.locator("#foodTabs")).toBeVisible();
-  const labels = await page.locator("#foodTabs .food-tab").allTextContents();
-  const pizza = labels.indexOf("Pizza");
-  const burgers = labels.indexOf("Burgers");
-  const sandwiches = labels.indexOf("Sandwiches");
+  const targets = await page.locator("#foodTabs .food-tab").evaluateAll((buttons) =>
+    buttons.map((button) => button.dataset.foodTarget)
+  );
+  const pizza = targets.indexOf("Pizzas");
+  const burgers = targets.indexOf("Burgers");
+  const sandwiches = targets.indexOf("Sandwiches");
   expect(pizza).toBeGreaterThanOrEqual(0);
   expect(burgers).toBeGreaterThan(pizza);
   expect(sandwiches).toBeGreaterThan(burgers);
