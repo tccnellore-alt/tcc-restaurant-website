@@ -89,6 +89,7 @@ test("logo and menu image optimization pipeline is configured", () => {
   const workflow = read(".github/workflows/optimize-menu-images.yml");
   const builder = read("tools/build_site.py");
   assert.match(optimizer, /save_responsive_logo/);
+  assert.match(optimizer, /save_interior_photos/);
   assert.match(optimizer, /logo-2x\.webp/);
   assert.match(workflow, /qa-fixes/);
   assert.match(builder, /images\/menu\/optimized/);
