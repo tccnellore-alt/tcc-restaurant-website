@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tcc-restaurant-website.pages.dev/sitemap.xml
