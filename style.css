@@ -697,3 +697,9 @@ body.tcc-game-open{overflow:hidden}
 
 /* Respect the hidden state while the Perfect 10 timer is running. */
 .tcc-game-clock[hidden]{display:none!important}
+
+/* Practice level picker */
+.tcc-game-practice-levels{display:grid;gap:9px;margin:14px auto 0;width:min(100%,340px)}
+.tcc-game-practice-levels p{margin:0 0 3px;color:#6d786f;font:600 12px/1.5 Arial,sans-serif;text-align:center}
+.tcc-game-practice-levels .tcc-game-again{width:100%;margin:0;padding:13px 16px;background:#f4efe3}
+.tcc-game-practice-levels .tcc-game-again:focus-visible{outline:3px solid #b79a5a;outline-offset:3px}
