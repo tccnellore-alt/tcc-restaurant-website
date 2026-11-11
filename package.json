@@ -1,0 +1,13 @@
+{
+  "name": "tcc-restaurant-website",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "python3 tools/build_site.py",
+    "test": "node --test tests/static.test.cjs",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  }
+}
