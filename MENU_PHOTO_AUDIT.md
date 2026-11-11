@@ -15,10 +15,10 @@ Asset directory: `images/menu/`
 | Photo mapping entries in `TCC_VERIFIED_PHOTOS` | 80 |
 | Unused mapping entries | 1 |
 | Original menu image files | 80 |
-| Optimized WebP files | 160 (80 small + 80 large) |
-| Total image files in repository | 246 |
+| Optimized WebP files | 158 (79 small + 79 large) |
+| Total image files in repository | 244 |
 | Original menu image footprint | 160.93 MB |
-| Optimized WebP footprint | 7.55 MB |
+| Optimized WebP footprint | 7.44 MB |
 
 **Coverage:** 79 of 107 menu items have a mapping (73.8%). The remaining 28 items do not have a mapping and should continue to use the menu's “Photo Coming Soon” placeholder rather than a generic substitute.
 
@@ -61,23 +61,23 @@ The following current menu items do not have a matching key in `TCC_VERIFIED_PHO
 
 - All external small and large image paths referenced by the 80 mapping entries resolve to files in the `main` branch when URL-encoded paths are decoded.
 - One mapping uses an embedded `data:image/webp` image rather than a repository file.
-- The Iced Mocha optimized filenames contain a leading space. The URL-encoded mapping resolves to those existing files. Do not rename these assets without updating the mapping.
-- The optimized `blueberry-iced-tea-400.webp` and `blueberry-iced-tea-800.webp` files are not referenced by the current mapping. They are an unused optimized pair.
+- Iced Mocha source and optimized filenames have been normalized to remove the accidental leading space. The menu mapping now references the corrected optimized filenames.
+- The unused Blueberry Iced Tea optimized WebP pair has been removed. The original source image is retained.
 - The mapping entry `Bun Maska with TCC Chai` is not used by a current menu item.
 - The audit is based on menu markup, mapping keys and repository file existence. It does not certify that every photograph depicts TCC's exact recipe, portion, garnish or plating.
 
 ## Asset footprint
 
-The 80 original menu images total approximately 160.93 MB. The 160 optimized WebP variants total approximately 7.55 MB. The optimized set is approximately 95.3% smaller than the original set by aggregate file size.
+The 80 original menu images total approximately 160.93 MB. The 160 optimized WebP variants total approximately 7.55 MB. The optimized set is approximately 95.4% smaller than the original set by aggregate file size.
 
-The optimized files are arranged as 400px and 800px variants for each of the 80 source-image stems. Keep the responsive small/large pairing when changing mappings.
+The optimized files are arranged as 400px and 800px variants for 79 source-image stems. Keep the responsive small/large pairing when changing mappings.
 
 ## Recommended next actions
 
 1. Add or deliberately leave placeholders for the 28 unmapped items. Prioritize signature drinks and popular food items; use TCC's own product photos where visual accuracy matters.
-2. Review the two unused Blueberry Iced Tea WebP files and either map them to the correct item (if the photo is an approved match) or remove them in a separate cleanup.
+2. No unused Blueberry Iced Tea optimized files remain; the original source is retained.
 3. Remove or restore the unused `Bun Maska with TCC Chai` mapping only after confirming whether the item is intended to return to the menu.
-4. Keep the Iced Mocha leading-space filename stable until a coordinated asset-and-code rename is made.
+4. Iced Mocha filenames and menu references have been normalized; verify both responsive sizes load after deployment.
 5. Re-run the audit after any menu or photo-mapping change.
 
 ## Audit limitations
