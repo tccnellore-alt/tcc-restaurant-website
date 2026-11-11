@@ -1701,7 +1701,7 @@ html{scroll-behavior:smooth}
     </div>
     <p class="tcc-game-feedback" id="tccGameFeedback" aria-live="polite">Ready? Take a breath and trust your timing.</p>
     <p class="tcc-game-attempts" id="tccGameAttempts">3 attempts remaining in this 3-hour window</p>
-    <div class="tcc-game-prize"><span aria-hidden="true">☕</span><div><strong>WIN 10% OFF</strong><small>Any one beverage</small></div></div>
+    <div class="tcc-game-prize" id="tccGamePrize"><span aria-hidden="true">☕</span><div><strong>WIN 10% OFF</strong><small>Any one beverage</small></div></div>
     <div class="tcc-game-rules"><span>3 attempts every 3 hours</span><span>1 discount per table</span></div>
     <div class="tcc-game-claim" id="tccGameClaim" hidden>
       <strong>YOU NAILED THE PERFECT 10!</strong>
@@ -3741,6 +3741,8 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   function updateAttempts(){
     refreshThreeHourAttempts();
     const remaining=Math.max(0,maxAttempts-attempts);
+    const prize=byId("tccGamePrize");
+    if(prize)prize.style.display=practiceMode?"none":"";
     attemptsDisplay.textContent=practiceMode?"Practice mode · "+practiceAttempts+" fun attempts played":remaining+" official attempt"+(remaining===1?"":"s")+" remaining in this 3-hour window";
     if(practiceMode){startButton.hidden=false;startButton.textContent="▶ PLAY FOR FUN";practiceButton.hidden=false;}
     else{startButton.textContent="▶ START";startButton.hidden=remaining===0;practiceButton.hidden=remaining!==0;}
@@ -3778,7 +3780,14 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     updateAttempts();
     startButton.disabled=false;stopButton.disabled=true;
     againButton.hidden=false;
-    if(practiceMode){feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">🎮</span><strong>Practice round complete!</strong><small>Practice only · No discount or reward in fun mode</small>';againButton.hidden=true;startButton.hidden=false;startButton.textContent="▶ PLAY AGAIN";practiceButton.hidden=false;}
+    if(practiceMode){
+      const difference=Math.abs(elapsed-10000)/1000;
+      const timingNote=perfectWindow
+        ?"Perfect 10.00! You nailed it — just for fun."
+        :(elapsed<10000?"Too early":"Too late")+" · "+difference.toFixed(3)+"s away from 10.00";
+      feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">'+(perfectWindow?"🎯":elapsed<10000?"🥹":"😂")+'</span><strong>'+(perfectWindow?"Perfect timing!":"Practice round complete!")+'</strong><small>'+timingNote+' · Practice only, no discount or reward</small>';
+      againButton.hidden=true;startButton.hidden=false;startButton.textContent="▶ PLAY AGAIN";practiceButton.hidden=false;
+    }
     else if(perfectWindow){
       let reward=null;
       try{reward=JSON.parse(localStorage.getItem(activeRewardKey||getCurrentRewardKey())||"null");}catch(e){}
