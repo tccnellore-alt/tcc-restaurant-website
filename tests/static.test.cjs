@@ -42,6 +42,17 @@ test("all seven pizza items reflect the latest in-stock menu state", () => {
   }
 });
 
+test("ice cream flavours reflect the latest in-stock menu state", () => {
+  const html = read("menu.html");
+  const names = ["Mango", "Kesari Pista", "Butterscotch", "Tutti Frutti"];
+  const cards = html.split('<article class="m-item">').slice(1).map((card) => card.split("</article>")[0]);
+  for (const name of names) {
+    const card = cards.find((item) => item.includes("<h3>" + name + "</h3>"));
+    assert.ok(card, name);
+    assert.doesNotMatch(card, /availability-status|Temporarily Sold Out/i, name);
+  }
+});
+
 test("menu category order preserves Pizza, Burgers, Sandwiches", () => {
   const js = read("menu.js");
   const pizza = js.indexOf('["Pizzas","Pizza"]');
