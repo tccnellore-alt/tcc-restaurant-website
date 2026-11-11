@@ -1594,6 +1594,11 @@ html{scroll-behavior:smooth}
   flex:0 0 auto;
   scroll-snap-align:start;
 }
+.menu-tabs .menu-tab,
+.food-tabs .food-tab {
+  height:44px;
+  min-height:44px;
+}
 .menu-tabs,
 .food-tabs {
   -webkit-overflow-scrolling:touch;
@@ -1609,7 +1614,7 @@ html{scroll-behavior:smooth}
 .menu-tab:focus-visible,
 .food-tab:focus-visible,
 .menu-page .tcc-quiz-option:focus-visible,
-.menu-page .menu-image-lightbox-close:focus-visible {
+.menu-image-lightbox-close:focus-visible {
   outline:3px solid #80652e;
   outline-offset:3px;
 }
