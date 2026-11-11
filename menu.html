@@ -3778,7 +3778,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     startButton.disabled=false;stopButton.disabled=true;
     againButton.hidden=false;
     if(practiceMode){feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">🎮</span><strong>Practice round complete!</strong><small>Practice only · No discount or reward in fun mode</small>';againButton.hidden=true;startButton.hidden=false;startButton.textContent="▶ PLAY AGAIN";practiceButton.hidden=false;}
-    else if(Math.abs(elapsed-10000)<=10){
+    else if(elapsed>=9995 && elapsed<=10004){
       let reward=null;
       try{reward=JSON.parse(localStorage.getItem(activeRewardKey||getCurrentRewardKey())||"null");}catch(e){}
       const code=reward?.code||("TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase());
