@@ -94,7 +94,7 @@ test("logo and menu image optimization pipeline is configured", () => {
   assert.match(builder, /images\/menu\/optimized/);
   assert.match(builder, /logo\.webp/);
   assert.match(builder, /Source-only originals/);
-  assert.match(builder, /unquote\(name\)\.strip\(\)/);
+  assert.match(builder, /legacy_source/);
   assert.doesNotMatch(read("menu.js"), /optimized\/%20iced-mocha/);
 });
 
