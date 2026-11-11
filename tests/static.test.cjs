@@ -76,6 +76,26 @@ test("site navigation exposes state and drawer controls", () => {
   assert.match(read("script.js"), /event\.key === "Escape"/);
 });
 
+test("all public page images have alt text", () => {
+  for (const page of publicPages) {
+    const html = read(page);
+    const images = [...html.matchAll(/<img\\b([^>]*)>/gi)].map((match) => match[1]);
+    for (const attributes of images) assert.match(attributes, /\\balt\\s*=/, page);
+  }
+});
+
+test("lean build excludes retired and source-only assets", () => {
+  const dist = path.join(root, "dist");
+  assert.ok(fs.existsSync(dist), "run npm run build before static tests");
+  assert.equal(fs.existsSync(path.join(dist, "feedback.html")), false);
+  assert.equal(fs.existsSync(path.join(dist, "images", "menu", "maska-bun.png")), false);
+  assert.ok(
+    fs.existsSync(path.join(dist, "images", "logo.webp")) ||
+    fs.existsSync(path.join(dist, "images", "logo.png"))
+  );
+  assert.ok(fs.existsSync(path.join(dist, "images", "menu", "optimized")));
+});
+
 test("menu HTML contains no duplicate IDs", () => {
   for (const page of publicPages) {
     const html = read(page);
