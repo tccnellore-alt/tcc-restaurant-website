@@ -26,6 +26,10 @@ test("menu search works across categories and Escape clears it", async ({ page }
 test("food category order and Pizza to Burgers to Sandwiches navigation stay correct", async ({ page }) => {
   await page.goto("/menu.html");
   await page.locator('.menu-tab[data-target="food"]').click();
+  if (await page.locator("#foodSpotlight.is-open").count()) {
+    await page.locator("#foodSpotlightExplore").click();
+  }
+  await expect(page.locator("#foodTabs")).toBeVisible();
   const labels = await page.locator("#foodTabs .food-tab").allTextContents();
   const pizza = labels.indexOf("Pizza");
   const burgers = labels.indexOf("Burgers");
