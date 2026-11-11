@@ -1679,7 +1679,7 @@ html{scroll-behavior:smooth}
     </div>
     <button type="button" class="tcc-game-launch" id="tccGameLaunch">
       <span class="tcc-game-launch-icon" aria-hidden="true">🎯</span>
-      <span><strong>PLAY THE PERFECT 10</strong><small>3 Level 1 chances · Unlock Level 2 for 10% OFF the whole bill</small></span>
+      <span><strong>PLAY THE PERFECT 10</strong><small>3 chances every 3 hours · Win 10% OFF any one beverage</small></span>
       <span class="tcc-game-launch-arrow" aria-hidden="true">→</span>
     </button>
   </div>
@@ -1689,7 +1689,7 @@ html{scroll-behavior:smooth}
     <button class="tcc-game-close" id="tccGameClose" type="button" aria-label="Close game">×</button>
     <div class="tcc-game-kicker">TCC MINI GAME</div>
     <h2 id="tccGameTitle">The Perfect 10</h2>
-    <p class="tcc-game-intro" id="tccGameIntro">Hit 10.00 to unlock Level 2 and your beverage reward.</p>
+    <p class="tcc-game-intro">Trust your instinct. Stop the timer at exactly 10.00 seconds.</p>
     <div class="tcc-game-clock" id="tccGameClock" aria-live="off">
       <span class="tcc-game-clock-label">YOUR TIME</span>
       <strong id="tccGameTime">00.00</strong>
@@ -1702,20 +1702,15 @@ html{scroll-behavior:smooth}
     <p class="tcc-game-feedback" id="tccGameFeedback" aria-live="polite">Ready? Take a breath and trust your timing.</p>
     <p class="tcc-game-attempts" id="tccGameAttempts">3 attempts remaining in this 3-hour window</p>
     <div class="tcc-game-prize" id="tccGamePrize"><span aria-hidden="true">☕</span><div><strong>WIN 10% OFF</strong><small>Any one beverage</small></div></div>
-    <div class="tcc-game-rules" id="tccGameRules"><span>3 attempts every 3 hours</span><span>1 discount per table</span></div>
+    <div class="tcc-game-rules"><span>3 attempts every 3 hours</span><span>1 discount per table</span></div>
     <div class="tcc-game-claim" id="tccGameClaim" hidden>
       <strong>YOU NAILED THE PERFECT 10!</strong>
       <span>Your table's reward code</span>
       <code id="tccGameCode"></code>
-      <small>Show this reward to our team before placing your order.</small>
+      <small>Show this screen to our team before placing your order. One beverage only.</small>
     </div>
     <button type="button" class="tcc-game-again" id="tccGameAgain" hidden>TRY AGAIN</button>
     <button type="button" class="tcc-game-again" id="tccGamePractice" hidden>🎮 CONTINUE PLAYING FOR FUN</button>
-    <div class="tcc-game-practice-levels" id="tccGamePracticeLevels" hidden>
-      <p>Choose a level to practise — no rewards, no limits.</p>
-      <button type="button" class="tcc-game-again" id="tccGamePracticeLevel1">▶ PRACTISE LEVEL 1</button>
-      <button type="button" class="tcc-game-again" id="tccGamePracticeLevel2">▶ PRACTISE LEVEL 2</button>
-    </div>
   </div>
 </section>
 <div class="menu-tools">
@@ -3704,60 +3699,184 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
 </script>
 
 <script>
-/* TCC THE PERFECT 10 — two-level timing challenge */
+/* TCC THE PERFECT 10 — count-up timing challenge */
 (function(){
-  const byId=id=>document.getElementById(id), modal=byId("tccGame");
+  const byId=id=>document.getElementById(id);
+  const modal=byId("tccGame");
   if(!modal)return;
-  const clock=byId("tccGameClock"),timeDisplay=byId("tccGameTime"),startButton=byId("tccGameStart"),stopButton=byId("tccGameStop"),feedback=byId("tccGameFeedback"),againButton=byId("tccGameAgain"),practiceButton=byId("tccGamePractice"),practiceLevels=byId("tccGamePracticeLevels"),practiceLevel1=byId("tccGamePracticeLevel1"),practiceLevel2=byId("tccGamePracticeLevel2"),claim=byId("tccGameClaim"),attemptsDisplay=byId("tccGameAttempts"),prize=byId("tccGamePrize"),rules=byId("tccGameRules");
-  const attemptsKeyPrefix="tcc-perfect10-attempts-3hour-v2-",rewardKeyPrefix="tcc-perfect10-table-won-3hour-v2-",maxAttempts=3,level2MaxLives=3;
-  let attempts=0,running=false,countingDown=false,startedAt=0,frame=0,countdownTimer=0,practiceMode=false,practiceAttempts=0,level=1,attemptsKey="",activeRewardKey="";
-  function windowId(){const d=new Date(),p=v=>String(v).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"-"+(Math.floor(d.getHours()/3)*3);}
-  function rewardKey(){return rewardKeyPrefix+windowId();}
-  function attemptsKeyNow(){return attemptsKeyPrefix+windowId();}
-  function readReward(){try{return JSON.parse(localStorage.getItem(activeRewardKey||rewardKey())||"null")||{};}catch(e){return {};}}
-  function saveReward(data){try{localStorage.setItem(activeRewardKey||rewardKey(),JSON.stringify(data));}catch(e){}}
-  function refreshAttempts(){const key=attemptsKeyNow();if(key!==attemptsKey){attemptsKey=key;try{attempts=Math.min(maxAttempts,Math.max(0,Number(localStorage.getItem(key))||0));}catch(e){attempts=0;}}}
-  const format=ms=>{const n=Math.round(Math.max(0,ms)/10),whole=Math.floor(n/100);return String(whole).padStart(2,"0")+"."+String(n%100).padStart(2,"0");};
-  function setLevel(next){level=next;const reward=readReward();byId("tccGameTitle").textContent=level===1?"The Perfect 10 · Level 1":"The Perfect 10 · Level 2";prize.querySelector("strong").textContent=level===1?"LEVEL 1 · WIN 10% OFF":"LEVEL 2 · WIN 10% OFF";prize.querySelector("small").textContent=level===1?"Any one beverage":"Your entire bill";byId("tccGameIntro").textContent=practiceMode?(level===1?"Practise Level 1. Try to stop at exactly 10.00 seconds.":"Practise Level 2. Try to stop at exactly 10.00 seconds."):level===1?"Hit 10.00 to unlock Level 2 and your beverage reward.":"Three lives. Hit 10.00 to win 10% off your entire bill.";attemptsDisplay.textContent=practiceMode?"Practice mode · Level "+level+" · Unlimited attempts · "+practiceAttempts+" rounds played":level===1?Math.max(0,maxAttempts-attempts)+" Level 1 attempt"+(maxAttempts-attempts===1?"":"s")+" remaining":"Level 2 · "+(reward.level2Lives??level2MaxLives)+" lives remaining";prize.style.display=practiceMode?"none":"";rules.style.display=practiceMode?"none":"";}
-  function update(){refreshAttempts();const r=readReward();if(!practiceMode){if(r.level2Unlocked)setLevel(2);else setLevel(1);}else{setLevel(level);}if(practiceMode){startButton.hidden=false;startButton.textContent="▶ PRACTISE LEVEL "+level;practiceButton.hidden=true;practiceLevels.hidden=true;}else if(level===2){startButton.hidden=(r.level2Won||r.level2Lives<=0);startButton.textContent="▶ PLAY LEVEL 2";practiceButton.hidden=!(r.level2Won||r.level2Lives<=0);}else{startButton.hidden=attempts>=maxAttempts||!!r.level2Unlocked;startButton.textContent="▶ START";practiceButton.hidden=attempts<maxAttempts;}}
-  function setOpen(open){modal.classList.toggle("is-open",open);modal.setAttribute("aria-hidden",String(!open));document.body.classList.toggle("tcc-game-open",open);if(open)byId("tccGameClose").focus();}
-  function stopAnimation(){running=false;countingDown=false;clearTimeout(countdownTimer);cancelAnimationFrame(frame);modal.classList.remove("tcc-game-running");stopButton.disabled=true;startButton.disabled=false;clock.hidden=false;}
-  function render(now){if(!running||countingDown)return;timeDisplay.textContent=format(now-startedAt);frame=requestAnimationFrame(render);}
-  function issueLevel1Reward(r){const code=r.code||("TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase());const next={...r,code,wonAt:r.wonAt||Date.now(),level2Unlocked:true,level2Lives:level2MaxLives};saveReward(next);byId("tccGameCode").textContent=code;claim.hidden=false;claim.querySelector("small").textContent="10% off one beverage. Show this reward to our team.";feedback.innerHTML="<strong>LEVEL 1 CLEARED! 🎉</strong><small>10% OFF one beverage unlocked. Level 2 is ready with 3 lives!</small>";againButton.hidden=false;againButton.textContent="UNLOCK LEVEL 2 →";startButton.hidden=true;}
-  function issueLevel2Reward(r){const code=r.level2Code||("TCCBILL-"+Math.random().toString(36).slice(2,7).toUpperCase());saveReward({...r,level2Won:true,level2Code:code,level2WonAt:Date.now()});byId("tccGameCode").textContent=code;claim.hidden=false;claim.querySelector("strong").textContent="LEVEL 2 MASTERED! 🏆";claim.querySelector("small").textContent="10% OFF your entire bill. Show this reward to our team.";feedback.innerHTML="<strong>YOU BEAT THE PERFECT 10! 🏆</strong><small>10% OFF your entire bill is unlocked!</small>";againButton.hidden=true;startButton.hidden=true;}
-  function stopGame(){if(!running||countingDown)return;const elapsed=performance.now()-startedAt;stopAnimation();const perfect=elapsed>=9991&&elapsed<=10009;timeDisplay.textContent=perfect?"10.00":format(elapsed);
-    if(practiceMode){practiceAttempts++;try{localStorage.setItem("tcc-perfect10-practice-count",String(practiceAttempts));}catch(e){}const diff=Math.abs(elapsed-10000)/1000;feedback.innerHTML="<strong>"+(perfect?"Perfect 10.00! 🎯":"Practice round complete!")+"</strong><small>"+(perfect?"You nailed it — just for fun.":(elapsed<10000?"Too early":"Too late")+" · "+diff.toFixed(3)+"s away from 10.00")+" · No reward in practice mode</small>";startButton.hidden=false;startButton.textContent="▶ PLAY AGAIN";againButton.hidden=true;update();return;}
-    if(level===1){attempts=Math.min(maxAttempts,attempts+1);try{localStorage.setItem(attemptsKeyNow(),String(attempts));}catch(e){}if(perfect){issueLevel1Reward(readReward());return;}const diff=Math.abs(elapsed-10000)/1000;feedback.innerHTML="<strong>"+(elapsed<10000?"🥹 Too early!":"😂 Too late!")+"</strong><small>"+diff.toFixed(3)+"s away from 10.00 · "+Math.max(0,maxAttempts-attempts)+" Level 1 attempts left</small>";if(attempts>=maxAttempts){feedback.innerHTML+="<small>That’s all 3 Level 1 chances. Try practice mode next time!</small>";startButton.hidden=true;practiceButton.hidden=false;}else{startButton.hidden=false;startButton.textContent="▶ TRY AGAIN";}update();return;}
-    const r=readReward();if(perfect){issueLevel2Reward(r);return;}const lives=Math.max(0,(r.level2Lives??level2MaxLives)-1);saveReward({...r,level2Lives:lives});const diff=Math.abs(elapsed-10000)/1000;feedback.innerHTML="<strong>"+(elapsed<10000?"🥲 Too early!":"🙈 Too late!")+"</strong><small>"+diff.toFixed(3)+"s away from 10.00 · "+lives+" Level 2 "+(lives===1?"life":"lives")+" left</small>";if(lives===0){feedback.innerHTML="<strong>💔 All 3 lives used!</strong><small>Level 1 beverage reward remains yours. Level 2 whole-bill reward was not unlocked.</small>";startButton.hidden=true;}else{startButton.hidden=false;startButton.textContent="▶ TRY LEVEL 2 AGAIN";}update();
+  const timeDisplay=byId("tccGameTime");
+  const startButton=byId("tccGameStart");
+  const stopButton=byId("tccGameStop");
+  const feedback=byId("tccGameFeedback");
+  const againButton=byId("tccGameAgain");
+  const practiceButton=byId("tccGamePractice");
+  const claim=byId("tccGameClaim");
+  const attemptsKeyPrefix="tcc-perfect10-attempts-3hour-v2-";
+  const rewardKeyPrefix="tcc-perfect10-table-won-3hour-v2-";
+  const maxAttempts=3;
+  const attemptsDisplay=byId("tccGameAttempts");
+  let attempts=0,running=false,startedAt=0,frame=0,lastElapsed=0,practiceMode=false,practiceAttempts=0;
+  let attemptsKey="",activeAttemptsKey="",activeRewardKey="";
+  function getCurrentThreeHourWindowId(){
+    const now=new Date();
+    const pad=value=>String(value).padStart(2,"0");
+    const windowStartHour=Math.floor(now.getHours()/3)*3;
+    return now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate())+"-"+pad(windowStartHour);
   }
-  function startGame(){update();const r=readReward();if(practiceMode){/* Keep the selected practice level. */}else if(level===1&&attempts>=maxAttempts&&!r.level2Unlocked){feedback.textContent="You’ve used all 3 Level 1 attempts.";return;}else if(level===2&&(r.level2Won||r.level2Lives<=0)){feedback.textContent="Level 2 is complete.";return;}
-    activeRewardKey=rewardKey();attemptsKey=attemptsKeyNow();if(!practiceMode&&level===1&&r.code){byId("tccGameCode").textContent=r.code;claim.hidden=false;}if(practiceMode)claim.hidden=true;
-    running=true;modal.classList.add("tcc-game-running");startButton.disabled=true;stopButton.disabled=true;againButton.hidden=true;practiceButton.hidden=true;
-    if(level===2){
-      // Level 2 is a true blind-timing challenge: start immediately, hide the clock,
-      // and reveal the final time only after STOP is pressed.
-      countingDown=false;clock.hidden=true;timeDisplay.textContent="00.00";
-      startedAt=performance.now();feedback.textContent="Timer started. Trust your instinct — tap STOP to reveal your time.";
-      stopButton.disabled=false;frame=requestAnimationFrame(render);
-    }else{
-      // Level 1 keeps the original countdown and gameplay unchanged.
-      countingDown=true;clock.hidden=false;timeDisplay.textContent="2.5";feedback.textContent="Get ready…";
-      const countdownStart=performance.now();const tick=()=>{if(!running)return;const left=Math.max(0,2500-(performance.now()-countdownStart));feedback.textContent=left>1700?"Ready… 3":left>900?"2":left>0?"1":"GO!";if(left>0){countdownTimer=setTimeout(tick,Math.min(100,left));return;}countingDown=false;clock.hidden=true;feedback.textContent="Timer is hidden. Trust your instinct — tap STOP at 10.00.";startedAt=performance.now();stopButton.disabled=false;frame=requestAnimationFrame(render);};tick();
+  function getCurrentRewardKey(){return rewardKeyPrefix+getCurrentThreeHourWindowId();}
+  function getCurrentThreeHourKey(){
+    const now=new Date();
+    const pad=value=>String(value).padStart(2,"0");
+    const windowStartHour=Math.floor(now.getHours()/3)*3;
+    return attemptsKeyPrefix+now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate())+"-"+pad(windowStartHour);
+  }
+  function refreshThreeHourAttempts(){
+    const key=getCurrentThreeHourKey();
+    if(key!==attemptsKey){
+      attemptsKey=key;
+      try{attempts=Math.min(maxAttempts,Math.max(0,Number(localStorage.getItem(attemptsKey))||0));}
+      catch(e){attempts=0;}
     }
   }
-  function reset(){stopAnimation();timeDisplay.textContent="00.00";activeRewardKey=rewardKey();practiceMode=false;practiceLevels.hidden=true;const r=readReward();const code=r.level2Won?r.level2Code:r.code;claim.hidden=!code;if(code){byId("tccGameCode").textContent=code;claim.querySelector("strong").textContent=r.level2Won?"LEVEL 2 MASTERED! 🏆":"YOU NAILED THE PERFECT 10!";claim.querySelector("small").textContent=r.level2Won?"10% OFF your entire bill. Show this reward to our team.":"10% off one beverage. Show this reward to our team.";}againButton.hidden=true;againButton.textContent="TRY AGAIN";startButton.disabled=false;stopButton.disabled=true;feedback.textContent=r.level2Won?"You’ve unlocked 10% OFF your entire bill!":r.level2Unlocked?"Level 2 is waiting. You have 3 lives to win 10% off the whole bill.":"Ready? Take a breath and trust your timing.";update();}
-  byId("tccGameLaunch").addEventListener("click",()=>{setOpen(true);reset();});
-  byId("tccGameClose").addEventListener("click",()=>{setOpen(false);reset();});
-  modal.addEventListener("click",e=>{if(e.target===modal){setOpen(false);reset();}});
-  startButton.addEventListener("click",startGame);stopButton.addEventListener("click",stopGame);
-  againButton.addEventListener("click",()=>{if(!practiceMode&&level===1&&readReward().level2Unlocked){setLevel(2);feedback.textContent="Level 2 unlocked! You have 3 lives. Win 10.00 for 10% off the whole bill.";againButton.hidden=true;startButton.hidden=false;startButton.textContent="▶ PLAY LEVEL 2";return;}reset();});
-  practiceButton.addEventListener("click",()=>{if(running)return;practiceMode=true;try{practiceAttempts=Number(localStorage.getItem("tcc-perfect10-practice-count"))||0;}catch(e){practiceAttempts=0;}claim.hidden=true;againButton.hidden=true;startButton.hidden=true;practiceButton.hidden=true;prize.style.display="none";rules.style.display="none";feedback.textContent="🎮 Choose Level 1 or Level 2 to start practising.";practiceLevels.hidden=false;});
-  function choosePracticeLevel(next){if(running)return;practiceMode=true;level=next;claim.hidden=true;againButton.hidden=true;practiceLevels.hidden=true;practiceButton.hidden=false;startButton.hidden=false;startButton.disabled=false;feedback.textContent="🎮 Practice mode · Level "+level+" · No rewards and unlimited attempts.";update();}
-  practiceLevel1.addEventListener("click",()=>choosePracticeLevel(1));
-  practiceLevel2.addEventListener("click",()=>choosePracticeLevel(2));
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("is-open")){setOpen(false);reset();}});
-  activeRewardKey=rewardKey();update();
-})();</script>
+  function updateAttempts(){
+    refreshThreeHourAttempts();
+    const remaining=Math.max(0,maxAttempts-attempts);
+    const prize=byId("tccGamePrize");
+    if(prize)prize.style.display=practiceMode?"none":"";
+    attemptsDisplay.textContent=practiceMode?"Practice mode · "+practiceAttempts+" fun attempts played":remaining+" official attempt"+(remaining===1?"":"s")+" remaining in this 3-hour window";
+    if(practiceMode){startButton.hidden=false;startButton.textContent="▶ PLAY FOR FUN";practiceButton.hidden=false;}
+    else{startButton.textContent="▶ START";startButton.hidden=remaining===0;practiceButton.hidden=remaining!==0;}
+  }
+  updateAttempts();
+  // Display seconds and hundredths only; keep full millisecond precision for judging.
+  const format=ms=>{
+    const totalHundredths=Math.round(Math.max(0,ms)/10);
+    const whole=Math.floor(totalHundredths/100);
+    const hundredths=totalHundredths%100;
+    return String(whole).padStart(2,"0")+"."+String(hundredths).padStart(2,"0");
+  };
+  function render(now){
+    if(!running)return;
+    lastElapsed=now-startedAt;
+    timeDisplay.textContent=format(lastElapsed);
+    frame=requestAnimationFrame(render);
+  }
+  function setOpen(open){
+    modal.classList.toggle("is-open",open);
+    modal.setAttribute("aria-hidden",String(!open));
+    document.body.classList.toggle("tcc-game-open",open);
+    if(open)byId("tccGameClose").focus();
+  }
+  function stopGame(){
+    if(!running)return;
+    running=false;modal.classList.remove("tcc-game-running");cancelAnimationFrame(frame);
+    const elapsed=performance.now()-startedAt;
+    lastElapsed=elapsed;
+    const perfectWindow=elapsed>=9991 && elapsed<=10009;
+    timeDisplay.textContent=perfectWindow?"10.00":format(elapsed);
+    if(practiceMode){practiceAttempts++;try{localStorage.setItem("tcc-perfect10-practice-count",String(practiceAttempts));}catch(e){}}
+    else{attempts=Math.min(maxAttempts,attempts+1);try{localStorage.setItem(activeAttemptsKey||attemptsKey,String(attempts));}catch(e){}}
+    const attemptNumber=attempts;
+    updateAttempts();
+    startButton.disabled=false;stopButton.disabled=true;
+    againButton.hidden=false;
+    if(practiceMode){
+      const difference=Math.abs(elapsed-10000)/1000;
+      const timingNote=perfectWindow
+        ?"Perfect 10.00! You nailed it — just for fun."
+        :(elapsed<10000?"Too early":"Too late")+" · "+difference.toFixed(3)+"s away from 10.00";
+      feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">'+(perfectWindow?"🎯":elapsed<10000?"🥹":"😂")+'</span><strong>'+(perfectWindow?"Perfect timing!":"Practice round complete!")+'</strong><small>'+timingNote+' · Practice only, no discount or reward</small>';
+      againButton.hidden=true;startButton.hidden=false;startButton.textContent="▶ PLAY AGAIN";practiceButton.hidden=false;
+    }
+    else if(perfectWindow){
+      let reward=null;
+      try{reward=JSON.parse(localStorage.getItem(activeRewardKey||getCurrentRewardKey())||"null");}catch(e){}
+      const code=reward?.code||("TCC10-"+Math.random().toString(36).slice(2,7).toUpperCase());
+      if(!reward?.code){try{localStorage.setItem(activeRewardKey||getCurrentRewardKey(),JSON.stringify({code,wonAt:Date.now()}));}catch(e){}}
+      byId("tccGameCode").textContent=code;
+      claim.hidden=false;againButton.hidden=true;
+      feedback.textContent="PERFECT TIMING! Your 10% beverage discount is unlocked. Keep playing with your remaining attempts!";
+      startButton.hidden=attempts>=maxAttempts;
+    }else{
+      const difference=Math.abs(elapsed-10000)/1000;
+      const loseMessages=elapsed<10000
+        ? [
+          ["😭","Your finger got excited before the clock did!"],
+          ["🥲","So close! The timer said ‘not today, bestie.’"],
+          ["🐢","Even the turtle was waiting for you to stop!"],
+          ["🫠","Oops… your timing melted a little early."]
+        ]
+        : [
+          ["😂","You waited for the next episode! 10 seconds was already gone."],
+          ["🥹","The perfect 10 waved goodbye while you were thinking."],
+          ["🐌","A little late! Were you ordering another coffee?"],
+          ["🙈","The timer crossed 10… and you kept believing!"]
+        ];
+      const joke=loseMessages[(attemptNumber-1)%loseMessages.length];
+      feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">'+joke[0]+'</span><strong>'+joke[1]+'</strong><small>'+(elapsed<10000?"Too early":"Too late")+" · "+difference.toFixed(3)+"s away from 10.00</small>";
+      modal.classList.remove("tcc-game-miss");
+      void modal.offsetWidth;
+      modal.classList.add("tcc-game-miss");
+      if(attemptNumber>=maxAttempts){
+        feedback.innerHTML='<span class="tcc-game-loss-emoji" aria-hidden="true">🎁</span><strong>That’s all 3 chances! The timer wins this round. 😅</strong><small>Don’t be sad — your next coffee is still waiting for you.</small>';
+        startButton.hidden=true;againButton.hidden=true;practiceButton.hidden=false;
+      }
+    }
+  }
+  function startGame(){
+    updateAttempts();
+    if(!practiceMode&&attempts>=maxAttempts){
+      feedback.textContent="You've used all 3 official attempts in this 3-hour window.";
+      startButton.hidden=true;stopButton.disabled=true;againButton.hidden=true;
+      return;
+    }
+    let existing=null;
+    try{existing=JSON.parse(localStorage.getItem(getCurrentRewardKey())||"null");}catch(e){}
+    if(existing?.code&&!practiceMode){
+      byId("tccGameCode").textContent=existing.code;
+      claim.hidden=false;
+    }
+    if(practiceMode)claim.hidden=true;
+    activeAttemptsKey=attemptsKey;
+    activeRewardKey=getCurrentRewardKey();
+    running=true;modal.classList.add("tcc-game-running");startedAt=performance.now();lastElapsed=0;
+    timeDisplay.textContent="00.00";
+    feedback.textContent=practiceMode?"Fun mode! No rewards — just try to hit 10.00 seconds.":"Timer is running. Stop when you feel 10.00 seconds has passed.";
+    startButton.disabled=true;stopButton.disabled=false;againButton.hidden=true;
+    frame=requestAnimationFrame(render);
+  }
+  function resetGame(){
+    if(running){running=false;modal.classList.remove("tcc-game-running");cancelAnimationFrame(frame);}
+    timeDisplay.textContent="00.00";
+    updateAttempts();
+    let existingReward=null;
+    try{existingReward=JSON.parse(localStorage.getItem(getCurrentRewardKey())||"null");}catch(e){}
+    claim.hidden=!existingReward?.code;
+    if(existingReward?.code){byId("tccGameCode").textContent=existingReward.code;}
+    feedback.textContent=attempts>=maxAttempts
+      ? "You've used all 3 attempts in this 3-hour window."
+      : existingReward?.code
+        ? "Your discount is unlocked! You can keep playing with your remaining attempts."
+        : "Ready? Take a breath and trust your timing.";
+    startButton.disabled=false;stopButton.disabled=true;
+    againButton.hidden=true;practiceMode=false;updateAttempts();
+  }
+  byId("tccGameLaunch").addEventListener("click",()=>{setOpen(true);resetGame();});
+  byId("tccGameClose").addEventListener("click",()=>{setOpen(false);resetGame();});
+  modal.addEventListener("click",e=>{if(e.target===modal){setOpen(false);resetGame();}});
+  startButton.addEventListener("click",startGame);
+  stopButton.addEventListener("click",stopGame);
+  againButton.addEventListener("click",resetGame);
+  practiceButton.addEventListener("click",()=>{if(running)return;practiceMode=true;try{practiceAttempts=Number(localStorage.getItem("tcc-perfect10-practice-count"))||0;}catch(e){practiceAttempts=0;}claim.hidden=true;feedback.textContent="🎮 Official attempts are finished. Keep playing for fun — practice rounds cannot win discounts.";againButton.hidden=true;updateAttempts();startButton.hidden=false;startButton.disabled=false;});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("is-open")){setOpen(false);resetGame();}});
+  try{
+    const existing=JSON.parse(localStorage.getItem(storageKey)||"null");
+    if(existing?.code){
+      // Reward state is retained on this device for the table's visit.
+    }
+  }catch(e){}
+})();
+</script>
 
 </body>
 </html>
