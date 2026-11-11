@@ -13,7 +13,7 @@ npm run build
 ```
 
 Cloudflare Pages settings:
-- Build command: `npm run build`
+- Build command: `python3 tools/build_site.py`
 - Build output directory: `dist`
 
 The original menu photographs and source logo remain in the repository for future edits; they are not copied into the public build output.
