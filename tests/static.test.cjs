@@ -94,6 +94,8 @@ test("logo and menu image optimization pipeline is configured", () => {
   assert.match(builder, /images\/menu\/optimized/);
   assert.match(builder, /logo\.webp/);
   assert.match(builder, /Source-only originals/);
+  assert.match(builder, /unquote\(name\)\.strip\(\)/);
+  assert.doesNotMatch(read("menu.js"), /optimized\/%20iced-mocha/);
 });
 
 test("Cloudflare Pages points to the lean build output", () => {
