@@ -694,3 +694,6 @@ body.tcc-game-open{overflow:hidden}
 @keyframes tccClockPulse{0%,100%{box-shadow:0 0 0 5px rgba(183,154,90,.07),0 8px 25px rgba(23,60,43,.08)}50%{box-shadow:0 0 0 10px rgba(183,154,90,.13),0 10px 32px rgba(23,60,43,.14)}}
 @keyframes tccMissWiggle{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 @media(prefers-reduced-motion:reduce){.tcc-game-launch:before,.tcc-game-running .tcc-game-clock,.tcc-game-miss .tcc-game-feedback{animation:none!important}}
+
+/* Respect the hidden state while the Perfect 10 timer is running. */
+.tcc-game-clock[hidden]{display:none!important}
