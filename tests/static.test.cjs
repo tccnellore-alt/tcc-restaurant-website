@@ -75,6 +75,7 @@ test("global stylesheet has no late @import and includes visible focus states", 
   assert.doesNotMatch(css, /@import\s/i);
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion/);
+  assert.doesNotMatch(css, /#8d7337/i);
 });
 
 test("site navigation exposes state and drawer controls", () => {
