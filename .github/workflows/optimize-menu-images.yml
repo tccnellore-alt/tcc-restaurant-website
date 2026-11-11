@@ -5,6 +5,7 @@ on:
     paths:
       - 'images/menu/**'
       - 'images/logo.png'
+      - 'images/space-*.jpg'
       - 'tools/optimize_menu_images.py'
       - '.github/workflows/optimize-menu-images.yml'
 permissions:
@@ -25,7 +26,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add images/menu/optimized images/logo.webp images/logo-2x.webp
+          git add images/menu/optimized images/optimized images/logo.webp images/logo-2x.webp
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "chore: generate optimised responsive website images"
           git fetch origin "${GITHUB_REF_NAME}"
