@@ -3,6 +3,7 @@
 from pathlib import Path
 import re
 import shutil
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
@@ -74,9 +75,18 @@ def main() -> None:
     # Product originals stay in the repository for future edits. Only the
     # optimized WebP variants referenced by the menu are shipped to customers.
     menu_bundle = source_text["menu.html"] + "\n" + source_text["menu.js"] + "\n" + source_text["menu.css"]
-    menu_images = sorted(set(re.findall(r'images/menu/optimized/([^"\'\s)]+)', menu_bundle)))
+    menu_images = sorted({
+        unquote(name).strip()
+        for name in re.findall(r'images/menu/optimized/([^"\\'\\s)]+)', menu_bundle)
+    })
     for filename in menu_images:
-        copy_file(OPTIMIZED / filename, DIST / "images" / "menu" / "optimized" / filename)
+        source = OPTIMIZED / filename
+        if not source.is_file():
+            # Older source snapshots included a leading-space Iced Mocha file.
+            legacy_source = OPTIMIZED / (" " + filename)
+            if legacy_source.is_file():
+                source = legacy_source
+        copy_file(source, DIST / "images" / "menu" / "optimized" / filename)
 
     for name in ("_headers", "_redirects", "robots.txt", "sitemap.xml"):
         source = ROOT / name
