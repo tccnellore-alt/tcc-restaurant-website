@@ -88,7 +88,7 @@
 .favourite-grid a:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(20,42,31,.07)}
 .favourite-grid span{font:800 8px Arial;color:var(--gold);letter-spacing:.15em}
 .favourite-grid strong{font:700 18px Georgia;color:var(--green);margin-top:9px}
-.favourite-grid em{font:700 12px Arial;color:#8d7337;font-style:normal;margin-top:auto}
+.favourite-grid em{font:700 12px Arial;color:#80652e;font-style:normal;margin-top:auto}
 .m-item[data-food-type] h3:after{content:attr(data-food-type);display:inline-block;margin-left:8px;vertical-align:middle;font:800 7px Arial;letter-spacing:.08em;color:#7d8a80;border:1px solid rgba(23,60,43,.18);border-radius:999px;padding:3px 5px}
 .footer-location{font:10px Arial;letter-spacing:.12em;text-transform:uppercase;color:#b9a984}
 @media(max-width:799px){
@@ -105,7 +105,7 @@
 .landing-fav-row a{padding:15px 16px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff}
 .landing-fav-row a:nth-child(3n){border-right:0}
 .landing-fav-row strong{font:700 16px Georgia;color:var(--green)}
-.landing-fav-row span{font:700 11px Arial;color:#8d7337;white-space:nowrap}
+.landing-fav-row span{font:700 11px Arial;color:#80652e;white-space:nowrap}
 @media(max-width:799px){
 .menu-landing-favourites{padding:30px 0 5px}
 .menu-landing-favourites h2{font-size:29px}
@@ -209,7 +209,7 @@
 }
 
 /* Final premium typography + header polish */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 body{font-family:'Manrope',Arial,sans-serif}
 h1,h2,h3,.lux-home h1,.lux-intro-copy h2,.lux-menu-inner h2,.lux-grid-copy h2,.lux-visit h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600}
 .site-header{transition:background .3s,box-shadow .3s}
@@ -368,7 +368,7 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
   padding:0;
   border-radius:0;
   background:transparent;
-  color:#8d7337;
+  color:#80652e;
   font:800 20px/1 Manrope,Arial,sans-serif;
   white-space:nowrap;
 }
@@ -406,7 +406,7 @@ footer,.footer-links,.mobile-bar,.drawer nav a,.drawer-actions a{font-family:'Ma
 }
 .menu-page .menu-lightbox-addons-row b{
   flex:0 0 auto;
-  color:#8d7337;
+  color:#80652e;
   font-weight:800;
 }
 .menu-page .menu-image-lightbox-close{
@@ -621,5 +621,37 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
 @media(max-width:849px){
   .menu-page .menu-content{
     padding-top:6px!important;
+  }
+}
+
+/* Site-wide keyboard, touch and motion accessibility */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible {
+  outline:3px solid #80652e;
+  outline-offset:3px;
+}
+button,a,[role="button"] {
+  -webkit-tap-highlight-color:transparent;
+}
+.site-header .menu-toggle,
+.drawer .close {
+  min-width:44px;
+  min-height:44px;
+}
+.drawer[aria-hidden="true"] {
+  pointer-events:none;
+}
+@media (max-width:600px) {
+  .container { width:min(100% - 28px,1120px); }
+  .actions .btn,
+  .drawer-actions a,
+  .footer-links a { min-height:44px; }
+  img { height:auto; }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto!important; }
+  *,*::before,*::after {
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
   }
 }
