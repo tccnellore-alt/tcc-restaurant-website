@@ -31,6 +31,17 @@ test("menu presentation and interaction code are external assets", () => {
   assert.equal((html.match(/src="menu\.js"/g) || []).length, 1);
 });
 
+test("all seven pizza items reflect the latest in-stock menu state", () => {
+  const html = read("menu.html");
+  const names = ["Italian Margherita", "The Farmer", "Pizza Verde", "Pesto Pizza", "BBQ Chicken Pizza", "Pesto Chicken Pizza", "Chicken Pizzaiola"];
+  const cards = [...html.matchAll(/<article class="m-item">[\\s\\S]*?<\\/article>/g)].map((match) => match[0]);
+  for (const name of names) {
+    const card = cards.find((item) => item.includes(name));
+    assert.ok(card, name);
+    assert.doesNotMatch(card, /availability-status|Temporarily Sold Out/i, name);
+  }
+});
+
 test("menu category order preserves Pizza, Burgers, Sandwiches", () => {
   const js = read("menu.js");
   const pizza = js.indexOf('["Pizzas","Pizza"]');
