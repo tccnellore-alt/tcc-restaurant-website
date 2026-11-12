@@ -2065,10 +2065,10 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  }
  .menu-intro .menu-view-switch:before{
   width:calc(50% - 5px)!important;
-  transform:translateX(0)!important;
+  transform:translateX(0);
  }
  .menu-intro .menu-view-switch:has([data-menu-view="image"].is-active):before{
-  transform:translateX(calc(100% + 4px))!important;
+  transform:translateX(calc(100% + 4px));
  }
  .menu-intro .menu-view-option{
   min-width:0!important;overflow:hidden!important;
@@ -2195,6 +2195,35 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 @media(max-width:380px){
  .menu-intro .container{padding-left:16px!important;padding-right:16px!important}
  .menu-intro h1{font-size:clamp(23px,6vw,25px)!important;letter-spacing:-.04em!important}
+}
+
+
+
+/* Restore animated menu-switch movement after the mobile layout overrides. */
+.menu-intro .menu-view-switch:before{
+ transition:transform .36s cubic-bezier(.2,.8,.25,1)!important;
+}
+.menu-intro .menu-view-switch:has([data-menu-view="text"].is-active):before{
+ transform:translateX(0)!important;
+}
+.menu-intro .menu-view-switch:has([data-menu-view="image"].is-active):before{
+ transform:translateX(calc(100% + 4px))!important;
+}
+@media(max-width:849px){
+ .menu-intro .menu-view-switch:before{
+  animation:tccMenuSwitchHintPhotos 1.2s cubic-bezier(.35,.05,.2,1) .7s 1 both;
+ }
+ @keyframes tccMenuSwitchHintPhotos{
+  0%,100%{transform:translateX(calc(100% + 4px))}
+  42%,68%{transform:translateX(0)}
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .menu-intro .menu-view-switch:before,
+ .menu-intro .menu-view-option,
+ .menu-intro .menu-view-option span{
+  animation:none!important;transition:none!important;
+ }
 }
 
 </style>
