@@ -3616,7 +3616,7 @@ document.addEventListener("click",event=>{
       coffeeAddons.forEach(addonName=>{
         const chip=document.createElement("span");
         const label=document.createElement("span");
-        label.textContent=addonName;
+        label.textContent=addonName+" · "+tccCoffeeAddonQuantity;
         const price=document.createElement("b");
         price.textContent=tccCoffeeAddonPrice;
         chip.append(label,price);
