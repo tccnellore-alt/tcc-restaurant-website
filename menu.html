@@ -1662,113 +1662,65 @@ body.menu-text-mode .menu-group .m-item:has(.availability-status) .m-photo-wrap{
 }
 
 
-/* TCC menu polish — calm sold-out states and intentional photo placeholders */
-body.menu-text-mode .menu-group .m-item:has(.availability-status),
-.menu-group .m-item:has(.availability-status),
-.menu-section .m-item:has(.availability-status){
+/* Minimal Menu only: isolated thumbnail and availability styling.
+   Image Menu intentionally keeps its original main-branch presentation. */
+body.menu-text-mode .menu-group .m-item:has(.availability-status){
   background:linear-gradient(110deg,#f8f5ed,#f3f0e8)!important;
   border-color:#e2d8c5!important;
-  box-shadow:0 2px 8px rgba(45,48,37,.035)!important;
 }
-.menu-group .m-item:has(.availability-status) h3,
-.menu-section .m-item:has(.availability-status) h3{
-  color:#526157!important;
-}
-.menu-group .m-item:has(.availability-status) p,
-.menu-section .m-item:has(.availability-status) p{
-  color:#85877e!important;
-}
-.menu-group .m-item:has(.availability-status) > strong,
-.menu-section .m-item:has(.availability-status) > strong{
-  color:#8c8067!important;
-  background:transparent!important;
-}
-.menu-group .m-item:has(.availability-status) .availability-status,
-.menu-section .m-item:has(.availability-status) .availability-status{
-  display:inline-flex!important;
-  width:max-content!important;
-  margin:6px 0 2px!important;
-  padding:5px 9px!important;
-  border:1px solid #e2b2a9!important;
-  border-radius:999px!important;
-  background:#fff2ef!important;
-  color:#a43d32!important;
+body.menu-text-mode .menu-group .m-item:has(.availability-status) h3{color:#526157!important}
+body.menu-text-mode .menu-group .m-item:has(.availability-status) p{color:#85877e!important}
+body.menu-text-mode .menu-group .m-item:has(.availability-status) > strong{color:#8c8067!important}
+body.menu-text-mode .menu-group .m-item:has(.availability-status) .availability-status{
+  display:inline-flex!important;width:max-content!important;margin:5px 0 2px!important;
+  padding:4px 8px!important;border:1px solid #e2b2a9!important;border-radius:999px!important;
+  background:#fff2ef!important;color:#a43d32!important;
   font:800 9px/1.2 Manrope,Arial,sans-serif!important;
-  letter-spacing:.025em!important;
 }
-/* Remove the diagonal SOLD OUT stamp; the clear status label beside the name is enough. */
-.menu-group .m-item:has(.availability-status) .m-photo-wrap::before,
-.menu-section .m-item:has(.availability-status) .m-photo-wrap::before,
-.menu-group .m-item:has(.availability-status) .m-photo-wrap::after,
-.menu-section .m-item:has(.availability-status) .m-photo-wrap::after{
-  content:none!important;
-  display:none!important;
-}
-.menu-group .m-item:has(.availability-status) .m-photo-wrap,
-.menu-section .m-item:has(.availability-status) .m-photo-wrap{
-  filter:none!important;
-  opacity:1!important;
+body.menu-text-mode .menu-group .m-item:has(.availability-status) .m-photo-wrap{
+  position:relative!important;filter:none!important;opacity:1!important;
   background:#e9e4d9!important;
 }
-.menu-group .m-item:has(.availability-status) .m-photo,
-.menu-section .m-item:has(.availability-status) .m-photo{
-  filter:grayscale(.45) saturate(.72)!important;
-  opacity:.82!important;
+body.menu-text-mode .menu-group .m-item:has(.availability-status) .m-photo{
+  filter:grayscale(.45) saturate(.72)!important;opacity:.82!important;
 }
-/* Compact branded placeholder tile — no oversized logo floating in an empty square. */
-body.menu-text-mode .menu-group .m-photo-placeholder,
-.menu-section .m-photo-placeholder{
-  display:flex!important;
-  flex-direction:column!important;
-  align-items:center!important;
-  justify-content:center!important;
-  gap:5px!important;
-  width:100%!important;
-  height:100%!important;
-  min-height:0!important;
-  box-sizing:border-box!important;
-  padding:6px!important;
-  border:1px solid rgba(183,154,90,.2)!important;
-  border-radius:8px!important;
-  background:linear-gradient(145deg,#f5f0e4,#ebe4d4)!important;
-  color:#315b49!important;
-  text-align:center!important;
+/* Sold-out message on thumbnail, compact enough for the 66px mobile tile. */
+body.menu-text-mode .menu-group .m-item:has(.availability-status) .m-photo-wrap::before{
+  content:"SOLD OUT"!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  position:absolute!important;z-index:5!important;inset:auto 0 0 0!important;
+  height:24px!important;padding:2px!important;box-sizing:border-box!important;
+  transform:none!important;rotate:none!important;
+  border:0!important;border-radius:0 0 7px 7px!important;
+  background:rgba(22,48,35,.88)!important;color:#fffaf0!important;
+  font:800 9px/1 Manrope,Arial,sans-serif!important;letter-spacing:.06em!important;
+  text-align:center!important;white-space:nowrap!important;
 }
-body.menu-text-mode .menu-group .m-photo-placeholder-logo,
-.menu-section .m-photo-placeholder-logo{
-  display:none!important;
+body.menu-text-mode .menu-group .m-item:has(.availability-status) .m-photo-wrap::after{
+  content:none!important;display:none!important;
+}
+/* A missing photo gets the actual TCC logo in Minimal Menu, not a generated monogram. */
+body.menu-text-mode .menu-group .m-photo-placeholder{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;height:100%!important;min-height:0!important;
+  padding:7px!important;box-sizing:border-box!important;
+  border:1px solid rgba(183,154,90,.18)!important;border-radius:8px!important;
+  background:#f3efe5!important;
 }
 body.menu-text-mode .menu-group .m-photo-placeholder::before,
-.menu-section .m-photo-placeholder::before{
-  content:"TCC";
-  display:grid;
-  place-items:center;
-  width:31px;
-  height:31px;
-  border:1px solid rgba(49,91,73,.48);
-  border-radius:50%;
-  color:#315b49;
-  font:700 11px/1 Georgia,serif;
-  letter-spacing:.02em;
+body.menu-text-mode .menu-group .m-photo-placeholder::after{
+  content:none!important;display:none!important;
 }
-body.menu-text-mode .menu-group .m-photo-coming-soon,
-.menu-section .m-photo-coming-soon{
-  display:block!important;
-  width:auto!important;
-  max-width:100%!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  background:transparent!important;
-  color:#718071!important;
-  -webkit-text-fill-color:#718071!important;
-  font:800 7px/1.2 Manrope,Arial,sans-serif!important;
-  letter-spacing:.09em!important;
-  white-space:nowrap!important;
+body.menu-text-mode .menu-group .m-photo-placeholder-logo{
+  display:block!important;max-width:82%!important;max-height:82%!important;
+  width:auto!important;height:auto!important;object-fit:contain!important;opacity:.86!important;
+}
+body.menu-text-mode .menu-group .m-photo-coming-soon{
+  display:none!important;
 }
 @media(max-width:420px){
- body.menu-text-mode .menu-group .m-photo-placeholder::before{width:28px;height:28px;font-size:10px}
- body.menu-text-mode .menu-group .m-photo-coming-soon{font-size:6.5px!important}
+ body.menu-text-mode .menu-group .m-item:has(.availability-status) .m-photo-wrap::before{
+   height:21px!important;font-size:8px!important;
+ }
 }
 
 </style>
