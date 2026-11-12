@@ -2299,6 +2299,56 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  .menu-intro .menu-view-option{height:50px!important;min-height:50px!important}
 }
 
+
+
+/* Compact coffee add-ons into dense, scan-friendly rows on mobile. */
+@media(max-width:849px){
+ .menu-group#coffee .coffee-addons-panel{
+  margin:10px 0 3px!important;
+  padding:10px 10px 9px!important;
+  border-radius:13px!important;
+ }
+ .menu-group#coffee .coffee-addons-panel .addons-heading{margin:0!important}
+ .menu-group#coffee .coffee-addons-panel .addons-heading .eyebrow{
+  margin:0 0 2px!important;font-size:7px!important;
+ }
+ .menu-group#coffee .coffee-addons-panel .addons-heading strong{
+  font-size:15px!important;line-height:1.15!important;
+ }
+ .menu-group#coffee .coffee-addons-subtitle{
+  margin:3px 0 7px!important;font-size:10px!important;line-height:1.2!important;
+ }
+ .menu-group#coffee .coffee-addons-panel .addons-row{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:5px!important;
+ }
+ .menu-group#coffee .coffee-addons-panel .addons-row>span{
+  min-height:42px!important;height:auto!important;
+  flex-direction:row!important;align-items:center!important;
+  justify-content:space-between!important;gap:5px!important;
+  padding:6px 8px!important;border-radius:8px!important;
+ }
+ .menu-group#coffee .coffee-addons-panel .addons-row>span .addon-name{
+  flex:1 1 auto!important;min-width:0!important;
+  font-size:10px!important;line-height:1.15!important;
+ }
+ .menu-group#coffee .coffee-addons-panel .addons-row>span .addon-meta{
+  flex:0 0 auto!important;display:flex!important;
+  flex-direction:column!important;align-items:flex-end!important;
+  justify-content:center!important;gap:1px!important;
+  white-space:nowrap!important;font-size:8px!important;line-height:1.1!important;
+ }
+ .menu-group#coffee .coffee-addons-panel .addon-meta b{font-size:10px!important}
+}
+@media(max-width:380px){
+ .menu-group#coffee .coffee-addons-panel{padding:8px!important}
+ .menu-group#coffee .coffee-addons-panel .addons-row{gap:4px!important}
+ .menu-group#coffee .coffee-addons-panel .addons-row>span{min-height:39px!important;padding:5px 6px!important}
+ .menu-group#coffee .coffee-addons-panel .addons-row>span .addon-name{font-size:9px!important}
+ .menu-group#coffee .coffee-addons-panel .addons-row>span .addon-meta{font-size:7px!important}
+ .menu-group#coffee .coffee-addons-panel .addon-meta b{font-size:9px!important}
+}
+
 </style>
 </head>
 <body>
