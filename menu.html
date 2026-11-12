@@ -1726,6 +1726,49 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  }
 }
 
+
+/* TCC menu style selector — explicit labels, calm premium segmented control */
+.menu-view-switch{
+ display:inline-flex!important;align-items:center!important;gap:4px!important;
+ width:auto!important;max-width:100%;padding:4px!important;
+ border:1px solid rgba(183,154,90,.34)!important;border-radius:999px!important;
+ background:#173c2b!important;box-shadow:0 4px 14px rgba(12,35,23,.13)!important;
+}
+.menu-view-switch:before{content:none!important;display:none!important}
+.menu-view-option{
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ gap:7px!important;flex:0 0 auto!important;width:auto!important;min-width:116px!important;
+ min-height:42px!important;padding:0 17px!important;border:0!important;border-radius:999px!important;
+ background:transparent!important;color:#f8f3e8!important;
+ font:800 11px/1 Manrope,Arial,sans-serif!important;letter-spacing:.025em!important;
+ white-space:nowrap!important;box-shadow:none!important;
+}
+.menu-view-option:before{content:none!important;display:none!important}
+.menu-view-option .menu-view-icon{font:500 16px/1 Arial,sans-serif!important;opacity:.9}
+.menu-view-option.is-active{
+ background:#f4eee1!important;color:#173c2b!important;
+ box-shadow:0 2px 7px rgba(0,0,0,.12)!important;
+}
+.menu-view-option:focus-visible{outline:2px solid #d2b878!important;outline-offset:3px}
+@media(max-width:849px){
+ .menu-view-switch{
+  grid-column:8 / 13!important;grid-row:2!important;
+  display:flex!important;width:100%!important;min-width:0!important;
+  min-height:48px!important;height:48px!important;padding:4px!important;gap:3px!important;
+  border-radius:15px!important;background:#173c2b!important;
+ }
+ .menu-view-option{
+  flex:1 1 0!important;min-width:0!important;width:auto!important;
+  min-height:38px!important;height:38px!important;padding:0 4px!important;
+  gap:4px!important;font-size:clamp(8px,2.5vw,10px)!important;
+ }
+ .menu-view-option .menu-view-icon{font-size:14px!important}
+}
+@media(max-width:360px){
+ .menu-view-option{gap:3px!important;padding:0 2px!important;font-size:8px!important}
+ .menu-view-option .menu-view-icon{font-size:12px!important}
+}
+
 </style>
 </head>
 <body>
@@ -1740,9 +1783,9 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
     <div class="eyebrow">THE TCC MENU</div>
     <h1>The TCC Menu</h1>
     <p>Coffee, food, signatures and more.</p>
-    <div class="menu-view-switch" role="group" aria-label="Choose menu view">
-      <button type="button" class="menu-view-option" data-menu-view="text" aria-label="Minimal Menu" aria-pressed="false">Minimal Menu</button>
-      <button type="button" class="menu-view-option is-active" data-menu-view="image" aria-label="Image Menu" aria-pressed="true">Image Menu</button>
+    <div class="menu-view-switch" role="group" aria-label="Choose menu style">
+      <button type="button" class="menu-view-option" data-menu-view="text" aria-label="Minimal Menu" aria-pressed="false"><span class="menu-view-icon" aria-hidden="true">☷</span><span>Minimal</span></button>
+      <button type="button" class="menu-view-option is-active" data-menu-view="image" aria-label="Photo Menu" aria-pressed="true"><span class="menu-view-icon" aria-hidden="true">▧</span><span>Photos</span></button>
     </div>
     <div class="takeaway-charge-notice" role="note" aria-label="Takeaway packaging charge">
       <span class="takeaway-charge-icon" aria-hidden="true">🛍</span>
