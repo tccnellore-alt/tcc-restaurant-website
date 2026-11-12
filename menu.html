@@ -1742,6 +1742,21 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  transform:translateX(0);transition:transform .34s cubic-bezier(.2,.8,.25,1)!important;
 }
 .menu-view-switch:has([data-menu-view="image"].is-active):before{transform:translateX(100%)}
+
+/* One-time discovery cue when the menu first opens: slide across and return. */
+.menu-view-switch:before{animation:tccMenuSwitchHintText 1.15s cubic-bezier(.35,.05,.2,1) .65s 1 both}
+.menu-view-switch:has([data-menu-view="image"].is-active):before{
+ transform:translateX(100%);
+ animation-name:tccMenuSwitchHintPhotos;
+}
+@keyframes tccMenuSwitchHintText{
+ 0%,100%{transform:translateX(0)}
+ 42%,68%{transform:translateX(100%)}
+}
+@keyframes tccMenuSwitchHintPhotos{
+ 0%,100%{transform:translateX(100%)}
+ 42%,68%{transform:translateX(0)}
+}
 .menu-view-option{
  position:relative!important;z-index:1!important;display:flex!important;flex:1 1 0!important;
  align-items:center!important;justify-content:center!important;gap:5px!important;
@@ -1805,7 +1820,7 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  .menu-intro .takeaway-charge-notice strong{font-size:6.5px!important}
  .menu-intro .takeaway-charge-notice .takeaway-charge-amount{font-size:9px!important}
 }
-@media(prefers-reduced-motion:reduce){.menu-view-switch:before{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.menu-view-switch:before{transition:none!important;animation:none!important}}
 
 /* Contrast fix: keep the active toggle label on the dark sliding pill. */
 .menu-intro .menu-view-switch:before{
