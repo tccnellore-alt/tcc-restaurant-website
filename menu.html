@@ -3556,6 +3556,27 @@ function closeTccImageLightbox(){
     hideTccImageLightbox();
   }
 }
+// Coffee add-ons are configured per exact product name so the expanded card
+// only displays options approved for that drink.
+const tccCoffeeAddonsByDrink = {
+  "Espresso": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
+  "Hot Americano": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
+  "Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
+  "Mocha": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Chocolate Ice Cream"],
+  "Spanish Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
+  "Cortado": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
+  "Cappuccino": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
+  "Vietnamese Coffee": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
+  "Tiramisu Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
+  "Iced Americano": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
+  "Iced Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
+  "Iced Mocha": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
+  "Classic Cold Coffee": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
+  "Spanish Iced Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream"]
+};
+const tccCoffeeAddonPrice = "₹50";
+const tccCoffeeAddonQuantity = "30 ml";
+
 document.addEventListener("click",event=>{
   // Open the product lightbox from anywhere on the product card in both menu views.
   const item=event.target.closest(".m-item");
@@ -3586,12 +3607,26 @@ document.addEventListener("click",event=>{
     const section=item?.closest(".menu-section");
     const sectionName=section?.querySelector("h2")?.textContent.trim().toLowerCase()||"";
     const addonPanel=document.querySelector("[data-addon-panel] .addons-row");
-    const hasAddons=sectionName.includes("pasta")&&!!addonPanel;
+    const isCoffeeSection=!!item?.closest("#coffee")&&(sectionName.includes("hot coffee")||sectionName.includes("cold coffee"));
+    const coffeeAddons=isCoffeeSection?(tccCoffeeAddonsByDrink[name]||[]):[];
+    const hasCoffeeAddons=coffeeAddons.length>0;
+    const hasPastaAddons=sectionName.includes("pasta")&&!!addonPanel;
     tccLightboxAddonsRow.replaceChildren();
-    if(hasAddons){
+    if(hasCoffeeAddons){
+      coffeeAddons.forEach(addonName=>{
+        const chip=document.createElement("span");
+        const label=document.createElement("span");
+        label.textContent=addonName;
+        const price=document.createElement("b");
+        price.textContent=tccCoffeeAddonPrice;
+        chip.append(label,price);
+        chip.setAttribute("aria-label",addonName+"; "+tccCoffeeAddonQuantity+"; "+tccCoffeeAddonPrice);
+        tccLightboxAddonsRow.appendChild(chip);
+      });
+    }else if(hasPastaAddons){
       addonPanel.querySelectorAll("span").forEach(addon=>tccLightboxAddonsRow.appendChild(addon.cloneNode(true)));
     }
-    tccLightboxAddons.style.display=hasAddons?"block":"none";
+    tccLightboxAddons.style.display=(hasCoffeeAddons||hasPastaAddons)?"block":"none";
     tccLightboxPrice.textContent=price;
     tccLightboxPrice.style.display=price?"inline-block":"none";
     tccImageLightbox.classList.add("is-open");
