@@ -2764,7 +2764,7 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
     if(categorySeen.has(entry.category))return;
     categorySeen.add(entry.category);
     const jump=el("button","",entry.category);
-    jump.type="button";
+    jump.type="button";jump.dataset.category=entry.category;
     jump.addEventListener("click",()=>{
      const first=tocEntries.find(x=>x.category===entry.category);
      if(first)show(first.page);
@@ -2782,6 +2782,7 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
   next.textContent=current===0?"Start reading →":current===pages.length-1?"End of book":"Next page →";
   count.textContent=current===0?"Cover":current===pages.length-1?"Thank you":(current)+" / "+(pages.length-1);
   progress.style.width=(current/(pages.length-1)*100)+"%";
+  if(categoryNav){const activeEntry=tocEntries.find(entry=>entry.page===current)||tocEntries.filter(entry=>entry.page<=current).slice(-1)[0];categoryNav.querySelectorAll("button").forEach(button=>button.classList.toggle("is-active",!!activeEntry&&button.dataset.category===activeEntry.category));}
   if(withSound)sound();
   try{localStorage.setItem("tcc-menu-book-page",String(current));}catch(e){}
  }
