@@ -1177,6 +1177,11 @@ body.menu-text-mode .menu-group .m-photo-wrap{display:none!important}
 @media(prefers-reduced-motion:reduce){#tccQuizFlow:not([hidden]),#tccQuizOptions .tcc-quiz-option,#tccStartDrinkQuiz{animation:none!important;transition:none!important}}
 
 
+/* Same-category rejection flow */
+.tcc-pick-different-category{display:block;width:100%;min-height:42px;margin:10px 0 0;padding:10px 13px;border:1px solid rgba(23,61,49,.22);border-radius:10px;background:#f5efe1;color:#173d31;font:800 12px Manrope,Arial,sans-serif;cursor:pointer}
+.tcc-pick-different-category:disabled{opacity:.5;cursor:not-allowed}
+.tcc-no-more-drinks{margin:8px 0 0;color:#68756c;font:12px/1.5 Manrope,Arial,sans-serif}
+
 /* TCC Drink Finder — recommendation alternatives */
 .tcc-drink-alternatives{margin-top:16px;padding-top:14px;border-top:1px solid rgba(23,61,49,.14)}
 .tcc-drink-alternatives h4{margin:0 0 10px;color:#173d31;font:800 13px Manrope,Arial,sans-serif}
@@ -2425,6 +2430,8 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
         <button class="tcc-quiz-restart" type="button" id="tccQuizRestart">Start over</button>
         <div class="tcc-drink-pick-result" id="tccDrinkPickResult" aria-live="polite">
           <div class="tcc-drink-pick-actions tcc-drink-pick-actions-top"><button type="button" id="tccViewPickedDrink">View in menu</button><button type="button" id="tccAdjustDrinkAnswers">Edit answers</button></div>
+          <button type="button" class="tcc-pick-different-category" id="tccSuggestAnotherSameCategory">Not for me – suggest another</button>
+          <p id="tccNoMoreCategoryDrinks" class="tcc-no-more-drinks" role="status" hidden>That’s all the available drinks in this category that match your preferences. Try another category or edit your answers.</p>
           <div class="tcc-drink-pick-visual" id="tccDrinkPickPhoto"></div>
           <div class="tcc-drink-pick-meta"><div class="tcc-drink-pick-copy"><small id="tccDrinkPickEyebrow">YOUR BEST MATCH</small><strong id="tccDrinkPickName"></strong><p id="tccDrinkPickDescription"></p><p class="tcc-quiz-why" id="tccDrinkPickWhy"></p></div><span class="tcc-drink-pick-price" id="tccDrinkPickPrice"></span></div>
           <section class="tcc-drink-alternatives" id="tccDrinkAlternatives" aria-label="Other drink recommendations"><h4>Other drinks you may enjoy</h4><div id="tccDrinkAlternativeList"></div></section>
@@ -4107,16 +4114,47 @@ function tccShowDrinkCard(drink){
   photoBox.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';
  }
 }
-function tccPickMatchedDrink(){
- const eligible=tccEligibleDrinks().filter(x=>x.profile);
+let tccSuggestedDrinkNames=new Set();
+let tccRecommendationCategory=null;
+function tccPickMatchedDrink(options={}){
  const result=tccDrinkResult;
  const list=document.getElementById("tccDrinkAlternativeList");list.replaceChildren();
+ const eligible=tccEligibleDrinks().filter(x=>x.profile);
+ if(!options.sameCategory){
+  tccSuggestedDrinkNames=new Set();
+  tccRecommendationCategory=null;
+ }
  if(!eligible.length){
   document.getElementById("tccQuizQuestion").textContent="Let's try another combination.";
   document.getElementById("tccQuizHint").textContent="We couldn't find a close match in the available drinks. Change an answer or explore the drinks menu.";
   document.getElementById("tccQuizOptions").style.display="none";
   document.querySelector(".tcc-quiz-controls").style.display="none";
   result.classList.add("is-visible");return;
+ }
+ if(options.sameCategory&&tccRecommendationCategory){
+  const sameCategory=eligible.filter(x=>x.item.closest(".menu-group")?.id===tccRecommendationCategory);
+  const unseen=sameCategory.filter(x=>!tccSuggestedDrinkNames.has(x.name));
+  const button=document.getElementById("tccSuggestAnotherSameCategory");
+  const notice=document.getElementById("tccNoMoreCategoryDrinks");
+  if(!unseen.length){
+   if(button)button.disabled=true;
+   if(notice)notice.hidden=false;
+   return;
+  }
+  if(button)button.disabled=false;
+  if(notice)notice.hidden=true;
+  const rankedUnseen=unseen.map(x=>({...x,...tccScoreDrink(x)})).sort((a,b)=>b.score-a.score);
+  const strictUnseen=rankedUnseen.filter(x=>x.hardMatch);
+  const poolUnseen=strictUnseen.length?strictUnseen:rankedUnseen;
+  const topPercent=Math.max(...poolUnseen.map(x=>x.matchPercent));
+  const nearPool=poolUnseen.filter(x=>x.matchPercent>=topPercent-5);
+  const chosen=nearPool[Math.floor(Math.random()*nearPool.length)];
+  tccSuggestedDrinkNames.add(chosen.name);
+  tccShowDrinkCard(chosen);
+  document.getElementById("tccDrinkPickEyebrow").textContent="ANOTHER PICK IN THIS CATEGORY";
+  document.getElementById("tccQuizQuestion").textContent="How about this one?";
+  document.getElementById("tccQuizHint").textContent="A different available drink from the same category, based on your original answers.";
+  return;
  }
  const ranked=eligible.map(x=>({...x,...tccScoreDrink(x)})).sort((a,b)=>b.score-a.score);
  // Respect selected drink type and temperature whenever the menu has an exact fit.
@@ -4127,6 +4165,13 @@ function tccPickMatchedDrink(){
  const topMatchPercent=Math.max(...pool.map(x=>x.matchPercent));
  const nearMatchPool=pool.filter(x=>x.matchPercent>=topMatchPercent-5);
  const chosen=nearMatchPool[Math.floor(Math.random()*nearMatchPool.length)];
+ tccRecommendationCategory=chosen.item.closest(".menu-group")?.id||null;
+ tccSuggestedDrinkNames=new Set([chosen.name]);
+ const sameCategoryButton=document.getElementById("tccSuggestAnotherSameCategory");
+ const noMoreNotice=document.getElementById("tccNoMoreCategoryDrinks");
+ if(sameCategoryButton)sameCategoryButton.disabled=false;
+ if(noMoreNotice)noMoreNotice.hidden=true;
+ document.getElementById("tccDrinkPickEyebrow").textContent="YOUR BEST MATCH";
  const remaining=pool.filter(x=>x.name!==chosen.name);
  const closeMatch=remaining.slice().sort((a,b)=>{
   const diff=b.score-a.score;
@@ -4148,6 +4193,8 @@ function tccPickMatchedDrink(){
   const top=document.createElement("span");top.className="tcc-drink-alternative-top";top.append(name,price);
   card.append(top,note);
   card.addEventListener("click",()=>{
+   tccSuggestedDrinkNames.add(drink.name);
+   tccRecommendationCategory=drink.item.closest(".menu-group")?.id||tccRecommendationCategory;
    tccShowDrinkCard(drink);
    list.querySelectorAll("button").forEach(x=>x.classList.toggle("is-selected",x===card));
   });
@@ -4187,8 +4234,10 @@ document.getElementById("tccAdjustDrinkAnswers")?.addEventListener("click",()=>{
  tccRenderQuizStep();
  document.getElementById("tccQuizFlow").scrollIntoView({behavior:"smooth",block:"start"});
 });
-// Keep the customer's answers and draw again from the same near-match pool.
-document.getElementById("tccPickAnotherDrink")?.addEventListener("click",tccPickMatchedDrink);
+// Rejections stay within the currently recommended menu category and never repeat.
+document.getElementById("tccSuggestAnotherSameCategory")?.addEventListener("click",()=>{
+ tccPickMatchedDrink({sameCategory:true});
+});
 function tccViewPickedDrink(){
  const chosen=tccCurrentDrink;
  if(!chosen?.name)return;
