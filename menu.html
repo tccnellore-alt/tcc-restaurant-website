@@ -2803,7 +2803,6 @@ function addTccMenuPhotos(){
   const buttons=[...document.querySelectorAll("[data-menu-view]")];
   if(!buttons.length) return;
   function setMenuView(view){
-    if(view==="book") return;
     const textMode=view==="text";
     document.body.classList.toggle("menu-text-mode",textMode);
     buttons.forEach(button=>{
