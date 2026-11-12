@@ -243,9 +243,11 @@
 .menu-lightbox-spice .spice-level{margin:0!important}
 .menu-lightbox-spice .spice-copy{font-size:12px}
 .menu-lightbox-addons{display:none;width:100%;margin-top:10px;padding:12px;border:1px solid rgba(183,154,90,.3);border-radius:10px;background:#f3ecdc}
-.menu-lightbox-addons-title{margin:0 0 8px;color:#173d31;font:700 12px/1.3 Manrope,Arial,sans-serif}
-.menu-lightbox-addons-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:8px;min-width:0}
-.menu-lightbox-addons-row > span{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-width:0;min-height:44px;box-sizing:border-box;padding:9px 11px;border:1px solid rgba(23,60,43,.12);border-radius:9px;background:#fff;color:#526057;font:600 12px/1.35 Manrope,Arial,sans-serif}
+.menu-lightbox-addons-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.menu-lightbox-addons-title{margin:0;color:#173d31;font:700 12px/1.3 Manrope,Arial,sans-serif}
+.menu-lightbox-addons-note{color:#7a8078;font:600 10px/1.3 Manrope,Arial,sans-serif;white-space:nowrap}
+.menu-lightbox-addons-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:6px;min-width:0}
+.menu-lightbox-addons-row > span{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-width:0;min-height:38px;box-sizing:border-box;padding:7px 9px;border:1px solid rgba(23,60,43,.12);border-radius:9px;background:#fff;color:#526057;font:600 12px/1.35 Manrope,Arial,sans-serif}
 .menu-lightbox-addons-row > span > span{display:block;flex:1 1 auto;min-width:0;padding:0;margin:0;border:0;border-radius:0;background:transparent;color:#526057;font:inherit;overflow-wrap:anywhere}
 .menu-lightbox-addons-row > span > b{flex:0 0 auto;color:#8d6d2e;font-weight:800;white-space:nowrap}
 @media(max-width:380px){.menu-lightbox-addons-row{grid-template-columns:1fr}}
@@ -3536,7 +3538,7 @@ tccImageLightbox.className="menu-image-lightbox";
 tccImageLightbox.setAttribute("role","dialog");
 tccImageLightbox.setAttribute("aria-modal","true");
 tccImageLightbox.setAttribute("aria-label","Expanded menu photo");
-tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><div class="menu-lightbox-bestseller" aria-label="Best Seller"><span class="crown" aria-hidden="true">♛</span><span>Best Seller</span></div><div class="menu-lightbox-new-arrival" aria-label="New Arrival"><span aria-hidden="true">✦</span><span>New Arrival</span></div><p class="menu-lightbox-description"></p><div class="menu-lightbox-spice" aria-live="polite"></div><div class="menu-lightbox-price"></div><div class="menu-lightbox-addons"><h3 class="menu-lightbox-addons-title">Available add-ons</h3><div class="menu-lightbox-addons-row"></div></div></div></div>';
+tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><div class="menu-lightbox-bestseller" aria-label="Best Seller"><span class="crown" aria-hidden="true">♛</span><span>Best Seller</span></div><div class="menu-lightbox-new-arrival" aria-label="New Arrival"><span aria-hidden="true">✦</span><span>New Arrival</span></div><p class="menu-lightbox-description"></p><div class="menu-lightbox-spice" aria-live="polite"></div><div class="menu-lightbox-price"></div><div class="menu-lightbox-addons"><div class="menu-lightbox-addons-heading"><h3 class="menu-lightbox-addons-title">Available add-ons</h3><span class="menu-lightbox-addons-note" style="display:none">All add-ons · 30 ml each</span></div><div class="menu-lightbox-addons-row"></div></div></div></div>';
 document.body.appendChild(tccImageLightbox);
 const tccLightboxImage=tccImageLightbox.querySelector("img");
 const tccLightboxName=tccImageLightbox.querySelector(".menu-lightbox-name");
@@ -3545,6 +3547,7 @@ const tccLightboxSpice=tccImageLightbox.querySelector(".menu-lightbox-spice");
 const tccLightboxPrice=tccImageLightbox.querySelector(".menu-lightbox-price");
 const tccLightboxAddons=tccImageLightbox.querySelector(".menu-lightbox-addons");
 const tccLightboxAddonsRow=tccImageLightbox.querySelector(".menu-lightbox-addons-row");
+const tccLightboxAddonsNote=tccImageLightbox.querySelector(".menu-lightbox-addons-note");
 const tccLightboxClose=tccImageLightbox.querySelector("button");
 function hideTccImageLightbox(){
   tccImageLightbox.classList.remove("is-open");
@@ -3618,7 +3621,7 @@ document.addEventListener("click",event=>{
       coffeeAddons.forEach(addonName=>{
         const chip=document.createElement("span");
         const label=document.createElement("span");
-        label.textContent=addonName+" · "+tccCoffeeAddonQuantity;
+        label.textContent=addonName;
         const price=document.createElement("b");
         price.textContent=tccCoffeeAddonPrice;
         chip.append(label,price);
@@ -3629,6 +3632,7 @@ document.addEventListener("click",event=>{
       addonPanel.querySelectorAll("span").forEach(addon=>tccLightboxAddonsRow.appendChild(addon.cloneNode(true)));
     }
     tccLightboxAddons.style.display=(hasCoffeeAddons||hasPastaAddons)?"block":"none";
+    if(tccLightboxAddonsNote)tccLightboxAddonsNote.style.display=hasCoffeeAddons?"inline":"none";
     tccLightboxPrice.textContent=price;
     tccLightboxPrice.style.display=price?"inline-block":"none";
     tccImageLightbox.classList.add("is-open");
