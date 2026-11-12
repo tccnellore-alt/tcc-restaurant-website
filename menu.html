@@ -2952,15 +2952,16 @@ function closeTccImageLightbox(){
   }
 }
 document.addEventListener("click",event=>{
-  const photo=event.target.closest(".m-photo");
-  if(photo){
+  // Open the product lightbox from anywhere on the product card in both menu views.
+  const item=event.target.closest(".m-item");
+  const photo=item?.querySelector(".m-photo");
+  if(item&&photo){
     if(!tccImageLightbox.classList.contains("is-open")){
       history.pushState({tccImageLightbox:true},"",window.location.href);
     }
     tccLightboxImage.src=photo.currentSrc||photo.src;
     tccLightboxImage.alt=photo.alt||"Expanded menu photo";
-    const item=photo.closest(".m-item");
-    const heading=item?.querySelector("h3");
+    const heading=item.querySelector("h3");
     const cleanHeading=heading?.cloneNode(true);
     cleanHeading?.querySelectorAll(".tcc-bestseller-badge,.tcc-new-arrival-badge,.food-badge,.availability-status").forEach(el=>el.remove());
     const name=cleanHeading?.textContent.replace(/\\s+/g," ").trim()||photo.alt||"Menu item";
