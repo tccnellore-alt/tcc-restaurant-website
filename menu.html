@@ -2350,6 +2350,19 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 }
 
 </style>
+<style id="tcc-category-end-nav-styles">
+/* TCC category-end navigation */
+.tcc-category-end-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:34px 0 8px;padding:19px 18px;border:1px solid rgba(183,154,90,.34);border-radius:17px;background:linear-gradient(125deg,#f3ecdc 0%,#fffdf8 100%);box-shadow:0 8px 24px rgba(20,42,31,.055)}
+.tcc-category-end-copy{min-width:0}
+.tcc-category-end-copy small{display:block;margin-bottom:5px;color:#8d7337;font:800 9px/1.2 Arial,sans-serif;letter-spacing:.15em;text-transform:uppercase}
+.tcc-category-end-copy strong{display:block;color:#173c2b;font:600 19px/1.2 Georgia,serif}
+.tcc-category-end-copy span{display:block;margin-top:5px;color:#6c756d;font:12px/1.4 Arial,sans-serif}
+.tcc-category-end-button{flex:0 0 auto;min-height:44px;padding:11px 15px;border:0;border-radius:999px;background:#173c2b;color:#fff;font:800 10px/1 Arial,sans-serif;letter-spacing:.06em;cursor:pointer;transition:transform .2s,background .2s}
+.tcc-category-end-button:hover{background:#24543d;transform:translateY(-1px)}
+.tcc-category-end-button:focus-visible{outline:3px solid #b79a5a;outline-offset:3px}
+@media(max-width:480px){.tcc-category-end-nav{align-items:flex-start;flex-direction:column;gap:13px;padding:17px}.tcc-category-end-button{width:100%}}
+@media(prefers-reduced-motion:reduce){.tcc-category-end-button{transition:none}}
+</style>
 </head>
 <body>
 <!-- HEADER -->
@@ -4453,5 +4466,33 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
 });
 
 </script>
+
+<script>
+/* Add an intentional next-category handoff at the end of each menu category. */
+(function(){
+  const tabs=[...document.querySelectorAll(".menu-tabs .menu-tab[data-target]")];
+  if(!tabs.length)return;
+  const labels=tabs.map(tab=>({
+    id:tab.dataset.target,
+    label:(tab.getAttribute("aria-label")||tab.textContent||"").replace(/menu$/i,"").replace(/^[^A-Za-z]+/,"").trim()
+  }));
+  labels.forEach((current,index)=>{
+    const group=document.getElementById(current.id);
+    if(!group||group.querySelector(".tcc-category-end-nav"))return;
+    const next=labels[(index+1)%labels.length];
+    const isLast=index===labels.length-1;
+    const nextLabel=isLast?"Coffee & Tea":next.label;
+    const nav=document.createElement("div");
+    nav.className="tcc-category-end-nav";
+    nav.innerHTML='<div class="tcc-category-end-copy"><small>YOU’VE REACHED THE END</small><strong>Enjoyed '+current.label+'?</strong><span>'+ (isLast?"Take another look from the beginning.":"Continue exploring the TCC menu at your own pace.") +'</span></div><button class="tcc-category-end-button" type="button">'+(isLast?"Back to":"Explore next:")+' '+nextLabel+' <span aria-hidden="true">→</span></button>';
+    nav.querySelector("button").addEventListener("click",()=>{
+      const target=tabs.find(tab=>tab.dataset.target===next.id);
+      if(target)target.click();
+    });
+    group.appendChild(nav);
+  });
+})();
+</script>
+
 </body>
 </html>
