@@ -2082,10 +2082,10 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 
 
 
-/* Final mobile header proportions and visual polish: 45% takeaway / 55% switch. */
+/* Mobile header proportions: balanced 50% takeaway / 50% menu switch. */
 @media(max-width:849px){
  .menu-intro .container{
-  grid-template-columns:minmax(0,9fr) minmax(0,11fr)!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
   column-gap:9px!important;
  }
  .menu-intro .takeaway-charge-notice{
@@ -2119,9 +2119,7 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
   font-size:clamp(10px,2.9vw,12px)!important;
   letter-spacing:0!important;
  }
- .menu-intro .menu-view-option .menu-view-icon{
-  font-size:18px!important;
- }
+ .menu-intro .menu-view-option .menu-view-icon{font-size:18px!important}
 }
 @media(max-width:380px){
  .menu-intro .container{column-gap:7px!important}
