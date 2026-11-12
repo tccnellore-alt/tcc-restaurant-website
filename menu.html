@@ -2080,6 +2080,57 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  .menu-intro .menu-intro h1{font-size:25px!important}
 }
 
+
+
+/* Final mobile header proportions and visual polish: 45% takeaway / 55% switch. */
+@media(max-width:849px){
+ .menu-intro .container{
+  grid-template-columns:minmax(0,9fr) minmax(0,11fr)!important;
+  column-gap:9px!important;
+ }
+ .menu-intro .takeaway-charge-notice{
+  border-radius:22px!important;
+  padding:9px 11px!important;
+  border-color:rgba(183,154,90,.55)!important;
+  box-shadow:0 4px 12px rgba(5,24,15,.12),inset 0 1px 0 rgba(255,255,255,.75)!important;
+ }
+ .menu-intro .takeaway-charge-notice>span:last-child{
+  display:flex!important;flex-direction:column!important;
+  align-items:flex-start!important;justify-content:center!important;
+ }
+ .menu-intro .takeaway-charge-notice strong{
+  font-size:8px!important;letter-spacing:.085em!important;
+ }
+ .menu-intro .takeaway-charge-notice .takeaway-charge-amount{
+  font-size:clamp(11px,3.2vw,14px)!important;
+  letter-spacing:-.025em!important;
+ }
+ .menu-intro .takeaway-charge-notice .takeaway-charge-detail{
+  font-size:clamp(8px,2.35vw,10px)!important;
+ }
+ .menu-intro .menu-view-switch{
+  border-radius:27px!important;
+  border-color:rgba(183,154,90,.72)!important;
+  box-shadow:0 5px 15px rgba(5,24,15,.16),inset 0 1px 0 rgba(255,255,255,.85)!important;
+ }
+ .menu-intro .menu-view-switch:before{border-radius:21px!important}
+ .menu-intro .menu-view-option{
+  gap:6px!important;
+  font-size:clamp(10px,2.9vw,12px)!important;
+  letter-spacing:0!important;
+ }
+ .menu-intro .menu-view-option .menu-view-icon{
+  font-size:18px!important;
+ }
+}
+@media(max-width:380px){
+ .menu-intro .container{column-gap:7px!important}
+ .menu-intro .takeaway-charge-notice{padding-left:8px!important;padding-right:7px!important}
+ .menu-intro .takeaway-charge-notice .takeaway-charge-amount{font-size:10px!important}
+ .menu-intro .takeaway-charge-notice .takeaway-charge-detail{font-size:8px!important}
+ .menu-intro .menu-view-option{font-size:9px!important;gap:4px!important}
+}
+
 </style>
 </head>
 <body>
