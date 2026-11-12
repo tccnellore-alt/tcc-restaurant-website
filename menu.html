@@ -2226,6 +2226,45 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  }
 }
 
+
+
+/* Use a real indicator element so mobile overrides cannot cancel its motion. */
+.menu-intro .menu-view-switch{position:relative!important;isolation:isolate!important}
+.menu-intro .menu-view-switch:before{content:none!important;display:none!important}
+.menu-intro .menu-view-indicator{
+ position:absolute!important;z-index:0!important;
+ left:4px!important;top:4px!important;bottom:4px!important;
+ width:calc(50% - 4px)!important;border-radius:inherit!important;
+ background:linear-gradient(145deg,#1d4a36,#123524)!important;
+ box-shadow:0 3px 8px rgba(10,35,23,.24)!important;
+ transform:translateX(0);
+ transition:transform .42s cubic-bezier(.22,.8,.24,1)!important;
+ pointer-events:none!important;
+}
+.menu-intro .menu-view-indicator.is-image{transform:translateX(100%)!important}
+.menu-intro .menu-view-indicator.intro-animate{
+ animation:tccMenuIndicatorIntro 1.35s cubic-bezier(.35,.05,.2,1) .55s 1 both!important;
+}
+@keyframes tccMenuIndicatorIntro{
+ 0%,100%{transform:translateX(100%)}
+ 42%,68%{transform:translateX(0)}
+}
+.menu-intro .menu-view-option{position:relative!important;z-index:1!important}
+@media(max-width:849px){
+ .menu-intro .container{
+  padding-left:8px!important;padding-right:8px!important;
+  column-gap:7px!important;
+ }
+ .menu-intro .takeaway-charge-notice,
+ .menu-intro .menu-view-switch{min-width:0!important;width:100%!important}
+}
+@media(max-width:380px){
+ .menu-intro .container{padding-left:6px!important;padding-right:6px!important;column-gap:5px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .menu-intro .menu-view-indicator{animation:none!important;transition:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -3367,17 +3406,25 @@ function addTccMenuPhotos(){
 // Text / image menu view switch
 (function initTccMenuViewSwitch(){
   const buttons=[...document.querySelectorAll("[data-menu-view]")];
-  if(!buttons.length) return;
-  function setMenuView(view){
+  const track=buttons[0]?.closest(".menu-view-switch");
+  if(!buttons.length||!track) return;
+  const indicator=document.createElement("span");
+  indicator.className="menu-view-indicator intro-animate";
+  indicator.setAttribute("aria-hidden","true");
+  track.prepend(indicator);
+  function setMenuView(view,fromUser=false){
     const textMode=view==="text";
     document.body.classList.toggle("menu-text-mode",textMode);
+    track.dataset.activeView=view;
+    indicator.classList.toggle("is-image",!textMode);
+    if(fromUser) indicator.classList.remove("intro-animate");
     buttons.forEach(button=>{
       const active=button.dataset.menuView===view;
       button.classList.toggle("is-active",active);
       button.setAttribute("aria-pressed",active?"true":"false");
     });
   }
-  buttons.forEach(button=>button.addEventListener("click",()=>setMenuView(button.dataset.menuView)));
+  buttons.forEach(button=>button.addEventListener("click",()=>setMenuView(button.dataset.menuView,true)));
   setMenuView("image");
 })();
 
