@@ -4184,6 +4184,9 @@ function tccPickMatchedDrink(options={}){
   return b.score-a.score;
  })[0];
  const alternatives=[closeMatch,discovery].filter(Boolean);
+ alternatives.forEach(drink=>{
+  if(drink.item.closest(".menu-group")?.id===tccRecommendationCategory)tccSuggestedDrinkNames.add(drink.name);
+ });
  tccShowDrinkCard(chosen);
  alternatives.forEach((drink,index)=>{
   const card=document.createElement("button");card.type="button";card.className="tcc-drink-alternative";
@@ -4193,8 +4196,8 @@ function tccPickMatchedDrink(options={}){
   const top=document.createElement("span");top.className="tcc-drink-alternative-top";top.append(name,price);
   card.append(top,note);
   card.addEventListener("click",()=>{
-   tccSuggestedDrinkNames.add(drink.name);
    tccRecommendationCategory=drink.item.closest(".menu-group")?.id||tccRecommendationCategory;
+   tccSuggestedDrinkNames=new Set([drink.name,...[...list.querySelectorAll("button")].map(button=>button.querySelector("strong")?.textContent).filter(Boolean)]);
    tccShowDrinkCard(drink);
    list.querySelectorAll("button").forEach(x=>x.classList.toggle("is-selected",x===card));
   });
