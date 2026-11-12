@@ -1667,6 +1667,66 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
  .menu-view-option[data-menu-view="book"]:before{content:"▤"!important}
 }
 
+
+/* TCC BOOK MENU — refined hardcover + usable category navigation */
+.menu-book{padding:30px 0 72px;background:radial-gradient(ellipse at 50% 0%,#f8f1e2 0%,#e5dac4 78%);isolation:isolate}
+.menu-book-shell{width:min(100% - 32px,980px)}
+.menu-book-toolbar{margin:0 0 12px}
+.menu-book-kicker{font-size:10px;letter-spacing:.2em}
+.menu-book-category-nav{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:3px 1px 13px;margin-bottom:2px}
+.menu-book-category-nav::-webkit-scrollbar{display:none}
+.menu-book-category-nav button{flex:0 0 auto;padding:9px 14px;border:1px solid rgba(23,60,43,.16);border-radius:999px;background:rgba(255,250,240,.88);color:#385343;font:800 10px Manrope,Arial,sans-serif;letter-spacing:.04em;cursor:pointer;transition:background .18s ease,color .18s ease,border-color .18s ease}
+.menu-book-category-nav button:hover,.menu-book-category-nav button.is-active{background:#173c2b;border-color:#173c2b;color:#fffaf0}
+.menu-book-stage{min-height:0;padding:13px 12px 16px;border:1px solid rgba(141,115,55,.28);border-radius:18px;background:linear-gradient(135deg,#c9b991,#e4d7b9 45%,#c8b78f);box-shadow:0 18px 45px rgba(48,42,26,.16),inset 0 1px 0 rgba(255,255,255,.42);perspective:none}
+.menu-book-page{width:100%;max-width:900px;min-height:620px;height:auto;margin:0 auto;padding:clamp(28px,5vw,58px);border:1px solid #e2d8c5;border-radius:4px 12px 12px 4px;background-color:#fffdf6;background-image:linear-gradient(90deg,rgba(111,87,47,.10),transparent 22px),repeating-linear-gradient(0deg,rgba(128,105,63,.018) 0,rgba(128,105,63,.018) 1px,transparent 1px,transparent 5px);box-shadow:0 8px 20px rgba(46,39,24,.16),inset 12px 0 18px rgba(84,65,35,.045);transform-origin:left center}
+.menu-book-page:after{content:"";position:absolute;top:12px;bottom:12px;left:14px;width:1px;background:rgba(141,115,55,.18);pointer-events:none}
+.menu-book-page.is-current{animation:bookPageIn .24s ease both}
+.menu-book-cover{max-width:900px;min-height:620px;border:7px double rgba(215,190,128,.7);border-radius:5px 14px 14px 5px;background:radial-gradient(ellipse at 72% 20%,#315b43,#173c2b 64%);box-shadow:0 12px 24px rgba(25,38,27,.28),inset 12px 0 16px rgba(0,0,0,.18),inset -3px 0 0 rgba(255,255,255,.07)}
+.menu-book-cover:before{content:"TCC";top:22px;left:24px;font:700 10px Georgia,serif;letter-spacing:.18em;color:#d9c58e}
+.menu-book-cover:after{content:"✦";right:25px;bottom:22px}
+.menu-book-logo{width:94px;height:94px;margin-bottom:26px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.menu-book-cover h2{font-size:clamp(58px,9vw,88px);letter-spacing:-.035em}
+.menu-book-page-head{margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(141,115,55,.4)}
+.menu-book-page-head small{font-size:10px;letter-spacing:.2em}
+.menu-book-page-head h2{font-size:clamp(38px,6vw,58px)}
+.menu-book-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 30px}
+.menu-book-item{grid-template-columns:70px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid rgba(141,115,55,.17)}
+.menu-book-item img{width:70px;height:70px;border-radius:4px;box-shadow:0 2px 7px rgba(23,60,43,.12)}
+.menu-book-item h3{font-size:13px;line-height:1.35}
+.menu-book-item p{font-size:11px;line-height:1.5}
+.menu-book-item-price{font-size:13px}
+.menu-book-page-foot{padding-top:24px;border-top:1px solid rgba(141,115,55,.18);font-size:9px}
+.menu-book-controls{gap:14px;margin-top:18px}
+.menu-book-controls button{min-width:104px;box-shadow:0 2px 5px rgba(23,60,43,.06)}
+.menu-book-progress{width:min(220px,24vw)}
+.menu-book-toc{box-shadow:0 8px 22px rgba(23,60,43,.08)}
+.menu-book-toc-list button{min-height:46px}
+.menu-book-sound{justify-content:center;margin-top:12px;font-size:11px}
+@media(max-width:650px){
+ .menu-book{padding:15px 0 36px}
+ .menu-book-shell{width:calc(100% - 18px)}
+ .menu-book-toolbar{align-items:center}
+ .menu-book-toolbar button{min-height:40px;padding:8px 11px}
+ .menu-book-category-nav{gap:6px;padding-bottom:10px}
+ .menu-book-category-nav button{padding:9px 12px;font-size:10px}
+ .menu-book-stage{padding:7px 6px 9px;border-radius:12px}
+ .menu-book-page,.menu-book-cover{min-height:0;min-height:560px;padding:25px 19px 22px}
+ .menu-book-page:after{left:9px}
+ .menu-book-items{grid-template-columns:minmax(0,1fr);gap:5px}
+ .menu-book-item{grid-template-columns:62px minmax(0,1fr);gap:10px;padding:9px 0}
+ .menu-book-item img{width:62px;height:62px}
+ .menu-book-item h3{font-size:12px}
+ .menu-book-item p{font-size:10.5px}
+ .menu-book-page-head{margin-bottom:14px;padding-bottom:13px}
+ .menu-book-page-head h2{font-size:38px}
+ .menu-book-controls{display:grid;grid-template-columns:1fr auto 1fr;gap:7px}
+ .menu-book-controls button{min-width:0;padding:9px 10px;font-size:10px}
+ .menu-book-progress{display:none}
+ .menu-book-page-count{min-width:50px}
+ .menu-book-cover h2{font-size:60px}
+}
+@media(prefers-reduced-motion:reduce){.menu-book-category-nav button{transition:none}}
+
 </style>
 </head>
 <body>
@@ -1695,6 +1755,7 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
 <section class="menu-book" id="tccMenuBook" aria-label="TCC menu book">
  <div class="menu-book-shell">
   <div class="menu-book-toolbar"><span class="menu-book-kicker">THE TCC MENU BOOK · NELLORE</span><div style="display:flex;gap:7px"><button type="button" id="menuBookContents">☷ Contents</button><button type="button" id="menuBookCover">↶ Cover</button></div></div>
+  <nav class="menu-book-category-nav" id="menuBookCategoryNav" aria-label="Jump to menu category"></nav>
   <nav class="menu-book-toc" id="menuBookToc" aria-label="Menu book contents"><h3>Explore the menu</h3><div class="menu-book-toc-list" id="menuBookTocList"></div></nav>
   <div class="menu-book-stage" id="menuBookStage" aria-live="polite">
    <article class="menu-book-page menu-book-cover is-current" data-book-page="cover">
@@ -2652,6 +2713,7 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
  const stage=document.getElementById("menuBookStage"),toc=document.getElementById("menuBookToc"),tocList=document.getElementById("menuBookTocList");
  const prev=document.getElementById("menuBookPrev"),next=document.getElementById("menuBookNext"),count=document.getElementById("menuBookPageCount"),progress=document.getElementById("menuBookProgress");
  const pages=[stage.querySelector(".menu-book-cover")],tocEntries=[];let current=0,built=false;
+ const categoryNav=document.getElementById("menuBookCategoryNav");
  const categoryNames={"coffee":"Coffee & Tea","refreshers-and-tea":"Refreshers","signatures":"Signatures","food":"Food","ice-creams":"Ice Creams","desserts":"Desserts"};
  function el(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;}
  function pageFooter(pageNo){const f=el("div","menu-book-page-foot");f.append(el("span","","TCC · THE COFFEE CLUB"),el("span","",String(pageNo).padStart(2,"0")));return f;}
@@ -2695,6 +2757,22 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
   const end=el("article","menu-book-page menu-book-end");end.append(el("span","menu-book-kicker","THANK YOU FOR VISITING"),el("h2","","Good Food,<br>Brighter Days.".replace("<br>"," ")),el("p","","Thank you for making TCC part of your day. We look forward to welcoming you again."),el("span","menu-book-kicker","THE COFFEE CLUB · NELLORE"),pageFooter(pages.length+1));stage.append(end);pages.push(end);
   tocList.replaceChildren();const seen=new Set();
   tocEntries.forEach(entry=>{const key=entry.title+"|"+entry.page;if(seen.has(key))return;seen.add(key);const b=el("button");b.type="button";b.append(el("strong","",entry.title),el("span","","Turn to page "+(entry.page+1)));b.addEventListener("click",()=>{show(entry.page);toc.classList.remove("is-open");});tocList.append(b);});
+  if(categoryNav){
+   categoryNav.replaceChildren();
+   const categorySeen=new Set();
+   tocEntries.forEach(entry=>{
+    if(categorySeen.has(entry.category))return;
+    categorySeen.add(entry.category);
+    const jump=el("button","",entry.category);
+    jump.type="button";
+    jump.addEventListener("click",()=>{
+     const first=tocEntries.find(x=>x.category===entry.category);
+     if(first)show(first.page);
+     toc.classList.remove("is-open");
+    });
+    categoryNav.append(jump);
+   });
+  }
  }
  function sound(){if(!document.getElementById("menuBookSound").checked)return;try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.setValueAtTime(520,c.currentTime);o.frequency.exponentialRampToValueAtTime(260,c.currentTime+.08);g.gain.setValueAtTime(.035,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.09);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.1);o.onended=()=>c.close();}catch(e){}}
  function show(index,withSound=true){
