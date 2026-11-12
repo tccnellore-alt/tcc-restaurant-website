@@ -1698,23 +1698,26 @@ body.menu-text-mode .menu-group .m-item:has(.availability-status) .m-photo-wrap:
 body.menu-text-mode .menu-group .m-item:has(.availability-status) .m-photo-wrap::after{
   content:none!important;display:none!important;
 }
-/* A missing photo gets the actual TCC logo in Minimal Menu, not a generated monogram. */
+/* Minimal Menu missing-photo tile: centered TCC logo only.
+   Keep the label out of the compact thumbnail to prevent clipping/overflow. */
 body.menu-text-mode .menu-group .m-photo-placeholder{
   display:flex!important;align-items:center!important;justify-content:center!important;
   width:100%!important;height:100%!important;min-height:0!important;
-  padding:7px!important;box-sizing:border-box!important;
+  padding:5px!important;box-sizing:border-box!important;overflow:hidden!important;
   border:1px solid rgba(183,154,90,.18)!important;border-radius:8px!important;
-  background:#f3efe5!important;
+  background:linear-gradient(145deg,#f6f1e7,#eee8dc)!important;
 }
 body.menu-text-mode .menu-group .m-photo-placeholder::before,
 body.menu-text-mode .menu-group .m-photo-placeholder::after{
   content:none!important;display:none!important;
 }
 body.menu-text-mode .menu-group .m-photo-placeholder-logo{
-  display:block!important;max-width:82%!important;max-height:82%!important;
-  width:auto!important;height:auto!important;object-fit:contain!important;opacity:.86!important;
+  display:block!important;flex:0 1 auto!important;
+  width:38px!important;height:38px!important;max-width:100%!important;max-height:100%!important;
+  object-fit:contain!important;opacity:.9!important;margin:0!important;
 }
-body.menu-text-mode .menu-group .m-photo-coming-soon{
+body.menu-text-mode .menu-group .m-photo-placeholder .m-photo-coming-soon,
+body.menu-text-mode .menu-group .m-photo-placeholder strong{
   display:none!important;
 }
 @media(max-width:420px){
