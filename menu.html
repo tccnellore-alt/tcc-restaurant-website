@@ -1757,6 +1757,36 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  0%,100%{transform:translateX(100%)}
  42%,68%{transform:translateX(0)}
 }
+
+/* Synchronize both labels with the moving pill so contrast stays correct. */
+.menu-view-switch:has([data-menu-view="image"].is-active) [data-menu-view="image"],
+.menu-view-switch:has([data-menu-view="image"].is-active) [data-menu-view="image"] span,
+.menu-view-switch:has([data-menu-view="image"].is-active) [data-menu-view="image"] .menu-view-icon{
+ animation:tccSwitchActiveLabel 1.15s ease .65s 1 both;
+}
+.menu-view-switch:has([data-menu-view="image"].is-active) [data-menu-view="text"],
+.menu-view-switch:has([data-menu-view="image"].is-active) [data-menu-view="text"] span,
+.menu-view-switch:has([data-menu-view="image"].is-active) [data-menu-view="text"] .menu-view-icon{
+ animation:tccSwitchInactiveLabel 1.15s ease .65s 1 both;
+}
+.menu-view-switch:has([data-menu-view="text"].is-active) [data-menu-view="text"],
+.menu-view-switch:has([data-menu-view="text"].is-active) [data-menu-view="text"] span,
+.menu-view-switch:has([data-menu-view="text"].is-active) [data-menu-view="text"] .menu-view-icon{
+ animation:tccSwitchActiveLabel 1.15s ease .65s 1 both;
+}
+.menu-view-switch:has([data-menu-view="text"].is-active) [data-menu-view="image"],
+.menu-view-switch:has([data-menu-view="text"].is-active) [data-menu-view="image"] span,
+.menu-view-switch:has([data-menu-view="text"].is-active) [data-menu-view="image"] .menu-view-icon{
+ animation:tccSwitchInactiveLabel 1.15s ease .65s 1 both;
+}
+@keyframes tccSwitchActiveLabel{
+ 0%,100%{color:#fffaf0;-webkit-text-fill-color:#fffaf0}
+ 42%,68%{color:#173c2b;-webkit-text-fill-color:#173c2b}
+}
+@keyframes tccSwitchInactiveLabel{
+ 0%,100%{color:#173c2b;-webkit-text-fill-color:#173c2b}
+ 42%,68%{color:#fffaf0;-webkit-text-fill-color:#fffaf0}
+}
 .menu-view-option{
  position:relative!important;z-index:1!important;display:flex!important;flex:1 1 0!important;
  align-items:center!important;justify-content:center!important;gap:5px!important;
@@ -1820,7 +1850,7 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  .menu-intro .takeaway-charge-notice strong{font-size:6.5px!important}
  .menu-intro .takeaway-charge-notice .takeaway-charge-amount{font-size:9px!important}
 }
-@media(prefers-reduced-motion:reduce){.menu-view-switch:before{transition:none!important;animation:none!important}}
+@media(prefers-reduced-motion:reduce){.menu-view-switch:before,.menu-view-switch .menu-view-option,.menu-view-switch .menu-view-option span,.menu-view-switch .menu-view-option .menu-view-icon{transition:none!important;animation:none!important}}
 
 /* Contrast fix: keep the active toggle label on the dark sliding pill. */
 .menu-intro .menu-view-switch:before{
