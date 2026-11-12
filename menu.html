@@ -2641,7 +2641,8 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
   </div>
 </footer>
 <nav class="mobile-bar" aria-label="Quick actions"><a href="tel:+919059059553">☎ Call</a><a class="accent" href="menu.html">☕ Menu</a><a href="https://maps.app.goo.gl/LTdYTXNZPJU4qetv6?g_st=ac" target="_blank" rel="noopener">⌖ Map</a><a href="https://search.google.com/local/writereview?placeid=ChIJRY3c3XnzTDoRMsXmWvt_FMg" target="_blank" rel="noopener" aria-label="Rate TCC on Google">★ Rate Us</a></nav>
-<script src="script.js">
+<script src="script.js"></script>
+<script>
 /* TCC Menu Book — renders from the live menu DOM so prices, availability,
    descriptions, spice levels and verified photographs stay in sync. */
 (function initTccMenuBook(){
@@ -2720,7 +2721,6 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
  let touchX=0;stage.addEventListener("touchstart",e=>{touchX=e.changedTouches[0].clientX;},{passive:true});
  stage.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>55)show(current+(dx<0?1:-1));},{passive:true});
 })();
-
 </script>
 <script>
 /* TCC MENU EXPERIENCE ENHANCEMENTS v2 */
