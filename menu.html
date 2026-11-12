@@ -1807,6 +1807,27 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 }
 @media(prefers-reduced-motion:reduce){.menu-view-switch:before{transition:none!important}}
 
+/* Contrast fix: keep the active toggle label on the dark sliding pill. */
+.menu-intro .menu-view-switch:before{
+ background:#173c2b!important;
+}
+.menu-intro .menu-view-switch .menu-view-option,
+.menu-intro .menu-view-switch .menu-view-option.is-active{
+ background:transparent!important;
+}
+.menu-intro .menu-view-switch .menu-view-option.is-active,
+.menu-intro .menu-view-switch .menu-view-option.is-active span,
+.menu-intro .menu-view-switch .menu-view-option.is-active .menu-view-icon{
+ color:#fffaf0!important;
+ -webkit-text-fill-color:#fffaf0!important;
+}
+.menu-intro .menu-view-switch .menu-view-option:not(.is-active),
+.menu-intro .menu-view-switch .menu-view-option:not(.is-active) span,
+.menu-intro .menu-view-switch .menu-view-option:not(.is-active) .menu-view-icon{
+ color:#173c2b!important;
+ -webkit-text-fill-color:#173c2b!important;
+}
+
 </style>
 </head>
 <body>
