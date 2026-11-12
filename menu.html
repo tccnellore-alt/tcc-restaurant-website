@@ -1589,6 +1589,84 @@ html{scroll-behavior:smooth}
 @keyframes tccPhotoShimmer{to{background-position-x:-200%}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.menu-tabs .menu-tab,.food-tabs .food-tab,.m-photo-wrap .m-photo{transition:none}.m-photo-wrap.is-loading{animation:none}.menu-group.active .menu-section{animation:none}}
 
+
+/* TCC MENU BOOK — premium editorial reader */
+.menu-book{display:none;position:relative;z-index:1;padding:26px 0 64px;background:radial-gradient(ellipse at 50% 0%,#f9f3e5,#e8dfca 72%);color:#173c2b}
+body.tcc-book-mode .menu-tools,body.tcc-book-mode .menu-content{display:none!important}
+body.tcc-book-mode .menu-book{display:block}
+body.tcc-book-mode .menu-intro{padding-bottom:20px}
+.menu-book-shell{width:min(100% - 28px,1040px);margin:auto}
+.menu-book-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px}
+.menu-book-kicker{font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.18em;color:#8d7337;text-transform:uppercase}
+.menu-book-toolbar button,.menu-book-controls button{min-height:42px;padding:10px 15px;border:1px solid rgba(23,60,43,.2);border-radius:999px;background:#fffaf0;color:#173c2b;font:800 11px Manrope,Arial,sans-serif;cursor:pointer}
+.menu-book-stage{position:relative;min-height:590px;perspective:1600px}
+.menu-book-page{position:relative;display:none;min-height:590px;overflow:hidden;padding:clamp(24px,5vw,58px);border:1px solid rgba(141,115,55,.32);border-radius:5px 18px 18px 5px;background:linear-gradient(110deg,rgba(255,255,255,.42),transparent 4%),#fffaf0;box-shadow:0 20px 55px rgba(23,45,31,.16),inset 10px 0 18px rgba(23,60,43,.045);transform-origin:left center}
+.menu-book-page.is-current{display:flex;flex-direction:column;animation:bookPageIn .32s ease both}
+@keyframes bookPageIn{from{opacity:.65;transform:rotateY(-5deg) translateX(8px)}to{opacity:1;transform:none}}
+.menu-book-cover{justify-content:center;align-items:center;text-align:center;color:#fffaf0;background:radial-gradient(circle at 50% 32%,#315a43,#173c2b 68%);border:5px double rgba(215,190,128,.72);outline:1px solid rgba(23,60,43,.2);outline-offset:5px}
+.menu-book-cover:before,.menu-book-cover:after{content:"✦";position:absolute;color:#d7bd82;font-size:22px}.menu-book-cover:before{top:28px;left:28px}.menu-book-cover:after{right:28px;bottom:28px}
+.menu-book-logo{width:86px;height:86px;object-fit:contain;padding:7px;border-radius:50%;background:#fffaf0;margin-bottom:22px}
+.menu-book-cover .book-eyebrow{font:800 10px Manrope,Arial,sans-serif;letter-spacing:.24em;color:#d9c58e}
+.menu-book-cover h2{margin:15px 0 8px;color:#fffaf0;font:500 clamp(48px,9vw,82px)/.9 "Cormorant Garamond",Georgia,serif}
+.menu-book-cover p{max-width:390px;margin:10px auto;color:#e5e8dc;font:13px/1.6 Manrope,Arial,sans-serif}
+.menu-book-cover .book-edition{margin-top:36px;color:#d9c58e;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.2em}
+.menu-book-page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:26px;padding-bottom:16px;border-bottom:1px solid rgba(141,115,55,.35)}
+.menu-book-page-head small{color:#98783c;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.17em;text-transform:uppercase}
+.menu-book-page-head h2{margin:7px 0 0;color:#173c2b;font:500 clamp(34px,6vw,54px)/.95 "Cormorant Garamond",Georgia,serif}
+.menu-book-page-head span{color:#a48a54;font:italic 12px Georgia,serif}
+.menu-book-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px;align-content:start}
+.menu-book-item{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(23,60,43,.1);min-width:0}
+.menu-book-item img{width:76px;height:76px;object-fit:cover;border-radius:9px;background:#eee5d3}
+.menu-book-item-copy{min-width:0}
+.menu-book-item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.menu-book-item h3{margin:0;color:#173c2b;font:700 13px/1.3 Manrope,Arial,sans-serif}
+.menu-book-item-price{flex:0 0 auto;color:#8d7337;font:800 12px Manrope,Arial,sans-serif;white-space:nowrap}
+.menu-book-item p{margin:5px 0 0;color:#70796f;font:11px/1.45 Manrope,Arial,sans-serif}
+.menu-book-item .book-bestseller{display:inline-block;margin-top:5px;color:#8d7337;font:800 8px Manrope,Arial,sans-serif;letter-spacing:.06em}
+.menu-book-item.is-soldout{opacity:.52}
+.menu-book-item .book-soldout{display:inline-block;margin-top:5px;color:#b42318;font:800 8px Manrope,Arial,sans-serif;letter-spacing:.08em}
+.menu-book-page-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:20px;color:#9a895f;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.12em}
+.menu-book-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin:16px 0 0}
+.menu-book-controls button:disabled{opacity:.35;cursor:not-allowed}
+.menu-book-progress{width:min(180px,25vw);height:3px;border-radius:9px;background:rgba(23,60,43,.14);overflow:hidden}
+.menu-book-progress span{display:block;height:100%;width:0;background:#b79a5a;transition:width .2s ease}
+.menu-book-page-count{min-width:54px;text-align:center;color:#526057;font:800 10px Manrope,Arial,sans-serif}
+.menu-book-toc{display:none;margin:0 0 14px;padding:16px;border:1px solid rgba(141,115,55,.28);border-radius:14px;background:#fffaf0}
+.menu-book-toc.is-open{display:block}
+.menu-book-toc h3{margin:0 0 10px;color:#173c2b;font:700 17px Georgia,serif}
+.menu-book-toc-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.menu-book-toc-list button{padding:10px 12px;text-align:left;border:1px solid rgba(23,60,43,.12);border-radius:9px;background:#fff;color:#173c2b;font:700 11px Manrope,Arial,sans-serif;cursor:pointer}
+.menu-book-toc-list button span{display:block;margin-top:3px;color:#8d7337;font:9px Manrope,Arial,sans-serif}
+.menu-book-end{justify-content:center;align-items:center;text-align:center;background:#f4eee1}
+.menu-book-end h2{margin:12px 0;color:#173c2b;font:500 clamp(42px,8vw,68px)/.95 "Cormorant Garamond",Georgia,serif}
+.menu-book-end p{max-width:420px;color:#68756b;font:13px/1.6 Manrope,Arial,sans-serif}
+.menu-book-sound{display:flex;align-items:center;gap:6px;color:#667168;font:10px Manrope,Arial,sans-serif}
+.menu-book-sound input{accent-color:#173c2b}
+@media(max-width:650px){
+ .menu-book{padding:16px 0 42px}
+ .menu-book-shell{width:min(100% - 20px,560px)}
+ .menu-book-stage,.menu-book-page{min-height:590px}
+ .menu-book-page{padding:23px 18px}
+ .menu-book-items{grid-template-columns:minmax(0,1fr);gap:7px}
+ .menu-book-item{grid-template-columns:66px minmax(0,1fr);gap:10px;padding:8px 0}
+ .menu-book-item img{width:66px;height:66px}
+ .menu-book-item h3{font-size:12px}
+ .menu-book-item p{font-size:10px}
+ .menu-book-page-head{margin-bottom:16px}
+ .menu-book-page-head h2{font-size:39px}
+ .menu-book-toolbar{flex-wrap:wrap}
+ .menu-book-toc-list{grid-template-columns:minmax(0,1fr)}
+ .menu-book-controls{gap:7px}
+ .menu-book-controls button{min-height:40px;padding:9px 12px}
+}
+@media(prefers-reduced-motion:reduce){.menu-book-page.is-current{animation:none}.menu-book-progress span{transition:none}}
+@media(max-width:849px){
+ .menu-view-switch{grid-column:8 / 13!important}
+ .menu-view-option{font-size:0!important}
+ .menu-view-option:before{font-size:20px!important}
+ .menu-view-option[data-menu-view="book"]:before{content:"▤"!important}
+}
+
 </style>
 </head>
 <body>
@@ -1606,6 +1684,7 @@ html{scroll-behavior:smooth}
     <div class="menu-view-switch" role="group" aria-label="Choose menu view">
       <button type="button" class="menu-view-option" data-menu-view="text" aria-label="Text Menu" aria-pressed="false">Text Menu</button>
       <button type="button" class="menu-view-option is-active" data-menu-view="image" aria-label="Image Menu" aria-pressed="true">Image Menu</button>
+      <button type="button" class="menu-view-option" data-menu-view="book" aria-label="Book Menu" aria-pressed="false">Book</button>
     </div>
     <div class="takeaway-charge-notice" role="note" aria-label="Takeaway packaging charge">
       <span class="takeaway-charge-icon" aria-hidden="true">🛍</span>
@@ -1613,6 +1692,22 @@ html{scroll-behavior:smooth}
     </div>
   </div>
 </section>
+<section class="menu-book" id="tccMenuBook" aria-label="TCC menu book">
+ <div class="menu-book-shell">
+  <div class="menu-book-toolbar"><span class="menu-book-kicker">THE TCC MENU BOOK · NELLORE</span><div style="display:flex;gap:7px"><button type="button" id="menuBookContents">☷ Contents</button><button type="button" id="menuBookCover">↶ Cover</button></div></div>
+  <nav class="menu-book-toc" id="menuBookToc" aria-label="Menu book contents"><h3>Explore the menu</h3><div class="menu-book-toc-list" id="menuBookTocList"></div></nav>
+  <div class="menu-book-stage" id="menuBookStage" aria-live="polite">
+   <article class="menu-book-page menu-book-cover is-current" data-book-page="cover">
+    <img class="menu-book-logo" src="images/logo.png" alt="TCC – The Coffee Club">
+    <span class="book-eyebrow">GOOD FOOD, BRIGHTER DAYS</span><h2>The Menu<br>Book</h2>
+    <p>A little something for every mood. Take your time, turn a page, and find your TCC favourite.</p><span class="book-edition">THE COFFEE CLUB · NELLORE</span>
+   </article>
+  </div>
+  <div class="menu-book-controls"><button type="button" id="menuBookPrev" aria-label="Previous page" disabled>← Back</button><span class="menu-book-page-count" id="menuBookPageCount">Cover</span><div class="menu-book-progress" aria-hidden="true"><span id="menuBookProgress"></span></div><button type="button" id="menuBookNext">Start reading →</button></div>
+  <label class="menu-book-sound"><input type="checkbox" id="menuBookSound"> Page-turn sound (off by default)</label>
+ </div>
+</section>
+
 <div class="menu-tools">
   <div class="container">
     <div class="menu-tabs">
@@ -2546,7 +2641,89 @@ html{scroll-behavior:smooth}
   </div>
 </footer>
 <nav class="mobile-bar" aria-label="Quick actions"><a href="tel:+919059059553">☎ Call</a><a class="accent" href="menu.html">☕ Menu</a><a href="https://maps.app.goo.gl/LTdYTXNZPJU4qetv6?g_st=ac" target="_blank" rel="noopener">⌖ Map</a><a href="https://search.google.com/local/writereview?placeid=ChIJRY3c3XnzTDoRMsXmWvt_FMg" target="_blank" rel="noopener" aria-label="Rate TCC on Google">★ Rate Us</a></nav>
-<script src="script.js"></script>
+<script src="script.js">
+/* TCC Menu Book — renders from the live menu DOM so prices, availability,
+   descriptions, spice levels and verified photographs stay in sync. */
+(function initTccMenuBook(){
+ const switchButtons=[...document.querySelectorAll("[data-menu-view]")];
+ const book=document.getElementById("tccMenuBook");
+ if(!book||!switchButtons.length)return;
+ const stage=document.getElementById("menuBookStage"),toc=document.getElementById("menuBookToc"),tocList=document.getElementById("menuBookTocList");
+ const prev=document.getElementById("menuBookPrev"),next=document.getElementById("menuBookNext"),count=document.getElementById("menuBookPageCount"),progress=document.getElementById("menuBookProgress");
+ const pages=[],tocEntries=[];let current=0,built=false;
+ const categoryNames={"coffee":"Coffee & Tea","refreshers-and-tea":"Refreshers","signatures":"Signatures","food":"Food","ice-creams":"Ice Creams","desserts":"Desserts"};
+ function el(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;}
+ function pageFooter(pageNo){const f=el("div","menu-book-page-foot");f.append(el("span","","TCC · THE COFFEE CLUB"),el("span","",String(pageNo).padStart(2,"0")));return f;}
+ function makePage(title,kicker,items,subtitle){
+  const p=el("article","menu-book-page");p.setAttribute("aria-label",title+" menu page");
+  const head=el("header","menu-book-page-head"),left=el("div");left.append(el("small","",kicker),el("h2","",title));head.append(left,el("span","",subtitle||"Made for your moment"));p.append(head);
+  const grid=el("div","menu-book-items");
+  items.forEach(item=>{
+   const card=el("article","menu-book-item");if(item.sold)card.classList.add("is-soldout");
+   if(item.image){const img=el("img");img.src=item.image;img.alt=item.name;img.loading="lazy";img.decoding="async";card.append(img);}
+   const copy=el("div","menu-book-item-copy"),top=el("div","menu-book-item-top");top.append(el("h3","",item.name),el("span","menu-book-item-price",item.price));copy.append(top);
+   if(item.description)copy.append(el("p","",item.description));
+   if(item.best)copy.append(el("span","book-bestseller","♛ BEST SELLER"));
+   if(item.sold)copy.append(el("span","book-soldout","SOLD OUT"));
+   if(item.spice)copy.append(el("p","",item.spice));
+   card.append(copy);grid.append(card);
+  });
+  p.append(grid,pageFooter(pages.length+1));stage.append(p);pages.push(p);return p;
+ }
+ function build(){
+  if(built)return;built=true;
+  document.querySelectorAll(".menu-group").forEach(group=>{
+   const category=categoryNames[group.id]||group.dataset.group||group.id;
+   const sections=[...group.querySelectorAll(".menu-section")].filter(sec=>!sec.hasAttribute("data-menu-paused"));
+   sections.forEach(section=>{
+    const heading=section.querySelector("h2")?.textContent.trim()||category;
+    const all=[...section.querySelectorAll(".m-item")].map(item=>{
+     const h=item.querySelector("h3"),price=item.querySelector(":scope > strong"),img=item.querySelector(".m-photo-wrap img");
+     const clone=h?.cloneNode(true);clone?.querySelectorAll(".tcc-bestseller-badge,.tcc-new-arrival-badge,.food-badge,.availability-status").forEach(x=>x.remove());
+     return {name:clone?.textContent.replace(/\s+/g," ").trim()||"",price:price?.textContent.trim()||"",description:item.querySelector(".m-item-info p")?.textContent.trim()||"",image:img?.currentSrc||img?.src||"",best:!!item.querySelector(".tcc-bestseller-badge"),sold:!!item.querySelector(".availability-status"),spice:item.querySelector(".spice-copy")?.textContent.trim()||""};
+    }).filter(x=>x.name);
+    if(!all.length)return;
+    const chunks=[];for(let i=0;i<all.length;i+=4)chunks.push(all.slice(i,i+4));
+    chunks.forEach((chunk,index)=>{
+     const title=sections.length>1?heading:category;
+     const p=makePage(title,category.toUpperCase()+" · "+String(index+1).padStart(2,"0"),chunk,heading===category?"A TCC favourite":"From the TCC kitchen");
+     tocEntries.push({title:heading===category?category:heading,category,page:pages.length-1});
+    });
+   });
+  });
+  const end=el("article","menu-book-page menu-book-end");end.append(el("span","menu-book-kicker","THANK YOU FOR VISITING"),el("h2","","Good Food,<br>Brighter Days.".replace("<br>"," ")),el("p","","Thank you for making TCC part of your day. We look forward to welcoming you again."),el("span","menu-book-kicker","THE COFFEE CLUB · NELLORE"),pageFooter(pages.length+1));stage.append(end);pages.push(end);
+  tocList.replaceChildren();const seen=new Set();
+  tocEntries.forEach(entry=>{const key=entry.title+"|"+entry.page;if(seen.has(key))return;seen.add(key);const b=el("button");b.type="button";b.append(el("strong","",entry.title),el("span","","Turn to page "+(entry.page+1)));b.addEventListener("click",()=>{show(entry.page);toc.classList.remove("is-open");});tocList.append(b);});
+ }
+ function sound(){if(!document.getElementById("menuBookSound").checked)return;try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.setValueAtTime(520,c.currentTime);o.frequency.exponentialRampToValueAtTime(260,c.currentTime+.08);g.gain.setValueAtTime(.035,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.09);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.1);o.onended=()=>c.close();}catch(e){}}
+ function show(index,withSound=true){
+  build();current=Math.max(0,Math.min(index,pages.length-1));
+  pages.forEach((p,i)=>p.classList.toggle("is-current",i===current));
+  prev.disabled=current===0;next.disabled=current===pages.length-1;
+  next.textContent=current===0?"Start reading →":current===pages.length-1?"End of book":"Next page →";
+  count.textContent=current===0?"Cover":current===pages.length-1?"Thank you":(current)+" / "+(pages.length-1);
+  progress.style.width=(current/(pages.length-1)*100)+"%";
+  if(withSound)sound();
+  try{localStorage.setItem("tcc-menu-book-page",String(current));}catch(e){}
+ }
+ function setView(view){
+  const isBook=view==="book";document.body.classList.toggle("tcc-book-mode",isBook);
+  document.body.classList.toggle("menu-text-mode",view==="text");
+  switchButtons.forEach(b=>{const active=b.dataset.menuView===view;b.classList.toggle("is-active",active);b.setAttribute("aria-pressed",active?"true":"false");});
+  if(isBook){build();let saved=0;try{saved=Number(localStorage.getItem("tcc-menu-book-page"))||0;}catch(e){}show(Math.min(saved,pages.length-1),false);}
+ }
+ switchButtons.forEach(b=>b.addEventListener("click",()=>setView(b.dataset.menuView)));
+ prev.addEventListener("click",()=>show(current-1));next.addEventListener("click",()=>show(current+1));
+ document.getElementById("menuBookContents").addEventListener("click",()=>toc.classList.toggle("is-open"));
+ document.getElementById("menuBookCover").addEventListener("click",()=>show(0));
+ document.addEventListener("keydown",e=>{if(!document.body.classList.contains("tcc-book-mode"))return;if(e.key==="ArrowRight")show(current+1);if(e.key==="ArrowLeft")show(current-1);if(e.key==="Escape")toc.classList.remove("is-open");});
+ let touchX=0;stage.addEventListener("touchstart",e=>{touchX=e.changedTouches[0].clientX;},{passive:true});
+ stage.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>55)show(current+(dx<0?1:-1));},{passive:true});
+ // Build page content only after the existing menu enhancement has inserted verified photos.
+ document.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{if(built)return;},0);});
+})();
+
+</script>
 <script>
 /* TCC MENU EXPERIENCE ENHANCEMENTS v2 */
 (function initTccMenuExperience(){
