@@ -2763,7 +2763,14 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
           <div class="m-list">
       <article class="m-item">
         <div>
-          <h3>Classic Matcha (Hot / Cold)</h3>
+          <h3>Classic Matcha Hot</h3>
+          
+        </div>
+        <strong>₹350</strong>
+      </article>
+      <article class="m-item">
+        <div>
+          <h3>Classic Matcha Cold</h3>
           
         </div>
         <strong>₹350</strong>
@@ -3413,7 +3420,7 @@ const TCC_VERIFIED_PHOTOS = {
   "Bun Maska with TCC Chai": {url:"images/menu/optimized/bun-maska-with-tcc-chai-400.webp",large:"images/menu/optimized/bun-maska-with-tcc-chai-800.webp"},
   "Cappuccino": {url:"images/menu/optimized/cappuccino-400.webp",large:"images/menu/optimized/cappuccino-800.webp"},
   "Chicken Alfredo Bliss": {url:"images/menu/optimized/chicken-alfredo-bliss-400.webp",large:"images/menu/optimized/chicken-alfredo-bliss-800.webp"},
-  "Classic Matcha (Hot / Cold)": {url:"images/menu/optimized/classic-matcha-400.webp",large:"images/menu/optimized/classic-matcha-800.webp"},
+  "Classic Matcha Hot": {url:"images/menu/optimized/classic-matcha-400.webp",large:"images/menu/optimized/classic-matcha-800.webp"},
   "French Fries Classic": {url:"images/menu/optimized/french-fries-classic-400.webp",large:"images/menu/optimized/french-fries-classic-800.webp"},
   "Iced Latte": {url:"images/menu/optimized/iced-latte-400.webp",large:"images/menu/optimized/iced-latte-800.webp"},
   "Iced Mocha": {url:"images/menu/optimized/iced-mocha-400.webp",large:"images/menu/optimized/iced-mocha-800.webp"},
@@ -3486,7 +3493,7 @@ function addTccMenuPhotos(){
       img.className='m-photo';
       // Crop only selected drink photos where the product is the focal point;
       // leave all other images in their existing contain mode.
-      const productFocusedCrop=new Set(['Cappuccino','Orange Fizzy','Watermelon Fizzy','Iced Latte','Berry Iced Tea','Classic Matcha (Hot / Cold)','Strawberry Matcha']);
+      const productFocusedCrop=new Set(['Cappuccino','Orange Fizzy','Watermelon Fizzy','Iced Latte','Berry Iced Tea','Classic Matcha Hot','Strawberry Matcha']);
       if(productFocusedCrop.has(name)) img.classList.add('m-photo-product-crop');
       img.loading='lazy';
       img.decoding='async';
@@ -3985,7 +3992,8 @@ const tccDrinkProfiles={
  "Peach Iced Tea":{mood:"tea",sweetness:"medium",temperature:"cold",flavours:["tea","fruity"]},
  "Lemon Iced Tea":{mood:"tea",sweetness:"light",temperature:"cold",flavours:["tea","fruity"]},
  "Berry Iced Tea":{mood:"tea",sweetness:"medium",temperature:"cold",flavours:["tea","fruity"]},
- "Classic Matcha (Hot / Cold)":{mood:"matcha",sweetness:"light",temperature:"any",flavours:["floral","creamy"]},
+ "Classic Matcha Hot":{mood:"matcha",sweetness:"light",temperature:"hot",flavours:["floral","creamy"]},
+ "Classic Matcha Cold":{mood:"matcha",sweetness:"light",temperature:"cold",flavours:["floral","creamy"]},
  "Coconut Matcha Cloud":{mood:"matcha",sweetness:"medium",temperature:"cold",flavours:["creamy","floral"]},
  "Mango Passion Matcha":{mood:"matcha",sweetness:"medium",temperature:"cold",flavours:["fruity","floral"]},
  "Strawberry Matcha":{mood:"matcha",sweetness:"medium",temperature:"cold",flavours:["fruity","creamy"]},
