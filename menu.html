@@ -2650,7 +2650,7 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
  if(!book||!switchButtons.length)return;
  const stage=document.getElementById("menuBookStage"),toc=document.getElementById("menuBookToc"),tocList=document.getElementById("menuBookTocList");
  const prev=document.getElementById("menuBookPrev"),next=document.getElementById("menuBookNext"),count=document.getElementById("menuBookPageCount"),progress=document.getElementById("menuBookProgress");
- const pages=[],tocEntries=[];let current=0,built=false;
+ const pages=[stage.querySelector(".menu-book-cover")],tocEntries=[];let current=0,built=false;
  const categoryNames={"coffee":"Coffee & Tea","refreshers-and-tea":"Refreshers","signatures":"Signatures","food":"Food","ice-creams":"Ice Creams","desserts":"Desserts"};
  function el(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;}
  function pageFooter(pageNo){const f=el("div","menu-book-page-foot");f.append(el("span","","TCC · THE COFFEE CLUB"),el("span","",String(pageNo).padStart(2,"0")));return f;}
@@ -2719,8 +2719,6 @@ body.tcc-book-mode .menu-intro{padding-bottom:20px}
  document.addEventListener("keydown",e=>{if(!document.body.classList.contains("tcc-book-mode"))return;if(e.key==="ArrowRight")show(current+1);if(e.key==="ArrowLeft")show(current-1);if(e.key==="Escape")toc.classList.remove("is-open");});
  let touchX=0;stage.addEventListener("touchstart",e=>{touchX=e.changedTouches[0].clientX;},{passive:true});
  stage.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>55)show(current+(dx<0?1:-1));},{passive:true});
- // Build page content only after the existing menu enhancement has inserted verified photos.
- document.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{if(built)return;},0);});
 })();
 
 </script>
@@ -2905,6 +2903,7 @@ function addTccMenuPhotos(){
   const buttons=[...document.querySelectorAll("[data-menu-view]")];
   if(!buttons.length) return;
   function setMenuView(view){
+    if(view==="book") return;
     const textMode=view==="text";
     document.body.classList.toggle("menu-text-mode",textMode);
     buttons.forEach(button=>{
