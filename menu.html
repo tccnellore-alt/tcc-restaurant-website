@@ -4004,8 +4004,11 @@ function tccScoreDrink(drink){
  }
  if(a.flavour){answered++;score+=p.flavours.includes(a.flavour)?20:-3;}
  // Bestseller status is only a tiny tie-breaker, never the main match signal.
- if(drink.item?.querySelector(".tcc-bestseller-badge"))score+=1;
- return {score,answered,hardMatch};
+ const bestsellerBonus=drink.item?.querySelector(".tcc-bestseller-badge")?1:0;
+ if(bestsellerBonus)score+=bestsellerBonus;
+ const maxPossible=(a.mood?32:0)+(a.temperature?26:0)+(a.sweetness?18:0)+(a.flavour?20:0);
+ const matchPercent=maxPossible?Math.max(0,Math.min(100,((score-bestsellerBonus)/maxPossible)*100)):0;
+ return {score,answered,hardMatch,matchPercent};
 }
 function tccDrinkSimilarity(a,b){
  const pa=a.profile,pb=b.profile;let same=0,total=0;
@@ -4119,7 +4122,11 @@ function tccPickMatchedDrink(){
  // Respect selected drink type and temperature whenever the menu has an exact fit.
  const strictPool=ranked.filter(x=>x.hardMatch);
  const pool=strictPool.length?strictPool:ranked;
- const chosen=pool[0];
+ // Randomise only among genuinely close matches: within 5 percentage points
+ // of the strongest candidate, while preserving hard drink-style/temperature fits.
+ const topMatchPercent=Math.max(...pool.map(x=>x.matchPercent));
+ const nearMatchPool=pool.filter(x=>x.matchPercent>=topMatchPercent-5);
+ const chosen=nearMatchPool[Math.floor(Math.random()*nearMatchPool.length)];
  const remaining=pool.filter(x=>x.name!==chosen.name);
  const closeMatch=remaining.slice().sort((a,b)=>{
   const diff=b.score-a.score;
@@ -4180,7 +4187,8 @@ document.getElementById("tccAdjustDrinkAnswers")?.addEventListener("click",()=>{
  tccRenderQuizStep();
  document.getElementById("tccQuizFlow").scrollIntoView({behavior:"smooth",block:"start"});
 });
-document.getElementById("tccPickAnotherDrink")?.addEventListener("click",()=>{tccResetQuiz();tccQuizStep=0;tccRenderQuizStep();});
+// Keep the customer's answers and draw again from the same near-match pool.
+document.getElementById("tccPickAnotherDrink")?.addEventListener("click",tccPickMatchedDrink);
 function tccViewPickedDrink(){
  const chosen=tccCurrentDrink;
  if(!chosen?.name)return;
