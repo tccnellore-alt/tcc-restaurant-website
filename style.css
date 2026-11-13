@@ -639,6 +639,13 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
 .tcc-menu-order-action>strong{color:#8d7337;font:bold 14px Arial,sans-serif;white-space:nowrap}
 .tcc-add-order{border:1px solid #173c2b;border-radius:999px;background:#173c2b;color:#fff;padding:7px 12px;font:800 10px Arial,sans-serif;letter-spacing:.04em;white-space:nowrap;cursor:pointer}
 .tcc-add-order:disabled{background:#e7e3da;border-color:#e7e3da;color:#8d8d84;cursor:not-allowed}
+.tcc-add-order[hidden],.tcc-product-qty[hidden]{display:none!important}
+.tcc-product-qty{display:flex;align-items:center;justify-content:flex-end;gap:9px}
+.tcc-product-qty button{display:grid;place-items:center;width:31px;height:31px;border:1px solid rgba(23,60,43,.28);border-radius:50%;background:#fff;color:#173c2b;font:700 18px/1 Arial,sans-serif;cursor:pointer}
+.tcc-product-qty button:last-child{background:#173c2b;border-color:#173c2b;color:#fff}
+.tcc-product-qty button:disabled{opacity:.4;cursor:not-allowed}
+.tcc-product-qty-count{min-width:14px;text-align:center;color:#173c2b;font:800 13px/1 Arial,sans-serif}
+
 .tcc-order-overlay{position:fixed;z-index:150;inset:0;background:rgba(8,25,17,.58);display:flex;align-items:flex-end;justify-content:center;padding:16px}
 .tcc-order-overlay[hidden]{display:none}
 .tcc-order-sheet{width:min(620px,100%);max-height:min(88svh,850px);overflow:auto;background:#fffaf0;border-radius:24px 24px 18px 18px;padding:22px;box-shadow:0 20px 80px rgba(0,0,0,.25);color:#203027}
