@@ -6,6 +6,7 @@ on:
       - order
     paths:
       - "menu.html"
+      - "order.js"
       - "supabase/functions/tcc-orders/menu-catalog.json"
       - "tests/order-catalog.test.js"
       - ".github/workflows/order-catalog-tests.yml"
