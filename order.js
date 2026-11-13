@@ -101,6 +101,10 @@ function installAddButtons(){
     add.textContent=unavailable?"Sold out":"＋ Add";
     add.disabled=unavailable;
     add.setAttribute("aria-label",unavailable?name+" is sold out":"Add "+name+" to your order");
+    if(!unavailable)add.addEventListener("click",event=>{
+      event.preventDefault();event.stopPropagation();
+      addItem({id,name,price});
+    });
     const controls=document.createElement("div");
     controls.className="tcc-product-qty";
     controls.hidden=true;
@@ -112,23 +116,17 @@ function installAddButtons(){
     const plus=document.createElement("button");
     plus.type="button";plus.textContent="+";plus.dataset.qtyChange="1";
     plus.setAttribute("aria-label","Add one "+name);
+    minus.addEventListener("click",event=>{
+      event.preventDefault();event.stopPropagation();updateQty(id,-1);
+    });
+    plus.addEventListener("click",event=>{
+      event.preventDefault();event.stopPropagation();updateQty(id,1);
+    });
     controls.append(minus,count,plus);
     priceWrap.append(add,controls);
   });
 }
-function handleMenuOrderClick(event){
-  const button=event.target.closest(".tcc-add-order,.tcc-product-qty button");
-  if(!button||button.disabled)return;
-  const row=button.closest(".m-item");
-  if(!row)return;
-  event.preventDefault();
-  event.stopPropagation();
-  if(button.classList.contains("tcc-add-order")){
-    addItem({id:row.dataset.orderItemId,name:row.dataset.orderItemName,price:Number(row.dataset.orderItemPrice)});
-  }else{
-    updateQty(row.dataset.orderItemId,Number(button.dataset.qtyChange));
-  }
-}
+
 function addItem(item){
   if(pendingOrderPayload||orderComplete)return;
   const existing=cart.get(item.id);
@@ -241,7 +239,6 @@ function initTccOrdering(){
   ensureCartUI();
   const menu=document.querySelector(".menu-content");
   if(menu){
-    menu.addEventListener("click",handleMenuOrderClick);
     installAddButtons();
     const observer=new MutationObserver(()=>installAddButtons());
     observer.observe(menu,{childList:true,subtree:true});
