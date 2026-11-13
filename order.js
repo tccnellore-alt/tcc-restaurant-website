@@ -78,7 +78,7 @@ function renderProductControl(row){
   }
 }
 function findOrderRow(id){
-  return [...document.querySelectorAll(".menu-group .m-item")].find(row=>row.dataset.orderItemId===id);
+  return [...document.querySelectorAll(".m-item")].find(row=>row.dataset.orderItemId===id);
 }
 function installAddButtons(){
   document.querySelectorAll(".menu-group .m-item").forEach(row=>{
@@ -102,8 +102,15 @@ function installAddButtons(){
     add.disabled=unavailable;
     add.setAttribute("aria-label",unavailable?name+" is sold out":"Add "+name+" to your order");
     if(!unavailable)add.addEventListener("click",event=>{
-      event.preventDefault();event.stopPropagation();
-      addItem({id,name,price});
+      event.preventDefault();
+      event.stopPropagation();
+      const existing=cart.get(id);
+      cart.set(id,{id,name,price,quantity:Math.min(20,(existing?.quantity??0)+1)});
+      renderProductControl(row);
+      const launcher=document.getElementById("tccOrderCart");
+      launcher?.classList.add("has-items");
+      try{renderCart();}catch(error){console.error("TCC cart render failed:",error);}
+      window.setTimeout(()=>launcher?.classList.remove("has-items"),350);
     });
     const controls=document.createElement("div");
     controls.className="tcc-product-qty";
