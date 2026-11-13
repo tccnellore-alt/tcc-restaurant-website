@@ -61,22 +61,52 @@ function ensureCartUI(){
 
 function installAddButtons(){
   document.querySelectorAll(".menu-group .m-item").forEach(row=>{
-    if(row.querySelector(".tcc-add-order")) return;
+    if(row.querySelector(".tcc-menu-order-action")) return;
     const name=cleanItemName(row), price=readPricePaise(row);
     if(!name||!price) return;
     const id=slug(name);
     row.dataset.orderItemId=id;
     const unavailable=!!row.querySelector(".availability-status");
+    const priceWrap=document.createElement("div"); priceWrap.className="tcc-menu-order-action";
+    const priceNode=row.querySelector(":scope > strong");
+    if(priceNode){priceNode.replaceWith(priceWrap);priceWrap.append(priceNode);}
+    else row.append(priceWrap);
     const button=document.createElement("button");
     button.type="button"; button.className="tcc-add-order"; button.textContent=unavailable?"Sold out":"＋ Add";
     button.disabled=unavailable;
     button.setAttribute("aria-label",unavailable?name+" is sold out":"Add "+name+" to your order");
     if(!unavailable) button.addEventListener("click",()=>addItem({id,name,price}));
-    const priceWrap=document.createElement("div"); priceWrap.className="tcc-menu-order-action";
-    const priceNode=row.querySelector(":scope > strong");
-    if(priceNode){priceNode.replaceWith(priceWrap);priceWrap.append(priceNode);}
-    else row.append(priceWrap);
     priceWrap.append(button);
+  });
+  renderProductControls();
+}
+function renderProductControls(){
+  document.querySelectorAll(".menu-group .m-item").forEach(row=>{
+    const action=row.querySelector(".tcc-menu-order-action");
+    const add=action?.querySelector(".tcc-add-order");
+    if(!action||!add)return;
+    const id=row.dataset.orderItemId, item=cart.get(id);
+    let controls=action.querySelector(".tcc-product-qty");
+    if(!controls){
+      controls=document.createElement("div"); controls.className="tcc-product-qty";
+      const minus=document.createElement("button"); minus.type="button"; minus.textContent="−"; minus.setAttribute("aria-label","Remove one "+cleanItemName(row));
+      const count=document.createElement("span"); count.className="tcc-product-qty-count";
+      const plus=document.createElement("button"); plus.type="button"; plus.textContent="+"; plus.setAttribute("aria-label","Add one "+cleanItemName(row));
+      minus.addEventListener("click",()=>updateQty(id,-1));
+      plus.addEventListener("click",()=>{const current=cart.get(id);if(current)updateQty(id,1);else addItem({id,name:cleanItemName(row),price:readPricePaise(row)});});
+      controls.append(minus,count,plus); action.append(controls);
+    }
+    const count=controls.querySelector(".tcc-product-qty-count");
+    const minus=controls.querySelector("button:first-child"), plus=controls.querySelector("button:last-child");
+    if(item){
+      add.hidden=true; controls.hidden=false; count.textContent=String(item.quantity);
+      minus.disabled=!!pendingOrderPayload||orderComplete;
+      plus.disabled=!!pendingOrderPayload||orderComplete||item.quantity>=20;
+      plus.setAttribute("aria-label","Add one "+item.name);
+      minus.setAttribute("aria-label","Remove one "+item.name);
+    }else{
+      add.hidden=false; controls.hidden=true;
+    }
   });
 }
 
@@ -85,6 +115,7 @@ function addItem(item){
   const existing=cart.get(item.id);
   cart.set(item.id,{...item,quantity:Math.min(20,(existing?.quantity??0)+1)});
   renderCart();
+  renderProductControls();
   const launcher=document.getElementById("tccOrderCart");
   launcher?.classList.add("has-items");
   window.setTimeout(()=>launcher?.classList.remove("has-items"),350);
@@ -95,6 +126,7 @@ function updateQty(id,delta){
   const next=item.quantity+delta;
   if(next<=0)cart.delete(id); else item.quantity=Math.min(20,next);
   renderCart();
+  renderProductControls();
 }
 function totals(){
   const items=[...cart.values()];
