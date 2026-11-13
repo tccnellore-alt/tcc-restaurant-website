@@ -56,10 +56,11 @@ test("sold-out menu products are disabled in the trusted catalog", () => {
 });
 
 
-test("menu Add and quantity controls use delegated, targeted updates", () => {
-  assert.match(orderScript, /add\.addEventListener\("click",event=>/);
-  assert.match(orderScript, /minus\.addEventListener\("click",event=>/);
-  assert.match(orderScript, /plus\.addEventListener\("click",event=>/);
+test("menu Add and quantity controls capture taps across all menu layouts", () => {
+  assert.match(orderScript, /document\.addEventListener\("click",handleOrderControlClick,true\)/);
+  assert.match(orderScript, /function handleOrderControlClick\(event\)/);
+  assert.match(orderScript, /event\.stopImmediatePropagation\(\)/);
+  assert.match(orderScript, /document\.querySelectorAll\("\.m-item"\)/);
   assert.match(orderScript, /dataset\.qtyChange/);
   const addItem = orderScript.slice(orderScript.indexOf("function addItem(item)"), orderScript.indexOf("function updateQty"));
   const updateQty = orderScript.slice(orderScript.indexOf("function updateQty"), orderScript.indexOf("function totals"));
