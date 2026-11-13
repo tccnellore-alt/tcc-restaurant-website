@@ -187,9 +187,12 @@ async function submitOrder(event){
     };
   }
   error.textContent=""; submit.disabled=true; submit.textContent="Placing your order…"; renderCart();
+  const requestController=new AbortController();
+  const requestTimeout=window.setTimeout(()=>requestController.abort(),20000);
   try{
-    const response=await fetch(TCC_ORDERS_URL,{method:"POST",headers:{"Content-Type":"application/json","apikey":TCC_ORDERS_PUBLIC_KEY},body:JSON.stringify(pendingOrderPayload)});
-    const result=await response.json();
+    const response=await fetch(TCC_ORDERS_URL,{method:"POST",headers:{"Content-Type":"application/json","apikey":TCC_ORDERS_PUBLIC_KEY},body:JSON.stringify(pendingOrderPayload),signal:requestController.signal});
+    let result;
+    try{result=await response.json();}catch{throw new Error("We received an unexpected response. Please retry; your order will not be duplicated.");}
     if(!response.ok){const failure=new Error(result.error||"We couldn't place your order. Please try again.");failure.status=response.status;throw failure;}
     pendingOrderPayload=null; orderComplete=true;
     form.hidden=true; document.getElementById("tccOrderLines").hidden=true; document.getElementById("tccOrderEmpty").hidden=true;
@@ -203,7 +206,16 @@ async function submitOrder(event){
     confirmation.append(title,reference,total,note,done);
     document.getElementById("tccOrderCount").textContent="0";
     document.getElementById("tccOrderLauncherTotal").textContent="₹0";
-  }catch(err){if(err.status&&err.status<500)pendingOrderPayload=null;error.textContent=err.message||"Please try again.";submit.disabled=false;submit.innerHTML='Place order · <span id="tccOrderSubmitTotal"></span>';document.getElementById("tccOrderSubmitTotal").textContent=money(totals().total);renderCart();}
+  }catch(err){
+    if(err.status&&err.status<500)pendingOrderPayload=null;
+    error.textContent=err.name==="AbortError"
+      ?"This is taking longer than expected. Your order may still have been received. Please tap Retry; we’ll safely check the same order and prevent duplicates."
+      :(err.message||"Please try again.");
+    submit.disabled=false;
+    submit.innerHTML='Retry order · <span id="tccOrderSubmitTotal"></span>';
+    document.getElementById("tccOrderSubmitTotal").textContent=money(totals().total);
+    renderCart();
+  }finally{window.clearTimeout(requestTimeout);}
 }
 
 function initTccOrdering(){
