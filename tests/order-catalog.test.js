@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 const html = await readFile(new URL("../menu.html", import.meta.url), "utf8");
+const orderScript = await readFile(new URL("../order.js", import.meta.url), "utf8");
 const catalog = JSON.parse(await readFile(new URL("../supabase/functions/tcc-orders/menu-catalog.json", import.meta.url), "utf8"));
 const decode = value => value.replace(/&amp;/g,"&").replace(/&#x27;|&#39;/gi,"'").replace(/&quot;/g,'"').replace(/&nbsp;/g," ");
 
@@ -52,4 +53,18 @@ test("sold-out menu products are disabled in the trusted catalog", () => {
   const soldOut=visibleMenuRows(html).filter(item=>!item.available);
   assert.equal(soldOut.length,15);
   for(const item of soldOut)assert.equal(catalog.find(entry=>entry.id===item.id)?.available,false,item.name);
+});
+
+
+test("menu Add and quantity controls use delegated, targeted updates", () => {
+  assert.match(orderScript, /menu\.addEventListener\("click",handleMenuOrderClick\)/);
+  assert.match(orderScript, /function handleMenuOrderClick\(event\)/);
+  assert.match(orderScript, /button\.classList\.contains\("tcc-add-order"\)/);
+  assert.match(orderScript, /data-qty-change/);
+  const addItem = orderScript.slice(orderScript.indexOf("function addItem(item)"), orderScript.indexOf("function updateQty"));
+  const updateQty = orderScript.slice(orderScript.indexOf("function updateQty"), orderScript.indexOf("function totals"));
+  assert.doesNotMatch(addItem, /querySelectorAll\("\.menu-group \.m-item"\)/);
+  assert.doesNotMatch(updateQty, /querySelectorAll\("\.menu-group \.m-item"\)/);
+  assert.match(addItem, /renderProductControl\(findOrderRow\(item\.id\)\)/);
+  assert.match(updateQty, /renderProductControl\(findOrderRow\(id\)\)/);
 });
