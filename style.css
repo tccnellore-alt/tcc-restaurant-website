@@ -623,3 +623,63 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
     padding-top:6px!important;
   }
 }
+
+
+/* TCC ONLINE ORDERING */
+.tcc-order-launcher{position:fixed;z-index:80;right:20px;bottom:22px;display:flex;align-items:center;gap:12px;padding:13px 17px;border:0;border-radius:999px;background:#173c2b;color:#fff;box-shadow:0 12px 35px rgba(13,43,29,.28);font:700 13px Arial,sans-serif;cursor:pointer}
+.tcc-order-launcher b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#b79a5a;color:#fff;font-size:12px}
+.tcc-order-launcher strong{font-size:13px;color:#f4eee1}
+.tcc-order-launcher.has-items{transform:translateY(-3px)}
+.tcc-order-open{overflow:hidden}
+.tcc-menu-order-action{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex:0 0 auto}
+.tcc-menu-order-action>strong{color:#8d7337;font:bold 14px Arial,sans-serif;white-space:nowrap}
+.tcc-add-order{border:1px solid #173c2b;border-radius:999px;background:#173c2b;color:#fff;padding:7px 12px;font:800 10px Arial,sans-serif;letter-spacing:.04em;white-space:nowrap;cursor:pointer}
+.tcc-add-order:disabled{background:#e7e3da;border-color:#e7e3da;color:#8d8d84;cursor:not-allowed}
+.tcc-order-overlay{position:fixed;z-index:150;inset:0;background:rgba(8,25,17,.58);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.tcc-order-overlay[hidden]{display:none}
+.tcc-order-sheet{width:min(620px,100%);max-height:min(88svh,850px);overflow:auto;background:#fffaf0;border-radius:24px 24px 18px 18px;padding:22px;box-shadow:0 20px 80px rgba(0,0,0,.25);color:#203027}
+.tcc-order-head{display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid rgba(23,60,43,.14);padding-bottom:14px;margin-bottom:15px}
+.tcc-order-head small{font:800 9px Arial,sans-serif;letter-spacing:.15em;color:#8d7337}
+.tcc-order-head h2{font-size:30px;margin:5px 0 0;color:#173c2b}
+.tcc-order-close{width:40px;height:40px;border:0;border-radius:50%;background:#f0e9d9;color:#173c2b;font-size:25px;cursor:pointer}
+.tcc-order-lines{display:grid;gap:8px}
+.tcc-order-line{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(23,60,43,.1)}
+.tcc-order-line-info{display:grid;gap:3px;min-width:0}
+.tcc-order-line-info strong{font:700 13px/1.3 Arial,sans-serif;color:#173c2b}
+.tcc-order-line-info small{font:11px Arial,sans-serif;color:#72786f}
+.tcc-order-line>b{font:bold 12px Arial,sans-serif;color:#8d7337;white-space:nowrap}
+.tcc-qty-controls{display:flex;align-items:center;gap:8px}
+.tcc-qty-controls button{width:27px;height:27px;border:1px solid rgba(23,60,43,.2);border-radius:50%;background:#fff;color:#173c2b;font-size:17px;cursor:pointer}
+.tcc-qty-controls button:disabled{opacity:.35}
+.tcc-qty-controls span{min-width:12px;text-align:center;font:700 12px Arial,sans-serif}
+.tcc-order-empty{padding:26px 8px;text-align:center;color:#6d756e;font:14px/1.5 Arial,sans-serif}
+.tcc-checkout{display:grid;gap:13px;margin-top:18px}
+.tcc-checkout[hidden]{display:none}
+.tcc-checkout fieldset{border:1px solid rgba(23,60,43,.16);border-radius:13px;padding:12px;display:flex;gap:15px;flex-wrap:wrap}
+.tcc-checkout legend{padding:0 5px;font:700 12px Arial,sans-serif;color:#173c2b}
+.tcc-checkout fieldset label{display:flex;align-items:center;gap:6px;font:13px Arial,sans-serif}
+.tcc-checkout>label{display:grid;gap:6px;font:700 12px Arial,sans-serif;color:#173c2b}
+.tcc-checkout>label span{font-weight:400;color:#73796f}
+.tcc-checkout input:not([type=radio]),.tcc-checkout textarea{width:100%;border:1px solid rgba(23,60,43,.2);border-radius:11px;background:#fff;padding:12px;font:14px Arial,sans-serif;color:#203027;outline-color:#b79a5a}
+.tcc-checkout textarea{resize:vertical}
+.tcc-order-summary{display:grid;gap:8px;padding:14px;background:#f2ecdf;border-radius:13px;font:13px Arial,sans-serif}
+.tcc-order-summary>div{display:flex;justify-content:space-between;gap:15px}
+.tcc-order-summary b{color:#173c2b}
+.tcc-order-summary .total{border-top:1px solid rgba(23,60,43,.15);padding-top:9px;font-weight:800;font-size:15px}
+.tcc-order-summary small{color:#68746a;font-size:10px;text-align:right}
+.tcc-order-error{margin:0;color:#b42318;font:12px/1.4 Arial,sans-serif}
+.tcc-order-submit{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:48px;border:0;border-radius:999px;background:#173c2b;color:#fff;font:800 12px Arial,sans-serif;letter-spacing:.04em;cursor:pointer}
+.tcc-order-submit:disabled{opacity:.6;cursor:wait}
+.tcc-order-confirmation{padding:28px 10px;text-align:center}
+.tcc-order-confirmation h3{font-size:24px;color:#173c2b}
+.tcc-order-confirmation>strong{display:block;margin:14px auto;padding:13px;border:1px dashed #b79a5a;border-radius:12px;color:#8d7337;font:bold 20px Arial,sans-serif;letter-spacing:.08em}
+.tcc-order-confirmation p{font:14px/1.5 Arial,sans-serif;color:#5e6a61}
+.tcc-order-confirmation .tcc-order-submit{margin-top:20px}
+@media(max-width:600px){
+ .tcc-order-launcher{right:12px;bottom:88px;padding:11px 14px;gap:9px}
+ .tcc-order-sheet{padding:17px;border-radius:22px 22px 14px 14px;max-height:90svh}
+ .tcc-order-line{gap:8px;grid-template-columns:minmax(0,1fr) auto auto}
+ .tcc-order-line-info strong{font-size:12px}
+ .tcc-menu-order-action{gap:5px}
+ .tcc-add-order{padding:6px 9px;font-size:9px}
+}

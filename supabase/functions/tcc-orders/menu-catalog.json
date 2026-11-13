@@ -1,0 +1,772 @@
+[
+  {
+    "id": "ginger-honey-lemon-tea",
+    "name": "Ginger Honey Lemon Tea",
+    "group": "coffee",
+    "price_paise": 12900,
+    "available": true
+  },
+  {
+    "id": "espresso",
+    "name": "Espresso",
+    "group": "coffee",
+    "price_paise": 9900,
+    "available": true
+  },
+  {
+    "id": "hot-americano",
+    "name": "Hot Americano",
+    "group": "coffee",
+    "price_paise": 14900,
+    "available": true
+  },
+  {
+    "id": "latte",
+    "name": "Latte",
+    "group": "coffee",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "mocha",
+    "name": "Mocha",
+    "group": "coffee",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "spanish-latte",
+    "name": "Spanish Latte",
+    "group": "coffee",
+    "price_paise": 29900,
+    "available": true
+  },
+  {
+    "id": "cortado",
+    "name": "Cortado",
+    "group": "coffee",
+    "price_paise": 15900,
+    "available": true
+  },
+  {
+    "id": "hot-chocolate",
+    "name": "Hot Chocolate",
+    "group": "coffee",
+    "price_paise": 31500,
+    "available": true
+  },
+  {
+    "id": "affogato",
+    "name": "Affogato",
+    "group": "coffee",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "cappuccino",
+    "name": "Cappuccino",
+    "group": "coffee",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "vietnamese-coffee",
+    "name": "Vietnamese Coffee",
+    "group": "coffee",
+    "price_paise": 26900,
+    "available": true
+  },
+  {
+    "id": "tiramisu-latte",
+    "name": "Tiramisu Latte",
+    "group": "coffee",
+    "price_paise": 29900,
+    "available": true
+  },
+  {
+    "id": "iced-americano",
+    "name": "Iced Americano",
+    "group": "coffee",
+    "price_paise": 19000,
+    "available": true
+  },
+  {
+    "id": "iced-latte",
+    "name": "Iced Latte",
+    "group": "coffee",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "iced-mocha",
+    "name": "Iced Mocha",
+    "group": "coffee",
+    "price_paise": 32000,
+    "available": true
+  },
+  {
+    "id": "classic-cold-coffee",
+    "name": "Classic Cold Coffee",
+    "group": "coffee",
+    "price_paise": 27500,
+    "available": true
+  },
+  {
+    "id": "spanish-iced-latte",
+    "name": "Spanish Iced Latte",
+    "group": "coffee",
+    "price_paise": 32000,
+    "available": true
+  },
+  {
+    "id": "classic-cold-brew",
+    "name": "Classic Cold Brew",
+    "group": "coffee",
+    "price_paise": 35000,
+    "available": true
+  },
+  {
+    "id": "coco-brew",
+    "name": "Coco Brew",
+    "group": "coffee",
+    "price_paise": 35000,
+    "available": true
+  },
+  {
+    "id": "mont-blanc",
+    "name": "Mont Blanc",
+    "group": "coffee",
+    "price_paise": 35000,
+    "available": true
+  },
+  {
+    "id": "bird-s-eye-pineapple",
+    "name": "Bird's Eye Pineapple",
+    "group": "coffee",
+    "price_paise": 35000,
+    "available": true
+  },
+  {
+    "id": "cranberry-cold-brew",
+    "name": "Cranberry Cold Brew",
+    "group": "coffee",
+    "price_paise": 35000,
+    "available": true
+  },
+  {
+    "id": "orange-fizzy-brew",
+    "name": "Orange Fizzy Brew",
+    "group": "coffee",
+    "price_paise": 35000,
+    "available": true
+  },
+  {
+    "id": "biscoff-shake",
+    "name": "Biscoff Shake",
+    "group": "coffee",
+    "price_paise": 27900,
+    "available": true
+  },
+  {
+    "id": "nutella-shake",
+    "name": "Nutella Shake",
+    "group": "coffee",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "lemon-cooler",
+    "name": "Lemon Cooler",
+    "group": "refreshers-and-tea",
+    "price_paise": 20000,
+    "available": true
+  },
+  {
+    "id": "elderflower-fizz-peach-fizz",
+    "name": "Elderflower Fizz / Peach Fizz",
+    "group": "refreshers-and-tea",
+    "price_paise": 26000,
+    "available": true
+  },
+  {
+    "id": "dry-mango-picante",
+    "name": "Dry Mango Picante",
+    "group": "refreshers-and-tea",
+    "price_paise": 28000,
+    "available": true
+  },
+  {
+    "id": "coco-rose-cooler",
+    "name": "Coco Rose Cooler",
+    "group": "refreshers-and-tea",
+    "price_paise": 26000,
+    "available": true
+  },
+  {
+    "id": "watermelon-fizzy",
+    "name": "Watermelon Fizzy",
+    "group": "refreshers-and-tea",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "blueberry-mojito",
+    "name": "Blueberry Mojito",
+    "group": "refreshers-and-tea",
+    "price_paise": 21900,
+    "available": true
+  },
+  {
+    "id": "virgin-mojito",
+    "name": "Virgin Mojito",
+    "group": "refreshers-and-tea",
+    "price_paise": 21900,
+    "available": true
+  },
+  {
+    "id": "orange-fizzy",
+    "name": "Orange Fizzy",
+    "group": "refreshers-and-tea",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "pineapple-fizzy",
+    "name": "Pineapple Fizzy",
+    "group": "refreshers-and-tea",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "mango-fizzy",
+    "name": "Mango Fizzy",
+    "group": "refreshers-and-tea",
+    "price_paise": 24900,
+    "available": true
+  },
+  {
+    "id": "peach-iced-tea",
+    "name": "Peach Iced Tea",
+    "group": "refreshers-and-tea",
+    "price_paise": 20000,
+    "available": true
+  },
+  {
+    "id": "lemon-iced-tea",
+    "name": "Lemon Iced Tea",
+    "group": "refreshers-and-tea",
+    "price_paise": 20000,
+    "available": true
+  },
+  {
+    "id": "berry-iced-tea",
+    "name": "Berry Iced Tea",
+    "group": "refreshers-and-tea",
+    "price_paise": 20000,
+    "available": true
+  },
+  {
+    "id": "classic-matcha-hot",
+    "name": "Classic Matcha Hot",
+    "group": "signatures",
+    "price_paise": 35000,
+    "available": true
+  },
+  {
+    "id": "classic-matcha-cold",
+    "name": "Classic Matcha Cold",
+    "group": "signatures",
+    "price_paise": 35000,
+    "available": true
+  },
+  {
+    "id": "coconut-matcha-cloud",
+    "name": "Coconut Matcha Cloud",
+    "group": "signatures",
+    "price_paise": 35000,
+    "available": true
+  },
+  {
+    "id": "mango-passion-matcha",
+    "name": "Mango Passion Matcha",
+    "group": "signatures",
+    "price_paise": 30000,
+    "available": true
+  },
+  {
+    "id": "strawberry-matcha",
+    "name": "Strawberry Matcha",
+    "group": "signatures",
+    "price_paise": 29900,
+    "available": true
+  },
+  {
+    "id": "pour-over",
+    "name": "Pour Over",
+    "group": "signatures",
+    "price_paise": 45000,
+    "available": true
+  },
+  {
+    "id": "french-press",
+    "name": "French Press",
+    "group": "signatures",
+    "price_paise": 41000,
+    "available": true
+  },
+  {
+    "id": "apple-pie-latte",
+    "name": "Apple Pie Latte",
+    "group": "signatures",
+    "price_paise": 28000,
+    "available": true
+  },
+  {
+    "id": "honey-rose-merry-latte",
+    "name": "Honey Rose Merry Latte",
+    "group": "signatures",
+    "price_paise": 28000,
+    "available": true
+  },
+  {
+    "id": "biscoff-latte",
+    "name": "Biscoff Latte",
+    "group": "signatures",
+    "price_paise": 28000,
+    "available": true
+  },
+  {
+    "id": "nutella-latte",
+    "name": "Nutella Latte",
+    "group": "signatures",
+    "price_paise": 28000,
+    "available": true
+  },
+  {
+    "id": "coconut-cold",
+    "name": "Coconut Cold",
+    "group": "signatures",
+    "price_paise": 32000,
+    "available": true
+  },
+  {
+    "id": "orange-espresso",
+    "name": "Orange Espresso",
+    "group": "signatures",
+    "price_paise": 32000,
+    "available": true
+  },
+  {
+    "id": "pineapple-float",
+    "name": "Pineapple Float",
+    "group": "signatures",
+    "price_paise": 36000,
+    "available": true
+  },
+  {
+    "id": "hearty-minestrone-soup",
+    "name": "Hearty Minestrone Soup",
+    "group": "food",
+    "price_paise": 19900,
+    "available": true
+  },
+  {
+    "id": "creamy-mushroom-soup",
+    "name": "Creamy Mushroom Soup",
+    "group": "food",
+    "price_paise": 19900,
+    "available": true
+  },
+  {
+    "id": "roasted-broccoli-aop",
+    "name": "Roasted Broccoli AOP",
+    "group": "food",
+    "price_paise": 17900,
+    "available": true
+  },
+  {
+    "id": "french-fries-classic",
+    "name": "French Fries Classic",
+    "group": "food",
+    "price_paise": 16900,
+    "available": true
+  },
+  {
+    "id": "peri-peri-french-fries",
+    "name": "Peri Peri French Fries",
+    "group": "food",
+    "price_paise": 18900,
+    "available": true
+  },
+  {
+    "id": "butter-garlic-mushroom",
+    "name": "Butter Garlic Mushroom",
+    "group": "food",
+    "price_paise": 24300,
+    "available": true
+  },
+  {
+    "id": "potato-cheese-balls",
+    "name": "Potato Cheese Balls",
+    "group": "food",
+    "price_paise": 15800,
+    "available": true
+  },
+  {
+    "id": "corn-ribs",
+    "name": "Corn Ribs",
+    "group": "food",
+    "price_paise": 15900,
+    "available": true
+  },
+  {
+    "id": "creamy-garlic-prawns-king-size",
+    "name": "Creamy Garlic Prawns (King Size)",
+    "group": "food",
+    "price_paise": 52500,
+    "available": true
+  },
+  {
+    "id": "fried-chicken-strips",
+    "name": "Fried Chicken Strips",
+    "group": "food",
+    "price_paise": 24800,
+    "available": true
+  },
+  {
+    "id": "butter-garlic-chicken",
+    "name": "Butter Garlic Chicken",
+    "group": "food",
+    "price_paise": 27900,
+    "available": true
+  },
+  {
+    "id": "tuscan-honey-chicken",
+    "name": "Tuscan Honey Chicken",
+    "group": "food",
+    "price_paise": 29900,
+    "available": true
+  },
+  {
+    "id": "butter-garlic-prawns",
+    "name": "Butter Garlic Prawns",
+    "group": "food",
+    "price_paise": 34900,
+    "available": true
+  },
+  {
+    "id": "chicken-alfredo-bliss",
+    "name": "Chicken Alfredo Bliss",
+    "group": "food",
+    "price_paise": 29900,
+    "available": true
+  },
+  {
+    "id": "fettuccine-aglio-olio",
+    "name": "Fettuccine Aglio Olio",
+    "group": "food",
+    "price_paise": 30900,
+    "available": true
+  },
+  {
+    "id": "penne-arrabbiata",
+    "name": "Penne Arrabbiata",
+    "group": "food",
+    "price_paise": 28900,
+    "available": true
+  },
+  {
+    "id": "penne-rossa",
+    "name": "Penne Rossa",
+    "group": "food",
+    "price_paise": 30900,
+    "available": true
+  },
+  {
+    "id": "penne-alfredo",
+    "name": "Penne Alfredo",
+    "group": "food",
+    "price_paise": 28900,
+    "available": true
+  },
+  {
+    "id": "fettuccine-alfredo",
+    "name": "Fettuccine Alfredo",
+    "group": "food",
+    "price_paise": 33900,
+    "available": true
+  },
+  {
+    "id": "fettuccine-al-pesto",
+    "name": "Fettuccine Al Pesto",
+    "group": "food",
+    "price_paise": 31900,
+    "available": true
+  },
+  {
+    "id": "mac-cheese-veg",
+    "name": "Mac & Cheese (Veg)",
+    "group": "food",
+    "price_paise": 26900,
+    "available": false
+  },
+  {
+    "id": "italian-margherita",
+    "name": "Italian Margherita",
+    "group": "food",
+    "price_paise": 24900,
+    "available": false
+  },
+  {
+    "id": "the-farmer-s-pizza",
+    "name": "The Farmer's Pizza",
+    "group": "food",
+    "price_paise": 29900,
+    "available": false
+  },
+  {
+    "id": "pizza-verde",
+    "name": "Pizza Verde",
+    "group": "food",
+    "price_paise": 32900,
+    "available": false
+  },
+  {
+    "id": "pesto-pizza",
+    "name": "Pesto Pizza",
+    "group": "food",
+    "price_paise": 32900,
+    "available": false
+  },
+  {
+    "id": "bbq-chicken-pizza",
+    "name": "BBQ Chicken Pizza",
+    "group": "food",
+    "price_paise": 39900,
+    "available": false
+  },
+  {
+    "id": "pesto-chicken-pizza",
+    "name": "Pesto Chicken Pizza",
+    "group": "food",
+    "price_paise": 44900,
+    "available": false
+  },
+  {
+    "id": "chicken-pizzaiola",
+    "name": "Chicken Pizzaiola",
+    "group": "food",
+    "price_paise": 42900,
+    "available": false
+  },
+  {
+    "id": "mushroom-burger",
+    "name": "Mushroom Burger",
+    "group": "food",
+    "price_paise": 23800,
+    "available": true
+  },
+  {
+    "id": "grilled-paneer-burger",
+    "name": "Grilled Paneer Burger",
+    "group": "food",
+    "price_paise": 24800,
+    "available": true
+  },
+  {
+    "id": "grilled-chicken-burger",
+    "name": "Grilled Chicken Burger",
+    "group": "food",
+    "price_paise": 23800,
+    "available": true
+  },
+  {
+    "id": "crispy-chicken-burger",
+    "name": "Crispy Chicken Burger",
+    "group": "food",
+    "price_paise": 24800,
+    "available": true
+  },
+  {
+    "id": "cheese-grilled-sandwich",
+    "name": "Cheese Grilled Sandwich",
+    "group": "food",
+    "price_paise": 16900,
+    "available": true
+  },
+  {
+    "id": "bombay-street-sandwich",
+    "name": "Bombay Street Sandwich",
+    "group": "food",
+    "price_paise": 16900,
+    "available": true
+  },
+  {
+    "id": "crispy-chicken-sandwich",
+    "name": "Crispy Chicken Sandwich",
+    "group": "food",
+    "price_paise": 20900,
+    "available": true
+  },
+  {
+    "id": "grilled-chicken-sandwich",
+    "name": "Grilled Chicken Sandwich",
+    "group": "food",
+    "price_paise": 20900,
+    "available": true
+  },
+  {
+    "id": "maska-bun",
+    "name": "Maska Bun",
+    "group": "desserts",
+    "price_paise": 10500,
+    "available": true
+  },
+  {
+    "id": "dragon-apple-delight",
+    "name": "Dragon Apple Delight",
+    "group": "desserts",
+    "price_paise": 19900,
+    "available": false
+  },
+  {
+    "id": "belgium-truffle-tin",
+    "name": "Belgium Truffle Tin",
+    "group": "desserts",
+    "price_paise": 22000,
+    "available": false
+  },
+  {
+    "id": "tiramisu-cake-tin",
+    "name": "Tiramisu Cake Tin",
+    "group": "desserts",
+    "price_paise": 22000,
+    "available": false
+  },
+  {
+    "id": "biscoff-cheese-cake-tin",
+    "name": "Biscoff Cheese Cake Tin",
+    "group": "desserts",
+    "price_paise": 23000,
+    "available": true
+  },
+  {
+    "id": "coffee-cashew-cake-tin",
+    "name": "Coffee Cashew Cake Tin",
+    "group": "desserts",
+    "price_paise": 23000,
+    "available": true
+  },
+  {
+    "id": "mini-cake",
+    "name": "Mini Cake",
+    "group": "desserts",
+    "price_paise": 25000,
+    "available": true
+  },
+  {
+    "id": "moist-chocolate-slice",
+    "name": "Moist Chocolate Slice",
+    "group": "desserts",
+    "price_paise": 22900,
+    "available": true
+  },
+  {
+    "id": "butter-croissant",
+    "name": "Butter Croissant",
+    "group": "desserts",
+    "price_paise": 15200,
+    "available": true
+  },
+  {
+    "id": "chocolate-croissant",
+    "name": "Chocolate Croissant",
+    "group": "desserts",
+    "price_paise": 19900,
+    "available": true
+  },
+  {
+    "id": "vanilla",
+    "name": "Vanilla",
+    "group": "ice-creams",
+    "price_paise": 9900,
+    "available": true
+  },
+  {
+    "id": "caramel-nuts",
+    "name": "Caramel Nuts",
+    "group": "ice-creams",
+    "price_paise": 15900,
+    "available": true
+  },
+  {
+    "id": "chocolate",
+    "name": "Chocolate",
+    "group": "ice-creams",
+    "price_paise": 11900,
+    "available": true
+  },
+  {
+    "id": "strawberry",
+    "name": "Strawberry",
+    "group": "ice-creams",
+    "price_paise": 11900,
+    "available": true
+  },
+  {
+    "id": "red-velvet",
+    "name": "Red Velvet",
+    "group": "ice-creams",
+    "price_paise": 15900,
+    "available": true
+  },
+  {
+    "id": "oreo-cookies",
+    "name": "Oreo Cookies",
+    "group": "ice-creams",
+    "price_paise": 15900,
+    "available": true
+  },
+  {
+    "id": "choco-brownie",
+    "name": "Choco Brownie",
+    "group": "ice-creams",
+    "price_paise": 15900,
+    "available": true
+  },
+  {
+    "id": "dry-fruit-dream",
+    "name": "Dry Fruit Dream",
+    "group": "ice-creams",
+    "price_paise": 15900,
+    "available": true
+  },
+  {
+    "id": "mango",
+    "name": "Mango",
+    "group": "ice-creams",
+    "price_paise": 11900,
+    "available": false
+  },
+  {
+    "id": "kesari-pista",
+    "name": "Kesari Pista",
+    "group": "ice-creams",
+    "price_paise": 15900,
+    "available": false
+  },
+  {
+    "id": "butterscotch",
+    "name": "Butterscotch",
+    "group": "ice-creams",
+    "price_paise": 13900,
+    "available": false
+  },
+  {
+    "id": "tutti-frutti",
+    "name": "Tutti Frutti",
+    "group": "ice-creams",
+    "price_paise": 14900,
+    "available": false
+  }
+]

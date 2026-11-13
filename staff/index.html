@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="googlebot" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#173c2b">
+<title>Staff Access | TCC</title>
+<link rel="stylesheet" href="staff.css">
+</head>
+<body>
+<main class="staff-shell">
+  <header class="staff-brand"><span class="crown">♛</span><div><small>THE COFFEE CLUB · NELLORE</small><h1>Staff Desk</h1></div></header>
+  <section id="staffLogin" class="staff-card">
+    <p class="eyebrow">PRIVATE STAFF ACCESS</p>
+    <h2>Sign in</h2>
+    <form id="staffLoginForm">
+      <label>Username<input name="username" autocomplete="username" required maxlength="80" value="admin"></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required maxlength="256" placeholder="Enter password"></label>
+      <p id="staffLoginError" class="error" role="alert"></p>
+      <button type="submit">Open dashboard</button>
+    </form>
+    <p class="staff-footnote">Authorised TCC staff only.</p>
+  </section>
+  <section id="staffDashboard" hidden>
+    <div class="dashboard-head"><div><p class="eyebrow">ORDER MANAGEMENT</p><h2>Incoming orders</h2></div><div class="head-actions"><button id="refreshOrders" class="secondary">Refresh</button><button id="staffLogout" class="quiet">Log out</button></div></div>
+    <p id="ordersMessage" class="message" aria-live="polite">Loading orders…</p>
+    <div class="orders-layout"><div id="ordersList" class="orders-list"></div><aside id="orderDetails" class="order-details"><p>Select an order to view details.</p></aside></div>
+  </section>
+  <footer>Private staff area · TCC – The Coffee Club</footer>
+</main>
+<script src="staff.js" defer></script>
+</body>
+</html>
