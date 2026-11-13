@@ -1,0 +1,31 @@
+name: TCC Order Catalog Tests
+
+on:
+  push:
+    branches:
+      - order
+    paths:
+      - "menu.html"
+      - "supabase/functions/tcc-orders/menu-catalog.json"
+      - "tests/order-catalog.test.js"
+      - ".github/workflows/order-catalog-tests.yml"
+  pull_request:
+    paths:
+      - "menu.html"
+      - "supabase/functions/tcc-orders/menu-catalog.json"
+      - "tests/order-catalog.test.js"
+      - ".github/workflows/order-catalog-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify trusted ordering catalog matches the menu
+        run: node --test tests/order-catalog.test.js
