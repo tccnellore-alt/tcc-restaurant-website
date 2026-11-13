@@ -625,6 +625,10 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
 }
 
 
+/* Keep the open cart/checkout above sticky menu tabs, search and mobile navigation. */
+.tcc-order-overlay{z-index:100000!important}
+.tcc-order-sheet{position:relative;z-index:1}
+
 /* TCC ONLINE ORDERING */
 .tcc-order-launcher{position:fixed;z-index:80;right:20px;bottom:22px;display:flex;align-items:center;gap:12px;padding:13px 17px;border:0;border-radius:999px;background:#173c2b;color:#fff;box-shadow:0 12px 35px rgba(13,43,29,.28);font:700 13px Arial,sans-serif;cursor:pointer}
 .tcc-order-launcher b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#b79a5a;color:#fff;font-size:12px}
