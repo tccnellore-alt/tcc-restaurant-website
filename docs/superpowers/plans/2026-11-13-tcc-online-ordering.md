@@ -161,3 +161,6 @@ This is a multi-part feature, but the database/API, customer ordering UI, and st
 - Final: minor (deferred): Supabase performance advisor reports three currently unused indexes. They are retained because the new tables have no production workload yet and the indexes support expected order/date/reference lookups.
 
 - Ruling: The initial design-document commit briefly included the shared password in the `order` branch history. The current spec and all current source files have been scrubbed and re-scanned, but the earlier Git commit still contains it. I did not rewrite or force-push the shared `order` branch without explicit approval; this must be cleaned from branch history before public release.
+
+
+- Deployment fix: Cloudflare Pages fallback build now explicitly copies `staff/` into `dist/staff/`; this was missing from the prior build command and caused `/staff/` to fall back to the public homepage. Verified the project build configuration update; a new preview build is triggered by this commit.
