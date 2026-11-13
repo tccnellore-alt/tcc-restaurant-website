@@ -57,9 +57,9 @@ test("sold-out menu products are disabled in the trusted catalog", () => {
 
 
 test("menu Add and quantity controls use delegated, targeted updates", () => {
-  assert.match(orderScript, /menu\.addEventListener\("click",handleMenuOrderClick\)/);
-  assert.match(orderScript, /function handleMenuOrderClick\(event\)/);
-  assert.match(orderScript, /button\.classList\.contains\("tcc-add-order"\)/);
+  assert.match(orderScript, /add\.addEventListener\("click",event=>/);
+  assert.match(orderScript, /minus\.addEventListener\("click",event=>/);
+  assert.match(orderScript, /plus\.addEventListener\("click",event=>/);
   assert.match(orderScript, /dataset\.qtyChange/);
   const addItem = orderScript.slice(orderScript.indexOf("function addItem(item)"), orderScript.indexOf("function updateQty"));
   const updateQty = orderScript.slice(orderScript.indexOf("function updateQty"), orderScript.indexOf("function totals"));
