@@ -3604,10 +3604,10 @@ const tccCoffeeAddonPrice = "₹50";
 const tccCoffeeAddonQuantity = "30 ml";
 
 document.addEventListener("click",event=>{
-  // Open the product lightbox from anywhere on the product card in both menu views.
-  const item=event.target.closest(".m-item");
-  const photo=item?.querySelector(".m-photo");
-  if(item&&photo){
+  // Open the product lightbox only when the actual product photo is clicked.
+  const photo=event.target.closest(".m-photo");
+  const item=photo?.closest(".m-item");
+  if(photo&&item){
     if(!tccImageLightbox.classList.contains("is-open")){
       history.pushState({tccImageLightbox:true},"",window.location.href);
     }
