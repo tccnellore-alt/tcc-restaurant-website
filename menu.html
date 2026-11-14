@@ -2355,6 +2355,36 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  .menu-group#coffee .coffee-addons-panel .addon-meta b{font-size:9px!important}
 }
 
+
+/* Customer wishlist — scoped to the menu page */
+.menu-page .tcc-wishlist-add{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:32px;padding:7px 10px;border:1px solid rgba(23,60,43,.22);border-radius:999px;background:#fffaf0;color:#173c2b;font:700 11px/1.2 Manrope,Arial,sans-serif;cursor:pointer;white-space:nowrap}
+.menu-page .tcc-wishlist-add.is-added{background:#173c2b;border-color:#173c2b;color:#fffaf0}
+.menu-page .m-item>.tcc-wishlist-add{align-self:flex-start;margin:0 11px 11px}
+.menu-page .m-item-info>.tcc-wishlist-add{align-self:flex-start;margin-top:8px}
+body.menu-text-mode .menu-page .m-item-info>.tcc-wishlist-add{display:inline-flex;align-self:flex-start;margin-top:8px}
+.menu-page .tcc-wishlist-fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(22px + env(safe-area-inset-bottom));z-index:9000;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border:1px solid #b79a5a;border-radius:999px;background:#173c2b;color:#fffaf0;box-shadow:0 8px 24px rgba(12,35,24,.25);font:800 13px Manrope,Arial,sans-serif;cursor:pointer}
+.menu-page .tcc-wishlist-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#d8bd7b;color:#173c2b;font-size:11px}
+.tcc-wishlist-dialog{position:fixed;inset:0;z-index:15000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(8,19,14,.68)}
+.tcc-wishlist-dialog.is-open{display:flex}
+.tcc-wishlist-panel{width:min(100%,480px);max-height:min(82dvh,720px);overflow:auto;padding:20px;border:1px solid rgba(183,154,90,.55);border-radius:20px;background:#fffaf0;color:#173c2b;box-shadow:0 22px 70px rgba(0,0,0,.3)}
+.tcc-wishlist-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.tcc-wishlist-head h2{margin:0;font:700 26px/1.1 "Cormorant Garamond",Georgia,serif}
+.tcc-wishlist-close{width:36px;height:36px;border:1px solid rgba(23,60,43,.18);border-radius:50%;background:#fff;color:#173c2b;font-size:22px;cursor:pointer}
+.tcc-wishlist-items{display:grid;gap:8px}
+.tcc-wishlist-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid rgba(23,60,43,.1);border-radius:12px;background:#fff}
+.tcc-wishlist-product{min-width:0}
+.tcc-wishlist-product strong{display:block;font:700 13px/1.35 Manrope,Arial,sans-serif;overflow-wrap:anywhere}
+.tcc-wishlist-product span{display:block;margin-top:3px;color:#72796f;font:11px/1.4 Manrope,Arial,sans-serif}
+.tcc-wishlist-price{flex:none;color:#8d7337;font:800 13px Manrope,Arial,sans-serif;white-space:nowrap}
+.tcc-wishlist-remove{flex:none;border:0;background:transparent;color:#8a3c31;font:700 11px Manrope,Arial,sans-serif;cursor:pointer}
+.tcc-wishlist-empty{padding:22px 10px;text-align:center;color:#6b756c;font:13px/1.5 Manrope,Arial,sans-serif}
+.tcc-wishlist-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.tcc-wishlist-actions button{flex:1 1 130px;min-height:42px;padding:9px 12px;border:1px solid #173c2b;border-radius:10px;background:#173c2b;color:#fffaf0;font:700 12px Manrope,Arial,sans-serif;cursor:pointer}
+.tcc-wishlist-actions .secondary{background:#fffaf0;color:#173c2b}
+.tcc-wishlist-server-mode .tcc-wishlist-remove,.tcc-wishlist-server-mode .tcc-wishlist-actions{display:none}
+@media(max-width:849px){.menu-page .tcc-wishlist-fab{bottom:calc(82px + env(safe-area-inset-bottom));right:14px}.tcc-wishlist-panel{padding:16px;border-radius:17px}.tcc-wishlist-head h2{font-size:24px}}
+@media(prefers-reduced-motion:reduce){.tcc-wishlist-dialog{scroll-behavior:auto}}
+
 </style>
 <style id="tcc-category-end-nav-styles">
 /* TCC category-end navigation */
@@ -4567,6 +4597,75 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     });
     group.appendChild(nav);
   });
+})();
+</script>
+
+
+<script>
+/* TCC Customer Wishlist — local to this menu page */
+(function(){
+  const STORAGE_KEY="tcc_customer_wishlist_v1";
+  const root=document.querySelector(".menu-page");
+  if(!root)return;
+  let selected=[];
+  try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");if(Array.isArray(saved))selected=saved.filter(x=>x&&x.id&&x.name);}catch(_){}
+  const fab=document.createElement("button");
+  fab.type="button";fab.className="tcc-wishlist-fab";fab.innerHTML='<span>♡ Wishlist</span><span class="tcc-wishlist-count" aria-live="polite">0</span>';
+  fab.setAttribute("aria-label","Open wishlist");
+  const dialog=document.createElement("div");dialog.className="tcc-wishlist-dialog";dialog.setAttribute("role","dialog");dialog.setAttribute("aria-modal","true");dialog.setAttribute("aria-label","Customer wishlist");
+  dialog.innerHTML='<section class="tcc-wishlist-panel"><header class="tcc-wishlist-head"><h2>♡ Your Wishlist</h2><button type="button" class="tcc-wishlist-close" aria-label="Close wishlist">×</button></header><div class="tcc-wishlist-items"></div><footer class="tcc-wishlist-actions"><button type="button" class="tcc-wishlist-show">Show to Server</button><button type="button" class="secondary tcc-wishlist-clear">Clear Wishlist</button></footer></section>';
+  root.append(fab);document.body.append(dialog);
+  const count=fab.querySelector(".tcc-wishlist-count"),list=dialog.querySelector(".tcc-wishlist-items"),panel=dialog.querySelector(".tcc-wishlist-panel");
+  function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(selected));}catch(_){}}
+  function isAvailable(card){const status=card.querySelector(".availability-status");const text=(status?.textContent||"")+" "+(card.textContent||"");return !/sold\s*out|out\s*of\s*stock|unavailable/i.test(text);}
+  function productData(card){
+    const title=card.querySelector("h3");const price=card.querySelector(":scope > strong")||card.querySelector(".m-item-info > strong");
+    if(!title||!price)return null;
+    const name=title.cloneNode(true);name.querySelectorAll(".food-badge,.tcc-bestseller-badge,.tcc-new-arrival-badge,[class*='badge']").forEach(x=>x.remove());
+    const cleanName=name.textContent.replace(/\s+/g," ").trim();
+    const section=card.closest(".menu-section");const category=(section?.querySelector("h2")?.textContent||card.closest(".menu-group")?.querySelector(".menu-category-intro h2")?.textContent||"Menu").replace(/\s+/g," ").trim();
+    const id=(card.dataset.productId||cleanName.toLowerCase().replace(/[^a-z0-9]+/g,"-"))+"-"+category.toLowerCase().replace(/[^a-z0-9]+/g,"-");
+    return {id,name:cleanName,category,price:price.textContent.replace(/\s+/g," ").trim()};
+  }
+  function has(id){return selected.some(x=>x.id===id);}
+  function save(){persist();count.textContent=String(selected.length);document.querySelectorAll(".menu-page .m-item").forEach(updateCard);if(dialog.classList.contains("is-open"))renderList();}
+  function updateCard(card){
+    const data=productData(card);if(!data)return;
+    const available=isAvailable(card);let button=card.querySelector(":scope > .tcc-wishlist-add, .m-item-info > .tcc-wishlist-add");
+    if(!available){button?.remove();return;}
+    if(!button){button=document.createElement("button");button.type="button";button.className="tcc-wishlist-add";button.addEventListener("click",()=>toggleProduct(card));}
+    button.dataset.productId=data.id;const added=has(data.id);button.classList.toggle("is-added",added);button.textContent=added?"✓ Added to Wishlist":"♡ Add to Wishlist";button.setAttribute("aria-pressed",added?"true":"false");
+    if(document.body.classList.contains("menu-text-mode")){const heading=card.querySelector(".m-item-info h3")||card.querySelector("h3");if(heading&&button.parentElement!==heading.parentElement)heading.insertAdjacentElement("afterend",button);}
+    else{const price=card.querySelector(":scope > strong")||card.querySelector(".m-item-info > strong");if(price&&button.parentElement!==card)price.insertAdjacentElement("afterend",button);}
+  }
+  function toggleProduct(card){const data=productData(card);if(!data||!isAvailable(card))return;if(has(data.id))selected=selected.filter(x=>x.id!==data.id);else selected.push(data);save();}
+  function renderList(){
+    list.replaceChildren();panel.classList.remove("tcc-wishlist-server-mode");
+    if(!selected.length){const empty=document.createElement("p");empty.className="tcc-wishlist-empty";empty.textContent="Your wishlist is empty.";list.append(empty);return;}
+    selected.forEach(item=>{
+      const row=document.createElement("div");row.className="tcc-wishlist-row";
+      const product=document.createElement("div");product.className="tcc-wishlist-product";
+      const name=document.createElement("strong");name.textContent=item.name;
+      const category=document.createElement("span");category.textContent=item.category;
+      product.append(name,category);
+      const price=document.createElement("span");price.className="tcc-wishlist-price";price.textContent=item.price;
+      const remove=document.createElement("button");remove.type="button";remove.className="tcc-wishlist-remove";remove.textContent="Remove";remove.addEventListener("click",()=>{selected=selected.filter(x=>x.id!==item.id);save();});
+      row.append(product,price,remove);list.append(row);
+    });
+  }
+  function open(){renderList();dialog.classList.add("is-open");document.body.style.overflow="hidden";}
+  function close(){dialog.classList.remove("is-open");document.body.style.overflow="";}
+  fab.addEventListener("click",open);dialog.querySelector(".tcc-wishlist-close").addEventListener("click",close);dialog.addEventListener("click",e=>{if(e.target===dialog)close();});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&dialog.classList.contains("is-open"))close();});
+  dialog.querySelector(".tcc-wishlist-clear").addEventListener("click",()=>{if(!selected.length)return;if(window.confirm("Clear all products from your wishlist?")){selected=[];save();}});
+  dialog.querySelector(".tcc-wishlist-show").addEventListener("click",()=>{if(!selected.length)return;panel.classList.add("tcc-wishlist-server-mode");dialog.querySelector(".tcc-wishlist-head h2").textContent="Please show this list to the server";});
+  dialog.querySelector(".tcc-wishlist-close").addEventListener("click",()=>{panel.classList.remove("tcc-wishlist-server-mode");dialog.querySelector(".tcc-wishlist-head h2").textContent="♡ Your Wishlist";});
+  function refresh(){document.querySelectorAll(".menu-page .m-item").forEach(updateCard);count.textContent=String(selected.length);}
+  refresh();
+  const observer=new MutationObserver(records=>{for(const record of records){record.addedNodes.forEach(node=>{if(node.nodeType!==1)return;if(node.matches?.(".m-item"))updateCard(node);node.querySelectorAll?.(".m-item").forEach(updateCard);});}});
+  document.querySelectorAll(".menu-page .menu-group").forEach(group=>observer.observe(group,{childList:true,subtree:true}));
+  document.querySelectorAll("[data-menu-view]").forEach(button=>button.addEventListener("click",()=>requestAnimationFrame(refresh)));
+  document.addEventListener("click",event=>{if(event.target.closest(".menu-tab,.food-tab"))requestAnimationFrame(refresh);});
+  save();
 })();
 </script>
 
