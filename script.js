@@ -49,8 +49,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-choice-actions{display:flex;gap:8px;margin-top:14px}
     .tcc-wish-choice-actions button{flex:1;min-height:42px;border:1px solid #173c2b;border-radius:10px;background:#173c2b;color:#fffaf0;font:700 12px Arial,sans-serif}
     .tcc-wish-choice-actions .secondary{background:transparent;color:#173c2b}
-    .tcc-wish-note{display:block;width:100%;min-height:54px;box-sizing:border-box;margin-top:8px;padding:9px;border:1px solid rgba(23,60,43,.18);border-radius:9px;background:#fffaf0;color:#173c2b;font:12px Arial,sans-serif;resize:vertical}
-    .tcc-wish-item-note{width:100%;min-height:48px;box-sizing:border-box;margin-top:8px;padding:8px;border:1px solid rgba(23,60,43,.16);border-radius:8px;background:#fff;color:#173c2b;font:12px Arial,sans-serif}
+    .tcc-wish-note-toggle{display:inline-flex;align-items:center;margin-top:7px;padding:4px 0;border:0;background:transparent;color:#8d7337;font:700 11px Arial,sans-serif;cursor:pointer}
+    .tcc-wish-item-note{width:100%;min-height:48px;box-sizing:border-box;margin-top:7px;padding:8px;border:1px solid rgba(23,60,43,.16);border-radius:8px;background:#fff;color:#173c2b;font:12px Arial,sans-serif;resize:vertical}
+    .tcc-wish-item-note[hidden]{display:none!important}
     .tcc-wish-float{position:fixed;right:16px;bottom:calc(108px + env(safe-area-inset-bottom));z-index:2100;display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid #d6bd82;border-radius:999px;background:#173c2b;color:#fffaf0;box-shadow:0 8px 24px rgba(0,0,0,.22);font:800 12px Arial,sans-serif;cursor:pointer}
     .tcc-wish-float .tcc-wish-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#f2dfb0;color:#173c2b;font-size:10px}
     @media(max-width:480px){.tcc-wish-float{right:12px;bottom:calc(108px + env(safe-area-inset-bottom))}}
@@ -111,7 +112,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const row=document.createElement('div');row.className='tcc-wish-row';
       const info=document.createElement('div');const title=document.createElement('strong');title.textContent=item.name;const meta=document.createElement('small');meta.textContent=item.category;info.append(title,meta);
       if(item.addons?.length){const addonLine=document.createElement('small');addonLine.textContent='Add-ons: '+item.addons.map(x=>x.name).join(', ');info.append(addonLine);}
-      const note=document.createElement('textarea');note.className='tcc-wish-item-note';note.placeholder='Add a note for this product (optional)';note.value=item.note||'';note.setAttribute('aria-label','Note for '+item.name);note.addEventListener('input',()=>{item.note=note.value;save();});info.append(note);
+      const noteToggle=document.createElement('button');noteToggle.type='button';noteToggle.className='tcc-wish-note-toggle';noteToggle.textContent=item.note?.trim()?'Edit note':'＋ Add note';noteToggle.setAttribute('aria-expanded','false');
+      const note=document.createElement('textarea');note.className='tcc-wish-item-note';note.placeholder='Add a note for this product (optional)';note.value=item.note||'';note.setAttribute('aria-label','Note for '+item.name);note.hidden=true;
+      noteToggle.addEventListener('click',()=>{const expanded=!note.hidden;note.hidden=expanded;noteToggle.setAttribute('aria-expanded',String(!expanded));noteToggle.textContent=expanded?(item.note?.trim()?'Edit note':'＋ Add note'):'− Hide note';if(!expanded)note.focus();});
+      note.addEventListener('input',()=>{item.note=note.value;save();if(note.value.trim())noteToggle.textContent='− Hide note';});
+      info.append(noteToggle,note);
       const price=document.createElement('div');price.className='tcc-wish-row-price';const amount=document.createElement('span');amount.textContent=money(item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0));const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x.key!==item.key);save();render()});price.append(amount,remove);row.append(info,price);list.append(row);
     });
     
