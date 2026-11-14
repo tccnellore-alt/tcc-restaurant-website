@@ -400,8 +400,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       'Please confirm item availability and the order details.','Thank you!'
     ].join('\n');
     const url='https://wa.me/919059059553?text='+encodeURIComponent(message);
-    const whatsappWindow=window.open(url,'_blank','noopener,noreferrer');
-    if(!whatsappWindow){tableError.textContent='WhatsApp could not be opened. Please allow pop-ups and try again.';return;}
+    window.open(url,'_blank','noopener,noreferrer');
     const history=readHistory();history.unshift({ref:orderRef,dateTime,orderType:orderType==='dine-in'?'Dine-in':'Takeaway',table:orderType==='dine-in'?tableNumber:'',customerName:customerName.trim(),status:'WhatsApp opened · Awaiting send',items:items.map(item=>({...item,addons:(item.addons||[]).map(addon=>({...addon}))}))});saveHistory(history);
     items=[];save();render();backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');
     const notice=document.createElement('div');notice.className='tcc-order-send-notice';notice.setAttribute('role','status');notice.textContent='WhatsApp opened. Please tap Send in WhatsApp to send your order to TCC reception. Your next order will start with an empty Cart.';document.body.append(notice);setTimeout(()=>notice.remove(),6500);
