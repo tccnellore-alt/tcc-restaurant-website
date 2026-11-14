@@ -70,18 +70,39 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     backdrop.querySelector('.tcc-wish-total').style.display=items.length?'flex':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
   };
-  document.querySelectorAll('.m-item').forEach(card=>{
-    const data=getData(card);
-    if(!data.name||!data.price||card.querySelector('.availability-status'))return;
-    if(card.querySelector('.tcc-wish-add'))return;
-    const btn=document.createElement('button');btn.type='button';btn.className='tcc-wish-add';btn.addEventListener('click',event=>{event.stopPropagation();
-      const found=items.find(x=>x.key===data.key);
-      if(found)items=items.filter(x=>x.key!==data.key);else items.push({...data,qty:1});
-      save();render();
+  const attachWishlistButtons=(root=document)=>{
+    const cards=[];
+    if(root.matches?.('.m-item'))cards.push(root);
+    root.querySelectorAll?.('.m-item').forEach(card=>cards.push(card));
+    cards.forEach(card=>{
+      if(card.querySelector('.tcc-wish-add')||card.querySelector('.availability-status'))return;
+      const data=getData(card);
+      if(!data.name||!data.price)return;
+      const btn=document.createElement('button');
+      btn.type='button';btn.className='tcc-wish-add';
+      btn.addEventListener('click',event=>{
+        event.preventDefault();event.stopPropagation();
+        const found=items.find(x=>x.key===data.key);
+        if(found)items=items.filter(x=>x.key!==data.key);else items.push({...data,qty:1});
+        save();render();
+      });
+      const info=card.querySelector('.m-item-info')||card.firstElementChild||card;
+      info.appendChild(btn);
     });
-    const price=card.querySelector(':scope > strong');
-    const info=card.querySelector('.m-item-info')||card.firstElementChild||card;info.appendChild(btn);
-  });
+    render();
+  };
+  // Menu products are injected after DOM ready; observe them so every product gets a button.
+  const startWishlistButtons=()=>{
+    attachWishlistButtons();
+    const observer=new MutationObserver(records=>{
+      records.forEach(record=>record.addedNodes.forEach(node=>{
+        if(node.nodeType===1)attachWishlistButtons(node);
+      }));
+    });
+    observer.observe(document.querySelector('.menu-page'),{childList:true,subtree:true});
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startWishlistButtons,{once:true});
+  else startWishlistButtons();
   const open=()=>{backdrop.classList.add('is-open');backdrop.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';backdrop.querySelector('.tcc-wish-close').focus()};
   const close=()=>{backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');document.body.style.overflow=''};
   float.addEventListener('click',open);
