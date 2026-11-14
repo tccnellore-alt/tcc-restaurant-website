@@ -5,7 +5,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   if(!document.querySelector('.menu-page')) return;
   const STORAGE_KEY='tccCustomerWishlistV1';
   const read=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]')}catch{return []}};
-  let items=read();
+  let items=read().map(item=>({...item,qty:Math.max(1,Number(item.qty)||1)}));
   const save=()=>{try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items))}catch{}};
   const money=n=>'₹'+Number(n||0).toLocaleString('en-IN');
   const clean=s=>(s||'').replace(/\s+/g,' ').trim();
@@ -103,7 +103,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
 
   const count=()=>float.querySelector('.tcc-wish-count');
   const render=()=>{
-    count().textContent=items.length;
+    count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
       if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Added to Wishlist':'♡ Add to Wishlist';btn.setAttribute('aria-label',added?'Remove '+data.name+' from wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Saved to wishlist':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
@@ -120,7 +120,18 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       noteToggle.addEventListener('click',()=>{const expanded=!note.hidden;note.hidden=expanded;noteToggle.setAttribute('aria-expanded',String(!expanded));noteToggle.textContent=expanded?(item.note?.trim()?'Edit note':'＋ Add note'):'− Hide note';if(!expanded)note.focus();});
       note.addEventListener('input',()=>{item.note=note.value;save();if(note.value.trim())noteToggle.textContent='− Hide note';});
       info.append(noteToggle,note);
-      const price=document.createElement('div');price.className='tcc-wish-row-price';const amount=document.createElement('span');amount.textContent=money(item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0));const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x.key!==item.key);save();render()});price.append(amount,remove);row.append(info,price);list.append(row);
+      const price=document.createElement('div');price.className='tcc-wish-row-price';
+      const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
+      const amount=document.createElement('span');amount.textContent=money(unitPrice)+' each';
+      const qty=document.createElement('div');qty.className='tcc-wish-qty';
+      const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.setAttribute('aria-label','Decrease '+item.name+' quantity');
+      const qtyValue=document.createElement('strong');qtyValue.textContent=Math.max(1,Number(item.qty)||1);
+      const plus=document.createElement('button');plus.type='button';plus.textContent='+';plus.setAttribute('aria-label','Increase '+item.name+' quantity');
+      minus.addEventListener('click',()=>{item.qty=Math.max(1,(Number(item.qty)||1)-1);save();render()});
+      plus.addEventListener('click',()=>{item.qty=(Number(item.qty)||1)+1;save();render()});
+      qty.append(minus,qtyValue,plus);
+      const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x.key!==item.key);save();render()});
+      price.append(amount,qty,remove);row.append(info,price);list.append(row);
     });
     
     
@@ -174,7 +185,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         if(found){items=items.filter(x=>x.key!==data.key);save();render();return;}
         const options=addonOptions(card);
         if(options.length){openChoice(card,data,options);return;}
-        items.push({...data,addons:[],note:''});save();render();
+        items.push({...data,addons:[],note:'',qty:1});save();render();
       });
       card.appendChild(btn);
       placeWishlistButton(card,btn);
@@ -211,7 +222,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(!pendingProduct)return;
     const wrap=choice.querySelector('.tcc-wish-addon-options');
     const selected=[...wrap.querySelectorAll('input[type="checkbox"]:checked')].slice(0,2).map(input=>pendingProduct.options[Number(input.value)]);
-    items.push({...pendingProduct.data,addons:selected,note:''});save();render();closeChoice();
+    items.push({...pendingProduct.data,addons:selected,note:'',qty:1});save();render();closeChoice();
   });
   choice.querySelector('.tcc-wish-choice-cancel').addEventListener('click',closeChoice);
   choice.addEventListener('click',event=>{if(event.target===choice)closeChoice();});
@@ -220,7 +231,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',()=>{
     if(!items.length)return;
     const lines=items.map((item,index)=>{
-      const details=[(index+1)+'. '+item.name+' — '+money(item.price)];
+      const details=[(index+1)+'. '+item.name+' × '+Math.max(1,Number(item.qty)||1)+' — '+money(item.price)+' each'];
       if(item.addons?.length)details.push('   Add-ons: '+item.addons.map(x=>x.name+' ('+money(x.price)+')').join(', '));
       else details.push('   Add-ons: No Add-ons');
       if(item.note?.trim())details.push('   Note: '+item.note.trim());
