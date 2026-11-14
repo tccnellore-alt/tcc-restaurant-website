@@ -94,12 +94,15 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   // Menu products are injected after DOM ready; observe them so every product gets a button.
   const startWishlistButtons=()=>{
     attachWishlistButtons();
-    const observer=new MutationObserver(records=>{
-      records.forEach(record=>record.addedNodes.forEach(node=>{
-        if(node.nodeType===1)attachWishlistButtons(node);
-      }));
+    const menuRoot=document.querySelector('.menu-page');
+    if(!menuRoot)return;
+    const observer=new MutationObserver(()=>{
+      // The menu builder replaces each product's info wrapper in place.
+      // Re-scan the full menu so buttons are attached to the final wrapper,
+      // not to the temporary source node that gets removed.
+      attachWishlistButtons(menuRoot);
     });
-    observer.observe(document.querySelector('.menu-page'),{childList:true,subtree:true});
+    observer.observe(menuRoot,{childList:true,subtree:true});
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startWishlistButtons,{once:true});
   else startWishlistButtons();
