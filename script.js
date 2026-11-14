@@ -422,13 +422,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const dayKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
     const history=readHistory();
     const sameOrderSession=history.filter(order=>order.dayKey===dayKey&&order.orderType===(orderType==='dine-in'?'Dine-in':'Takeaway')&&(orderType==='dine-in'?order.table===tableNumber:!!customerName.trim()&&order.customerName===customerName.trim()));
-    const order={ref:orderRef,dateTime,dayKey,orderSequence:sameOrderSession.length+1,orderType:orderType==='dine-in'?'Dine-in':'Takeaway',table:orderType==='dine-in'?tableNumber:'',customerName:customerName.trim(),status:'WhatsApp opened · Awaiting send',items:items.map(item=>({...item,addons:(item.addons||[]).map(addon=>({...addon}))}))};
+    const order={ref:orderRef,dateTime,dayKey,orderSequence:sameOrderSession.length+1,orderType:orderType==='dine-in'?'Dine-in':'Takeaway',table:orderType==='dine-in'?tableNumber:'',customerName:customerName.trim(),status:'Order message prepared · Awaiting send',items:items.map(item=>({...item,addons:(item.addons||[]).map(addon=>({...addon}))}))};
     const message=orderWhatsAppMessage(order);
     const url='https://wa.me/919059059553?text='+encodeURIComponent(message);
     window.open(url,'_blank','noopener,noreferrer');
     history.unshift(order);saveHistory(history);
     items=[];save();render();backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');
-    const notice=document.createElement('div');notice.className='tcc-order-send-notice';notice.setAttribute('role','status');notice.textContent='WhatsApp opened. Please tap Send in WhatsApp to send your order to TCC reception. Your next order will start with an empty Cart.';document.body.append(notice);setTimeout(()=>notice.remove(),6500);
+    const notice=document.createElement('div');notice.className='tcc-order-send-notice';notice.setAttribute('role','status');notice.textContent='Your order message is ready in WhatsApp. Please tap Send to place your order, then check WhatsApp for TCC's order confirmation. Your next order will start with an empty Cart.';document.body.append(notice);setTimeout(()=>notice.remove(),6500);
   });
   render();
 })();
