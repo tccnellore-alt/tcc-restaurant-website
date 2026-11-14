@@ -630,9 +630,14 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
 @media (max-width: 849px) {
   body:not(.menu-text-mode) .menu-page .menu-group:not(#food) .m-list {
     align-items: start !important;
+    grid-auto-rows: max-content !important;
   }
   body:not(.menu-text-mode) .menu-page .menu-group:not(#food) .m-item {
     align-self: start !important;
-    height: auto !important;
+    height: fit-content !important;
+    min-height: 0 !important;
+  }
+  body:not(.menu-text-mode) .menu-page .menu-group:not(#food) .m-item .m-item-info {
+    flex: 0 0 auto !important;
   }
 }
