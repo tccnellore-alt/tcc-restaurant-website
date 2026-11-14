@@ -230,14 +230,29 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];save();render()});
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',()=>{
     if(!items.length)return;
-    const lines=items.map((item,index)=>{
-      const details=[(index+1)+'. '+item.name+' × '+Math.max(1,Number(item.qty)||1)+' — '+money(item.price)+' each'];
-      if(item.addons?.length)details.push('   Add-ons: '+item.addons.map(x=>x.name+' ('+money(x.price)+')').join(', '));
-      else details.push('   Add-ons: No Add-ons');
-      if(item.note?.trim())details.push('   Note: '+item.note.trim());
+    const sections=items.map((item,index)=>{
+      const quantity=Math.max(1,Number(item.qty)||1);
+      const details=[
+        '*'+(index+1)+'. '+item.name+'*',
+        '*Quantity: '+quantity+'*',
+        'Price: '+money(item.price)+' each'
+      ];
+      if(item.addons?.length){
+        details.push('Add-ons: '+item.addons.map(x=>x.name+' ('+money(x.price)+')').join(', '));
+      }
+      if(item.note?.trim())details.push('Note: '+item.note.trim());
       return details.join('\n');
     });
-    const message=['Hello TCC! I would like to order these items:','',...lines,'','Please confirm availability. Thank you!'].join('\n');
+    const message=[
+      'Hello TCC! 👋',
+      '',
+      'I would like to place an order for the following:',
+      '',
+      sections.join('\n\n━━━━━━━━━━━━━━━━━━\n\n'),
+      '',
+      'Please confirm item availability and the order details.',
+      'Thank you!'
+    ].join('\n');
     const url='https://wa.me/919059059553?text='+encodeURIComponent(message);
     window.open(url,'_blank','noopener,noreferrer');
   });
