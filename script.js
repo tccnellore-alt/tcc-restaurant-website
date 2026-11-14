@@ -18,12 +18,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   };
   const style=document.createElement('style');
   style.textContent=`
-    .menu-page .m-item .m-item-info h3{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:8px!important}
-    .menu-page .m-item .tcc-wish-add{position:static!important;display:inline-grid!important;flex:0 0 30px!important;place-items:center!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:-3px 0 0 4px!important;padding:0!important;border:1px solid rgba(23,60,43,.17)!important;border-radius:50%!important;background:#f4eee1!important;color:#173c2b!important;box-shadow:none!important;font:700 17px/1 Arial,sans-serif!important;cursor:pointer!important}
+    .menu-page .m-item .m-item-info h3{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:8px!important}
+    .menu-page .m-item .tcc-wish-add{position:static!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;width:auto!important;height:26px!important;min-width:0!important;min-height:26px!important;margin:0!important;padding:0 10px!important;border:1px solid rgba(23,60,43,.16)!important;border-radius:999px!important;background:#f5f0e5!important;color:#365442!important;box-shadow:none!important;font:700 10px/1 Arial,sans-serif!important;letter-spacing:.02em!important;cursor:pointer!important}
     .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important}
-    .tcc-wish-toolbar{display:flex;justify-content:flex-end;margin:5px 0 0}
-    .tcc-wish-toolbar button{display:inline-flex;align-items:center;gap:7px;min-height:30px;padding:5px 11px;border:1px solid rgba(23,60,43,.18);border-radius:999px;background:#f4eee1;color:#173c2b;font:700 11px Arial,sans-serif;cursor:pointer}
-    .tcc-wish-toolbar .tcc-wish-count{min-width:18px;height:18px;font-size:10px}
+    .tcc-wish-float{position:fixed;right:16px;bottom:calc(108px + env(safe-area-inset-bottom));z-index:2100;display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid #d6bd82;border-radius:999px;background:#173c2b;color:#fffaf0;box-shadow:0 8px 24px rgba(0,0,0,.22);font:800 12px Arial,sans-serif;cursor:pointer}
+    .tcc-wish-float .tcc-wish-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#f2dfb0;color:#173c2b;font-size:10px}
+    @media(max-width:480px){.tcc-wish-float{right:12px;bottom:calc(108px + env(safe-area-inset-bottom))}}
     .tcc-wish-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#f2dfb0;color:#173c2b;font-size:10px}
     .tcc-wish-backdrop{position:fixed;inset:0;z-index:10000;display:none;align-items:flex-end;justify-content:center;padding:16px;background:rgba(7,22,15,.62);backdrop-filter:blur(4px)}
     .tcc-wish-backdrop.is-open{display:flex}
@@ -47,19 +47,18 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     @media(prefers-reduced-motion:reduce){.tcc-wish-backdrop{backdrop-filter:none}}
   `;
   document.head.appendChild(style);
-  const toolbar=document.createElement('div');toolbar.className='tcc-wish-toolbar';
-  toolbar.innerHTML='<button type="button" aria-label="Open wishlist"><span aria-hidden="true">♡</span><span>Wishlist</span><span class="tcc-wish-count">0</span></button>';
-  const toolbarButton=toolbar.querySelector('button');
-  document.querySelector('.menu-tools .container')?.appendChild(toolbar);
+  const float=document.createElement('button');
+  float.type='button';float.className='tcc-wish-float';float.innerHTML='<span aria-hidden="true">♡</span><span>Wishlist</span><span class="tcc-wish-count">0</span>';
+  float.setAttribute('aria-label','Open wishlist');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
   backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Wishlist</h2><button type="button" class="tcc-wish-close" aria-label="Close wishlist">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-total"><span>Estimated total</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-show">Show to Manager</button><button type="button" class="tcc-wish-clear secondary">Clear Wishlist</button></div><p class="tcc-wish-hint">Show this list to the TCC manager when placing your order. Final order and availability will be confirmed by the team.</p></section>';
-  document.body.append(backdrop);
-  const count=()=>toolbar.querySelector('.tcc-wish-count');
+  document.body.append(float,backdrop);
+  const count=()=>float.querySelector('.tcc-wish-count');
   const render=()=>{
     count().textContent=items.reduce((s,x)=>s+x.qty,0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'♥':'♡';btn.setAttribute('aria-label',added?'Remove '+data.name+' from wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Saved to wishlist':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
+      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Saved':'＋ Save';btn.setAttribute('aria-label',added?'Remove '+data.name+' from wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Saved to wishlist':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
@@ -130,7 +129,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   else startWishlistButtons();
   const open=()=>{backdrop.classList.add('is-open');backdrop.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';backdrop.querySelector('.tcc-wish-close').focus()};
   const close=()=>{backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');document.body.style.overflow=''};
-  toolbarButton.addEventListener('click',open);
+  float.addEventListener('click',open);
   backdrop.querySelector('.tcc-wish-close').addEventListener('click',close);
   backdrop.addEventListener('click',e=>{if(e.target===backdrop)close()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop.classList.contains('is-open'))close()});
