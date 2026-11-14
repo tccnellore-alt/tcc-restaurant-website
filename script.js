@@ -152,11 +152,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     float.animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],{duration:420,easing:'ease-out'});
   };
   const count=()=>float.querySelector('.tcc-wish-count');
+  const sameProduct=(item,data)=>String(item.key||'').toLowerCase()===String(data.key||'').toLowerCase()||clean(item.name).toLowerCase()===clean(data.name).toLowerCase();
   const render=()=>{
     count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const matching=items.filter(x=>clean(x.name).toLowerCase()===clean(data.name).toLowerCase());const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){stepper.hidden=false;stepper.querySelector('span').hidden=!quantity;stepper.querySelectorAll('button')[0].hidden=!quantity;stepper.querySelectorAll('button')[1].hidden=!quantity;btn.hidden=!!quantity;}btn.classList.toggle('is-added',!!quantity);btn.textContent='＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
+      if(btn){const matching=items.filter(x=>sameProduct(x,data));const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){const controls=stepper.querySelectorAll('button');const qtyLabel=stepper.querySelector('span');stepper.hidden=false;qtyLabel.textContent=String(quantity);qtyLabel.hidden=!quantity;controls[0].hidden=!quantity;controls[1].hidden=!quantity;btn.hidden=quantity>0;}btn.classList.toggle('is-added',!!quantity);btn.textContent='＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
@@ -239,8 +240,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.setAttribute('aria-label','Remove one '+data.name+' from cart');
       const qty=document.createElement('span');qty.textContent='0';
       const plus=document.createElement('button');plus.type='button';plus.textContent='+';plus.setAttribute('aria-label','Add one '+data.name+' to cart');
-      minus.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const matching=items.filter(x=>x.key===data.key);const last=matching[matching.length-1];if(!last)return;if((Number(last.qty)||1)>1)last.qty--;else items=items.filter(x=>x!==last);save();render();});
-      plus.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const last=items.filter(x=>x.key===data.key).slice(-1)[0];if(last){last.qty=(Number(last.qty)||1)+1;save();render();}else btn.click();});
+      minus.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const matching=items.filter(x=>sameProduct(x,data));const last=matching[matching.length-1];if(!last)return;if((Number(last.qty)||1)>1)last.qty--;else items=items.filter(x=>x!==last);save();render();});
+      plus.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const last=items.filter(x=>sameProduct(x,data)).slice(-1)[0];if(last){last.qty=(Number(last.qty)||1)+1;save();render();}else btn.click();});
       stepper.append(minus,qty,plus);
       const btn=document.createElement('button');
       btn.type='button';btn.className='tcc-wish-add';
@@ -249,7 +250,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         const options=addonOptions(card);
         if(options.length){openChoice(card,data,options);return;}
         animateProductToWishlist(card,data);
-        const found=items.find(x=>x.key===data.key&&!(x.addons||[]).length);
+        const found=items.find(x=>sameProduct(x,data)&&!(x.addons||[]).length);
         if(found){found.qty=(Number(found.qty)||1)+1;}
         else items.push({...data,addons:[],note:'',qty:1,lineId:String(Date.now())+'-'+Math.random().toString(36).slice(2)});
         save();render();
