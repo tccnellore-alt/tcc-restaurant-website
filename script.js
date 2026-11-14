@@ -157,8 +157,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',()=>{
     if(!items.length)return;
     const lines=items.map((item,index)=>(index+1)+'. '+item.name+' — '+money(item.price));
-    const total=items.reduce((sum,item)=>sum+Number(item.price||0),0);
-    const message=['Hello TCC! I would like to order these items:','',...lines,'','Estimated Total: '+money(total),'','Please confirm availability. Thank you!'].join('\n');
+    const message=['Hello TCC! I would like to order these items:','',...lines,'','Please confirm availability. Thank you!'].join('\n');
     const url='https://wa.me/919059059553?text='+encodeURIComponent(message);
     window.open(url,'_blank','noopener,noreferrer');
   });
