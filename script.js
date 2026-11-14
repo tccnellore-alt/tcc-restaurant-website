@@ -38,6 +38,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   style.textContent=`
     .menu-page .m-item .tcc-wish-add{position:static!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;min-height:30px!important;margin:0 12px 12px!important;padding:0 12px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#365442!important;box-shadow:none!important;font:700 10px/1 Arial,sans-serif!important;letter-spacing:.02em!important;cursor:pointer!important}
     .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important;min-width:0!important;padding-left:12px!important;padding-right:12px!important}
+    .tcc-menu-qty{display:inline-flex;align-items:center;gap:8px;margin:0 12px 12px;padding:3px;border:1px solid rgba(23,60,43,.18);border-radius:999px;background:#f5f0e5;color:#173c2b}
+    .tcc-menu-qty button{width:27px;height:27px;border:0;border-radius:50%;background:#173c2b;color:#fffaf0;font:700 17px Arial,sans-serif;cursor:pointer}
+    .tcc-menu-qty span{min-width:16px;text-align:center;font:800 12px Arial,sans-serif}
+    .tcc-menu-qty[hidden]{display:none!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:7px!important;min-width:0!important;width:100%!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row h3{display:inline!important;flex:0 1 auto!important;min-width:0!important;margin:0!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row .tcc-wish-add{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:100%!important;vertical-align:middle!important;white-space:nowrap!important;min-height:28px!important;margin:0!important;padding:0 10px!important;font-size:10px!important;line-height:1!important}
@@ -77,11 +81,18 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-row small{display:block;margin-top:4px;color:#7b806f;font:11px Arial,sans-serif}
     .tcc-wish-row-price{display:flex;align-items:center;gap:7px;white-space:nowrap;color:#8d7337;font:800 13px Arial,sans-serif}.tcc-wish-qty{display:flex;align-items:center;gap:5px;color:#173c2b}.tcc-wish-qty button{width:25px;height:25px;border:1px solid rgba(23,60,43,.2);border-radius:50%;background:#fff;color:#173c2b;font:700 15px Arial,sans-serif;cursor:pointer}
     .tcc-wish-remove{border:0;background:transparent;color:#a33e34;font:700 11px Arial,sans-serif;cursor:pointer;padding:5px}
-    .tcc-wish-total{display:none!important}
+    .tcc-wish-total{display:flex;align-items:center;justify-content:space-between;margin:16px 0;padding:13px 0;border-top:1px solid rgba(23,60,43,.15);font:700 13px Arial,sans-serif;color:#173c2b}
     .tcc-wish-total strong{font-size:18px;color:#8d7337}
     .tcc-wish-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
     .tcc-wish-actions button{min-height:46px;border:1px solid #173c2b;border-radius:12px;background:#173c2b;color:#fffaf0;font:800 11px Arial,sans-serif;cursor:pointer}
     .tcc-wish-actions button.secondary{background:transparent;color:#173c2b}
+    .tcc-wish-continue{width:100%;min-height:42px;margin-top:10px;border:1px solid rgba(23,60,43,.2);border-radius:11px;background:transparent;color:#173c2b;font:700 12px Arial,sans-serif;cursor:pointer}
+    .tcc-order-type{display:flex;gap:8px;margin:12px 0}
+    .tcc-order-type button,.tcc-table-options button{flex:1;min-height:38px;border:1px solid rgba(23,60,43,.2);border-radius:9px;background:#fff;color:#173c2b;font:700 12px Arial,sans-serif}
+    .tcc-order-type button.active,.tcc-table-options button.active{background:#173c2b;color:#fffaf0;border-color:#173c2b}
+    .tcc-table-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:9px}
+    .tcc-table-options button{min-height:38px}
+    .tcc-table-options[hidden]{display:none!important}
     .tcc-wish-hint{margin:12px 0 0;color:#788075;font:11px/1.45 Arial,sans-serif;text-align:center}
     @media(max-width:480px){.tcc-wish-float{right:12px;bottom:calc(82px + env(safe-area-inset-bottom))}.tcc-wish-panel{padding:17px;border-radius:20px 20px 16px 16px}.tcc-wish-actions{grid-template-columns:1fr}}
     @media(prefers-reduced-motion:reduce){.tcc-wish-backdrop{backdrop-filter:none}}
@@ -91,11 +102,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   float.type='button';float.className='tcc-wish-float';float.innerHTML='<svg class="tcc-cart-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path></svg><span>Cart</span><span class="tcc-wish-count">0</span>';
   float.setAttribute('aria-label','Open cart');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
-  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Cart</h2><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field"><label for="tccWishTableNumber">Table Number <span>*</span></label><input id="tccWishTableNumber" type="text" required autocomplete="off" autocapitalize="characters" placeholder="Enter table number (e.g. S1, C2, P1, T1)" aria-describedby="tccWishTableError"><small id="tccWishTableError" role="alert"></small></div><div class="tcc-wish-total"><span>Estimated total</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Send Cart to WhatsApp</button><button type="button" class="tcc-wish-clear secondary">Clear Cart</button></div><p class="tcc-wish-hint">Show this list to the TCC manager when placing your order. Final order and availability will be confirmed by the team.</p></section>';
+  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Cart</h2><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field"><label>Order type <span>*</span></label><div class="tcc-order-type"><button type="button" data-order-type="dine-in" class="active">Dine-in</button><button type="button" data-order-type="takeaway">Takeaway</button></div><label class="tcc-table-label">Select table <span>*</span></label><div class="tcc-table-options"><button type="button" data-table="S1">S1</button><button type="button" data-table="S2">S2</button><button type="button" data-table="S3">S3</button><button type="button" data-table="S4">S4</button><button type="button" data-table="S5">S5</button><button type="button" data-table="S6">S6</button><button type="button" data-table="C1">C1</button><button type="button" data-table="C2">C2</button><button type="button" data-table="C3">C3</button><button type="button" data-table="C4">C4</button><button type="button" data-table="P1">P1</button><button type="button" data-table="P2">P2</button><button type="button" data-table="P3">P3</button><button type="button" data-table="T1">T1</button><button type="button" data-table="T2">T2</button></div><small class="tcc-wish-table-error" role="alert"></small></div><div class="tcc-wish-total"><span>Order subtotal</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Send Order to WhatsApp</button><button type="button" class="tcc-wish-clear secondary">Clear Cart</button></div><button type="button" class="tcc-wish-continue">＋ Continue browsing</button><p class="tcc-wish-hint">Your order will be sent to TCC for availability and order confirmation. Please tap Send in WhatsApp to submit it.</p></section>';
   const choice=document.createElement('div');choice.className='tcc-wish-choice';choice.setAttribute('aria-hidden','true');
   choice.innerHTML='<section class="tcc-wish-choice-panel" role="dialog" aria-modal="true"><h3 class="tcc-wish-choice-title">Choose add-ons</h3><p>Select up to 2 add-ons. You can also continue with No Add-ons.</p><div class="tcc-wish-addon-options"></div><div class="tcc-wish-choice-actions"><button type="button" class="tcc-wish-choice-confirm">Add to Cart</button><button type="button" class="tcc-wish-choice-cancel secondary">Cancel</button></div></section>';
   document.body.append(float,backdrop,choice);
   let pendingProduct=null;
+  let orderType='dine-in',selectedTable='';
   const closeChoice=()=>{choice.classList.remove('is-open');choice.setAttribute('aria-hidden','true');pendingProduct=null;};
   const openChoice=(card,data,options)=>{
     pendingProduct={card,data,options};
@@ -138,7 +150,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Added · + Add another':'＋ Add to Cart';btn.setAttribute('aria-label',added?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title',added?'Tap to add this item again':'Add to cart');btn.setAttribute('aria-pressed',String(added));}
+      if(btn){const matching=items.filter(x=>x.key===data.key);const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){stepper.hidden=!quantity;stepper.querySelector('span').textContent=quantity;}btn.classList.toggle('is-added',!!quantity);btn.textContent=quantity?'+ Add another':'＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
@@ -154,7 +166,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       info.append(noteToggle,note);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
-      const amount=document.createElement('span');amount.textContent=money(unitPrice)+' each';
+      const amount=document.createElement('span');amount.textContent=money(unitPrice)+' each · '+money(unitPrice*Math.max(1,Number(item.qty)||1))+' total';
       const qty=document.createElement('div');qty.className='tcc-wish-qty';
       const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.setAttribute('aria-label','Decrease '+item.name+' quantity');
       const qtyValue=document.createElement('strong');qtyValue.textContent=Math.max(1,Number(item.qty)||1);
@@ -167,10 +179,17 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     });
     
     
+    backdrop.querySelector('.tcc-wish-total strong').textContent=money(items.reduce((sum,item)=>sum+((Number(item.price)||0)+(item.addons||[]).reduce((a,x)=>a+(Number(x.price)||0),0))*Math.max(1,Number(item.qty)||1),0));
     backdrop.querySelector('.tcc-wish-total').style.display=items.length?'flex':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
+    backdrop.querySelector('.tcc-wish-continue').style.display=items.length?'block':'none';
+    backdrop.querySelectorAll('[data-order-type]').forEach(button=>button.classList.toggle('active',button.dataset.orderType===orderType));
+    backdrop.querySelector('.tcc-table-options').hidden=orderType!=='dine-in';
+    backdrop.querySelector('.tcc-table-label').hidden=orderType!=='dine-in';
+    backdrop.querySelectorAll('[data-table]').forEach(button=>button.classList.toggle('active',button.dataset.table===selectedTable));
   };
   const placeWishlistButton=(card,btn)=>{
+    const control=btn.closest('.tcc-menu-qty')||btn;
     if(document.body.classList.contains('menu-text-mode')){
       const heading=card.querySelector('.m-item-info h3, h3');
       if(heading&&heading.parentElement){
@@ -180,16 +199,16 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
           heading.parentElement.insertBefore(row,heading);
           row.appendChild(heading);
         }
-        if(btn.parentElement!==row)row.appendChild(btn);
+        if(control.parentElement!==row)row.appendChild(control);
         return;
       }
     }
     const price=card.querySelector(':scope > strong');
     if(price){
-      if(btn.parentElement!==card||price.nextElementSibling!==btn)price.insertAdjacentElement('afterend',btn);
+      if(control.parentElement!==card||price.nextElementSibling!==control)price.insertAdjacentElement('afterend',control);
     }else{
       const info=card.querySelector('.m-item-info')||card;
-      if(btn.parentElement!==info)info.appendChild(btn);
+      if(control.parentElement!==info)info.appendChild(control);
     }
   };
   document.querySelectorAll('[data-menu-view]').forEach(toggle=>{
@@ -209,6 +228,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       if(card.querySelector('.tcc-wish-add')||card.querySelector('.availability-status'))return;
       const data=getData(card);
       if(!data.name||!data.price)return;
+      const stepper=document.createElement('div');stepper.className='tcc-menu-qty';stepper.hidden=true;
+      const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.setAttribute('aria-label','Remove one '+data.name+' from cart');
+      const qty=document.createElement('span');qty.textContent='0';
+      minus.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const matching=items.filter(x=>x.key===data.key);const last=matching[matching.length-1];if(!last)return;if((Number(last.qty)||1)>1)last.qty--;else items=items.filter(x=>x!==last);save();render();});
+      stepper.append(minus,qty);
       const btn=document.createElement('button');
       btn.type='button';btn.className='tcc-wish-add';
       btn.addEventListener('click',event=>{
@@ -221,7 +245,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         else items.push({...data,addons:[],note:'',qty:1,lineId:String(Date.now())+'-'+Math.random().toString(36).slice(2)});
         save();render();
       });
-      card.appendChild(btn);
+      stepper.appendChild(btn);
+      card.appendChild(stepper);
       placeWishlistButton(card,btn);
       added=true;
     });
@@ -266,27 +291,16 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   choice.querySelector('.tcc-wish-choice-cancel').addEventListener('click',closeChoice);
   choice.addEventListener('click',event=>{if(event.target===choice)closeChoice();});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&choice.classList.contains('is-open'))closeChoice();});
-  backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];save();render()});
-  const tableInput=backdrop.querySelector('#tccWishTableNumber');
-  const tableError=backdrop.querySelector('#tccWishTableError');
-  const validTableNumber=value=>/^(?:s[1-6]|c[1-4]|p[1-3]|t[12])$/i.test(value.trim());
-  tableInput.addEventListener('input',()=>{
-    tableInput.setCustomValidity('');
-    tableError.textContent='';
-    tableInput.value=tableInput.value.replace(/\\s+/g,'');
-  });
+  backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];selectedTable='';save();render()});
+  backdrop.querySelector('.tcc-wish-continue').addEventListener('click',close);
+  backdrop.querySelectorAll('[data-order-type]').forEach(button=>button.addEventListener('click',()=>{orderType=button.dataset.orderType;selectedTable='';backdrop.querySelector('.tcc-wish-table-error').textContent='';render();}));
+  backdrop.querySelectorAll('[data-table]').forEach(button=>button.addEventListener('click',()=>{selectedTable=button.dataset.table;backdrop.querySelector('.tcc-wish-table-error').textContent='';render();}));
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',()=>{
     if(!items.length)return;
-    const tableNumber=tableInput.value.trim();
-    if(!validTableNumber(tableNumber)){
-      tableInput.setCustomValidity('Enter a valid table number.');
-      tableError.textContent='Required. Accepted tables: S1–S6, C1–C4, P1–P3, T1–T2 (uppercase or lowercase).';
-      tableInput.reportValidity();
-      tableInput.focus();
-      return;
-    }
-    tableInput.setCustomValidity('');
+    const tableError=backdrop.querySelector('.tcc-wish-table-error');
+    if(orderType==='dine-in'&&!selectedTable){tableError.textContent='Please select your table number to continue.';return;}
     tableError.textContent='';
+    const tableNumber=selectedTable;
     const sections=items.map((item,index)=>{
       const quantity=Math.max(1,Number(item.qty)||1);
       const details=[
@@ -300,17 +314,18 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       if(item.note?.trim())details.push('Note: '+item.note.trim());
       return details.join('\n');
     });
+    const orderRef='TCC-'+Date.now().toString(36).toUpperCase();
+    const now=new Date();
+    const dateTime=now.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+    const orderSubtotal=items.reduce((sum,item)=>sum+((Number(item.price)||0)+(item.addons||[]).reduce((a,x)=>a+(Number(x.price)||0),0))*Math.max(1,Number(item.qty)||1),0);
     const message=[
-      'Hello TCC! 👋',
-      '',
-      'I would like to place an order for the following:',
-      '',
-      '*Table Number: '+tableNumber.toUpperCase()+'*',
-      '',
-      sections.join('\n\n━━━━━━━━━━━━━━━━━━\n\n'),
-      '',
-      'Please confirm item availability and the order details.',
-      'Thank you!'
+      'Hello TCC! 👋','', '*NEW CUSTOMER ORDER*','*Order Reference: '+orderRef+'*','Date & Time: '+dateTime,
+      'Order Type: '+(orderType==='dine-in'?'Dine-in':'Takeaway'),
+      ...(orderType==='dine-in'?['*Table Number: '+tableNumber+'*']:[]),
+      '', 'I would like to place the following order:', '',
+      sections.join('\n\n━━━━━━━━━━━━━━━━━━\n\n'), '',
+      '*Order Subtotal: '+money(orderSubtotal)+'*', '',
+      'Please confirm item availability and the order details.','Thank you!'
     ].join('\n');
     const url='https://wa.me/919059059553?text='+encodeURIComponent(message);
     window.open(url,'_blank','noopener,noreferrer');
