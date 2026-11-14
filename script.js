@@ -130,7 +130,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       minus.addEventListener('click',()=>{item.qty=Math.max(1,(Number(item.qty)||1)-1);save();render()});
       plus.addEventListener('click',()=>{item.qty=(Number(item.qty)||1)+1;save();render()});
       qty.append(minus,qtyValue,plus);
-      const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x.key!==item.key);save();render()});
+      const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x!==item);save();render()});
       price.append(amount,qty,remove);row.append(info,price);list.append(row);
     });
     
@@ -181,11 +181,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       btn.type='button';btn.className='tcc-wish-add';
       btn.addEventListener('click',event=>{
         event.preventDefault();event.stopPropagation();
-        const found=items.find(x=>x.key===data.key);
-        if(found){items=items.filter(x=>x.key!==data.key);save();render();return;}
         const options=addonOptions(card);
         if(options.length){openChoice(card,data,options);return;}
-        items.push({...data,addons:[],note:'',qty:1});save();render();
+        const found=items.find(x=>x.key===data.key&&!(x.addons||[]).length);
+        if(found){found.qty=(Number(found.qty)||1)+1;}
+        else items.push({...data,addons:[],note:'',qty:1,lineId:String(Date.now())+'-'+Math.random().toString(36).slice(2)});
+        save();render();
       });
       card.appendChild(btn);
       placeWishlistButton(card,btn);
@@ -222,7 +223,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(!pendingProduct)return;
     const wrap=choice.querySelector('.tcc-wish-addon-options');
     const selected=[...wrap.querySelectorAll('input[type="checkbox"]:checked')].slice(0,2).map(input=>pendingProduct.options[Number(input.value)]);
-    items.push({...pendingProduct.data,addons:selected,note:'',qty:1});save();render();closeChoice();
+    const sameConfig=item=>item.key===pendingProduct.data.key&&JSON.stringify((item.addons||[]).map(x=>x.name).sort())===JSON.stringify(selected.map(x=>x.name).sort());
+    const found=items.find(sameConfig);
+    if(found){found.qty=(Number(found.qty)||1)+1;}
+    else items.push({...pendingProduct.data,addons:selected,note:'',qty:1,lineId:String(Date.now())+'-'+Math.random().toString(36).slice(2)});
+    save();render();closeChoice();
   });
   choice.querySelector('.tcc-wish-choice-cancel').addEventListener('click',closeChoice);
   choice.addEventListener('click',event=>{if(event.target===choice)closeChoice();});
