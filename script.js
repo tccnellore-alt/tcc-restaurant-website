@@ -40,6 +40,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important;min-width:0!important;padding-left:12px!important;padding-right:12px!important}
     .tcc-menu-qty{display:inline-flex;align-items:center;gap:8px;margin:0 12px 12px;padding:3px;border:1px solid rgba(23,60,43,.18);border-radius:999px;background:#f5f0e5;color:#173c2b}
     .tcc-menu-qty button{width:27px;height:27px;border:0;border-radius:50%;background:#173c2b;color:#fffaf0;font:700 17px Arial,sans-serif;cursor:pointer}
+    .tcc-menu-qty button[hidden],.tcc-menu-qty span[hidden]{display:none!important}
     .tcc-menu-qty span{min-width:16px;text-align:center;font:800 12px Arial,sans-serif}
     .tcc-menu-qty[hidden]{display:none!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:7px!important;min-width:0!important;width:100%!important}
@@ -81,7 +82,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-row small{display:block;margin-top:4px;color:#7b806f;font:11px Arial,sans-serif}
     .tcc-wish-row-price{display:flex;align-items:center;gap:7px;white-space:nowrap;color:#8d7337;font:800 13px Arial,sans-serif}.tcc-wish-qty{display:flex;align-items:center;gap:5px;color:#173c2b}.tcc-wish-qty button{width:25px;height:25px;border:1px solid rgba(23,60,43,.2);border-radius:50%;background:#fff;color:#173c2b;font:700 15px Arial,sans-serif;cursor:pointer}
     .tcc-wish-remove{border:0;background:transparent;color:#a33e34;font:700 11px Arial,sans-serif;cursor:pointer;padding:5px}
-    .tcc-wish-total{display:flex;align-items:center;justify-content:space-between;margin:16px 0;padding:13px 0;border-top:1px solid rgba(23,60,43,.15);font:700 13px Arial,sans-serif;color:#173c2b}
+    .tcc-wish-total{display:block;margin:16px 0;padding:13px 0;border-top:1px solid rgba(23,60,43,.15);font:700 13px Arial,sans-serif;color:#173c2b}
+    .tcc-total-lines{display:grid;grid-template-columns:1fr auto;gap:8px;font:12px Arial,sans-serif}.tcc-total-lines strong{text-align:right}.tcc-total-lines .tcc-grand-label,.tcc-total-lines .tcc-grand-total{margin-top:5px;padding-top:10px;border-top:1px solid rgba(23,60,43,.15);font-weight:800;color:#173c2b}
     .tcc-wish-total strong{font-size:18px;color:#8d7337}
     .tcc-wish-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
     .tcc-wish-actions button{min-height:46px;border:1px solid #173c2b;border-radius:12px;background:#173c2b;color:#fffaf0;font:800 11px Arial,sans-serif;cursor:pointer}
@@ -150,7 +152,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const matching=items.filter(x=>x.key===data.key);const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){stepper.hidden=!quantity;stepper.querySelector('span').textContent=quantity;}btn.classList.toggle('is-added',!!quantity);btn.textContent=quantity?'+ Add another':'＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
+      if(btn){const matching=items.filter(x=>x.key===data.key);const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){stepper.hidden=false;stepper.querySelector('span').hidden=!quantity;stepper.querySelector('button').hidden=!quantity;stepper.querySelector('span').textContent=quantity;}btn.classList.toggle('is-added',!!quantity);btn.textContent=quantity?'+':'＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
@@ -179,7 +181,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     });
     
     
-    backdrop.querySelector('.tcc-wish-total strong').textContent=money(items.reduce((sum,item)=>sum+((Number(item.price)||0)+(item.addons||[]).reduce((a,x)=>a+(Number(x.price)||0),0))*Math.max(1,Number(item.qty)||1),0));
+    const itemSubtotal=items.reduce((sum,item)=>sum+((Number(item.price)||0)+(item.addons||[]).reduce((a,x)=>a+(Number(x.price)||0),0))*Math.max(1,Number(item.qty)||1),0);
+    const takeawayUnits=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
+    const takeawayCharge=orderType==='takeaway'?takeawayUnits*10:0;
+    backdrop.querySelector('.tcc-wish-total').innerHTML='<div class="tcc-total-lines"><span>Items subtotal</span><strong>'+money(itemSubtotal)+'</strong>'+(orderType==='takeaway'?'<span>Takeaway charge ('+takeawayUnits+' × ₹10)</span><strong>'+money(takeawayCharge)+'</strong>':'')+'<span class="tcc-grand-label">Total</span><strong class="tcc-grand-total">'+money(itemSubtotal+takeawayCharge)+'</strong></div>';
     backdrop.querySelector('.tcc-wish-total').style.display=items.length?'flex':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
     backdrop.querySelector('.tcc-wish-continue').style.display=items.length?'block':'none';
@@ -317,14 +322,19 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const orderRef='TCC-'+Date.now().toString(36).toUpperCase();
     const now=new Date();
     const dateTime=now.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
-    const orderSubtotal=items.reduce((sum,item)=>sum+((Number(item.price)||0)+(item.addons||[]).reduce((a,x)=>a+(Number(x.price)||0),0))*Math.max(1,Number(item.qty)||1),0);
+    const itemSubtotal=items.reduce((sum,item)=>sum+((Number(item.price)||0)+(item.addons||[]).reduce((a,x)=>a+(Number(x.price)||0),0))*Math.max(1,Number(item.qty)||1),0);
+    const takeawayUnits=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
+    const takeawayCharge=orderType==='takeaway'?takeawayUnits*10:0;
+    const orderTotal=itemSubtotal+takeawayCharge;
     const message=[
       'Hello TCC! 👋','', '*NEW CUSTOMER ORDER*','*Order Reference: '+orderRef+'*','Date & Time: '+dateTime,
       'Order Type: '+(orderType==='dine-in'?'Dine-in':'Takeaway'),
       ...(orderType==='dine-in'?['*Table Number: '+tableNumber+'*']:[]),
       '', 'I would like to place the following order:', '',
       sections.join('\n\n━━━━━━━━━━━━━━━━━━\n\n'), '',
-      '*Order Subtotal: '+money(orderSubtotal)+'*', '',
+      '*Items Subtotal: '+money(itemSubtotal)+'*',
+      ...(orderType==='takeaway'?['Takeaway charge ('+takeawayUnits+' × ₹10): '+money(takeawayCharge)]:[]),
+      '*Order Total: '+money(orderTotal)+'*', '',
       'Please confirm item availability and the order details.','Thank you!'
     ].join('\n');
     const url='https://wa.me/919059059553?text='+encodeURIComponent(message);
