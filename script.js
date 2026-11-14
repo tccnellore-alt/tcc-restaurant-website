@@ -44,6 +44,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-menu-qty .tcc-wish-add[hidden]{display:none!important}
     .tcc-menu-qty span{min-width:18px;text-align:center;font:800 14px Arial,sans-serif}
     .tcc-menu-qty[hidden]{display:none!important}
+    .tcc-menu-qty:has(.tcc-wish-add:not([hidden])){min-height:0!important;margin:10px 12px 12px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;}
+    .tcc-menu-qty:has(.tcc-wish-add:not([hidden])) .tcc-wish-add{min-height:42px!important;padding:0 20px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;box-shadow:none!important;}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:7px!important;min-width:0!important;width:100%!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row h3{display:inline!important;flex:0 1 auto!important;min-width:0!important;margin:0!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row .tcc-wish-add{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:100%!important;vertical-align:middle!important;white-space:nowrap!important;min-height:28px!important;margin:0!important;padding:0 10px!important;font-size:10px!important;line-height:1!important}
