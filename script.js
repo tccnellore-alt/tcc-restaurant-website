@@ -18,9 +18,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   };
   const style=document.createElement('style');
   style.textContent=`
-    .menu-page .m-item .m-item-info h3{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:8px!important}
-    .menu-page .m-item .tcc-wish-add{position:static!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;width:auto!important;height:26px!important;min-width:0!important;min-height:26px!important;margin:0!important;padding:0 10px!important;border:1px solid rgba(23,60,43,.16)!important;border-radius:999px!important;background:#f5f0e5!important;color:#365442!important;box-shadow:none!important;font:700 10px/1 Arial,sans-serif!important;letter-spacing:.02em!important;cursor:pointer!important}
+    .menu-page .m-item .tcc-wish-add{position:static!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;min-height:30px!important;margin:0 12px 12px!important;padding:0 12px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#365442!important;box-shadow:none!important;font:700 10px/1 Arial,sans-serif!important;letter-spacing:.02em!important;cursor:pointer!important}
     .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important}
+    body.menu-text-mode .menu-page .m-item .tcc-wish-add{margin:7px 0 0!important}
     .tcc-wish-float{position:fixed;right:16px;bottom:calc(108px + env(safe-area-inset-bottom));z-index:2100;display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid #d6bd82;border-radius:999px;background:#173c2b;color:#fffaf0;box-shadow:0 8px 24px rgba(0,0,0,.22);font:800 12px Arial,sans-serif;cursor:pointer}
     .tcc-wish-float .tcc-wish-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#f2dfb0;color:#173c2b;font-size:10px}
     @media(max-width:480px){.tcc-wish-float{right:12px;bottom:calc(108px + env(safe-area-inset-bottom))}}
@@ -58,7 +58,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     count().textContent=items.reduce((s,x)=>s+x.qty,0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Saved':'＋ Save';btn.setAttribute('aria-label',added?'Remove '+data.name+' from wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Saved to wishlist':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
+      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Added to Wishlist':'♡ Add to Wishlist';btn.setAttribute('aria-label',added?'Remove '+data.name+' from wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Saved to wishlist':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
@@ -74,8 +74,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
   };
   const placeWishlistButton=(card,btn)=>{
-    const heading=card.querySelector('.m-item-info h3,h3');
-    if(heading&&btn.parentElement!==heading)heading.appendChild(btn);
+    const price=card.querySelector(':scope > strong');
+    if(price){
+      if(btn.parentElement!==card||price.nextElementSibling!==btn)price.insertAdjacentElement('afterend',btn);
+    }else{
+      const info=card.querySelector('.m-item-info')||card;
+      if(btn.parentElement!==info)info.appendChild(btn);
+    }
   };
   document.querySelectorAll('[data-menu-view]').forEach(toggle=>{
     toggle.addEventListener('click',()=>{
