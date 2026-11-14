@@ -40,7 +40,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important;min-width:0!important;padding-left:12px!important;padding-right:12px!important}
     .tcc-menu-qty{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:12px!important;width:max-content!important;min-height:44px!important;margin:10px 12px 12px!important;padding:4px 8px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#173c2b!important;box-sizing:border-box!important}
     .tcc-menu-qty button{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;padding:0!important;border:0!important;border-radius:50%!important;background:#173c2b!important;color:#fffaf0!important;font:700 18px Arial,sans-serif!important;cursor:pointer!important}
-    .tcc-menu-qty button[hidden],.tcc-menu-qty span[hidden]{display:none!important}
+    .tcc-menu-qty button[hidden],.tcc-menu-qty span[hidden],.tcc-menu-qty [hidden]{display:none!important}
     .tcc-menu-qty .tcc-wish-add[hidden]{display:none!important}
     .tcc-menu-qty span{min-width:18px;text-align:center;font:800 14px Arial,sans-serif}
     .tcc-menu-qty[hidden]{display:none!important}
@@ -78,7 +78,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-table-field input:focus{border-color:#8d7337;box-shadow:0 0 0 2px rgba(141,115,55,.12)}
     .tcc-wish-table-field small{min-height:0;color:#b33b32;font:11px Arial,sans-serif}
     .tcc-wish-empty{padding:34px 10px;text-align:center;color:#68756c;font:13px/1.5 Arial,sans-serif}
-    .tcc-wish-row{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-items:start;padding:16px 0;border-bottom:1px solid rgba(23,60,43,.12)}
+    .tcc-wish-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid rgba(23,60,43,.12)}
+    .tcc-wish-row>div:first-child{min-width:0}.tcc-wish-row>div:first-child strong{display:block;font-size:13px;line-height:1.3}.tcc-wish-row>div:first-child small{display:block;margin-top:3px;font-size:10px;line-height:1.3}
+    .tcc-wish-row-price{justify-content:flex-end!important;gap:7px!important;white-space:nowrap!important}.tcc-wish-qty{gap:5px!important}.tcc-wish-qty button{width:27px!important;height:27px!important}.tcc-wish-remove{font-size:10px!important;padding:4px!important}
     .tcc-wish-row strong{display:block;font:700 14px/1.35 Arial,sans-serif;color:#173c2b}
     .tcc-wish-row small{display:block;margin-top:4px;color:#7b806f;font:11px Arial,sans-serif}
     .tcc-wish-row-price{display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:9px;color:#173c2b;font:700 12px Arial,sans-serif}.tcc-wish-qty{display:flex;align-items:center;gap:8px;color:#173c2b}.tcc-wish-qty button{width:30px;height:30px;border:1px solid rgba(23,60,43,.2);border-radius:50%;background:#fff;color:#173c2b;font:700 16px Arial,sans-serif;cursor:pointer}
@@ -154,7 +156,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const matching=items.filter(x=>x.key===data.key);const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){stepper.hidden=false;stepper.querySelector('span').hidden=!quantity;stepper.querySelectorAll('button')[0].hidden=!quantity;stepper.querySelectorAll('button')[1].hidden=!quantity;btn.hidden=!!quantity;}btn.classList.toggle('is-added',!!quantity);btn.textContent='＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
+      if(btn){const matching=items.filter(x=>clean(x.name).toLowerCase()===clean(data.name).toLowerCase());const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){stepper.hidden=false;stepper.querySelector('span').hidden=!quantity;stepper.querySelectorAll('button')[0].hidden=!quantity;stepper.querySelectorAll('button')[1].hidden=!quantity;btn.hidden=!!quantity;}btn.classList.toggle('is-added',!!quantity);btn.textContent='＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
