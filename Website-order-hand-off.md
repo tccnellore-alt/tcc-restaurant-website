@@ -474,3 +474,12 @@ This handoff is based on the implementation and tool state inspected during the 
 - that a native XLSX export exists.
 
 The next agent must verify current branch and deployed backend state before making changes.
+
+
+## 15. Login issue fix — 15 November 2026
+
+- Investigated reported Order Desk login failure.
+- Supabase logs showed login endpoint had returned both 401 (invalid credentials attempts) and a later 200 (successful login); authenticated order-list calls also returned 200. This confirmed backend login was reachable and credentials had succeeded in at least one recent session.
+- Found a JavaScript syntax error in `orders-dashboard.js`: the CSV export `.join("\\r\\n")` separator had been accidentally written as a literal line break inside a quoted string. This prevents the entire dashboard script from parsing, so the login submit handler never attaches.
+- Fixed the CSV export line, verified the entire dashboard JavaScript parses with `new Function`, and added a cache-busting query to the script URL in `orders.html` so the browser fetches the corrected file.
+- After Cloudflare Pages deploys the `whatsappv3` branch, verify login on mobile and confirm dashboard orders load. Do not ask the user to share passwords or credentials in chat.
