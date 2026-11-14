@@ -252,6 +252,7 @@
 .menu-lightbox-addons-row > span > b{flex:0 0 auto;color:#8d6d2e;font-weight:800;white-space:nowrap}
 @media(max-width:380px){.menu-lightbox-addons-row{grid-template-columns:1fr}}
 .menu-lightbox-price{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#f3ead7;color:#8d6d2e;font:800 14px/1.2 Manrope,Arial,sans-serif}
+.menu-lightbox-add-cart{display:block;width:100%;min-height:48px;margin-top:16px;padding:12px 18px;border:0;border-radius:999px;background:#173c2b;color:#fff;font:800 15px/1.2 Manrope,Arial,sans-serif;cursor:pointer;box-shadow:0 5px 14px rgba(23,60,43,.16)}.menu-lightbox-add-cart:active{transform:scale(.985)}
 @media(max-width:480px){.menu-lightbox-card{gap:10px;padding:10px;max-height:calc(100vh - 24px)}.menu-image-lightbox img{max-height:calc(100vh - 190px)}.menu-lightbox-name{font-size:18px}}
 .menu-image-lightbox-close{position:absolute;top:12px;right:14px;width:42px;height:42px;border:1px solid rgba(255,255,255,.55);border-radius:50%;background:rgba(0,0,0,.35);color:#fff;font-size:28px;line-height:1;cursor:pointer}
 .m-photo{cursor:zoom-in}
@@ -3567,7 +3568,7 @@ tccImageLightbox.className="menu-image-lightbox";
 tccImageLightbox.setAttribute("role","dialog");
 tccImageLightbox.setAttribute("aria-modal","true");
 tccImageLightbox.setAttribute("aria-label","Expanded menu photo");
-tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><div class="menu-lightbox-bestseller" aria-label="Best Seller"><span class="crown" aria-hidden="true">♛</span><span>Best Seller</span></div><div class="menu-lightbox-new-arrival" aria-label="New Arrival"><span aria-hidden="true">✦</span><span>New Arrival</span></div><p class="menu-lightbox-description"></p><div class="menu-lightbox-spice" aria-live="polite"></div><div class="menu-lightbox-price"></div><div class="menu-lightbox-addons"><div class="menu-lightbox-addons-heading"><h3 class="menu-lightbox-addons-title">Available add-ons</h3><span class="menu-lightbox-addons-note" style="display:none">All add-ons · 30 ml each</span></div><div class="menu-lightbox-addons-row"></div></div></div></div>';
+tccImageLightbox.innerHTML='<button type="button" class="menu-image-lightbox-close" aria-label="Close expanded image">&times;</button><div class="menu-lightbox-card"><img alt="" /><div class="menu-lightbox-details"><h2 class="menu-lightbox-name"></h2><div class="menu-lightbox-bestseller" aria-label="Best Seller"><span class="crown" aria-hidden="true">♛</span><span>Best Seller</span></div><div class="menu-lightbox-new-arrival" aria-label="New Arrival"><span aria-hidden="true">✦</span><span>New Arrival</span></div><p class="menu-lightbox-description"></p><div class="menu-lightbox-spice" aria-live="polite"></div><div class="menu-lightbox-price"></div><div class="menu-lightbox-addons"><div class="menu-lightbox-addons-heading"><h3 class="menu-lightbox-addons-title">Available add-ons</h3><span class="menu-lightbox-addons-note" style="display:none">All add-ons · 30 ml each</span></div><div class="menu-lightbox-addons-row"></div></div><button type="button" class="menu-lightbox-add-cart">＋ Add to Cart</button></div></div>';
 document.body.appendChild(tccImageLightbox);
 const tccLightboxImage=tccImageLightbox.querySelector("img");
 const tccLightboxName=tccImageLightbox.querySelector(".menu-lightbox-name");
@@ -3578,6 +3579,9 @@ const tccLightboxAddons=tccImageLightbox.querySelector(".menu-lightbox-addons");
 const tccLightboxAddonsRow=tccImageLightbox.querySelector(".menu-lightbox-addons-row");
 const tccLightboxAddonsNote=tccImageLightbox.querySelector(".menu-lightbox-addons-note");
 const tccLightboxClose=tccImageLightbox.querySelector("button");
+const tccLightboxAddCart=tccImageLightbox.querySelector('.menu-lightbox-add-cart');
+let tccLightboxCurrentItem=null;
+tccLightboxAddCart.addEventListener('click',()=>{const card=tccLightboxCurrentItem;if(!card)return;const addButton=card.querySelector('.tcc-wish-add');if(!addButton)return;closeTccImageLightbox();setTimeout(()=>addButton.click(),90);});
 function hideTccImageLightbox(){
   tccImageLightbox.classList.remove("is-open");
   tccLightboxImage.removeAttribute("src");
@@ -3617,6 +3621,7 @@ document.addEventListener("click",event=>{
   const item=trigger?.closest(".m-item");
   const photo=item?.querySelector(".m-photo");
   if(item&&photo&&trigger){
+    tccLightboxCurrentItem=item;
     if(!tccImageLightbox.classList.contains("is-open")){
       history.pushState({tccImageLightbox:true},"",window.location.href);
     }
