@@ -400,6 +400,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('#tccCustomerName').addEventListener('input',event=>{customerName=event.target.value.trimStart();});
   backdrop.querySelector('#tccCustomerPhone').addEventListener('input',event=>{customerPhone=event.target.value.trim();});
   backdrop.querySelector('.tcc-order-history-open').addEventListener('click',openHistory);
+  document.querySelector('.tcc-mobile-track')?.addEventListener('click',()=>{openHistory();setTimeout(()=>lookupInput?.focus(),80);});
+  document.querySelector('.tcc-mobile-history')?.addEventListener('click',()=>{openHistory();setTimeout(()=>historyPanel.querySelector('.tcc-order-history-subtitle')?.scrollIntoView({block:'start',behavior:'smooth'}),100);});
   historyPanel.querySelector('.tcc-order-history-close').addEventListener('click',closeHistory);
   historyPanel.querySelector('.tcc-order-history-new').addEventListener('click',()=>{closeHistory();backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');});
   backdrop.querySelectorAll('[data-order-type]').forEach(button=>button.addEventListener('click',()=>{orderType=button.dataset.orderType;selectedTable='';backdrop.querySelector('.tcc-wish-table-error').textContent='';render();}));
