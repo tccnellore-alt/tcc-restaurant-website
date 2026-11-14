@@ -53,7 +53,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   float.type='button';float.className='tcc-wish-float';float.innerHTML='<span aria-hidden="true">♡</span><span>Wishlist</span><span class="tcc-wish-count">0</span>';
   float.setAttribute('aria-label','Open wishlist');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
-  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Wishlist</h2><button type="button" class="tcc-wish-close" aria-label="Close wishlist">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-total"><span>Estimated total</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-show">Show to Manager</button><button type="button" class="tcc-wish-clear secondary">Clear Wishlist</button></div><p class="tcc-wish-hint">Show this list to the TCC manager when placing your order. Final order and availability will be confirmed by the team.</p></section>';
+  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Wishlist</h2><button type="button" class="tcc-wish-close" aria-label="Close wishlist">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-total"><span>Estimated total</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Send Wishlist to WhatsApp</button><button type="button" class="tcc-wish-clear secondary">Clear Wishlist</button></div><p class="tcc-wish-hint">Show this list to the TCC manager when placing your order. Final order and availability will be confirmed by the team.</p></section>';
   document.body.append(float,backdrop);
   const count=()=>float.querySelector('.tcc-wish-count');
   const render=()=>{
@@ -154,6 +154,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.addEventListener('click',e=>{if(e.target===backdrop)close()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop.classList.contains('is-open'))close()});
   backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];save();render()});
-  backdrop.querySelector('.tcc-wish-show').addEventListener('click',()=>{backdrop.querySelector('.tcc-wish-hint').textContent='Please show this wishlist to your TCC manager. Your selections are saved on this device.';});
+  backdrop.querySelector('.tcc-wish-send').addEventListener('click',()=>{
+    if(!items.length)return;
+    const lines=items.map((item,index)=>(index+1)+'. '+item.name+' — '+money(item.price));
+    const total=items.reduce((sum,item)=>sum+Number(item.price||0),0);
+    const message=['Hello TCC! I would like to order these items:','',...lines,'','Estimated Total: '+money(total),'','Please confirm availability. Thank you!'].join('\n');
+    const url='https://wa.me/919059059553?text='+encodeURIComponent(message);
+    window.open(url,'_blank','noopener,noreferrer');
+  });
   render();
 })();
