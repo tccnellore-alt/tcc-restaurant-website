@@ -261,7 +261,7 @@ All requests should include the public Supabase `apikey` header and appropriate 
 - Optional loud buzzer alert; staff must click **Enable sound alerts** once because browsers require user interaction to enable audio. Device media volume/browser settings affect loudness.
 - Simplified dashboard actions: Accept & Prepare, Reject Order, Ready & Complete, Cancel Order.
 - Edit products action (currently JSON prompt).
-- Archive order action with confirmation.
+- Delete order action moves unwanted orders to Trash with confirmation; Trash / Restore view lists deleted orders and restores them with confirmation.
 - Business analytics is hidden by default in a compact top-right three-dot menu; staff open it only when needed.\n- Analytics section:
   - filtered-period sales
   - Today sales
