@@ -41,6 +41,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-menu-qty{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:12px!important;width:max-content!important;min-height:44px!important;margin:10px 12px 12px!important;padding:4px 8px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#173c2b!important;box-sizing:border-box!important}
     .tcc-menu-qty button{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;padding:0!important;border:0!important;border-radius:50%!important;background:#173c2b!important;color:#fffaf0!important;font:700 18px Arial,sans-serif!important;cursor:pointer!important}
     .tcc-menu-qty button[hidden],.tcc-menu-qty span[hidden]{display:none!important}
+    .tcc-menu-qty .tcc-wish-add[hidden]{display:none!important}
     .tcc-menu-qty span{min-width:18px;text-align:center;font:800 14px Arial,sans-serif}
     .tcc-menu-qty[hidden]{display:none!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:7px!important;min-width:0!important;width:100%!important}
@@ -153,7 +154,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const matching=items.filter(x=>x.key===data.key);const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){stepper.hidden=false;stepper.querySelector('span').hidden=!quantity;stepper.querySelectorAll('button')[0].hidden=!quantity;stepper.querySelectorAll('button')[1].hidden=!quantity;}btn.classList.toggle('is-added',!!quantity);btn.textContent='＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
+      if(btn){const matching=items.filter(x=>x.key===data.key);const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){stepper.hidden=!quantity;stepper.querySelector('span').hidden=!quantity;stepper.querySelectorAll('button')[0].hidden=!quantity;stepper.querySelectorAll('button')[1].hidden=!quantity;btn.hidden=!!quantity;}btn.classList.toggle('is-added',!!quantity);btn.textContent='＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
