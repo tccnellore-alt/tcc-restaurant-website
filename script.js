@@ -181,11 +181,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     });
     
     
-    const itemSubtotal=items.reduce((sum,item)=>sum+((Number(item.price)||0)+(item.addons||[]).reduce((a,x)=>a+(Number(x.price)||0),0))*Math.max(1,Number(item.qty)||1),0);
-    const takeawayUnits=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
-    const takeawayCharge=orderType==='takeaway'?takeawayUnits*10:0;
     backdrop.querySelector('.tcc-wish-total').innerHTML='<div class="tcc-total-lines"><span>Items subtotal</span><strong>'+money(itemSubtotal)+'</strong>'+(orderType==='takeaway'?'<span>Takeaway charge ('+takeawayUnits+' × ₹10)</span><strong>'+money(takeawayCharge)+'</strong>':'')+'<span class="tcc-grand-label">Total</span><strong class="tcc-grand-total">'+money(itemSubtotal+takeawayCharge)+'</strong></div>';
-    backdrop.querySelector('.tcc-wish-total').style.display=items.length?'flex':'none';
+    backdrop.querySelector('.tcc-wish-total').style.display=items.length?'block':'none';
+    backdrop.querySelector('.tcc-wish-table-field').style.display=items.length?'block':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
     backdrop.querySelector('.tcc-wish-continue').style.display=items.length?'block':'none';
     backdrop.querySelectorAll('[data-order-type]').forEach(button=>button.classList.toggle('active',button.dataset.orderType===orderType));
