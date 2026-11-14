@@ -37,7 +37,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const style=document.createElement('style');
   style.textContent=`
     .menu-page .m-item .tcc-wish-add{position:static!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;min-height:30px!important;margin:0 12px 12px!important;padding:0 12px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#365442!important;box-shadow:none!important;font:700 10px/1 Arial,sans-serif!important;letter-spacing:.02em!important;cursor:pointer!important}
-    .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important}
+    .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important;min-width:0!important;padding-left:12px!important;padding-right:12px!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:7px!important;min-width:0!important;width:100%!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row h3{display:inline!important;flex:0 1 auto!important;min-width:0!important;margin:0!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row .tcc-wish-add{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:100%!important;vertical-align:middle!important;white-space:nowrap!important;min-height:28px!important;margin:0!important;padding:0 10px!important;font-size:10px!important;line-height:1!important}
@@ -106,7 +106,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Added to Wishlist':'♡ Add to Wishlist';btn.setAttribute('aria-label',added?'Remove '+data.name+' from wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Saved to wishlist':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
+      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Added · + Add another':'＋ Add to Wishlist';btn.setAttribute('aria-label',added?'Add another '+data.name+' to wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Tap to add this item again':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
