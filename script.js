@@ -140,7 +140,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   historyPanel.innerHTML='<section class="tcc-order-history-panel" role="dialog" aria-modal="true"><header><h2>Order History</h2><button type="button" class="tcc-order-history-close" aria-label="Close order history">×</button></header><div class="tcc-order-history-list"></div><button type="button" class="tcc-order-history-new">＋ Start a New Order</button></section>';
   document.body.append(historyPanel);
   const closeChoice=()=>{choice.classList.remove('is-open');choice.setAttribute('aria-hidden','true');pendingProduct=null;};
-  const closeHistory=()=>{historyPanel.classList.remove('is-open');historyPanel.setAttribute('aria-hidden','true');};
+  const closeHistory=()=>{historyPanel.classList.remove('is-open');historyPanel.setAttribute('aria-hidden','true');clearInterval(historyRefreshTimer);};
   const orderWhatsAppMessage=order=>{
     const sections=(order.items||[]).map((item,index)=>{
       const quantity=Math.max(1,Number(item.qty)||1);
@@ -152,11 +152,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const heading=order.isResend?'RESENT ORDER'+(order.orderSequence>1?' — ADDITIONAL ORDER (ORDER '+order.orderSequence+')':''):order.orderSequence>1?'ADDITIONAL ORDER (ORDER '+order.orderSequence+')':'NEW CUSTOMER ORDER';
     return ['Hello TCC! 👋','', '*'+heading+'*','*Order Reference: '+order.ref+'*','Date & Time: '+order.dateTime,'Order Type: '+order.orderType,...(order.customerName?['*Customer Name: '+order.customerName+'*']:[]),...(order.table?['*Table Number: '+order.table+'*']:[]),'','I would like to place the following order:','',sections.join('\n\n━━━━━━━━━━━━━━━━━━\n\n'),'','Please confirm item availability and the order details.','Thank you!'].join('\n');
   };
-  const openHistory=()=>{const list=historyPanel.querySelector('.tcc-order-history-list'),history=readHistory();list.replaceChildren();if(!history.length){const empty=document.createElement('p');empty.textContent='No previous orders on this device yet.';list.append(empty);}history.forEach(order=>{
+  const renderHistory=()=>{const list=historyPanel.querySelector('.tcc-order-history-list'),history=readHistory();list.replaceChildren();if(!history.length){const empty=document.createElement('p');empty.textContent='No previous orders on this device yet.';list.append(empty);}history.forEach(order=>{
     const card=document.createElement('article');card.className='tcc-order-history-card';
     const top=document.createElement('div');top.className='tcc-order-history-card-top';
     const ref=document.createElement('strong');ref.textContent=order.ref;
-    const status=document.createElement('span');status.className='tcc-order-history-status';status.textContent=order.status||'Saved on this device';top.append(ref,status);
+    const status=document.createElement('span');status.className='tcc-order-history-status';status.textContent=order.kitchenStatus?'Kitchen: '+order.kitchenStatus.charAt(0).toUpperCase()+order.kitchenStatus.slice(1):(order.status||'Saved on this device');top.append(ref,status);
     const meta=document.createElement('small');meta.textContent=order.dateTime+' · '+order.orderType+(order.table?' · '+order.table:'');
     const actions=document.createElement('div');actions.className='tcc-order-history-actions';
     const view=document.createElement('button');view.type='button';view.className='tcc-order-history-view';view.textContent='View Order';view.setAttribute('aria-expanded','false');
@@ -171,7 +171,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       actions.append(resend);
     }
     card.append(top,meta,actions,detail);list.append(card);
-  });historyPanel.classList.add('is-open');historyPanel.setAttribute('aria-hidden','false');};
+  });};
+  let historyRefreshTimer=null;
+  const refreshCustomerOrderStatuses=async()=>{const history=readHistory();let changed=false;await Promise.all(history.filter(order=>order.ref&&order.customerPhone).map(async order=>{try{const url='https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders?action=order-status&order_number='+encodeURIComponent(order.ref)+'&phone='+encodeURIComponent(order.customerPhone);const response=await fetch(url,{headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A'}});if(!response.ok)return;const data=await response.json();if(data.order&&order.kitchenStatus!==data.order.status){order.kitchenStatus=data.order.status;changed=true;}}catch{}}));if(changed){saveHistory(history);renderHistory();}};
+  const openHistory=()=>{renderHistory();historyPanel.classList.add('is-open');historyPanel.setAttribute('aria-hidden','false');refreshCustomerOrderStatuses();clearInterval(historyRefreshTimer);historyRefreshTimer=setInterval(()=>{if(historyPanel.classList.contains('is-open'))refreshCustomerOrderStatuses();else clearInterval(historyRefreshTimer);},10000);};
   const openRemoveChoice=(matching)=>{
     pendingProduct=null;
     choice.querySelector('.tcc-wish-choice-title').textContent='Which '+matching[0].name+' would you like to remove?';
@@ -427,7 +430,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const dayKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
     const history=readHistory();
     const sameOrderSession=history.filter(order=>order.dayKey===dayKey&&order.orderType===(orderType==='dine-in'?'Dine-in':'Takeaway')&&(orderType==='dine-in'?order.table===tableNumber:!!customerName.trim()&&order.customerName===customerName.trim()));
-    const order={ref:orderRef,dateTime,dayKey,orderSequence:sameOrderSession.length+1,orderType:orderType==='dine-in'?'Dine-in':'Takeaway',table:orderType==='dine-in'?tableNumber:'',customerName:customerName.trim(),status:'Order message prepared · Awaiting send',items:items.map(item=>({...item,addons:(item.addons||[]).map(addon=>({...addon}))}))};
+    const order={ref:orderRef,dateTime,dayKey,orderSequence:sameOrderSession.length+1,orderType:orderType==='dine-in'?'Dine-in':'Takeaway',table:orderType==='dine-in'?tableNumber:'',customerName:customerName.trim(),customerPhone:customerPhone.trim(),status:'Order message prepared · Awaiting send',items:items.map(item=>({...item,addons:(item.addons||[]).map(addon=>({...addon}))}))};
     try{
       const apiResponse=await fetch('https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders?action=create-order',{
         method:'POST',
@@ -436,7 +439,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       });
       const saved=await apiResponse.json().catch(()=>({}));
       if(!apiResponse.ok||!saved.order)throw new Error(saved.error||'Could not save your order. Please try again.');
-      order.ref=saved.order.order_number;order.status='Order saved · Awaiting send';
+      order.ref=saved.order.order_number;order.status='Order saved · Awaiting send';order.kitchenStatus=saved.order.status||'new';
       const whatsappUrl='https://wa.me/919059059553?text='+encodeURIComponent(orderWhatsAppMessage(order));
       if(whatsappWindow)whatsappWindow.location.href=whatsappUrl;else window.location.href=whatsappUrl;
       history.unshift(order);saveHistory(history);
