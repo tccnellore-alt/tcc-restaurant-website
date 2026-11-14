@@ -2357,7 +2357,7 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 
 
 /* Customer wishlist — scoped to the menu page */
-.menu-page .tcc-wishlist-add{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:32px;padding:7px 10px;border:1px solid rgba(23,60,43,.22);border-radius:999px;background:#fffaf0;color:#173c2b;font:700 11px/1.2 Manrope,Arial,sans-serif;cursor:pointer;white-space:nowrap}
+.menu-page .tcc-wishlist-add{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:168px;min-width:168px;max-width:100%;box-sizing:border-box;min-height:34px;padding:7px 8px;border:1px solid rgba(23,60,43,.22);border-radius:999px;background:#fffaf0;color:#173c2b;font:700 11px/1.2 Manrope,Arial,sans-serif;cursor:pointer;white-space:nowrap;flex:0 0 168px}
 .menu-page .tcc-wishlist-add.is-added{background:#173c2b;border-color:#173c2b;color:#fffaf0}
 .menu-page .m-item>.tcc-wishlist-add{align-self:flex-start;margin:0 11px 11px}
 .menu-page .m-item-info>.tcc-wishlist-add{align-self:flex-start;margin-top:8px}
@@ -4633,7 +4633,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
     const data=productData(card);if(!data)return;
     const available=isAvailable(card);let button=card.querySelector(":scope > .tcc-wishlist-add, .m-item-info > .tcc-wishlist-add");
     if(!available){button?.remove();return;}
-    if(!button){button=document.createElement("button");button.type="button";button.className="tcc-wishlist-add";button.addEventListener("click",()=>toggleProduct(card));}
+    if(!button){button=document.createElement("button");button.type="button";button.className="tcc-wishlist-add";button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();toggleProduct(card);});}
     button.dataset.productId=data.id;const added=has(data.id);button.classList.toggle("is-added",added);button.textContent=added?"✓ Added to Wishlist":"♡ Add to Wishlist";button.setAttribute("aria-pressed",added?"true":"false");
     if(document.body.classList.contains("menu-text-mode")){const heading=card.querySelector(".m-item-info h3")||card.querySelector("h3");if(heading&&button.parentElement!==heading.parentElement)heading.insertAdjacentElement("afterend",button);}
     else{const price=card.querySelector(":scope > strong")||card.querySelector(".m-item-info > strong");if(price&&button.parentElement!==card)price.insertAdjacentElement("afterend",button);}
