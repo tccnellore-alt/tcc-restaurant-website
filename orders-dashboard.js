@@ -1,5 +1,5 @@
 const API="https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders";
-const PUBLIC_KEY="sb_publishable_LFrRcGaFITqFM2B6wbWQbA_OQaMv9br";
+const PUBLIC_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A";
 const TOKEN_KEY="tccOrderDeskSessionV1";
 const $=s=>document.querySelector(s);
 let token=localStorage.getItem(TOKEN_KEY)||"",allOrders=[],activeFilter="all",refreshTimer;
