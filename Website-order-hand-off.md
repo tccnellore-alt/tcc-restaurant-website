@@ -236,7 +236,7 @@ All requests should include the public Supabase `apikey` header and appropriate 
 - Backend sanitizes strings/numbers and limits item/add-on counts.
 - Recalculates subtotal and takeaway fee; cancelled items are excluded.
 - Creates `items_edited` audit log with before/after data and old/new totals.
-- The dashboard's Edit products action now opens a simple visual editor (not a JSON prompt). Staff can change product name, quantity, unit price and item status; remove products; add a product by entering name, quantity and price; add a customer note; preview the recalculated total; and save. Existing add-ons are preserved and displayed as read-only text. Editing individual add-ons and choosing replacements from a menu-backed product picker remain future improvements.
+- The dashboard's Edit products action now opens a simple visual editor (not a JSON prompt). Staff can change product name, quantity and unit price; each product now has a prominent **Cancel this item** button (which becomes **Restore item** after cancellation), as well as a separate Remove control; add a product by entering name, quantity and price; add a customer note; preview the recalculated total; and save. Existing add-ons are preserved and displayed as read-only text. Editing individual add-ons and choosing replacements from a menu-backed product picker remain future improvements.
 
 #### Archive order
 - `PATCH ?action=archive-order`
