@@ -101,6 +101,32 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     choice.classList.add('is-open');choice.setAttribute('aria-hidden','false');
   };
 
+  const animateProductToWishlist=(card,data)=>{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    const target=float.getBoundingClientRect();
+    const source=card.querySelector('.m-photo-wrap img,.m-photo, img')||card;
+    const start=source.getBoundingClientRect();
+    if(!start.width||!start.height||!target.width||!target.height)return;
+    const flyer=document.createElement('div');
+    flyer.className='tcc-wish-flyer';
+    const image=source.tagName==='IMG'?source.currentSrc||source.src:'';
+    flyer.innerHTML=image?'<img alt="">':'<span></span>';
+    if(image){const img=flyer.querySelector('img');img.src=image;img.alt=data.name;}
+    else flyer.querySelector('span').textContent=data.name;
+    Object.assign(flyer.style,{position:'fixed',left:start.left+'px',top:start.top+'px',width:Math.min(start.width,150)+'px',height:Math.min(start.height,110)+'px',zIndex:'15000',overflow:'hidden',borderRadius:'12px',background:'#fffaf0',boxShadow:'0 8px 28px rgba(0,0,0,.25)',pointerEvents:'none',opacity:'1',transition:'left .62s cubic-bezier(.2,.75,.25,1),top .62s cubic-bezier(.2,.75,.25,1),width .62s ease,height .62s ease,opacity .62s ease,transform .62s cubic-bezier(.2,.75,.25,1)'});
+    const img=flyer.querySelector('img');
+    if(img)Object.assign(img.style,{width:'100%',height:'100%',objectFit:'cover'});
+    else Object.assign(flyer.querySelector('span').style,{display:'grid',placeItems:'center',height:'100%',padding:'8px',color:'#173c2b',font:'700 12px Arial',textAlign:'center'});
+    document.body.appendChild(flyer);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      flyer.style.left=(target.left+target.width/2-18)+'px';
+      flyer.style.top=(target.top+target.height/2-18)+'px';
+      flyer.style.width='36px';flyer.style.height='36px';flyer.style.borderRadius='50%';flyer.style.transform='scale(.55)';flyer.style.opacity='.25';
+    }));
+    flyer.addEventListener('transitionend',()=>flyer.remove(),{once:true});
+    setTimeout(()=>flyer.remove(),850);
+    float.animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],{duration:420,easing:'ease-out'});
+  };
   const count=()=>float.querySelector('.tcc-wish-count');
   const render=()=>{
     count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
@@ -183,6 +209,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         event.preventDefault();event.stopPropagation();
         const options=addonOptions(card);
         if(options.length){openChoice(card,data,options);return;}
+        animateProductToWishlist(card,data);
         const found=items.find(x=>x.key===data.key&&!(x.addons||[]).length);
         if(found){found.qty=(Number(found.qty)||1)+1;}
         else items.push({...data,addons:[],note:'',qty:1,lineId:String(Date.now())+'-'+Math.random().toString(36).slice(2)});
@@ -223,6 +250,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(!pendingProduct)return;
     const wrap=choice.querySelector('.tcc-wish-addon-options');
     const selected=[...wrap.querySelectorAll('input[type="checkbox"]:checked')].slice(0,2).map(input=>pendingProduct.options[Number(input.value)]);
+    animateProductToWishlist(pendingProduct.card,pendingProduct.data);
     const sameConfig=item=>item.key===pendingProduct.data.key&&JSON.stringify((item.addons||[]).map(x=>x.name).sort())===JSON.stringify(selected.map(x=>x.name).sort());
     const found=items.find(sameConfig);
     if(found){found.qty=(Number(found.qty)||1)+1;}
