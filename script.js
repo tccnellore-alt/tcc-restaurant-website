@@ -407,7 +407,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const sameOrderSession=history.filter(order=>order.dayKey===dayKey&&order.orderType===(orderType==='dine-in'?'Dine-in':'Takeaway')&&(orderType==='dine-in'?order.table===tableNumber:!!customerName.trim()&&order.customerName===customerName.trim()));
     const order={ref:'',dateTime,dayKey,orderSequence:sameOrderSession.length+1,orderType:orderType==='dine-in'?'Dine-in':'Takeaway',table:orderType==='dine-in'?tableNumber:'',customerName:customerName.trim(),customerPhone:normalizedPhone,status:'New',kitchenStatus:'new',items:items.map(item=>({...item,addons:(item.addons||[]).map(addon=>({...addon}))}))};
     let requestKey='';
-    try{requestKey=sessionStorage.getItem('tccPendingOrderRequestKey')||'';if(!requestKey){requestKey=crypto.randomUUID();sessionStorage.setItem('tccPendingOrderRequestKey',requestKey);}}catch{requestKey=crypto.randomUUID();}
+    const requestSignature=JSON.stringify({phone:normalizedPhone,type:orderType,table:tableNumber,name:customerName.trim(),items:items.map(item=>({name:item.name,qty:item.qty,price:item.price,addons:item.addons||[],note:item.note||''}))});
+    try{const priorSignature=sessionStorage.getItem('tccPendingOrderSignature');requestKey=sessionStorage.getItem('tccPendingOrderRequestKey')||'';if(!requestKey||priorSignature!==requestSignature){requestKey=crypto.randomUUID();sessionStorage.setItem('tccPendingOrderRequestKey',requestKey);sessionStorage.setItem('tccPendingOrderSignature',requestSignature);}}catch{requestKey=crypto.randomUUID();}
     try{
       const apiResponse=await fetch('https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders?action=create-order',{
         method:'POST',
@@ -419,7 +420,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       order.ref=saved.order.order_number;order.status=saved.order.status||'new';order.kitchenStatus=saved.order.status||'new';order.total=saved.order.total;
       history.unshift(order);saveHistory(history);
       items=[];save();render();backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');
-      try{sessionStorage.removeItem('tccPendingOrderRequestKey');}catch{}
+      try{sessionStorage.removeItem('tccPendingOrderRequestKey');sessionStorage.removeItem('tccPendingOrderSignature');}catch{}
       const notice=document.createElement('div');notice.className='tcc-order-send-notice';notice.setAttribute('role','status');
       notice.innerHTML='<strong>Order placed successfully!</strong><br>Reference: '+order.ref+'<br>Your order has been sent to TCC’s kitchen. Track its progress in Order History.';
       document.body.append(notice);setTimeout(()=>notice.remove(),9000);
