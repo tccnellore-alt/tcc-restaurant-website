@@ -59,7 +59,7 @@ Earlier UI/backend code also used `accepted`, `ready`, `rejected`; newer status 
 - Staff must be able to accept some products and cancel/reject others in the same order.
 - The customer must see which individual products are being prepared, cancelled/rejected or completed.
 - Item-level statuses currently supported in edit endpoint:
-  - `pending` — newly placed; waiting for staff acceptance
+  - `pending` — newly placed; waiting for staff acceptance. New orders now save every item with this status by default.
   - `preparing`
   - `cancelled`
   - `completed`
