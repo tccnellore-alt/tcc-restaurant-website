@@ -4640,7 +4640,7 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
   }
   function toggleProduct(card){const data=productData(card);if(!data||!isAvailable(card))return;if(has(data.id))selected=selected.filter(x=>x.id!==data.id);else selected.push(data);save();}
   function renderList(){
-    list.replaceChildren();panel.classList.remove("tcc-wishlist-server-mode");
+    list.replaceChildren();panel.classList.remove("tcc-wishlist-server-mode");dialog.querySelector(".tcc-wishlist-head h2").textContent="♡ Your Wishlist";
     if(!selected.length){const empty=document.createElement("p");empty.className="tcc-wishlist-empty";empty.textContent="Your wishlist is empty.";list.append(empty);return;}
     selected.forEach(item=>{
       const row=document.createElement("div");row.className="tcc-wishlist-row";
