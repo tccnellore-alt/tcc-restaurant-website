@@ -236,7 +236,7 @@ All requests should include the public Supabase `apikey` header and appropriate 
 - Backend sanitizes strings/numbers and limits item/add-on counts.
 - Recalculates subtotal and takeaway fee; cancelled items are excluded.
 - Creates `items_edited` audit log with before/after data and old/new totals.
-- **Important current UI limitation:** the dashboard's Edit products action currently uses a JSON prompt rather than a polished visual editor. This is a temporary editing interface; replace it with a user-friendly item editor (add/remove/replace controls, add-on controls, status selectors and calculated total preview).
+- The dashboard's Edit products action now opens a simple visual editor (not a JSON prompt). Staff can change product name, quantity, unit price and item status; remove products; add a product by entering name, quantity and price; add a customer note; preview the recalculated total; and save. Existing add-ons are preserved and displayed as read-only text. Editing individual add-ons and choosing replacements from a menu-backed product picker remain future improvements.
 
 #### Archive order
 - `PATCH ?action=archive-order`
@@ -316,7 +316,7 @@ These are known commits from the work session; use GitHub history/current branch
 - Backend database idempotency key migration added unique partial index (migration name `add_order_idempotency_key`).
 - Backend version history: v6 order list cap increased to 1,000; subsequent versions added edit/status/archive features. Latest known version is v13.
 
-### Dashboard alerts and analytics/editing
+### Dashboard alerts, analytics and order editor/editing
 - Loud buzzer update commit: `f0c4514`
 - Analytics HTML: `a3032a0add4fb19d41a23189185e1cbac7f843f6`
 - Analytics/dashboard JS: `91ab17bd2787a41a5e93a0138b162840feb3d059`, followed by `a07c2a4a03284ef7d0924aeffdef274ef2ec1725` and `a4b9e2dc8430bf29a7dcc0a7e932df17db5e05d7`
@@ -325,7 +325,7 @@ These are known commits from the work session; use GitHub history/current branch
 - Daily/weekly/monthly sales KPIs: `f5f20fdff5991dd2b93b47ebf8cd159736d5b83d`, `76c5816d13f3b91c090721b6d30b65858c0f9606`
 - Customer item-status display: `8187f8fc4d32f695eaa2196289a48fa4396c9167`
 - Customer history refresh after edits: `13bb325f777c406c4561fe73dcbb6b146f77f6d4`
-- Archive control: `ce09d8dcbc71a73634aaed2cb981dacae7852497`
+- Archive control: `ce09d8dcbc71a73634aaed2cb981dacae7852497`\n- Simplified visual order editor JS: `2efeb252e2cc3c8aff93704e6489bbb63c20c1a0`\n- Simplified visual order editor CSS: `42b8d15717cdb3f2911d169164cd294635983a25`
 
 **Important:** Some commits were sequentially amended/extended after these hashes. The branch head is the source of truth; do not assume a commit listed above is still the branch head.
 
@@ -348,7 +348,7 @@ Prioritize these before describing the system as production-ready.
 10. **Archive semantics:** ensure archived orders cannot be changed through customer status endpoint or reappear in local history unexpectedly.
 
 ### P1 — Operational usability
-1. Replace JSON prompt with visual order editor.
+1. Extend the new visual order editor with menu-backed product selection/replacement and editable add-ons (the basic visual editor is now implemented).
 2. Product replacement should use actual TCC menu catalogue (product ID/name/price/add-ons), not free-text only.
 3. Allow rejecting selected items and accepting remaining items in a single confirmation action.
 4. Add cancellation/rejection reason and show it to customer.
