@@ -74,6 +74,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const cards=[];
     if(root.matches?.('.m-item'))cards.push(root);
     root.querySelectorAll?.('.m-item').forEach(card=>cards.push(card));
+    let added=false;
     cards.forEach(card=>{
       if(card.querySelector('.tcc-wish-add')||card.querySelector('.availability-status'))return;
       const data=getData(card);
@@ -88,19 +89,24 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       });
       const info=card.querySelector('.m-item-info')||card.firstElementChild||card;
       info.appendChild(btn);
+      added=true;
     });
-    render();
+    if(added)render();
   };
-  // Menu products are injected after DOM ready; observe them so every product gets a button.
+  // Menu products are injected and then have their info wrappers rebuilt.
+  // Observe only newly-added element nodes, and ignore our own wishlist button,
+  // to avoid reacting to our own DOM updates or creating a mutation loop.
   const startWishlistButtons=()=>{
     attachWishlistButtons();
     const menuRoot=document.querySelector('.menu-page');
     if(!menuRoot)return;
-    const observer=new MutationObserver(()=>{
-      // The menu builder replaces each product's info wrapper in place.
-      // Re-scan the full menu so buttons are attached to the final wrapper,
-      // not to the temporary source node that gets removed.
-      attachWishlistButtons(menuRoot);
+    const observer=new MutationObserver(records=>{
+      records.forEach(record=>record.addedNodes.forEach(node=>{
+        if(node.nodeType!==1||node.classList.contains('tcc-wish-add'))return;
+        const card=node.matches('.m-item')?node:node.closest('.m-item');
+        if(card)attachWishlistButtons(card);
+        else if(node.querySelector?.('.m-item'))attachWishlistButtons(node);
+      }));
     });
     observer.observe(menuRoot,{childList:true,subtree:true});
   };
