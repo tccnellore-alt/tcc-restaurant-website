@@ -149,7 +149,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       if(item.note?.trim())lines.push('Note: '+item.note.trim());
       return lines.join('\n');
     });
-    return ['Hello TCC! 👋','','*CUSTOMER ORDER*','*Order Reference: '+order.ref+'*','Date & Time: '+order.dateTime,'Order Type: '+order.orderType,...(order.customerName?['*Customer Name: '+order.customerName+'*']:[]),...(order.table?['*Table Number: '+order.table+'*']:[]),'','I would like to place the following order:','',sections.join('\n\n━━━━━━━━━━━━━━━━━━\n\n'),'','Please confirm item availability and the order details.','Thank you!'].join('\n');
+    const heading=order.isResend?'RESENT ORDER'+(order.orderSequence>1?' — ADDITIONAL ORDER (ORDER '+order.orderSequence+')':''):order.orderSequence>1?'ADDITIONAL ORDER (ORDER '+order.orderSequence+')':'NEW CUSTOMER ORDER';
+    return ['Hello TCC! 👋','', '*'+heading+'*','*Order Reference: '+order.ref+'*','Date & Time: '+order.dateTime,'Order Type: '+order.orderType,...(order.customerName?['*Customer Name: '+order.customerName+'*']:[]),...(order.table?['*Table Number: '+order.table+'*']:[]),'','I would like to place the following order:','',sections.join('\\n\\n━━━━━━━━━━━━━━━━━━\\n\\n'),'','Please confirm item availability and the order details.','Thank you!'].join('\\n');
   };
   const openHistory=()=>{const list=historyPanel.querySelector('.tcc-order-history-list'),history=readHistory();list.replaceChildren();if(!history.length){const empty=document.createElement('p');empty.textContent='No previous orders on this device yet.';list.append(empty);}history.forEach(order=>{
     const card=document.createElement('article');card.className='tcc-order-history-card';
@@ -166,7 +167,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     actions.append(view);
     if(String(order.status||'').toLowerCase().includes('awaiting send')){
       const resend=document.createElement('button');resend.type='button';resend.className='tcc-order-history-resend';resend.textContent='Resend to WhatsApp';
-      resend.addEventListener('click',()=>{const url='https://wa.me/919059059553?text='+encodeURIComponent(orderWhatsAppMessage(order));window.open(url,'_blank','noopener,noreferrer');});
+      resend.addEventListener('click',()=>{const url='https://wa.me/919059059553?text='+encodeURIComponent(orderWhatsAppMessage({...order,isResend:true}));window.open(url,'_blank','noopener,noreferrer');});
       actions.append(resend);
     }
     card.append(top,meta,actions,detail);list.append(card);
@@ -418,19 +419,14 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const orderRef='TCC-'+Date.now().toString(36).toUpperCase();
     const now=new Date();
     const dateTime=now.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
-    const message=[
-      'Hello TCC! 👋','', '*NEW CUSTOMER ORDER*','*Order Reference: '+orderRef+'*','Date & Time: '+dateTime,
-      'Order Type: '+(orderType==='dine-in'?'Dine-in':'Takeaway'),
-      ...(customerName.trim()?['*Customer Name: '+customerName.trim()+'*']:[]),
-      ...(orderType==='dine-in'?['*Table Number: '+tableNumber+'*']:[]),
-      '', 'I would like to place the following order:', '',
-      sections.join('\n\n━━━━━━━━━━━━━━━━━━\n\n'), '',
-
-      'Please confirm item availability and the order details.','Thank you!'
-    ].join('\n');
+    const dayKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+    const history=readHistory();
+    const sameOrderSession=history.filter(order=>order.dayKey===dayKey&&order.orderType===(orderType==='dine-in'?'Dine-in':'Takeaway')&&(orderType==='dine-in'?order.table===tableNumber:!!customerName.trim()&&order.customerName===customerName.trim()));
+    const order={ref:orderRef,dateTime,dayKey,orderSequence:sameOrderSession.length+1,orderType:orderType==='dine-in'?'Dine-in':'Takeaway',table:orderType==='dine-in'?tableNumber:'',customerName:customerName.trim(),status:'WhatsApp opened · Awaiting send',items:items.map(item=>({...item,addons:(item.addons||[]).map(addon=>({...addon}))}))};
+    const message=orderWhatsAppMessage(order);
     const url='https://wa.me/919059059553?text='+encodeURIComponent(message);
     window.open(url,'_blank','noopener,noreferrer');
-    const history=readHistory();history.unshift({ref:orderRef,dateTime,orderType:orderType==='dine-in'?'Dine-in':'Takeaway',table:orderType==='dine-in'?tableNumber:'',customerName:customerName.trim(),status:'WhatsApp opened · Awaiting send',items:items.map(item=>({...item,addons:(item.addons||[]).map(addon=>({...addon}))}))});saveHistory(history);
+    history.unshift(order);saveHistory(history);
     items=[];save();render();backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');
     const notice=document.createElement('div');notice.className='tcc-order-send-notice';notice.setAttribute('role','status');notice.textContent='WhatsApp opened. Please tap Send in WhatsApp to send your order to TCC reception. Your next order will start with an empty Cart.';document.body.append(notice);setTimeout(()=>notice.remove(),6500);
   });
