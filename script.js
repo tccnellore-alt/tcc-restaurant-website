@@ -10,7 +10,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const money=n=>'₹'+Number(n||0).toLocaleString('en-IN');
   const clean=s=>(s||'').replace(/\s+/g,' ').trim();
   const getData=card=>{
-    const name=clean(card.querySelector('h3')?.childNodes[0]?.textContent || card.querySelector('h3')?.textContent);
+    const heading=card.querySelector('h3');
+    const cleanHeading=heading?.cloneNode(true);
+    cleanHeading?.querySelectorAll('.tcc-bestseller-badge,.tcc-new-arrival-badge,.food-badge,.availability-status,[class*="bestseller"],[class*="best-seller"]').forEach(el=>el.remove());
+    const name=clean(cleanHeading?.textContent || heading?.textContent);
     const priceText=clean(card.querySelector(':scope > strong')?.textContent);
     const price=Number((priceText.match(/[\d,]+/)||['0'])[0].replace(/,/g,''));
     const category=clean(card.closest('.menu-group')?.getAttribute('data-group')||'Menu');
