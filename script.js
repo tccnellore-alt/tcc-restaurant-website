@@ -406,6 +406,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     tableError.textContent='';
     const sendButton=backdrop.querySelector('.tcc-wish-send');
     sendButton.disabled=true;sendButton.textContent='Saving Order…';
+    const whatsappWindow=window.open('about:blank','_blank');
     const tableNumber=selectedTable;
     const sections=items.map((item,index)=>{
       const quantity=Math.max(1,Number(item.qty)||1);
@@ -435,12 +436,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       });
       const saved=await apiResponse.json().catch(()=>({}));
       if(!apiResponse.ok||!saved.order)throw new Error(saved.error||'Could not save your order. Please try again.');
-      order.ref=saved.order.order_number;order.status='Order saved · WhatsApp send pending';
-      window.open('https://wa.me/919059059553?text='+encodeURIComponent(orderWhatsAppMessage(order)),'_blank','noopener,noreferrer');
+      order.ref=saved.order.order_number;order.status='Order saved · Awaiting send';
+      const whatsappUrl='https://wa.me/919059059553?text='+encodeURIComponent(orderWhatsAppMessage(order));
+      if(whatsappWindow)whatsappWindow.location.href=whatsappUrl;else window.location.href=whatsappUrl;
       history.unshift(order);saveHistory(history);
     items=[];save();render();backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');
       const notice=document.createElement('div');notice.className='tcc-order-send-notice';notice.setAttribute('role','status');notice.textContent='Your order has been saved with reference '+order.ref+'. WhatsApp is ready — please tap Send to notify TCC. Your next order will start with an empty Cart.';document.body.append(notice);setTimeout(()=>notice.remove(),6500);
-    }catch(error){tableError.textContent=error.message||'Unable to save your order. Please try again.';}
+    }catch(error){if(whatsappWindow)whatsappWindow.close();tableError.textContent=error.message||'Unable to save your order. Please try again.';}
     finally{sendButton.disabled=false;sendButton.textContent='Send Order to WhatsApp';}
   });
   render();
