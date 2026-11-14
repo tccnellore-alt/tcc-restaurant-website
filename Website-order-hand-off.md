@@ -483,3 +483,12 @@ The next agent must verify current branch and deployed backend state before maki
 - Found a JavaScript syntax error in `orders-dashboard.js`: the CSV export `.join("\\r\\n")` separator had been accidentally written as a literal line break inside a quoted string. This prevents the entire dashboard script from parsing, so the login submit handler never attaches.
 - Fixed the CSV export line, verified the entire dashboard JavaScript parses with `new Function`, and added a cache-busting query to the script URL in `orders.html` so the browser fetches the corrected file.
 - After Cloudflare Pages deploys the `whatsappv3` branch, verify login on mobile and confirm dashboard orders load. Do not ask the user to share passwords or credentials in chat.
+
+
+## 16. Login failure diagnostics — 15 November 2026
+
+- Login form now validates both fields before sending.
+- Displays clear messages for invalid credentials (401), rate limiting (429), server/database errors (503), general HTTP errors, request timeout, and network/connectivity failures.
+- Login backend returns a safe, user-facing 503 explanation for temporary login database/server errors while retaining detailed diagnostics only in server logs.
+- The browser console records the technical error for troubleshooting; no passwords are logged.
+- Cache-busting query updated so mobile browsers fetch the latest login diagnostics script.
