@@ -150,7 +150,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       return lines.join('\n');
     });
     const heading=order.isResend?'RESENT ORDER'+(order.orderSequence>1?' — ADDITIONAL ORDER (ORDER '+order.orderSequence+')':''):order.orderSequence>1?'ADDITIONAL ORDER (ORDER '+order.orderSequence+')':'NEW CUSTOMER ORDER';
-    return ['Hello TCC! 👋','', '*'+heading+'*','*Order Reference: '+order.ref+'*','Date & Time: '+order.dateTime,'Order Type: '+order.orderType,...(order.customerName?['*Customer Name: '+order.customerName+'*']:[]),...(order.table?['*Table Number: '+order.table+'*']:[]),'','I would like to place the following order:','',sections.join('\\n\\n━━━━━━━━━━━━━━━━━━\\n\\n'),'','Please confirm item availability and the order details.','Thank you!'].join('\\n');
+    return ['Hello TCC! 👋','', '*'+heading+'*','*Order Reference: '+order.ref+'*','Date & Time: '+order.dateTime,'Order Type: '+order.orderType,...(order.customerName?['*Customer Name: '+order.customerName+'*']:[]),...(order.table?['*Table Number: '+order.table+'*']:[]),'','I would like to place the following order:','',sections.join('\n\n━━━━━━━━━━━━━━━━━━\n\n'),'','Please confirm item availability and the order details.','Thank you!'].join('\n');
   };
   const openHistory=()=>{const list=historyPanel.querySelector('.tcc-order-history-list'),history=readHistory();list.replaceChildren();if(!history.length){const empty=document.createElement('p');empty.textContent='No previous orders on this device yet.';list.append(empty);}history.forEach(order=>{
     const card=document.createElement('article');card.className='tcc-order-history-card';
