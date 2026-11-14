@@ -81,7 +81,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       save();render();
     });
     const price=card.querySelector(':scope > strong');
-    (price||card).insertAdjacentElement('afterend',btn);
+    const info=card.querySelector('.m-item-info')||card.firstElementChild||card;info.appendChild(btn);
   });
   const open=()=>{backdrop.classList.add('is-open');backdrop.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';backdrop.querySelector('.tcc-wish-close').focus()};
   const close=()=>{backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');document.body.style.overflow=''};
