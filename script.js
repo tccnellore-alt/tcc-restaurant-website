@@ -65,6 +65,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
     .tcc-wish-head h2{margin:0;font:600 27px Georgia,serif;color:#173c2b}
     .tcc-wish-close{width:36px;height:36px;border:1px solid rgba(23,60,43,.16);border-radius:50%;background:transparent;color:#173c2b;font-size:23px;cursor:pointer}
+    .tcc-wish-table-field{display:grid;gap:6px;margin:14px 0 12px;padding:12px;border:1px solid rgba(23,60,43,.14);border-radius:12px;background:#fff}
+    .tcc-wish-table-field label{color:#173c2b;font:700 12px Arial,sans-serif}
+    .tcc-wish-table-field label span{color:#b33b32}
+    .tcc-wish-table-field input{width:100%;box-sizing:border-box;min-height:42px;padding:9px 11px;border:1px solid rgba(23,60,43,.22);border-radius:8px;background:#fffaf0;color:#173c2b;font:600 14px Arial,sans-serif;text-transform:uppercase;outline:none}
+    .tcc-wish-table-field input:focus{border-color:#8d7337;box-shadow:0 0 0 2px rgba(141,115,55,.12)}
+    .tcc-wish-table-field small{min-height:0;color:#b33b32;font:11px Arial,sans-serif}
     .tcc-wish-empty{padding:34px 10px;text-align:center;color:#68756c;font:13px/1.5 Arial,sans-serif}
     .tcc-wish-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:13px 0;border-bottom:1px solid rgba(23,60,43,.12)}
     .tcc-wish-row strong{display:block;font:700 14px/1.35 Arial,sans-serif;color:#173c2b}
@@ -85,7 +91,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   float.type='button';float.className='tcc-wish-float';float.innerHTML='<span aria-hidden="true">♡</span><span>Wishlist</span><span class="tcc-wish-count">0</span>';
   float.setAttribute('aria-label','Open wishlist');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
-  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Wishlist</h2><button type="button" class="tcc-wish-close" aria-label="Close wishlist">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-total"><span>Estimated total</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Send Wishlist to WhatsApp</button><button type="button" class="tcc-wish-clear secondary">Clear Wishlist</button></div><p class="tcc-wish-hint">Show this list to the TCC manager when placing your order. Final order and availability will be confirmed by the team.</p></section>';
+  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Wishlist</h2><button type="button" class="tcc-wish-close" aria-label="Close wishlist">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field"><label for="tccWishTableNumber">Table Number <span>*</span></label><input id="tccWishTableNumber" type="text" required autocomplete="off" autocapitalize="characters" placeholder="Enter table number (e.g. S1, C2, P1, T1)" aria-describedby="tccWishTableError"><small id="tccWishTableError" role="alert"></small></div><div class="tcc-wish-total"><span>Estimated total</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Send Wishlist to WhatsApp</button><button type="button" class="tcc-wish-clear secondary">Clear Wishlist</button></div><p class="tcc-wish-hint">Show this list to the TCC manager when placing your order. Final order and availability will be confirmed by the team.</p></section>';
   const choice=document.createElement('div');choice.className='tcc-wish-choice';choice.setAttribute('aria-hidden','true');
   choice.innerHTML='<section class="tcc-wish-choice-panel" role="dialog" aria-modal="true"><h3 class="tcc-wish-choice-title">Choose add-ons</h3><p>Select up to 2 add-ons. You can also continue with No Add-ons.</p><div class="tcc-wish-addon-options"></div><div class="tcc-wish-choice-actions"><button type="button" class="tcc-wish-choice-confirm">Add to Wishlist</button><button type="button" class="tcc-wish-choice-cancel secondary">Cancel</button></div></section>';
   document.body.append(float,backdrop,choice);
@@ -261,8 +267,26 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   choice.addEventListener('click',event=>{if(event.target===choice)closeChoice();});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&choice.classList.contains('is-open'))closeChoice();});
   backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];save();render()});
+  const tableInput=backdrop.querySelector('#tccWishTableNumber');
+  const tableError=backdrop.querySelector('#tccWishTableError');
+  const validTableNumber=value=>/^(?:s[1-6]|c[1-4]|p[1-3]|t[12])$/i.test(value.trim());
+  tableInput.addEventListener('input',()=>{
+    tableInput.setCustomValidity('');
+    tableError.textContent='';
+    tableInput.value=tableInput.value.replace(/\\s+/g,'');
+  });
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',()=>{
     if(!items.length)return;
+    const tableNumber=tableInput.value.trim();
+    if(!validTableNumber(tableNumber)){
+      tableInput.setCustomValidity('Enter a valid table number.');
+      tableError.textContent='Required. Accepted tables: S1–S6, C1–C4, P1–P3, T1–T2 (uppercase or lowercase).';
+      tableInput.reportValidity();
+      tableInput.focus();
+      return;
+    }
+    tableInput.setCustomValidity('');
+    tableError.textContent='';
     const sections=items.map((item,index)=>{
       const quantity=Math.max(1,Number(item.qty)||1);
       const details=[
@@ -280,6 +304,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       'Hello TCC! 👋',
       '',
       'I would like to place an order for the following:',
+      '',
+      '*Table Number: '+tableNumber.toUpperCase()+'*',
       '',
       sections.join('\n\n━━━━━━━━━━━━━━━━━━\n\n'),
       '',
