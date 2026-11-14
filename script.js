@@ -103,7 +103,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
 
   const count=()=>float.querySelector('.tcc-wish-count');
   const render=()=>{
-    count().textContent=items.reduce((s,x)=>s+x.qty,0);
+    count().textContent=items.length;
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
       if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Added to Wishlist':'♡ Add to Wishlist';btn.setAttribute('aria-label',added?'Remove '+data.name+' from wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Saved to wishlist':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
