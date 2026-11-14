@@ -75,7 +75,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const data=getData(card);
     if(!data.name||!data.price||card.querySelector('.availability-status'))return;
     if(card.querySelector('.tcc-wish-add'))return;
-    const btn=document.createElement('button');btn.type='button';btn.className='tcc-wish-add';btn.addEventListener('click',()=>{
+    const btn=document.createElement('button');btn.type='button';btn.className='tcc-wish-add';btn.addEventListener('click',event=>{event.stopPropagation();
       const found=items.find(x=>x.key===data.key);
       if(found)items=items.filter(x=>x.key!==data.key);else items.push({...data,qty:1});
       save();render();
