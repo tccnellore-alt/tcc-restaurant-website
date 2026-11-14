@@ -14,7 +14,22 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const priceText=clean(card.querySelector(':scope > strong')?.textContent);
     const price=Number((priceText.match(/[\d,]+/)||['0'])[0].replace(/,/g,''));
     const category=clean(card.closest('.menu-group')?.getAttribute('data-group')||'Menu');
-    return {name,price,category,key:(category+'|'+name).toLowerCase()};
+    const section=clean(card.closest('.menu-section')?.querySelector('h2')?.textContent||'');
+    return {name,price,category,section,key:(category+'|'+name).toLowerCase()};
+  };
+  const addonOptions=card=>{
+    const data=getData(card),section=data.section.toLowerCase(),group=card.closest('.menu-group');
+    let source=[];
+    if(group?.id==='coffee'&&typeof tccCoffeeAddonsByDrink!=='undefined'&&tccCoffeeAddonsByDrink[data.name]){
+      const price=typeof tccCoffeeAddonPrice!=='undefined'?Number(String(tccCoffeeAddonPrice).replace(/[^\d.]/g,''))||50:50;
+      source=tccCoffeeAddonsByDrink[data.name].map(name=>({name,price}));
+    }else if(section.includes('pasta')){
+      source=[...document.querySelectorAll('.pasta-addon-inline[aria-label="Pasta add-ons"] .addons-row>span')].map(el=>({name:clean(el.firstChild?.textContent||el.textContent),price:Number((el.querySelector('b')?.textContent.match(/[\d,]+/)||['0'])[0].replace(/,/g,''))}));
+    }else if(section.includes('pizza')){
+      const panel=card.closest('.menu-section')?.querySelector('.pizza-addon-inline');
+      source=[...(panel?.querySelectorAll('.addons-row>span')||[])].map(el=>({name:clean(el.firstChild?.textContent||el.textContent),price:Number((el.querySelector('b')?.textContent.match(/[\d,]+/)||['0'])[0].replace(/,/g,''))}));
+    }
+    return source.filter(x=>x.name);
   };
   const style=document.createElement('style');
   style.textContent=`
@@ -23,6 +38,19 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:7px!important;min-width:0!important;width:100%!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row h3{display:inline!important;flex:0 1 auto!important;min-width:0!important;margin:0!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row .tcc-wish-add{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:100%!important;vertical-align:middle!important;white-space:nowrap!important;min-height:28px!important;margin:0!important;padding:0 10px!important;font-size:10px!important;line-height:1!important}
+    .tcc-wish-choice{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(7,22,15,.68)}
+    .tcc-wish-choice.is-open{display:flex}
+    .tcc-wish-choice-panel{width:min(100%,440px);max-height:85dvh;overflow:auto;padding:20px;border-radius:18px;background:#fffaf0;color:#173c2b;box-shadow:0 18px 60px rgba(0,0,0,.3)}
+    .tcc-wish-choice-panel h3{margin:0 0 6px;font:700 21px Georgia,serif}
+    .tcc-wish-choice-panel p{margin:0 0 12px;color:#6d776e;font:12px Arial,sans-serif}
+    .tcc-wish-addon-options{display:grid;gap:8px;margin:12px 0}
+    .tcc-wish-addon-options label{display:flex;align-items:center;gap:9px;padding:10px;border:1px solid rgba(23,60,43,.15);border-radius:10px;background:#fff;font:12px Arial,sans-serif}
+    .tcc-wish-addon-options input{accent-color:#173c2b}
+    .tcc-wish-choice-actions{display:flex;gap:8px;margin-top:14px}
+    .tcc-wish-choice-actions button{flex:1;min-height:42px;border:1px solid #173c2b;border-radius:10px;background:#173c2b;color:#fffaf0;font:700 12px Arial,sans-serif}
+    .tcc-wish-choice-actions .secondary{background:transparent;color:#173c2b}
+    .tcc-wish-note{display:block;width:100%;min-height:54px;box-sizing:border-box;margin-top:8px;padding:9px;border:1px solid rgba(23,60,43,.18);border-radius:9px;background:#fffaf0;color:#173c2b;font:12px Arial,sans-serif;resize:vertical}
+    .tcc-wish-item-note{width:100%;min-height:48px;box-sizing:border-box;margin-top:8px;padding:8px;border:1px solid rgba(23,60,43,.16);border-radius:8px;background:#fff;color:#173c2b;font:12px Arial,sans-serif}
     .tcc-wish-float{position:fixed;right:16px;bottom:calc(108px + env(safe-area-inset-bottom));z-index:2100;display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid #d6bd82;border-radius:999px;background:#173c2b;color:#fffaf0;box-shadow:0 8px 24px rgba(0,0,0,.22);font:800 12px Arial,sans-serif;cursor:pointer}
     .tcc-wish-float .tcc-wish-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#f2dfb0;color:#173c2b;font-size:10px}
     @media(max-width:480px){.tcc-wish-float{right:12px;bottom:calc(108px + env(safe-area-inset-bottom))}}
@@ -54,7 +82,21 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   float.setAttribute('aria-label','Open wishlist');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
   backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Wishlist</h2><button type="button" class="tcc-wish-close" aria-label="Close wishlist">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-total"><span>Estimated total</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Send Wishlist to WhatsApp</button><button type="button" class="tcc-wish-clear secondary">Clear Wishlist</button></div><p class="tcc-wish-hint">Show this list to the TCC manager when placing your order. Final order and availability will be confirmed by the team.</p></section>';
-  document.body.append(float,backdrop);
+  const choice=document.createElement('div');choice.className='tcc-wish-choice';choice.setAttribute('aria-hidden','true');
+  choice.innerHTML='<section class="tcc-wish-choice-panel" role="dialog" aria-modal="true"><h3 class="tcc-wish-choice-title">Choose add-ons</h3><p>Select up to 2 add-ons. You can also continue with No Add-ons.</p><div class="tcc-wish-addon-options"></div><div class="tcc-wish-choice-actions"><button type="button" class="tcc-wish-choice-confirm">Add to Wishlist</button><button type="button" class="tcc-wish-choice-cancel secondary">Cancel</button></div></section>';
+  document.body.append(float,backdrop,choice);
+  let pendingProduct=null;
+  const closeChoice=()=>{choice.classList.remove('is-open');choice.setAttribute('aria-hidden','true');pendingProduct=null;};
+  const openChoice=(card,data,options)=>{
+    pendingProduct={card,data,options};
+    const wrap=choice.querySelector('.tcc-wish-addon-options');wrap.replaceChildren();
+    choice.querySelector('.tcc-wish-choice-title').textContent=data.name;
+    const none=document.createElement('label'),noneInput=document.createElement('input');noneInput.type='radio';noneInput.name='tccWishNoAddon';noneInput.value='none';noneInput.checked=true;none.append(noneInput,document.createTextNode('No Add-ons'));wrap.append(none);
+    options.forEach((opt,index)=>{const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.value=String(index);input.addEventListener('change',()=>{const checked=[...wrap.querySelectorAll('input[type="checkbox"]:checked')];if(checked.length>2){input.checked=false;}});label.append(input,document.createTextNode(opt.name+' — '+money(opt.price)));wrap.append(label);});
+    noneInput.addEventListener('change',()=>wrap.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false));
+    choice.classList.add('is-open');choice.setAttribute('aria-hidden','false');
+  };
+
   const count=()=>float.querySelector('.tcc-wish-count');
   const render=()=>{
     count().textContent=items.reduce((s,x)=>s+x.qty,0);
@@ -68,7 +110,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     items.forEach(item=>{
       const row=document.createElement('div');row.className='tcc-wish-row';
       const info=document.createElement('div');const title=document.createElement('strong');title.textContent=item.name;const meta=document.createElement('small');meta.textContent=item.category;info.append(title,meta);
-      const price=document.createElement('div');price.className='tcc-wish-row-price';const amount=document.createElement('span');amount.textContent=money(item.price);const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x.key!==item.key);save();render()});price.append(amount,remove);row.append(info,price);list.append(row);
+      if(item.addons?.length){const addonLine=document.createElement('small');addonLine.textContent='Add-ons: '+item.addons.map(x=>x.name).join(', ');info.append(addonLine);}
+      const note=document.createElement('textarea');note.className='tcc-wish-item-note';note.placeholder='Add a note for this product (optional)';note.value=item.note||'';note.setAttribute('aria-label','Note for '+item.name);note.addEventListener('input',()=>{item.note=note.value;save();});info.append(note);
+      const price=document.createElement('div');price.className='tcc-wish-row-price';const amount=document.createElement('span');amount.textContent=money(item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0));const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x.key!==item.key);save();render()});price.append(amount,remove);row.append(info,price);list.append(row);
     });
     
     
@@ -119,8 +163,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       btn.addEventListener('click',event=>{
         event.preventDefault();event.stopPropagation();
         const found=items.find(x=>x.key===data.key);
-        if(found)items=items.filter(x=>x.key!==data.key);else items.push({...data,qty:1});
-        save();render();
+        if(found){items=items.filter(x=>x.key!==data.key);save();render();return;}
+        const options=addonOptions(card);
+        if(options.length){openChoice(card,data,options);return;}
+        items.push({...data,addons:[],note:''});save();render();
       });
       card.appendChild(btn);
       placeWishlistButton(card,btn);
@@ -153,10 +199,25 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('.tcc-wish-close').addEventListener('click',close);
   backdrop.addEventListener('click',e=>{if(e.target===backdrop)close()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop.classList.contains('is-open'))close()});
+  choice.querySelector('.tcc-wish-choice-confirm').addEventListener('click',()=>{
+    if(!pendingProduct)return;
+    const wrap=choice.querySelector('.tcc-wish-addon-options');
+    const selected=[...wrap.querySelectorAll('input[type="checkbox"]:checked')].slice(0,2).map(input=>pendingProduct.options[Number(input.value)]);
+    items.push({...pendingProduct.data,addons:selected,note:''});save();render();closeChoice();
+  });
+  choice.querySelector('.tcc-wish-choice-cancel').addEventListener('click',closeChoice);
+  choice.addEventListener('click',event=>{if(event.target===choice)closeChoice();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&choice.classList.contains('is-open'))closeChoice();});
   backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];save();render()});
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',()=>{
     if(!items.length)return;
-    const lines=items.map((item,index)=>(index+1)+'. '+item.name+' — '+money(item.price));
+    const lines=items.map((item,index)=>{
+      const details=[(index+1)+'. '+item.name+' — '+money(item.price)];
+      if(item.addons?.length)details.push('   Add-ons: '+item.addons.map(x=>x.name+' ('+money(x.price)+')').join(', '));
+      else details.push('   Add-ons: No Add-ons');
+      if(item.note?.trim())details.push('   Note: '+item.note.trim());
+      return details.join('\n');
+    });
     const message=['Hello TCC! I would like to order these items:','',...lines,'','Please confirm availability. Thank you!'].join('\n');
     const url='https://wa.me/919059059553?text='+encodeURIComponent(message);
     window.open(url,'_blank','noopener,noreferrer');
