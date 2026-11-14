@@ -20,8 +20,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   style.textContent=`
     .menu-page .m-item .tcc-wish-add{position:static!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;min-height:30px!important;margin:0 12px 12px!important;padding:0 12px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#365442!important;box-shadow:none!important;font:700 10px/1 Arial,sans-serif!important;letter-spacing:.02em!important;cursor:pointer!important}
     .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important}
-    body.menu-text-mode .menu-page .m-item h3{display:inline!important}
-    body.menu-text-mode .menu-page .m-item .tcc-wish-add{display:inline-flex!important;vertical-align:middle!important;white-space:nowrap!important;min-height:28px!important;margin:0 0 0 8px!important;padding:0 10px!important;font-size:10px!important;line-height:1!important}
+    body.menu-text-mode .menu-page .m-item .tcc-wish-title-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:7px!important;min-width:0!important;width:100%!important}
+    body.menu-text-mode .menu-page .m-item .tcc-wish-title-row h3{display:inline!important;flex:0 1 auto!important;min-width:0!important;margin:0!important}
+    body.menu-text-mode .menu-page .m-item .tcc-wish-title-row .tcc-wish-add{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:100%!important;vertical-align:middle!important;white-space:nowrap!important;min-height:28px!important;margin:0!important;padding:0 10px!important;font-size:10px!important;line-height:1!important}
     .tcc-wish-float{position:fixed;right:16px;bottom:calc(108px + env(safe-area-inset-bottom));z-index:2100;display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid #d6bd82;border-radius:999px;background:#173c2b;color:#fffaf0;box-shadow:0 8px 24px rgba(0,0,0,.22);font:800 12px Arial,sans-serif;cursor:pointer}
     .tcc-wish-float .tcc-wish-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#f2dfb0;color:#173c2b;font-size:10px}
     @media(max-width:480px){.tcc-wish-float{right:12px;bottom:calc(108px + env(safe-area-inset-bottom))}}
@@ -78,7 +79,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(document.body.classList.contains('menu-text-mode')){
       const heading=card.querySelector('.m-item-info h3, h3');
       if(heading&&heading.parentElement){
-        if(heading.nextElementSibling!==btn)heading.insertAdjacentElement('afterend',btn);
+        let row=heading.closest('.tcc-wish-title-row');
+        if(!row){
+          row=document.createElement('div');row.className='tcc-wish-title-row';
+          heading.parentElement.insertBefore(row,heading);
+          row.appendChild(heading);
+        }
+        if(btn.parentElement!==row)row.appendChild(btn);
         return;
       }
     }
