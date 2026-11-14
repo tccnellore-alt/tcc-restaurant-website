@@ -18,8 +18,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   };
   const style=document.createElement('style');
   style.textContent=`
-    .tcc-wish-add{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:32px;margin:8px 0 0;padding:7px 10px;border:1px solid rgba(23,60,43,.2);border-radius:999px;background:#f4eee1;color:#173c2b;font:800 10px/1 Arial,sans-serif;cursor:pointer}
-    .tcc-wish-add.is-added{background:#173c2b;color:#fff;border-color:#173c2b}
+    .menu-page .m-item .tcc-wish-add{position:absolute;z-index:35;display:grid;place-items:center;width:38px;height:38px;min-height:38px;margin:0;padding:0;border:1px solid rgba(23,60,43,.18);border-radius:50%;background:rgba(255,250,240,.96);color:#173c2b;box-shadow:0 3px 12px rgba(0,0,0,.16);font:700 22px/1 Arial,sans-serif;cursor:pointer;transition:transform .18s ease,background .18s ease}
+    .menu-page .m-item .m-photo-wrap{position:relative}
+    .menu-page .m-item .m-photo-wrap>.tcc-wish-add{right:12px;bottom:12px}
+    .menu-page .m-item .m-item-info>h3 .tcc-wish-add{position:static;display:inline-grid;vertical-align:middle;margin-left:8px;width:29px;height:29px;min-height:29px;font-size:17px;box-shadow:none}
+    .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b;color:#fff;border-color:#173c2b}
+    .menu-page .m-item .tcc-wish-add:active{transform:scale(.92)}
+    @media(prefers-reduced-motion:reduce){.menu-page .m-item .tcc-wish-add{transition:none}}
     .tcc-wish-float{position:fixed;right:16px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:2100;display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid #d6bd82;border-radius:999px;background:#173c2b;color:#fffaf0;box-shadow:0 8px 24px rgba(0,0,0,.22);font:800 12px Arial,sans-serif;cursor:pointer}
     .tcc-wish-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#f2dfb0;color:#173c2b;font-size:10px}
     .tcc-wish-backdrop{position:fixed;inset:0;z-index:10000;display:none;align-items:flex-end;justify-content:center;padding:16px;background:rgba(7,22,15,.62);backdrop-filter:blur(4px)}
@@ -55,7 +60,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     count().textContent=items.reduce((s,x)=>s+x.qty,0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Added to Wishlist':'♡ Add to Wishlist';btn.setAttribute('aria-pressed',String(added));}
+      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'♥':'♡';btn.setAttribute('aria-label',added?'Remove '+data.name+' from wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Saved to wishlist':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
@@ -70,6 +75,24 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     backdrop.querySelector('.tcc-wish-total').style.display=items.length?'flex':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
   };
+  const placeWishlistButton=(card,btn)=>{
+    if(document.body.classList.contains('menu-text-mode')){
+      const heading=card.querySelector('.m-item-info h3,h3');
+      if(heading&&btn.parentElement!==heading)heading.appendChild(btn);
+    }else{
+      const photo=card.querySelector('.m-photo-wrap');
+      if(photo&&btn.parentElement!==photo)photo.appendChild(btn);
+      else if(!photo&&btn.parentElement!==card)card.appendChild(btn);
+    }
+  };
+  document.querySelectorAll('[data-menu-view]').forEach(toggle=>{
+    toggle.addEventListener('click',()=>{
+      requestAnimationFrame(()=>document.querySelectorAll('.m-item').forEach(card=>{
+        const btn=card.querySelector('.tcc-wish-add');
+        if(btn)placeWishlistButton(card,btn);
+      }));
+    });
+  });
   const attachWishlistButtons=(root=document)=>{
     const cards=[];
     if(root.matches?.('.m-item'))cards.push(root);
@@ -87,8 +110,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         if(found)items=items.filter(x=>x.key!==data.key);else items.push({...data,qty:1});
         save();render();
       });
-      const info=card.querySelector('.m-item-info')||card.firstElementChild||card;
-      info.appendChild(btn);
+      card.appendChild(btn);
+      placeWishlistButton(card,btn);
       added=true;
     });
     if(added)render();
