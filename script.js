@@ -34,7 +34,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-row small{display:block;margin-top:4px;color:#7b806f;font:11px Arial,sans-serif}
     .tcc-wish-row-price{display:flex;align-items:center;gap:7px;white-space:nowrap;color:#8d7337;font:800 13px Arial,sans-serif}.tcc-wish-qty{display:flex;align-items:center;gap:5px;color:#173c2b}.tcc-wish-qty button{width:25px;height:25px;border:1px solid rgba(23,60,43,.2);border-radius:50%;background:#fff;color:#173c2b;font:700 15px Arial,sans-serif;cursor:pointer}
     .tcc-wish-remove{border:0;background:transparent;color:#a33e34;font:700 11px Arial,sans-serif;cursor:pointer;padding:5px}
-    .tcc-wish-total{display:flex;justify-content:space-between;gap:12px;padding:16px 0 12px;font:700 14px Arial,sans-serif}
+    .tcc-wish-total{display:none!important}
     .tcc-wish-total strong{font-size:18px;color:#8d7337}
     .tcc-wish-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
     .tcc-wish-actions button{min-height:46px;border:1px solid #173c2b;border-radius:12px;background:#173c2b;color:#fffaf0;font:800 11px Arial,sans-serif;cursor:pointer}
@@ -65,8 +65,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const info=document.createElement('div');const title=document.createElement('strong');title.textContent=item.name;const meta=document.createElement('small');meta.textContent=item.category+' · Qty '+item.qty;info.append(title,meta);
       const price=document.createElement('div');price.className='tcc-wish-row-price';const amount=document.createElement('span');amount.textContent=money(item.price*item.qty);const qty=document.createElement('div');qty.className='tcc-wish-qty';const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.setAttribute('aria-label','Decrease quantity of '+item.name);const qtyText=document.createElement('span');qtyText.textContent=item.qty;const plus=document.createElement('button');plus.type='button';plus.textContent='+';plus.setAttribute('aria-label','Increase quantity of '+item.name);minus.addEventListener('click',()=>{item.qty=Math.max(1,item.qty-1);save();render()});plus.addEventListener('click',()=>{item.qty+=1;save();render()});qty.append(minus,qtyText,plus);const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x.key!==item.key);save();render()});price.append(amount,qty,remove);row.append(info,price);list.append(row);
     });
-    const total=items.reduce((s,x)=>s+x.price*x.qty,0);
-    backdrop.querySelector('.tcc-wish-total strong').textContent=money(total);
+    
+    
     backdrop.querySelector('.tcc-wish-total').style.display=items.length?'flex':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
   };
