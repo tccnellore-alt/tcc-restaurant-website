@@ -262,7 +262,7 @@ All requests should include the public Supabase `apikey` header and appropriate 
 - Simplified dashboard actions: Accept & Prepare, Reject Order, Ready & Complete, Cancel Order.
 - Edit products action (currently JSON prompt).
 - Archive order action with confirmation.
-- Analytics section:
+- Business analytics is hidden by default in a compact top-right three-dot menu; staff open it only when needed.\n- Analytics section:
   - filtered-period sales
   - Today sales
   - This week sales
