@@ -235,7 +235,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const details=[
         '*'+(index+1)+'. '+item.name+'*',
         '*Quantity: '+quantity+'*',
-        'Price: '+money(item.price)+' each'
+        
       ];
       if(item.addons?.length){
         details.push('Add-ons: '+item.addons.map(x=>x.name+' ('+money(x.price)+')').join(', '));
