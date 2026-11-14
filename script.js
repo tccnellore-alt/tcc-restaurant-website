@@ -241,7 +241,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const qty=document.createElement('span');qty.textContent='0';
       const plus=document.createElement('button');plus.type='button';plus.textContent='+';plus.setAttribute('aria-label','Add one '+data.name+' to cart');
       minus.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const matching=items.filter(x=>sameProduct(x,data));const last=matching[matching.length-1];if(!last)return;if((Number(last.qty)||1)>1)last.qty--;else items=items.filter(x=>x!==last);save();render();});
-      plus.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const last=items.filter(x=>sameProduct(x,data)).slice(-1)[0];if(last){last.qty=(Number(last.qty)||1)+1;save();render();}else btn.click();});
+      plus.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const options=addonOptions(card);if(options.length){openChoice(card,data,options);return;}const last=items.filter(x=>sameProduct(x,data)).slice(-1)[0];if(last){last.qty=(Number(last.qty)||1)+1;save();render();}else btn.click();});
       stepper.append(minus,qty,plus);
       const btn=document.createElement('button');
       btn.type='button';btn.className='tcc-wish-add';
