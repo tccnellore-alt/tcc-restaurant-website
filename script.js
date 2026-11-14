@@ -88,12 +88,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
   const float=document.createElement('button');
-  float.type='button';float.className='tcc-wish-float';float.innerHTML='<span aria-hidden="true">♡</span><span>Wishlist</span><span class="tcc-wish-count">0</span>';
-  float.setAttribute('aria-label','Open wishlist');
+  float.type='button';float.className='tcc-wish-float';float.innerHTML='<span aria-hidden="true">♡</span><span>Cart</span><span class="tcc-wish-count">0</span>';
+  float.setAttribute('aria-label','Open cart');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
-  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Wishlist</h2><button type="button" class="tcc-wish-close" aria-label="Close wishlist">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field"><label for="tccWishTableNumber">Table Number <span>*</span></label><input id="tccWishTableNumber" type="text" required autocomplete="off" autocapitalize="characters" placeholder="Enter table number (e.g. S1, C2, P1, T1)" aria-describedby="tccWishTableError"><small id="tccWishTableError" role="alert"></small></div><div class="tcc-wish-total"><span>Estimated total</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Send Wishlist to WhatsApp</button><button type="button" class="tcc-wish-clear secondary">Clear Wishlist</button></div><p class="tcc-wish-hint">Show this list to the TCC manager when placing your order. Final order and availability will be confirmed by the team.</p></section>';
+  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Cart</h2><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field"><label for="tccWishTableNumber">Table Number <span>*</span></label><input id="tccWishTableNumber" type="text" required autocomplete="off" autocapitalize="characters" placeholder="Enter table number (e.g. S1, C2, P1, T1)" aria-describedby="tccWishTableError"><small id="tccWishTableError" role="alert"></small></div><div class="tcc-wish-total"><span>Estimated total</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Send Cart to WhatsApp</button><button type="button" class="tcc-wish-clear secondary">Clear Cart</button></div><p class="tcc-wish-hint">Show this list to the TCC manager when placing your order. Final order and availability will be confirmed by the team.</p></section>';
   const choice=document.createElement('div');choice.className='tcc-wish-choice';choice.setAttribute('aria-hidden','true');
-  choice.innerHTML='<section class="tcc-wish-choice-panel" role="dialog" aria-modal="true"><h3 class="tcc-wish-choice-title">Choose add-ons</h3><p>Select up to 2 add-ons. You can also continue with No Add-ons.</p><div class="tcc-wish-addon-options"></div><div class="tcc-wish-choice-actions"><button type="button" class="tcc-wish-choice-confirm">Add to Wishlist</button><button type="button" class="tcc-wish-choice-cancel secondary">Cancel</button></div></section>';
+  choice.innerHTML='<section class="tcc-wish-choice-panel" role="dialog" aria-modal="true"><h3 class="tcc-wish-choice-title">Choose add-ons</h3><p>Select up to 2 add-ons. You can also continue with No Add-ons.</p><div class="tcc-wish-addon-options"></div><div class="tcc-wish-choice-actions"><button type="button" class="tcc-wish-choice-confirm">Add to Cart</button><button type="button" class="tcc-wish-choice-cancel secondary">Cancel</button></div></section>';
   document.body.append(float,backdrop,choice);
   let pendingProduct=null;
   const closeChoice=()=>{choice.classList.remove('is-open');choice.setAttribute('aria-hidden','true');pendingProduct=null;};
@@ -138,11 +138,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Added · + Add another':'＋ Add to Wishlist';btn.setAttribute('aria-label',added?'Add another '+data.name+' to wishlist':'Add '+data.name+' to wishlist');btn.setAttribute('title',added?'Tap to add this item again':'Add to wishlist');btn.setAttribute('aria-pressed',String(added));}
+      if(btn){const added=items.some(x=>x.key===data.key);btn.classList.toggle('is-added',added);btn.textContent=added?'✓ Added · + Add another':'＋ Add to Cart';btn.setAttribute('aria-label',added?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title',added?'Tap to add this item again':'Add to cart');btn.setAttribute('aria-pressed',String(added));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
-    if(!items.length){list.innerHTML='<div class="tcc-wish-empty">Your wishlist is empty.<br>Add your favourite items from the menu.</div>';}
+    if(!items.length){list.innerHTML='<div class="tcc-wish-empty">Your cart is empty.<br>Add your favourite items from the menu.</div>';}
     items.forEach(item=>{
       const row=document.createElement('div');row.className='tcc-wish-row';
       const info=document.createElement('div');const title=document.createElement('strong');title.textContent=item.name;const meta=document.createElement('small');meta.textContent=item.category;info.append(title,meta);
