@@ -623,3 +623,16 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
     padding-top:6px!important;
   }
 }
+
+
+/* Wishlist spacing: drink cards should size to their own content.
+   Food cards keep the existing equal-height row layout. */
+@media (max-width: 849px) {
+  body:not(.menu-text-mode) .menu-page .menu-group:not(#food) .m-list {
+    align-items: start !important;
+  }
+  body:not(.menu-text-mode) .menu-page .menu-group:not(#food) .m-item {
+    align-self: start !important;
+    height: auto !important;
+  }
+}
