@@ -151,7 +151,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const message=document.createElement('small');message.textContent='Checking for a recent order…';continuationBox.append(message);continuationBox.hidden=false;
     try{
       const url='https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders?action=recent-orders&phone='+encodeURIComponent(phone)+'&order_type='+encodeURIComponent(orderType)+'&table_number='+encodeURIComponent(selectedTable);
-      const response=await fetch(url,{headers:{'apikey':'${PUBLIC_KEY}','Authorization':'Bearer ${PUBLIC_KEY}'}});
+      const response=await fetch(url,{headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A'}});
       const data=await response.json().catch(()=>({}));if(requestId!==recentOrderCheck)return;
       continuationBox.replaceChildren();const orders=data.orders||[];
       if(!response.ok||!orders.length){continuationBox.hidden=true;continuationOrder=null;return;}
