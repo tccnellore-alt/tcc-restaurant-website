@@ -2359,15 +2359,13 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 
 
 
-/* Premium permanent gold frame for every photo-menu product card. */
+/* Permanent premium gold focus frame — reuse the exact Drink Finder highlight. */
 body:not(.menu-text-mode) .menu-group .m-item,
 body:not(.menu-text-mode) .menu-section .m-item{
- border:2px solid #b79a5a!important;
- box-shadow:0 0 0 2px rgba(183,154,90,.22),0 7px 20px rgba(23,61,49,.075)!important;
-}
-body:not(.menu-text-mode) .menu-group .m-item.tcc-drink-picked-focus,
-body:not(.menu-text-mode) .menu-section .m-item.tcc-drink-picked-focus{
- outline:none!important;
+ outline:3px solid #b79a5a!important;
+ outline-offset:3px!important;
+ border-radius:14px!important;
+ transition:outline-color .3s ease!important;
 }
 </style>
 <style id="tcc-category-end-nav-styles">
