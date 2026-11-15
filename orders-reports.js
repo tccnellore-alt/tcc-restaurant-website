@@ -5,36 +5,31 @@ async function load(){try{if(!token)throw new Error("Please sign in from the Ord
 function periodOrders(){let p=$("#reportPeriod").value,now=new Date();let from=null,to=key(now);if(p==="today")from=to;else if(["7","30","90"].includes(p)){let d=new Date(now);d.setDate(d.getDate()-Number(p)+1);from=key(d);}else if(p==="custom"){from=$("#reportFrom").value||null;to=$("#reportTo").value||key(now);}return allOrders.filter(o=>{let d=key(new Date(o.created_at));return(!from||d>=from)&&(!to||d<=to);});}
 function horizontal(el,entries){el.replaceChildren();let max=Math.max(1,...entries.map(x=>x[1]));entries.forEach(([name,value])=>{let row=document.createElement("div");row.className="hrow";let label=document.createElement("span");label.textContent=name;let track=document.createElement("div");track.className="track";let fill=document.createElement("div");fill.className="fill";fill.style.width=(value/max*100)+"%";track.append(fill);let count=document.createElement("strong");count.textContent=value;row.append(label,track,count);el.append(row);});}
 function renderTableSales(validOrders){
- let tableSales=new Map();let takeawayOrders=0,takeawaySales=0;
+ let tableSales=new Map(),takeawayOrders=new Set(),takeawaySales=0;
  validOrders.forEach(order=>{
-  if(order.order_type==="takeaway"){takeawayOrders++;takeawaySales+=Number(order.total||0);return;}
-  let table=String(order.table_number||"Unassigned").trim()||"Unassigned";
-  let entry=tableSales.get(table)||{orders:0,sales:0};
-  entry.orders++;entry.sales+=Number(order.total||0);tableSales.set(table,entry);
+  let dineInItems=0,takeawayItems=0;
+  (order.items||[]).forEach(item=>{
+   if(item.item_status==="cancelled")return;
+   let qty=Math.max(1,Number(item.quantity)||1),addons=(item.addons||[]).reduce((sum,a)=>sum+Number(a.price||0),0),base=qty*(Number(item.unit_price||0)+addons);
+   let type=item.fulfillment_type||(order.order_type==="takeaway"?"takeaway":"dine-in");
+   if(type==="takeaway"){takeawayItems++;takeawaySales+=base+qty*10;}
+   else{dineInItems++;let table=String(order.table_number||"Unassigned").trim()||"Unassigned",entry=tableSales.get(table)||{orders:0,sales:0};entry.sales+=base;tableSales.set(table,entry);}
+  });
+  if(takeawayItems)takeawayOrders.add(order.id||order.order_number);
+  if(dineInItems){let table=String(order.table_number||"Unassigned").trim()||"Unassigned",entry=tableSales.get(table);entry.orders++;}
  });
  let entries=[...tableSales.entries()].sort((a,b)=>b[1].sales-a[1].sales||b[1].orders-a[1].orders||a[0].localeCompare(b[0],undefined,{numeric:true}));
- let dineInSales=entries.reduce((sum,[,v])=>sum+v.sales,0);
- let tbody=$("#tableSalesBody");tbody.replaceChildren();
- entries.forEach(([table,data],index)=>{
-  let tr=document.createElement("tr");
-  let name=document.createElement("th");name.scope="row";name.textContent=table;
-  let count=document.createElement("td");count.textContent=String(data.orders);
-  let sales=document.createElement("td");sales.className="numeric";sales.textContent=money(data.sales);
-  let average=document.createElement("td");average.className="numeric";average.textContent=money(data.orders?data.sales/data.orders:0);
-  let share=document.createElement("td");share.className="numeric";share.textContent=(dineInSales?data.sales/dineInSales*100:0).toFixed(1)+"%";
-  tr.append(name,count,sales,average,share);if(index===0)tr.classList.add("top-table-row");tbody.append(tr);
- });
- $("#tableSalesEmpty").hidden=entries.length>0;
- $("#tableSalesWrap").hidden=entries.length===0;
- $("#topTableSales").textContent=entries.length?entries[0][0]+" · "+money(entries[0][1].sales):"—";
- $("#takeawaySalesSummary").textContent=takeawayOrders+" takeaway orders · "+money(takeawaySales)+" (reported separately)";
- $("#tableSalesFootnote").textContent=entries.length?entries.length+" dine-in tables · "+money(dineInSales)+" total dine-in sales":"No dine-in sales in this period.";
+ let dineInSales=entries.reduce((sum,[,v])=>sum+v.sales,0),tbody=$("#tableSalesBody");tbody.replaceChildren();
+ entries.forEach(([table,data],index)=>{let tr=document.createElement("tr"),name=document.createElement("th");name.scope="row";name.textContent=table;let count=document.createElement("td");count.textContent=String(data.orders);let sales=document.createElement("td");sales.className="numeric";sales.textContent=money(data.sales);let average=document.createElement("td");average.className="numeric";average.textContent=money(data.orders?data.sales/data.orders:0);let share=document.createElement("td");share.className="numeric";share.textContent=(dineInSales?data.sales/dineInSales*100:0).toFixed(1)+"%";tr.append(name,count,sales,average,share);if(index===0)tr.classList.add("top-table-row");tbody.append(tr);});
+ $("#tableSalesEmpty").hidden=entries.length>0;$("#tableSalesWrap").hidden=entries.length===0;$("#topTableSales").textContent=entries.length?entries[0][0]+" · "+money(entries[0][1].sales):"—";
+ $("#takeawaySalesSummary").textContent=takeawayOrders.size+" orders containing takeaway items · "+money(takeawaySales)+" (includes ₹10 per takeaway unit)";
+ $("#tableSalesFootnote").textContent=entries.length?entries.length+" dine-in tables · "+money(dineInSales)+" dine-in item sales":"No dine-in sales in this period.";
 }
 function render(){let rows=periodOrders(),valid=rows.filter(o=>!["cancelled","rejected"].includes(o.status)),sales=valid.reduce((s,o)=>s+Number(o.total||0),0);renderTableSales(valid);$("#rSales").textContent=money(sales);$("#rOrders").textContent=rows.length;$("#rAov").textContent=money(valid.length?sales/valid.length:0);$("#rCancelled").textContent=rows.filter(o=>["cancelled","rejected"].includes(o.status)).length;
 let byDay={};rows.forEach(o=>{let k=key(new Date(o.created_at));byDay[k]??={count:0,sales:0};byDay[k].count++;if(!["cancelled","rejected"].includes(o.status))byDay[k].sales+=Number(o.total||0);});let days=Object.entries(byDay).sort((a,b)=>a[0].localeCompare(b[0])).slice(-90),max=Math.max(1,...days.map(x=>x[1].count));$("#dailyChart").replaceChildren();days.forEach(([day,v])=>{let col=document.createElement("div");col.className="daily-col";let n=document.createElement("em");n.textContent=v.count;let bar=document.createElement("div");bar.className="daily-bar";bar.style.height=(v.count/max*125+2)+"px";bar.title=day+" · "+v.count+" orders · "+money(v.sales);let date=document.createElement("small");date.textContent=day.slice(5);col.append(n,bar,date);$("#dailyChart").append(col);});
-horizontal($("#channelChart"),[["Dine-in",rows.filter(o=>o.order_type==="dine-in").length],["Takeaway",rows.filter(o=>o.order_type==="takeaway").length]]);
+horizontal($("#channelChart"),[["Dine-in items",rows.filter(o=>(o.items||[]).some(i=>i.item_status!=="cancelled"&&(i.fulfillment_type||(o.order_type==="takeaway"?"takeaway":"dine-in"))==="dine-in")).length],["Takeaway items",rows.filter(o=>(o.items||[]).some(i=>i.item_status!=="cancelled"&&(i.fulfillment_type||(o.order_type==="takeaway"?"takeaway":"dine-in"))==="takeaway")).length]]);
 horizontal($("#statusChart"),["new","accepted","preparing","ready","completed","cancelled"].map(s=>[s[0].toUpperCase()+s.slice(1),rows.filter(o=>o.status===s).length]));
 let hours=Array.from({length:24},(_,i)=>rows.filter(o=>new Date(o.created_at).getHours()===i).length),peak=Math.max(1,...hours);$("#hourChart").replaceChildren();hours.forEach((n,i)=>{let col=document.createElement("div");col.className="hour-col";let bar=document.createElement("i");bar.style.height=(n/peak*100+2)+"px";bar.title=String(i).padStart(2,"0")+":00 · "+n+" orders";let label=document.createElement("small");label.textContent=i%3===0?String(i).padStart(2,"0"):"";col.append(bar,label);$("#hourChart").append(col);});
 let products={};rows.forEach(o=>(o.items||[]).forEach(i=>{if(i.item_status!=="cancelled")products[i.name]=(products[i.name]||0)+Number(i.quantity||1);}));$("#productTable").replaceChildren();Object.entries(products).sort((a,b)=>b[1]-a[1]).slice(0,12).forEach(([name,count],i)=>{let row=document.createElement("div");row.className="rank-row";let no=document.createElement("span");no.className="rank-no";no.textContent=String(i+1).padStart(2,"0");let title=document.createElement("span");title.textContent=name;let val=document.createElement("strong");val.textContent=count+" sold";row.append(no,title,val);$("#productTable").append(row);});if(!rows.length)$("#dailyChart").textContent="No orders in this period.";}
-function exportCsv(){let rows=periodOrders(),head=["Order","Date","Customer","Mobile","Type","Table","Status","Items","Total"],data=rows.map(o=>[o.order_number,o.created_at,o.customer_name,o.customer_phone,o.order_type,o.table_number,o.status,(o.items||[]).map(i=>i.quantity+"x "+i.name).join("; "),o.total]);let csv=[head,...data].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n"),blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="TCC-online-orders-report.csv";a.click();URL.revokeObjectURL(url);}
+function exportCsv(){let rows=periodOrders(),head=["Order","Date","Customer","Mobile","Order Type","Table","Status","Items with fulfillment","Total"],data=rows.map(o=>[o.order_number,o.created_at,o.customer_name,o.customer_phone,o.order_type,o.table_number,o.status,(o.items||[]).map(i=>i.quantity+"x "+i.name+" ["+(i.fulfillment_type||(o.order_type==="takeaway"?"takeaway":"dine-in"))+"]").join("; "),o.total]);let csv=[head,...data].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n"),blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="TCC-online-orders-report.csv";a.click();URL.revokeObjectURL(url);}
 $("#reportPeriod").addEventListener("change",()=>{let custom=$("#reportPeriod").value==="custom";$("#fromWrap").hidden=!custom;$("#toWrap").hidden=!custom;render();});["reportFrom","reportTo"].forEach(id=>$("#"+id).addEventListener("change",render));$("#reportRefresh").addEventListener("click",load);$("#reportExport").addEventListener("click",exportCsv);$("#reportLogout").addEventListener("click",()=>{localStorage.removeItem(TOKEN_KEY);location.href="orders.html";});load();
