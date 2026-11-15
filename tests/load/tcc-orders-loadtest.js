@@ -5,6 +5,7 @@ import { check, sleep } from 'k6';
 // The synthetic future-dated order reference cannot create or modify an order.
 const BASE_URL = __ENV.TCC_ORDERS_URL || 'https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders';
 const LOOKUP_REF = 'TCC-20990101-LOAD50';
+const ANON_KEY = __ENV.SUPABASE_ANON_KEY;
 
 export const options = {
   stages: [
@@ -26,7 +27,11 @@ export default function () {
   const response = http.get(
     `${BASE_URL}?action=order-lookup&lookup=${LOOKUP_REF}`,
     {
-      headers: { Accept: 'application/json' },
+      headers: {
+        Accept: 'application/json',
+        apikey: ANON_KEY,
+        Authorization: `Bearer ${ANON_KEY}`,
+      },
       tags: { endpoint: 'read-only-order-lookup' },
       timeout: '10s',
     },
