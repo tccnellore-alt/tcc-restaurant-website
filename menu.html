@@ -2369,28 +2369,119 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 @media(max-width:480px){.tcc-category-end-nav{align-items:flex-start;flex-direction:column;gap:13px;padding:17px}.tcc-category-end-button{width:100%}}
 @media(prefers-reduced-motion:reduce){.tcc-category-end-button{transition:none}}
 
-/* Approved weborder-only transfer: product-card spacing and permanent gold frame. */
+/* FINAL PHOTO CARD NORMALIZATION — Food is the master layout for every category. */
 body:not(.menu-text-mode) .menu-section .m-list,
 body:not(.menu-text-mode) .menu-group .m-list{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
  column-gap:14px!important;
  row-gap:16px!important;
-}
-@media(min-width:700px){
- body:not(.menu-text-mode) .menu-section .m-list,
- body:not(.menu-text-mode) .menu-group .m-list{gap:18px!important}
-}
-@media(min-width:1000px){
- body:not(.menu-text-mode) .menu-section .m-list,
- body:not(.menu-text-mode) .menu-group .m-list{gap:20px!important}
+ align-items:stretch!important;
+ grid-auto-rows:1fr!important;
 }
 body:not(.menu-text-mode) .menu-section .m-item,
 body:not(.menu-text-mode) .menu-group .m-item{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:stretch!important;
+ justify-content:flex-start!important;
+ gap:0!important;
+ box-sizing:border-box!important;
+ width:100%!important;
+ height:100%!important;
+ min-width:0!important;
+ min-height:0!important;
+ margin:0!important;
+ padding:0!important;
+ overflow:hidden!important;
+ border-radius:18px!important;
+}
+body:not(.menu-text-mode) .menu-section .m-photo-wrap,
+body:not(.menu-text-mode) .menu-group .m-photo-wrap{
+ display:block!important;
+ position:relative!important;
+ width:100%!important;
+ height:auto!important;
+ min-height:0!important;
+ aspect-ratio:4/5!important;
+ flex:0 0 auto!important;
+ overflow:hidden!important;
+}
+body:not(.menu-text-mode) .menu-section .m-photo,
+body:not(.menu-text-mode) .menu-group .m-photo{
+ display:block!important;
+ width:100%!important;
+ height:100%!important;
+ object-fit:contain!important;
+ object-position:center!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item-info,
+body:not(.menu-text-mode) .menu-group .m-item-info{
+ display:flex!important;
+ flex:1 1 auto!important;
+ flex-direction:column!important;
+ align-items:flex-start!important;
+ justify-content:flex-start!important;
+ box-sizing:border-box!important;
+ width:100%!important;
+ min-width:0!important;
+ min-height:0!important;
+ padding:12px 12px 7px!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item h3,
+body:not(.menu-text-mode) .menu-group .m-item h3{
+ display:flex!important;
+ flex-wrap:wrap!important;
+ align-items:center!important;
+ gap:6px!important;
+ width:100%!important;
+ margin:0!important;
+ padding:0!important;
+ font:800 14px/1.35 Manrope,Arial,sans-serif!important;
+ letter-spacing:-.02em!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item p,
+body:not(.menu-text-mode) .menu-group .m-item p{
+ display:block!important;
+ width:100%!important;
+ min-height:0!important;
+ margin:7px 0 0!important;
+ padding:0!important;
+ font:500 11px/1.45 Manrope,Arial,sans-serif!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item > strong,
+body:not(.menu-text-mode) .menu-group .m-item > strong{
+ align-self:flex-start!important;
+ margin: auto 12px 12px!important;
+ padding:6px 10px!important;
+ border-radius:999px!important;
+ font:800 12px/1.2 Manrope,Arial,sans-serif!important;
+}
+@media(max-width:480px){
+ body:not(.menu-text-mode) .menu-section .m-item-info,
+ body:not(.menu-text-mode) .menu-group .m-item-info{padding:12px 12px 7px!important}
+ body:not(.menu-text-mode) .menu-section .m-item h3,
+ body:not(.menu-text-mode) .menu-group .m-item h3{font-size:13px!important}
+ body:not(.menu-text-mode) .menu-section .m-item > strong,
+ body:not(.menu-text-mode) .menu-group .m-item > strong{margin:auto 12px 12px!important}
+}
+@media(min-width:700px){
+ body:not(.menu-text-mode) .menu-section .m-list,
+ body:not(.menu-text-mode) .menu-group .m-list{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+}
+@media(min-width:1000px){
+ body:not(.menu-text-mode) .menu-section .m-list,
+ body:not(.menu-text-mode) .menu-group .m-list{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important}
+}
+
+/* Permanent premium gold focus frame — reuse the exact Drink Finder highlight. */
+body:not(.menu-text-mode) .menu-group .m-item,
+body:not(.menu-text-mode) .menu-section .m-item{
  outline:3px solid #b79a5a!important;
  outline-offset:3px!important;
  border-radius:14px!important;
  transition:outline-color .3s ease!important;
 }
-
 </style>
 </head>
 <body>
