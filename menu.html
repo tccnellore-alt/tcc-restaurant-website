@@ -2367,6 +2367,47 @@ body:not(.menu-text-mode) .menu-section .m-item{
  border-radius:14px!important;
  transition:outline-color .3s ease!important;
 }
+
+/* Mobile spacing refinements for drink categories only.
+   Gold outlines extend 6px beyond each card, so increase grid gutters to keep them distinct. */
+@media(max-width:849px){
+ .menu-group#coffee .m-list,
+ .menu-group#refreshers-and-tea .m-list,
+ .menu-group#signatures .m-list{
+  column-gap:22px!important;
+  row-gap:22px!important;
+  align-items:start!important;
+ }
+ .menu-group#coffee .m-item,
+ .menu-group#refreshers-and-tea .m-item,
+ .menu-group#signatures .m-item{
+  height:auto!important;
+  min-height:0!important;
+ }
+ .menu-group#coffee .m-item-info,
+ .menu-group#refreshers-and-tea .m-item-info,
+ .menu-group#signatures .m-item-info{
+  flex:0 0 auto!important;
+ }
+ .menu-group#coffee .m-item>strong,
+ .menu-group#refreshers-and-tea .m-item>strong,
+ .menu-group#signatures .m-item>strong{
+  margin:3px 10px 3px!important;
+ }
+ .menu-group#coffee .m-item .tcc-menu-qty,
+ .menu-group#refreshers-and-tea .m-item .tcc-menu-qty,
+ .menu-group#signatures .m-item .tcc-menu-qty{
+  margin:3px 10px 6px!important;
+ }
+}
+@media(max-width:380px){
+ .menu-group#coffee .m-list,
+ .menu-group#refreshers-and-tea .m-list,
+ .menu-group#signatures .m-list{
+  column-gap:18px!important;
+  row-gap:20px!important;
+ }
+}
 </style>
 <style id="tcc-category-end-nav-styles">
 /* TCC category-end navigation */
