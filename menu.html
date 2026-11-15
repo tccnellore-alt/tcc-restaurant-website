@@ -2368,6 +2368,29 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 .tcc-category-end-button:focus-visible{outline:3px solid #b79a5a;outline-offset:3px}
 @media(max-width:480px){.tcc-category-end-nav{align-items:flex-start;flex-direction:column;gap:13px;padding:17px}.tcc-category-end-button{width:100%}}
 @media(prefers-reduced-motion:reduce){.tcc-category-end-button{transition:none}}
+
+/* Approved weborder-only transfer: product-card spacing and permanent gold frame. */
+body:not(.menu-text-mode) .menu-section .m-list,
+body:not(.menu-text-mode) .menu-group .m-list{
+ column-gap:14px!important;
+ row-gap:16px!important;
+}
+@media(min-width:700px){
+ body:not(.menu-text-mode) .menu-section .m-list,
+ body:not(.menu-text-mode) .menu-group .m-list{gap:18px!important}
+}
+@media(min-width:1000px){
+ body:not(.menu-text-mode) .menu-section .m-list,
+ body:not(.menu-text-mode) .menu-group .m-list{gap:20px!important}
+}
+body:not(.menu-text-mode) .menu-section .m-item,
+body:not(.menu-text-mode) .menu-group .m-item{
+ outline:3px solid #b79a5a!important;
+ outline-offset:3px!important;
+ border-radius:14px!important;
+ transition:outline-color .3s ease!important;
+}
+
 </style>
 </head>
 <body>
