@@ -492,3 +492,15 @@ The next agent must verify current branch and deployed backend state before maki
 - Login backend returns a safe, user-facing 503 explanation for temporary login database/server errors while retaining detailed diagnostics only in server logs.
 - The browser console records the technical error for troubleshooting; no passwords are logged.
 - Cache-busting query updated so mobile browsers fetch the latest login diagnostics script.
+
+
+## 17. Common QR and 16-table ordering rules — 15 November 2026
+
+- TCC uses one common printed QR code for the entire menu; do not create per-table QR codes.
+- Frontend requires a table selection for dine-in and hides table selection for takeaway.
+- Supabase Edge Function v17 independently enforces a non-empty table number for dine-in orders; takeaway orders always store `table_number: null`.
+- Dashboard order cards display order type and table number prominently in order metadata.
+- Each successful order is stored as its own database row; no automatic merging by table/customer/cart.
+- Idempotency key is retained only for safe retry of the same pending submission and cleared after successful placement, so a later separate order—even from the same table with identical items—gets a new key/order.
+- Current customer table picker contains 15 labels: S1–S6, C1–C4, P1–P3, T1–T2. Owner says venue has 16 tables; identify the missing table label before adding it. Do not invent the label.
+- Dashboard has a Dine-in/Takeaway filter; orders remain distinct by `order_type`.
