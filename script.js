@@ -415,7 +415,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];selectedTable='';save();render()});
   backdrop.querySelector('.tcc-wish-continue').addEventListener('click',close);
   backdrop.querySelector('#tccCustomerName').addEventListener('input',event=>{customerName=event.target.value.trimStart();});
-  backdrop.querySelector('#tccCustomerPhone').addEventListener('input',event=>{customerPhone=event.target.value.trim();});
+  backdrop.querySelector('#tccCustomerPhone').addEventListener('input',event=>{customerPhone=event.target.value.trim();if(customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'').length===10)checkRecentOrders();});
   backdrop.querySelector('#tccCustomerPhone').addEventListener('blur',checkRecentOrders);
   backdrop.querySelector('.tcc-order-history-open').addEventListener('click',openHistory);
   document.querySelector('.tcc-mobile-track')?.addEventListener('click',()=>{openHistory();setTimeout(()=>lookupInput?.focus(),80);});
