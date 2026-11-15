@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow"><title>TCC Reports</title><link rel="stylesheet" href="orders-reports.css"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow"><title>TCC Reports</title><link rel="stylesheet" href="orders-reports.css?v=2"></head>
 <body><main class="report-shell">
 <header class="report-header"><div><p class="eyebrow">THE COFFEE CLUB · NELLORE</p><h1>Business reports</h1><p class="muted" id="reportUpdated">Loading order data…</p></div><div class="header-actions"><a class="button secondary" href="orders.html">← Order Desk</a><button class="button secondary" id="reportRefresh">Refresh</button><button class="button secondary" id="reportLogout">Log out</button></div></header>
 <section class="report-controls"><label>Report period<select id="reportPeriod"><option value="today">Today</option><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="all">All available data</option><option value="custom">Custom range</option></select></label><label id="fromWrap" hidden>From<input type="date" id="reportFrom"></label><label id="toWrap" hidden>To<input type="date" id="reportTo"></label><button class="button primary" id="reportExport">Export CSV</button></section>
@@ -18,4 +18,4 @@
 <article class="panel"><div class="panel-heading"><div><h2>Order status</h2><p>Current status of orders in this period</p></div></div><div id="statusChart" class="horizontal-chart"></div></article>
 <article class="panel"><div class="panel-heading"><div><h2>Busy hours</h2><p>When customers place orders</p></div></div><div id="hourChart" class="hour-chart"></div></article>
 <article class="panel"><div class="panel-heading"><div><h2>Most ordered products</h2><p>Based on item quantities</p></div></div><div id="productTable" class="ranking"></div></article></section>
-<footer>Online order analytics · This page does not replace your billing software reports.</footer></main><script src="orders-reports.js?v=1"></script></body></html>
+<footer>Online order analytics · This page does not replace your billing software reports.</footer></main><script src="orders-reports.js?v=2"></script></body></html>
