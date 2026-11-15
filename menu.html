@@ -76,23 +76,7 @@
 .m-item:active{transform:scale(.985)}
 @media(min-width:850px){.menu-category-intro{padding-top:42px;padding-bottom:26px}.menu-category-intro h2{font-size:58px}}
 
-/* FINAL CATEGORY CARD STYLE */
-.menu-group#coffee .m-item,
-.menu-group#refreshers-and-tea .m-item,
-.menu-group#signatures .m-item{
-  display:flex!important;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-  padding:17px 16px!important;
-  background:linear-gradient(135deg,#f7f0e1 0%,#fffdf8 100%)!important;
-  border:1px solid rgba(183,154,90,.32)!important;
-  border-radius:16px!important;
-  box-shadow:0 7px 22px rgba(20,42,31,.055)!important;
-}
-.menu-group#coffee .m-list,
-.menu-group#refreshers-and-tea .m-list,
-.menu-group#signatures .m-list{display:grid!important;gap:10px!important}
+/* Drink category headings retain their gold editorial treatment. */
 .menu-group#coffee .menu-section h2,
 .menu-group#refreshers-and-tea .menu-section h2,
 .menu-group#signatures .menu-section h2{
@@ -115,23 +99,6 @@
   margin-top:7px!important;
 }
 
-.menu-group#coffee .menu-section,
-.menu-group#refreshers-and-tea .menu-section,
-.menu-group#signatures .menu-section{margin-top:28px}
-.menu-group#coffee .m-list,
-.menu-group#refreshers-and-tea .m-list,
-.menu-group#signatures .m-list{gap:10px}
-.menu-group#coffee .m-item,
-.menu-group#refreshers-and-tea .m-item,
-.menu-group#signatures .m-item{
-  background:linear-gradient(135deg,#f7f0e1,#fff);
-  border:1px solid rgba(183,154,90,.28);
-  border-radius:16px;box-shadow:0 7px 22px rgba(20,42,31,.055);
-  padding:17px 16px;
-}
-.menu-group#coffee .m-item strong,
-.menu-group#refreshers-and-tea .m-item strong,
-.menu-group#signatures .m-item strong{font-size:15px}
 .menu-group#coffee .menu-section h2,
 .menu-group#refreshers-and-tea .menu-section h2,
 .menu-group#signatures .menu-section h2{
@@ -143,23 +110,12 @@
 .menu-group#signatures .menu-section h2:after{
   content:"";display:block;width:34px;height:2px;background:#b79a5a;margin-top:7px;
 }
-.menu-group#signatures .menu-section{margin-top:28px}
-.menu-group#signatures .m-list{gap:10px}
-.menu-group#signatures .m-item{
-  background:linear-gradient(135deg,#f7f0e1,#fff);
-  border:1px solid rgba(183,154,90,.28);
-  border-radius:16px;box-shadow:0 7px 22px rgba(20,42,31,.055);
-  padding:17px 16px;
-}
 .menu-group#signatures .menu-section h2{
   color:#8d7337;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
   border-bottom:0;padding-bottom:5px;
 }
 .menu-group#signatures .menu-section h2:after{
   content:"";display:block;width:34px;height:2px;background:#b79a5a;margin-top:7px;
-}
-.menu-group#refreshers-and-tea .m-item{
-  background:linear-gradient(135deg,#f7f0e1 0%,#fffdf8 100%)!important;
 }
 
 /* Mobile food navigation touch targets */
@@ -2358,6 +2314,112 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 }
 
 
+
+
+/* FINAL PHOTO CARD NORMALIZATION — Food is the master layout for every category. */
+body:not(.menu-text-mode) .menu-section .m-list,
+body:not(.menu-text-mode) .menu-group .m-list{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ column-gap:12px!important;
+ row-gap:14px!important;
+ align-items:stretch!important;
+ grid-auto-rows:1fr!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item,
+body:not(.menu-text-mode) .menu-group .m-item{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:stretch!important;
+ justify-content:flex-start!important;
+ gap:0!important;
+ box-sizing:border-box!important;
+ width:100%!important;
+ height:100%!important;
+ min-width:0!important;
+ min-height:0!important;
+ margin:0!important;
+ padding:0!important;
+ overflow:hidden!important;
+ border-radius:18px!important;
+}
+body:not(.menu-text-mode) .menu-section .m-photo-wrap,
+body:not(.menu-text-mode) .menu-group .m-photo-wrap{
+ display:block!important;
+ position:relative!important;
+ width:100%!important;
+ height:auto!important;
+ min-height:0!important;
+ aspect-ratio:4/5!important;
+ flex:0 0 auto!important;
+ overflow:hidden!important;
+}
+body:not(.menu-text-mode) .menu-section .m-photo,
+body:not(.menu-text-mode) .menu-group .m-photo{
+ display:block!important;
+ width:100%!important;
+ height:100%!important;
+ object-fit:contain!important;
+ object-position:center!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item-info,
+body:not(.menu-text-mode) .menu-group .m-item-info{
+ display:flex!important;
+ flex:1 1 auto!important;
+ flex-direction:column!important;
+ align-items:flex-start!important;
+ justify-content:flex-start!important;
+ box-sizing:border-box!important;
+ width:100%!important;
+ min-width:0!important;
+ min-height:0!important;
+ padding:12px 12px 7px!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item h3,
+body:not(.menu-text-mode) .menu-group .m-item h3{
+ display:flex!important;
+ flex-wrap:wrap!important;
+ align-items:center!important;
+ gap:6px!important;
+ width:100%!important;
+ margin:0!important;
+ padding:0!important;
+ font:800 14px/1.35 Manrope,Arial,sans-serif!important;
+ letter-spacing:-.02em!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item p,
+body:not(.menu-text-mode) .menu-group .m-item p{
+ display:block!important;
+ width:100%!important;
+ min-height:0!important;
+ margin:7px 0 0!important;
+ padding:0!important;
+ font:500 11px/1.45 Manrope,Arial,sans-serif!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item > strong,
+body:not(.menu-text-mode) .menu-group .m-item > strong{
+ align-self:flex-start!important;
+ margin: auto 12px 12px!important;
+ padding:6px 10px!important;
+ border-radius:999px!important;
+ font:800 12px/1.2 Manrope,Arial,sans-serif!important;
+}
+@media(max-width:480px){
+ body:not(.menu-text-mode) .menu-section .m-item-info,
+ body:not(.menu-text-mode) .menu-group .m-item-info{padding:12px 12px 7px!important}
+ body:not(.menu-text-mode) .menu-section .m-item h3,
+ body:not(.menu-text-mode) .menu-group .m-item h3{font-size:13px!important}
+ body:not(.menu-text-mode) .menu-section .m-item > strong,
+ body:not(.menu-text-mode) .menu-group .m-item > strong{margin:auto 12px 12px!important}
+}
+@media(min-width:700px){
+ body:not(.menu-text-mode) .menu-section .m-list,
+ body:not(.menu-text-mode) .menu-group .m-list{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+}
+@media(min-width:1000px){
+ body:not(.menu-text-mode) .menu-section .m-list,
+ body:not(.menu-text-mode) .menu-group .m-list{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important}
+}
 
 /* Permanent premium gold focus frame — reuse the exact Drink Finder highlight. */
 body:not(.menu-text-mode) .menu-group .m-item,
