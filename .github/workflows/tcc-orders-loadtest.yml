@@ -1,0 +1,31 @@
+name: TCC Orders Read-only Load Test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tcc-orders-loadtest
+  cancel-in-progress: false
+
+jobs:
+  load-test:
+    name: 50-user staged load test
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out isolated load-test branch
+        uses: actions/checkout@v4
+        with:
+          ref: loadtest-50-users
+
+      - name: Set up k6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Run staged load test against tcc-app-order
+        env:
+          TCC_ORDERS_URL: https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A
+        run: k6 run tests/load/tcc-orders-loadtest.js
