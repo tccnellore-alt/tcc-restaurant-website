@@ -419,7 +419,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       if(!apiResponse.ok||!saved.order)throw new Error(saved.error||'We could not confirm your order. Your cart is saved; please retry.');
       order.ref=saved.order.order_number;order.status=saved.order.status||'new';order.kitchenStatus=saved.order.status||'new';order.total=saved.order.total;
       history.unshift(order);saveHistory(history);
-      items=[];save();render();backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');
+      items=[];save();render();close();
       try{sessionStorage.removeItem('tccPendingOrderRequestKey');sessionStorage.removeItem('tccPendingOrderSignature');}catch{}
       const notice=document.createElement('div');notice.className='tcc-order-send-notice';notice.setAttribute('role','status');
       notice.innerHTML='<strong>Order placed successfully!</strong><br>Reference: '+order.ref+'<br>Your order has been sent to TCC’s kitchen. Track its progress in Order History.';
