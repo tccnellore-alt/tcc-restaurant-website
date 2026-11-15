@@ -132,7 +132,7 @@ Takeaway fee currently calculated as **₹10 per active product quantity** (not 
 - Project ID: `pcxsdypqlavtulidpydn`
 - URL: https://pcxsdypqlavtulidpydn.supabase.co
 - Region: `ap-south-1` (Mumbai)
-- Edge Function `tcc-orders`, latest known deployed version 13, active, JWT verification enabled.
+- Edge Function `tcc-orders`, deployed version 19 at last inspection, active, JWT verification enabled.
 - Function URL: https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders
 
 ### Tables known to exist
@@ -181,7 +181,7 @@ Known logged actions:
 
 ---
 
-## 6. Edge Function API contract (latest known v13)
+## 6. Edge Function API contract (live deployed v19; branch source updated separately)
 
 Base:
 `https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders`
@@ -323,7 +323,7 @@ These are known commits from the work session; use GitHub history/current branch
 ### Direct order submission and duplicate protection
 - Customer direct order submission changes: `9507acf47c003fbe755597f11fee4db60ce482f3`
 - Backend database idempotency key migration added unique partial index (migration name `add_order_idempotency_key`).
-- Backend version history: v6 order list cap increased to 1,000; subsequent versions added edit/status/archive features. Latest known version is v13.
+- Backend version history: v6 increased the order list cap to 1,000; subsequent versions added edit/status/archive features. Live deployed version checked on 15 November 2026 is v19. The table-based sequential order-reference generator is only in the `weborder` source tree and is not deployed yet.
 
 ### Dashboard alerts, analytics and order editor/editing
 - Loud buzzer update commit: `f0c4514`
@@ -506,7 +506,7 @@ The next agent must verify current branch and deployed backend state before maki
 
 - TCC uses one common printed QR code for the entire menu; do not create per-table QR codes.
 - Frontend requires a table selection for dine-in and hides table selection for takeaway.
-- Supabase Edge Function v17 independently enforces a non-empty table number for dine-in orders; takeaway orders always store `table_number: null`.
+- The live Edge Function currently enforces a non-empty table number for dine-in orders; takeaway orders always store `table_number: null`. The new branch source additionally validates alphanumeric table labels and formats order references as `TCC-YYYYMMDD-TABLE-001` (or `TCC-YYYYMMDD-TAKEAWAY-001`).
 - Dashboard order cards display order type and table number prominently in order metadata.
 - Each successful order is stored as its own database row; no automatic merging by table/customer/cart.
 - Idempotency key is retained only for safe retry of the same pending submission and cleared after successful placement, so a later separate order—even from the same table with identical items—gets a new key/order.
