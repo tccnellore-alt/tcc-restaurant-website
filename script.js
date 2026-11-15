@@ -151,6 +151,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const lookupInput=historyPanel.querySelector('#tccOrderLookup'),lookupButton=historyPanel.querySelector('.tcc-order-lookup-button'),lookupMessage=historyPanel.querySelector('.tcc-order-lookup-message'),lookupResults=historyPanel.querySelector('.tcc-order-lookup-results');
   const continuationBox=backdrop.querySelector('.tcc-continuation-box');
   const checkRecentOrders=async()=>{
+    // Read the live form values as browsers may autofill fields without firing input events.
+    customerName=backdrop.querySelector('#tccCustomerName').value.trimStart();
+    customerPhone=backdrop.querySelector('#tccCustomerPhone').value.trim();
+    const activeOrderType=backdrop.querySelector('[data-order-type].active');
+    if(activeOrderType)orderType=activeOrderType.dataset.orderType;
+    const activeTable=backdrop.querySelector('[data-table].active');
+    if(activeTable)selectedTable=activeTable.dataset.table;
     const requestId=++recentOrderCheck,phone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
     continuationBox.hidden=true;continuationBox.replaceChildren();
     if(!/^\d{10}$/.test(phone)||(orderType==='dine-in'&&!selectedTable))return;
@@ -394,7 +401,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startWishlistButtons,{once:true});
   else startWishlistButtons();
-  const open=()=>{backdrop.classList.add('is-open');backdrop.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';backdrop.querySelector('.tcc-wish-close').focus()};
+  const open=()=>{backdrop.classList.add('is-open');backdrop.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';backdrop.querySelector('.tcc-wish-close').focus();requestAnimationFrame(()=>checkRecentOrders());setTimeout(checkRecentOrders,180);};
   const close=()=>{backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');document.body.style.overflow=''};
   float.addEventListener('click',open);
   backdrop.querySelector('.tcc-wish-close').addEventListener('click',close);
@@ -415,7 +422,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];selectedTable='';save();render()});
   backdrop.querySelector('.tcc-wish-continue').addEventListener('click',close);
   backdrop.querySelector('#tccCustomerName').addEventListener('input',event=>{customerName=event.target.value.trimStart();});
+  backdrop.querySelector('#tccCustomerName').addEventListener('change',event=>{customerName=event.target.value.trimStart();});
   backdrop.querySelector('#tccCustomerPhone').addEventListener('input',event=>{customerPhone=event.target.value.trim();if(customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'').length===10)checkRecentOrders();});
+  backdrop.querySelector('#tccCustomerPhone').addEventListener('change',checkRecentOrders);
   backdrop.querySelector('#tccCustomerPhone').addEventListener('blur',checkRecentOrders);
   backdrop.querySelector('.tcc-order-history-open').addEventListener('click',openHistory);
   document.querySelector('.tcc-mobile-track')?.addEventListener('click',()=>{openHistory();setTimeout(()=>lookupInput?.focus(),80);});
