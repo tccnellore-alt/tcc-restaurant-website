@@ -4,7 +4,33 @@ async function request(action){const res=await fetch(API+"?action="+action,{head
 async function load(){try{if(!token)throw new Error("Please sign in from the Order Desk first.");const data=await request("orders");allOrders=data.orders||[];$("#reportUpdated").textContent="Updated "+new Date().toLocaleString("en-IN");$("#reportError").textContent="";render();}catch(e){$("#reportError").textContent=e.message;if(/sign in|session|login/i.test(e.message)){localStorage.removeItem(TOKEN_KEY);}}}
 function periodOrders(){const p=$("#reportPeriod").value,now=new Date();let from=null,to=key(now);if(p==="today")from=to;else if(["7","30","90"].includes(p)){const d=new Date(now);d.setDate(d.getDate()-Number(p)+1);from=key(d);}else if(p==="custom"){from=$("#reportFrom").value||null;to=$("#reportTo").value||key(now);}return allOrders.filter(o=>{const d=key(new Date(o.created_at));return(!from||d>=from)&&(!to||d<=to);});}
 function horizontal(el,entries){el.replaceChildren();const max=Math.max(1,...entries.map(x=>x[1]));entries.forEach(([name,value])=>{const row=document.createElement("div");row.className="hrow";const label=document.createElement("span");label.textContent=name;const track=document.createElement("div");track.className="track";const fill=document.createElement("div");fill.className="fill";fill.style.width=(value/max*100)+"%";track.append(fill);const count=document.createElement("strong");count.textContent=value;row.append(label,track,count);el.append(row);});}
-function render(){const rows=periodOrders(),valid=rows.filter(o=>!["cancelled","rejected"].includes(o.status)),sales=valid.reduce((s,o)=>s+Number(o.total||0),0);$("#rSales").textContent=money(sales);$("#rOrders").textContent=rows.length;$("#rAov").textContent=money(valid.length?sales/valid.length:0);$("#rCancelled").textContent=rows.filter(o=>["cancelled","rejected"].includes(o.status)).length;
+function renderTableSales(validOrders){
+ const tableSales=new Map();let takeawayOrders=0,takeawaySales=0;
+ validOrders.forEach(order=>{
+  if(order.order_type==="takeaway"){takeawayOrders++;takeawaySales+=Number(order.total||0);return;}
+  const table=String(order.table_number||"Unassigned").trim()||"Unassigned";
+  const entry=tableSales.get(table)||{orders:0,sales:0};
+  entry.orders++;entry.sales+=Number(order.total||0);tableSales.set(table,entry);
+ });
+ const entries=[...tableSales.entries()].sort((a,b)=>b[1].sales-a[1].sales||b[1].orders-a[1].orders||a[0].localeCompare(b[0],undefined,{numeric:true}));
+ const dineInSales=entries.reduce((sum,[,v])=>sum+v.sales,0);
+ const tbody=$("#tableSalesBody");tbody.replaceChildren();
+ entries.forEach(([table,data],index)=>{
+  const tr=document.createElement("tr");
+  const name=document.createElement("th");name.scope="row";name.textContent=table;
+  const count=document.createElement("td");count.textContent=String(data.orders);
+  const sales=document.createElement("td");sales.className="numeric";sales.textContent=money(data.sales);
+  const average=document.createElement("td");average.className="numeric";average.textContent=money(data.orders?data.sales/data.orders:0);
+  const share=document.createElement("td");share.className="numeric";share.textContent=(dineInSales?data.sales/dineInSales*100:0).toFixed(1)+"%";
+  tr.append(name,count,sales,average,share);if(index===0)tr.classList.add("top-table-row");tbody.append(tr);
+ });
+ $("#tableSalesEmpty").hidden=entries.length>0;
+ $("#tableSalesWrap").hidden=entries.length===0;
+ $("#topTableSales").textContent=entries.length?entries[0][0]+" · "+money(entries[0][1].sales):"—";
+ $("#takeawaySalesSummary").textContent=takeawayOrders+" takeaway orders · "+money(takeawaySales)+" (reported separately)";
+ $("#tableSalesFootnote").textContent=entries.length?entries.length+" dine-in tables · "+money(dineInSales)+" total dine-in sales":"No dine-in sales in this period.";
+}
+function render(){const rows=periodOrders(),valid=rows.filter(o=>!["cancelled","rejected"].includes(o.status)),sales=valid.reduce((s,o)=>s+Number(o.total||0),0);renderTableSales(valid);$("#rSales").textContent=money(sales);$("#rOrders").textContent=rows.length;$("#rAov").textContent=money(valid.length?sales/valid.length:0);$("#rCancelled").textContent=rows.filter(o=>["cancelled","rejected"].includes(o.status)).length;
 const byDay={};rows.forEach(o=>{const k=key(new Date(o.created_at));byDay[k]??={count:0,sales:0};byDay[k].count++;if(!["cancelled","rejected"].includes(o.status))byDay[k].sales+=Number(o.total||0);});const days=Object.entries(byDay).sort((a,b)=>a[0].localeCompare(b[0])).slice(-90),max=Math.max(1,...days.map(x=>x[1].count));$("#dailyChart").replaceChildren();days.forEach(([day,v])=>{const col=document.createElement("div");col.className="daily-col";const n=document.createElement("em");n.textContent=v.count;const bar=document.createElement("div");bar.className="daily-bar";bar.style.height=(v.count/max*125+2)+"px";bar.title=day+" · "+v.count+" orders · "+money(v.sales);const date=document.createElement("small");date.textContent=day.slice(5);col.append(n,bar,date);$("#dailyChart").append(col);});
 horizontal($("#channelChart"),[["Dine-in",rows.filter(o=>o.order_type==="dine-in").length],["Takeaway",rows.filter(o=>o.order_type==="takeaway").length]]);
 horizontal($("#statusChart"),["new","accepted","preparing","ready","completed","cancelled"].map(s=>[s[0].toUpperCase()+s.slice(1),rows.filter(o=>o.status===s).length]));
