@@ -512,3 +512,16 @@ The next agent must verify current branch and deployed backend state before maki
 - Idempotency key is retained only for safe retry of the same pending submission and cleared after successful placement, so a later separate order—even from the same table with identical items—gets a new key/order.
 - Current customer table picker contains 15 labels: S1–S6, C1–C4, P1–P3, T1–T2. Owner says venue has 16 tables; identify the missing table label before adding it. Do not invent the label.
 - Dashboard has a Dine-in/Takeaway filter; orders remain distinct by `order_type`.
+
+
+## 18. Per-item takeaway fulfillment — 15 November 2026
+
+- A dine-in order can contain both table-service and takeaway-packed products. The overall order remains `order_type: "dine-in"` with its selected `table_number` (for example P2).
+- Each item stores `fulfillment_type: "dine-in" | "takeaway"` inside the existing JSONB `items` array; no new database column or table is required.
+- Customer cart provides a per-item “Pack as takeaway” checkbox. Switching the overall order type to Takeaway marks every item takeaway; switching back to Dine-in resets every item to dine-in.
+- The existing ₹10 fee is calculated per quantity only for items marked takeaway. Cancelled items are excluded from the fee.
+- Order Desk labels each product “DINE-IN · SERVE AT TABLE” or “TAKEAWAY · PACK”; the visual order editor can change the item fulfillment flag.
+- Reports allocate item value to the correct dine-in table or takeaway bucket, and CSV item descriptions include fulfillment type. Mixed orders can contribute to both channels while remaining one order.
+- Existing records remain compatible: older order-level takeaway orders are treated as all takeaway; older dine-in orders are treated as all dine-in.
+- Supabase Edge Function `tcc-orders` deployed version 21 contains the per-item fee calculation. It is the shared backend, so this backward-compatible backend update also serves the existing production frontend. Frontend changes remain isolated to `weborder` until explicit approval to merge/deploy.
+- Static JavaScript syntax checks passed. Full browser end-to-end testing with a real order has not yet been completed.
