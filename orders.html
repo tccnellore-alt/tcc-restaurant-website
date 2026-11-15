@@ -32,12 +32,10 @@
         <label>Order type<select id="typeFilter"><option value="all">All types</option><option value="dine-in">Dine-in</option><option value="takeaway">Takeaway</option></select></label>
       </div>
       <div class="filter-row custom-dates" id="customDates" hidden><label>From<input type="date" id="dateFrom"></label><label>To<input type="date" id="dateTo"></label></div>
-      <div class="filter-row">
-        <label class="search-label">Search<input id="orderSearch" type="search" placeholder="Order ID, customer or mobile number"></label>
-        <button class="quiet" id="clearFiltersButton" type="button">Clear filters</button>
-      </div>
+
     
     </details>
+    <div class="quick-search"><label for="orderSearch">Find an order</label><input id="orderSearch" type="search" placeholder="Search order ID, customer or mobile"><button class="quiet" id="clearFiltersButton" type="button">Clear filters</button></div>
     <div class="toolbar"><div class="filters" id="filters">
       <button class="filter active" data-status="all">All orders</button><button class="filter" data-status="new">New</button><button class="filter" data-status="preparing">Preparing</button><button class="filter" data-status="ready">Ready</button><button class="filter" data-status="completed">Completed</button><button class="filter" data-status="cancelled">Cancelled</button>
     </div><div class="order-view-actions"><button class="quiet" id="trashViewButton" type="button">🗑 Trash / Restore</button><button class="quiet" id="refreshButton">Refresh</button></div></div>
