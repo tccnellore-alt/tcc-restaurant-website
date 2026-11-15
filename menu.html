@@ -2357,6 +2357,72 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
  .menu-group#coffee .coffee-addons-panel .addon-meta b{font-size:9px!important}
 }
 
+
+/* Compact photo-menu cards: reduce scrolling while keeping two products per row. */
+@media(max-width:849px){
+ body:not(.menu-text-mode) .menu-section .m-list,
+ body:not(.menu-text-mode) .menu-group .m-list{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;align-items:stretch!important;
+  column-gap:9px!important;row-gap:11px!important;
+ }
+ body:not(.menu-text-mode) .menu-section .m-item,
+ body:not(.menu-text-mode) .menu-group .m-item{
+  height:auto!important;min-height:0!important;border-radius:14px!important;
+ }
+ body:not(.menu-text-mode) .menu-section .m-photo-wrap,
+ body:not(.menu-text-mode) .menu-group .m-photo-wrap{
+  aspect-ratio:1/1!important;min-height:0!important;max-height:none!important;
+ }
+ body:not(.menu-text-mode) .menu-section .m-photo,
+ body:not(.menu-text-mode) .menu-group .m-photo{object-fit:cover!important}
+ body:not(.menu-text-mode) .menu-section .m-item-info,
+ body:not(.menu-text-mode) .menu-group .m-item-info{
+  padding:8px 9px 3px!important;flex:0 0 auto!important;
+ }
+ body:not(.menu-text-mode) .menu-section .m-item h3,
+ body:not(.menu-text-mode) .menu-group .m-item h3{
+  font-size:12px!important;line-height:1.25!important;gap:3px!important;
+ }
+ body:not(.menu-text-mode) .menu-section .m-item p,
+ body:not(.menu-text-mode) .menu-group .m-item p{
+  display:-webkit-box!important;-webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;overflow:hidden!important;
+  min-height:0!important;max-height:2.8em!important;
+  margin:4px 0 0!important;font-size:10px!important;line-height:1.4!important;
+ }
+ body:not(.menu-text-mode) .menu-section .m-item .menu-item-description-force,
+ body:not(.menu-text-mode) .menu-group .m-item .menu-item-description-force{
+  display:-webkit-box!important;-webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;overflow:hidden!important;max-height:2.8em!important;
+ }
+ body:not(.menu-text-mode) .menu-section .m-item > strong,
+ body:not(.menu-text-mode) .menu-group .m-item > strong{
+  margin:5px 9px 8px!important;padding:5px 9px!important;font-size:11px!important;
+ }
+ body:not(.menu-text-mode) .menu-section .m-item .tcc-bestseller-badge,
+ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge{
+  min-height:21px!important;padding:4px 6px!important;font-size:7px!important;
+  letter-spacing:.07em!important;border-radius:12px 12px 0 0!important;
+ }
+ body:not(.menu-text-mode) .menu-section .m-item button,
+ body:not(.menu-text-mode) .menu-group .m-item button{
+  min-height:36px!important;padding:8px 9px!important;margin:5px 8px 9px!important;
+  border-radius:999px!important;font-size:11px!important;line-height:1.15!important;
+ }
+}
+@media(max-width:380px){
+ body:not(.menu-text-mode) .menu-section .m-list,
+ body:not(.menu-text-mode) .menu-group .m-list{column-gap:7px!important;row-gap:9px!important}
+ body:not(.menu-text-mode) .menu-section .m-item-info,
+ body:not(.menu-text-mode) .menu-group .m-item-info{padding:7px 7px 2px!important}
+ body:not(.menu-text-mode) .menu-section .m-item h3,
+ body:not(.menu-text-mode) .menu-group .m-item h3{font-size:11px!important}
+ body:not(.menu-text-mode) .menu-section .m-item p,
+ body:not(.menu-text-mode) .menu-group .m-item p{font-size:9px!important;line-height:1.35!important}
+ body:not(.menu-text-mode) .menu-section .m-item > strong,
+ body:not(.menu-text-mode) .menu-group .m-item > strong{margin:4px 7px 7px!important;font-size:10px!important}
+}
 </style>
 <style id="tcc-category-end-nav-styles">
 /* TCC category-end navigation */
