@@ -525,3 +525,13 @@ The next agent must verify current branch and deployed backend state before maki
 - Existing records remain compatible: older order-level takeaway orders are treated as all takeaway; older dine-in orders are treated as all dine-in.
 - Supabase Edge Function `tcc-orders` deployed version 21 contains the per-item fee calculation. It is the shared backend, so this backward-compatible backend update also serves the existing production frontend. Frontend changes remain isolated to `weborder` until explicit approval to merge/deploy.
 - Static JavaScript syntax checks passed. Full browser end-to-end testing with a real order has not yet been completed.
+
+
+## 19. Order Desk Trash notification bug fix — 15 November 2026
+
+- Root cause: `loadOrders()` compared archived/trash records against the active-order `seenOrderIds` set and treated old archived records with status `new` as newly received orders. This displayed a toast and played the new-order sound when opening Trash.
+- Root cause also affected dashboard statistics: `updateStats()` read from the currently displayed list, so archived records replaced active orders in the KPI counts.
+- Fix on `weborder`: Trash view now fetches archived records for the list and active records separately for dashboard counters; it updates the seen-ID set from active orders but does not generate notifications while Trash is open. Normal active view retains new-order notifications.
+- Dashboard KPI counters now always use the active-order dataset, regardless of which list is being viewed.
+- Cache-busting script version changed in `orders.html` to `trash-alert-fix-1`.
+- JavaScript syntax check passed. Cloudflare preview deployment is pending at the time of this note; production frontend is unchanged.
