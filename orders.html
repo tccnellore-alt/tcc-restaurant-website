@@ -18,10 +18,14 @@
   </section>
   <section class="dashboard" id="dashboardView" hidden>
     <header class="topbar"><div><p class="eyebrow">TCC · RECEPTION</p><h1>Order Desk</h1><p class="muted" id="lastUpdated">Waiting for orders…</p></div><div class="topbar-actions"><button class="quiet" id="enableAlertsButton" type="button">Enable sound alerts</button><button class="quiet" id="logoutButton">Log out</button></div></header>
-    <div class="stats" id="stats">
-      <article><span>New</span><strong id="newCount">0</strong></article><article><span>In progress</span><strong id="progressCount">0</strong></article><article><span>Ready</span><strong id="readyCount">0</strong></article><article><span>Completed today</span><strong id="completedCount">0</strong></article>
-    </div>
-    <section class="filter-panel" aria-label="Order filters">
+    <section class="stats" id="stats" aria-label="Quick order filters">
+      <button class="stat-tile" type="button" data-quick-filter="new"><span>New orders</span><strong id="newCount">0</strong><small>Needs attention</small></button>
+      <button class="stat-tile" type="button" data-quick-filter="in-progress"><span>Preparing</span><strong id="progressCount">0</strong><small>In the kitchen</small></button>
+      <button class="stat-tile" type="button" data-quick-filter="ready"><span>Ready</span><strong id="readyCount">0</strong><small>Awaiting handover</small></button>
+      <button class="stat-tile" type="button" data-quick-filter="completed-today"><span>Completed today</span><strong id="completedCount">0</strong><small>Today's finished orders</small></button>
+    </section>
+    <details class="advanced-filters" id="advancedFilters"><summary>More filters <span>Period, time and order type</span></summary>
+      
       <div class="filter-row">
         <label>Period<select id="periodFilter"><option value="today">Today</option><option value="yesterday">Yesterday</option><option value="7days">Last 7 days</option><option value="30days">Last 30 days</option><option value="all">All time</option><option value="custom">Custom range</option></select></label>
         <label>Hour<select id="hourFilter"><option value="all">All hours</option><option value="0">00:00–00:59</option><option value="1">01:00–01:59</option><option value="2">02:00–02:59</option><option value="3">03:00–03:59</option><option value="4">04:00–04:59</option><option value="5">05:00–05:59</option><option value="6">06:00–06:59</option><option value="7">07:00–07:59</option><option value="8">08:00–08:59</option><option value="9">09:00–09:59</option><option value="10">10:00–10:59</option><option value="11">11:00–11:59</option><option value="12">12:00–12:59</option><option value="13">13:00–13:59</option><option value="14">14:00–14:59</option><option value="15">15:00–15:59</option><option value="16">16:00–16:59</option><option value="17">17:00–17:59</option><option value="18">18:00–18:59</option><option value="19">19:00–19:59</option><option value="20">20:00–20:59</option><option value="21">21:00–21:59</option><option value="22">22:00–22:59</option><option value="23">23:00–23:59</option></select></label>
@@ -32,15 +36,16 @@
         <label class="search-label">Search<input id="orderSearch" type="search" placeholder="Order ID, customer or mobile number"></label>
         <button class="quiet" id="clearFiltersButton" type="button">Clear filters</button>
       </div>
-    </section>
+    
+    </details>
     <div class="toolbar"><div class="filters" id="filters">
       <button class="filter active" data-status="all">All</button><button class="filter" data-status="new">New</button><button class="filter" data-status="preparing">Accepted & Preparing</button><button class="filter" data-status="completed">Ready & Completed</button><button class="filter" data-status="cancelled">Cancelled</button>
     </div><div class="order-view-actions"><button class="quiet" id="trashViewButton" type="button">🗑 Trash / Restore</button><button class="quiet" id="refreshButton">Refresh</button></div></div>
-    <details class="analytics-menu" id="analyticsMenu"><summary aria-label="Business analytics menu" title="Business analytics"><span class="menu-dots">⋮</span><span>Business analytics & reports</span></summary><section class="analytics-panel"><div class="analytics-head"><h2>Business analytics</h2><button class="quiet" id="exportOrdersButton" type="button">Export Excel (CSV)</button></div><div class="analytics-grid"><article><span>Today sales</span><strong id="todaySalesMetric">₹0</strong></article><article><span>This week sales</span><strong id="weekSalesMetric">₹0</strong></article><article><span>This month sales</span><strong id="monthSalesMetric">₹0</strong></article><article><span>Sales</span><strong id="salesMetric">₹0</strong></article><article><span>Average order value</span><strong id="aovMetric">₹0</strong></article><article><span>Cancelled / rejected</span><strong id="cancelMetric">0</strong></article><article><span>Dine-in / takeaway</span><strong id="channelMetric">0 / 0</strong></article></div><div class="analytics-charts"><div><h3>Hourly order volume</h3><div id="hourlyChart" class="hourly-chart"></div><p id="peakHourMetric" class="muted"></p></div><div><h3>Most ordered products</h3><div id="productRanking"></div></div></div></section></details><p class="results-summary" id="resultsSummary">Showing today's orders</p>
+    <p class="reports-shortcut"><span>Need sales trends, product performance or exports?</span><a href="orders-reports.html">Open Reports →</a></p><p class="results-summary" id="resultsSummary">Showing today's orders</p>
     <p class="error" id="dashboardError" role="alert"></p>
     <section class="orders" id="ordersList" aria-live="polite"><p class="empty">Loading orders…</p></section>
-    <footer>Orders refresh automatically every 8 seconds.</footer>
+    <footer>Orders refresh automatically every 8 seconds. Use the tiles above to jump to an order queue.</footer>
   </section>
 </main>
-<script src="orders-dashboard.js?v=login-errors-20261115"></script>
+<script src="orders-dashboard.js?v=dashboard-redesign-1"></script>
 </body></html>
