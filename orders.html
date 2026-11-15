@@ -17,7 +17,7 @@
     </form>
   </section>
   <section class="dashboard" id="dashboardView" hidden>
-    <header class="topbar"><div><p class="eyebrow">TCC · RECEPTION</p><h1>Order Desk</h1><p class="muted" id="lastUpdated">Waiting for orders…</p></div><div class="topbar-actions"><button class="quiet" id="enableAlertsButton" type="button">Enable sound alerts</button><button class="quiet" id="logoutButton">Log out</button></div></header>
+    <header class="topbar"><div><p class="eyebrow">TCC · RECEPTION</p><h1>Order Desk</h1><p class="muted" id="lastUpdated">Waiting for orders…</p></div><div class="topbar-actions"><button class="quiet sound-toggle" id="enableAlertsButton" type="button" role="switch" aria-checked="true" aria-label="Sound alerts"><span class="sound-toggle-track" aria-hidden="true"><span></span></span><span class="sound-toggle-label">Sound alerts: On</span></button><button class="quiet" id="logoutButton">Log out</button></div></header>
     <section class="stats" id="stats" aria-label="Quick order filters">
       <button class="stat-tile" type="button" data-quick-filter="new"><span>New orders</span><strong id="newCount">0</strong><small>Needs attention</small></button>
       <button class="stat-tile" type="button" data-quick-filter="in-progress"><span>Preparing</span><strong id="progressCount">0</strong><small>In the kitchen</small></button>
