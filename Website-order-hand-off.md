@@ -1,6 +1,6 @@
 # TCC Website & Online Ordering — Engineering Handoff
 
-> Purpose: This document is the working handoff for another engineer/agent to continue the TCC website ordering, Order Desk and kitchen workflow without needing the original chat history. Read this file first, inspect the current `whatsappv3` branch, then verify the live code and backend before making changes.
+> Purpose: This document is the working handoff for another engineer/agent to continue the TCC website ordering, Order Desk and kitchen workflow without needing the original chat history. Read this file first, inspect the current `weborder` branch, then verify the live code and backend before making changes.
 >
 > Last handoff update: 15 November 2026 (project conversation date). This document records implementation state, intended behaviour, architecture, known limitations and next steps. It is not a claim that every feature has passed end-to-end testing.
 
@@ -12,24 +12,32 @@
 - Tagline: **Good Food, Brighter Days.**
 - Visual direction: forest green, sage green, cream and warm neutrals.
 - GitHub repository: https://github.com/tccnellore-alt/tcc-restaurant-website
-- Active development branch: **`whatsappv3`**
+- Active development branch: **`weborder`**
 - Production branch: **`main`**
 - Production website: https://tcc-restaurant-website.pages.dev/
 - Hosting: Cloudflare Pages.
-- Website preview branch deployment: expected Cloudflare Pages branch URL convention is `https://whatsappv3.tcc-restaurant-website.pages.dev/`; **this URL has not been independently verified**. Check Cloudflare Pages deployment list before sharing it as live.
+- Website preview branch deployment: expected Cloudflare Pages branch URL convention is `https://weborder.tcc-restaurant-website.pages.dev/`; **this URL has not been independently verified**. Check Cloudflare Pages deployment list before sharing it as live.
 - Supabase project name: `tcc-app-order`
 - Supabase project ID: `pcxsdypqlavtulidpydn`
 - Supabase region: Mumbai, India (`ap-south-1`)
 - Supabase URL: https://pcxsdypqlavtulidpydn.supabase.co
 - Edge Function: `tcc-orders`
 - Function endpoint: https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders
-- Latest function version observed while writing this handoff: **13**, ACTIVE, `verify_jwt=true`.
+- Latest live function version checked on 15 November 2026: **19**, ACTIVE, `verify_jwt=true`. The new table-based reference generator is versioned in `supabase/functions/tcc-orders/index.ts` on `weborder` but has **not** been deployed; the live API still uses version 19.
 
-**Branching rule:** all ongoing work for this scope goes to `whatsappv3`. Do not merge, deploy to, or modify `main` unless the owner explicitly approves. Before editing, fetch the latest file and use its current blob SHA. Do not overwrite newer work with stale copies.
+**Branching rule:** all ongoing work for this scope goes to `weborder`. Do not merge, deploy to, or modify `main` unless the owner explicitly approves. Before editing, fetch the latest file and use its current blob SHA. Do not overwrite newer work with stale copies.
 
 ---
 
 ## 2. Business and product decisions already made
+
+### Branch transition and current work (15 November 2026)
+- `weborder` was created from the latest `main` and then merged with the latest `whatsappv3` work. The merge commit is `c6546bed2eb5dd550f18ad8de6588b7e0d57b1aa`; production `main` was not modified.
+- `weborder` is now the active development branch. `whatsappv3` is the previous source branch; `main` remains production.
+- Table-wise online sales analytics were added to `orders-reports.html`, `orders-reports.js` and `orders-reports.css` on `weborder`. Dine-in table sales are ranked by revenue and show order count, total sales, average order value and share of dine-in revenue; takeaway is reported separately.
+- A new backend source file `supabase/functions/tcc-orders/index.ts` is versioned on this branch. It generates `TCC-YYYYMMDD-TABLE-001` references (including `TAKEAWAY` for takeaway orders), with retry on unique-key collisions. This source has not been deployed. Do not deploy it to the shared live Supabase project without explicit approval and a deployment/test plan.
+
+
 
 ### Customer ordering
 - Customers order directly on the TCC website.
@@ -439,24 +447,24 @@ Use a controlled test order, not a real customer order, unless the owner approve
 ## 13. How the next agent should continue
 
 1. Read this file fully.
-2. Confirm repository `tccnellore-alt/tcc-restaurant-website`, branch `whatsappv3`.
+2. Confirm repository `tccnellore-alt/tcc-restaurant-website`, branch `weborder`.
 3. Fetch latest `orders.html`, `orders-dashboard.js`, `orders-dashboard.css`, `script.js` and inspect current branch HEAD.
 4. Fetch current Supabase Edge Function `tcc-orders` and confirm version; do not rely solely on the version recorded here.
 5. Review current Supabase schema/migrations before changing fields.
 6. Identify which P0/P1 item the owner wants next. The recommended next task is the visual product editor and partial accept/reject confirmation workflow.
-7. Keep changes scoped and commit them to `whatsappv3`.
+7. Keep changes scoped and commit them to `weborder`.
 8. Do not expose credentials, service role keys, admin passwords, or customer personal data in this file, commits or reports.
 9. Test what can be tested and clearly separate implemented, deployed, preview-verified and production-verified states.
 10. Do not merge to `main` without explicit approval.
 
 ### Useful direct links
 - Repository: https://github.com/tccnellore-alt/tcc-restaurant-website
-- Active branch: https://github.com/tccnellore-alt/tcc-restaurant-website/tree/whatsappv3
-- Customer menu file: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/whatsappv3/menu.html
-- Customer logic: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/whatsappv3/script.js
-- Order Desk HTML: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/whatsappv3/orders.html
-- Order Desk JS: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/whatsappv3/orders-dashboard.js
-- Order Desk CSS: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/whatsappv3/orders-dashboard.css
+- Active branch: https://github.com/tccnellore-alt/tcc-restaurant-website/tree/weborder
+- Customer menu file: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/weborder/menu.html
+- Customer logic: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/weborder/script.js
+- Order Desk HTML: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/weborder/orders.html
+- Order Desk JS: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/weborder/orders-dashboard.js
+- Order Desk CSS: https://github.com/tccnellore-alt/tcc-restaurant-website/blob/weborder/orders-dashboard.css
 - Production website: https://tcc-restaurant-website.pages.dev/
 - Supabase project: https://supabase.com/dashboard/project/pcxsdypqlavtulidpydn
 - Supabase Edge Functions: https://supabase.com/dashboard/project/pcxsdypqlavtulidpydn/functions
@@ -482,7 +490,7 @@ The next agent must verify current branch and deployed backend state before maki
 - Supabase logs showed login endpoint had returned both 401 (invalid credentials attempts) and a later 200 (successful login); authenticated order-list calls also returned 200. This confirmed backend login was reachable and credentials had succeeded in at least one recent session.
 - Found a JavaScript syntax error in `orders-dashboard.js`: the CSV export `.join("\\r\\n")` separator had been accidentally written as a literal line break inside a quoted string. This prevents the entire dashboard script from parsing, so the login submit handler never attaches.
 - Fixed the CSV export line, verified the entire dashboard JavaScript parses with `new Function`, and added a cache-busting query to the script URL in `orders.html` so the browser fetches the corrected file.
-- After Cloudflare Pages deploys the `whatsappv3` branch, verify login on mobile and confirm dashboard orders load. Do not ask the user to share passwords or credentials in chat.
+- After Cloudflare Pages deploys the `weborder` branch, verify login on mobile and confirm dashboard orders load. Do not ask the user to share passwords or credentials in chat.
 
 
 ## 16. Login failure diagnostics — 15 November 2026
