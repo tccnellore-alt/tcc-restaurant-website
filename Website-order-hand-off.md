@@ -23,7 +23,7 @@
 - Supabase URL: https://pcxsdypqlavtulidpydn.supabase.co
 - Edge Function: `tcc-orders`
 - Function endpoint: https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders
-- Latest live function version checked on 15 November 2026: **19**, ACTIVE, `verify_jwt=true`. The new table-based reference generator is versioned in `supabase/functions/tcc-orders/index.ts` on `weborder` but has **not** been deployed; the live API still uses version 19.
+- Latest live function version checked on 15 November 2026: **20**, ACTIVE, `verify_jwt=true`. Version 20 deploys the new table-based order-reference generator to the shared production Supabase project.
 
 **Branching rule:** all ongoing work for this scope goes to `weborder`. Do not merge, deploy to, or modify `main` unless the owner explicitly approves. Before editing, fetch the latest file and use its current blob SHA. Do not overwrite newer work with stale copies.
 
@@ -323,7 +323,7 @@ These are known commits from the work session; use GitHub history/current branch
 ### Direct order submission and duplicate protection
 - Customer direct order submission changes: `9507acf47c003fbe755597f11fee4db60ce482f3`
 - Backend database idempotency key migration added unique partial index (migration name `add_order_idempotency_key`).
-- Backend version history: v6 increased the order list cap to 1,000; subsequent versions added edit/status/archive features. Live deployed version checked on 15 November 2026 is v19. The table-based sequential order-reference generator is only in the `weborder` source tree and is not deployed yet.
+- Backend version history: v6 increased the order list cap to 1,000; subsequent versions added edit/status/archive features. Live deployed version checked on 15 November 2026 is v19. Version 20 deploys the table-based sequential order-reference generator to the shared production Supabase project.
 
 ### Dashboard alerts, analytics and order editor/editing
 - Loud buzzer update commit: `f0c4514`
@@ -506,7 +506,7 @@ The next agent must verify current branch and deployed backend state before maki
 
 - TCC uses one common printed QR code for the entire menu; do not create per-table QR codes.
 - Frontend requires a table selection for dine-in and hides table selection for takeaway.
-- The live Edge Function currently enforces a non-empty table number for dine-in orders; takeaway orders always store `table_number: null`. The new branch source additionally validates alphanumeric table labels and formats order references as `TCC-YYYYMMDD-TABLE-001` (or `TCC-YYYYMMDD-TAKEAWAY-001`).
+- The live Edge Function currently enforces a non-empty table number for dine-in orders; takeaway orders always store `table_number: null`. The deployed version 20 additionally validates alphanumeric table labels and formats order references as `TCC-YYYYMMDD-TABLE-001` (or `TCC-YYYYMMDD-TAKEAWAY-001`).
 - Dashboard order cards display order type and table number prominently in order metadata.
 - Each successful order is stored as its own database row; no automatic merging by table/customer/cart.
 - Idempotency key is retained only for safe retry of the same pending submission and cleared after successful placement, so a later separate order—even from the same table with identical items—gets a new key/order.
