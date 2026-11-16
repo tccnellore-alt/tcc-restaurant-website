@@ -22,6 +22,7 @@
 .menu-group{display:none}
 .menu-group.active{display:block}
 .menu-section{margin:30px 0 0}
+.menu-section[data-temporarily-hidden="true"]{display:none!important}
 .menu-section h2{font-size:25px;margin:0 0 12px;padding-bottom:9px;border-bottom:1px solid rgba(23,60,43,.16)}
 .m-list{display:grid;gap:8px}
 .m-item{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:15px 15px;background:#fff;border:1px solid rgba(23,60,43,.09);border-radius:15px;box-shadow:0 5px 18px rgba(20,42,31,.04)}
@@ -3133,7 +3134,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
       </article>
       <article class="m-item">
         <div>
-          <h3><span class="food-badge non-veg" role="img" aria-label="Non-vegetarian"></span>Avocado Egg Toast</h3>
+          <h3><span class="food-badge nonveg" role="img" aria-label="Non-vegetarian"></span>Avocado Egg Toast</h3>
         </div>
         <strong>₹249</strong>
       </article>
@@ -4115,7 +4116,6 @@ function buildSubTabs(id){
       ["Soups","Soups"],
       ["Appetizers","Starters"],
       ["Pastas","Pasta"],
-      ["Pizzas","Pizza"],
       ["Burgers","Burgers"],
       ["Sandwiches","Sandwiches"]
     ];
