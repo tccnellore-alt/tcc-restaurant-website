@@ -2458,7 +2458,8 @@ body:not(.menu-text-mode) .menu-section .m-item{
 .food-spotlight-card{position:relative;flex:0 1 410px;width:min(100%,410px);max-height:calc(100dvh - 20px);overflow-y:auto;overscroll-behavior:contain;border:1px solid rgba(183,154,90,.5);border-radius:23px;background:#fbf8f1;box-shadow:0 24px 80px rgba(0,0,0,.3);padding:12px 16px 14px;text-align:center;animation:spotlightRise .28s ease both}
 .food-spotlight-close{position:fixed!important;top:calc(env(safe-area-inset-top,0px) + 12px)!important;right:18px!important;z-index:2147483002!important;width:42px;height:42px;border:1px solid rgba(23,60,43,.2);border-radius:50%;background:#fbf8f1;color:#173c2b;font:26px/1 Arial;cursor:pointer;box-shadow:0 3px 14px rgba(0,0,0,.16)}
 .food-spotlight-kicker{font-size:10px;padding:7px 12px;margin-bottom:7px;letter-spacing:.12em}.food-spotlight-card h2{font-size:clamp(26px,7vw,34px);line-height:1.0;margin:5px 0 5px}.food-spotlight-copy{font-size:12px;line-height:1.35;margin-bottom:7px}.food-spotlight-spice{margin:2px auto 6px;padding:5px 9px}.food-spotlight-price{margin-bottom:8px;font-size:17px}.food-spotlight-action{min-height:42px}
-.food-spotlight-image{display:block;width:100%;height:clamp(150px,29dvh,260px);max-height:260px;aspect-ratio:16/9;object-fit:cover;border-radius:13px;margin:0 auto 10px}
+/* Keep the full launch photo visible on mobile; never crop the dish. */
+.food-spotlight-image{display:block;width:100%;height:auto;max-height:34dvh;aspect-ratio:auto;object-fit:contain;object-position:center;border-radius:13px;margin:0 auto 10px}
 
 </style>
 
