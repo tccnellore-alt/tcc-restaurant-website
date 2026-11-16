@@ -2507,9 +2507,14 @@ body:not(.menu-text-mode) .menu-section .m-item{
 .menu-group .menu-section .m-list{
   row-gap:14px!important;
 }
+/* Non-food groups need extra clearance for the product-card gold outline. */
+.menu-group:not(#food) .menu-section > h2{margin-bottom:27px!important}
+.menu-group:not(#food) .menu-section .m-list{padding:4px 4px 6px}
 @media(max-width:480px){
   .menu-group .menu-section{margin-top:25px!important}
-  .menu-group .menu-section > h2{
+  .menu-group:not(#food) .menu-section{margin-top:32px!important}
+  .menu-group:not(#food) .menu-section > h2{margin-bottom:25px!important}
+  .menu-group:not(#food) .menu-section > h2{
     min-height:41px;
     margin-bottom:13px!important;
     padding:10px 11px 10px 14px!important;
