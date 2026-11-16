@@ -4210,8 +4210,9 @@ let tccCurrentDrink=null;
 let tccQuizStep=0;
 let tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null,caffeine:null,texture:null,avoid:null};
 let tccSeenDrinkNames=new Set();
+let tccQuizQuestions=null;
 
-function tccQuestionsForAnswers(){
+function tccBuildQuizQuestions(){
  const pool=tccEligibleDrinks().filter(x=>x.profile);
  const answers=tccQuizAnswers;
  const dimensions=[
@@ -4266,6 +4267,11 @@ function tccQuestionsForAnswers(){
   }
  }
  return questions;
+}
+
+function tccQuestionsForAnswers(){
+ if(!tccQuizQuestions)tccQuizQuestions=tccBuildQuizQuestions();
+ return tccQuizQuestions;
 }
 
 const tccDrinkProfiles={
@@ -4583,6 +4589,8 @@ document.getElementById("tccQuizBack")?.addEventListener("click",()=>{if(tccQuiz
 function tccResetQuiz(){
  tccQuizStep=0;
  tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null,caffeine:null,texture:null,avoid:null};
+ tccQuizQuestions=null;
+ tccQuestionsForAnswers();
  tccSeenDrinkNames.clear();
  document.getElementById("tccPickAnotherDrink").disabled=false;
  tccDrinkResult.classList.remove("is-visible");
