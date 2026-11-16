@@ -4527,15 +4527,13 @@ function tccPickMatchedDrink(excludeSeen=true){
  const strictPool=ranked.filter(x=>x.hardMatch);
  const fitPool=strictPool.length?strictPool:ranked;
  let pool=excludeSeen?fitPool.filter(x=>!tccSeenDrinkNames.has(x.name)):fitPool;
+ // Never leave the customer on a dead-end screen. If every suitable drink has
+ // already appeared, restart the no-repeat cycle and still return a real match.
+ let restartedSeenCycle=false;
  if(!pool.length){
-  document.getElementById("tccQuizHint").textContent="You've explored all the matching drinks. Start again to discover more TCC favourites.";
-  document.getElementById("tccDrinkPickName").textContent="You've explored your matches!";
-  document.getElementById("tccDrinkPickPrice").textContent="";
-  document.getElementById("tccDrinkPickDescription").textContent="Start again to get a fresh set of recommendations.";
-  document.getElementById("tccDrinkPickWhy").textContent="";
-  document.getElementById("tccDrinkPickPhoto").replaceChildren();
-  document.getElementById("tccPickAnotherDrink").disabled=true;
-  result.classList.add("is-visible");return;
+  tccSeenDrinkNames.clear();
+  pool=fitPool;
+  restartedSeenCycle=true;
  }
  const topScore=pool[0].tasteScore;
  const topBand=pool.filter(x=>x.tasteScore>=topScore-2);
@@ -4569,7 +4567,7 @@ function tccPickMatchedDrink(excludeSeen=true){
  document.getElementById("tccQuizStepMeta").textContent="YOUR TCC DRINK PICKS";
  document.getElementById("tccQuizProgressFill").style.width="100%";
  document.getElementById("tccQuizQuestion").textContent="Here are your best matches.";
- document.getElementById("tccQuizHint").textContent="90% taste match, with 10% room to discover something new.";
+ document.getElementById("tccQuizHint").textContent=restartedSeenCycle?"You've explored these matches once — here's another top match.":"90% taste match, with 10% room to discover something new.";
  document.getElementById("tccQuizOptions").style.display="none";
  document.querySelector(".tcc-quiz-controls").style.display="none";
  document.getElementById("tccQuizRestart").textContent="Start again";
