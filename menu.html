@@ -3104,8 +3104,9 @@ body:not(.menu-text-mode) .menu-section .m-item{
                 clearInterval(timer);
               }
             }
+            let timer;
             tick();
-            const timer=setInterval(tick,1000);
+            timer=setInterval(tick,1000);
           })();
         </script>
         
