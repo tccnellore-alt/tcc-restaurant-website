@@ -4391,7 +4391,9 @@ function tccScoreDrink(drink){
  const p=drink.profile,a=tccQuizAnswers;
  let earned=0,possible=0,hardMatch=true,avoidPenalty=0;
  const add=(key,weight,fit)=>{
-  if(!a[key]||!p[key])return;
+  if(!a[key])return;
+  if(key==="flavour"){if(!(p.flavours||[]).length)return;}
+  else if(!p[key])return;
   possible+=weight;earned+=weight*fit;
  };
  if(a.mood){possible+=34;if(p.mood===a.mood)earned+=34;else hardMatch=false;}
@@ -4540,7 +4542,7 @@ function tccPickMatchedDrink(excludeSeen=true){
  const chosen=topBand[Math.floor(Math.random()*topBand.length)];
  const remaining=pool.filter(x=>x.name!==chosen.name);
  const closeMatch=remaining.slice().sort((a,b)=>b.tasteScore-a.tasteScore)[0];
- const discoveryPool=remaining.filter(x=>x.name!==closeMatch?.name&&x.tasteScore>=chosen.tasteScore-10);
+ const discoveryPool=remaining.filter(x=>x.name!==closeMatch?.name&&x.tasteScore>=chosen.tasteScore*0.9);
  const discovery=discoveryPool.slice().sort((a,b)=>{
   const diversity=tccDrinkSimilarity(a,chosen)-tccDrinkSimilarity(b,chosen);
   if(Math.abs(diversity)>0.02)return diversity;
@@ -4577,7 +4579,7 @@ function tccPickMatchedDrink(excludeSeen=true){
 document.getElementById("tccQuizNext")?.addEventListener("click",()=>{
  const questions=tccQuestionsForAnswers();
  if(tccQuizStep<questions.length-1){tccQuizStep++;tccRenderQuizStep();}
- else tccPickMatchedDrink(false);
+ else tccPickMatchedDrink(true);
 });
 document.getElementById("tccQuizBack")?.addEventListener("click",()=>{if(tccQuizStep>0){tccQuizStep--;tccRenderQuizStep();}});
 function tccResetQuiz(){
