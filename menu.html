@@ -4208,36 +4208,66 @@ const tccDrinkPicker=document.getElementById("tccDrinkPicker");
 const tccDrinkResult=document.getElementById("tccDrinkPickResult");
 let tccCurrentDrink=null;
 let tccQuizStep=0;
-let tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null};
+let tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null,caffeine:null,texture:null,avoid:null};
+let tccSeenDrinkNames=new Set();
+
 function tccQuestionsForAnswers(){
  const pool=tccEligibleDrinks().filter(x=>x.profile);
  const answers=tccQuizAnswers;
  const dimensions=[
-  {key:"mood",weight:5,title:"What kind of drink are you in the mood for?",hint:"Choose a drink style to get started.",labels:{coffee:"Coffee",tea:"Tea",fizzy:"Refreshing drinks",matcha:"Matcha",shake:"Shakes"}},
-  {key:"temperature",weight:4,title:"Would you prefer it hot or cold?",hint:"We'll narrow it down to the drinks that suit you.",labels:{hot:"Hot",cold:"Cold",any:"Either"}},
+  {key:"mood",weight:5,title:"What kind of drink are you in the mood for?",hint:"Choose the drink style you feel like.",labels:{coffee:"Coffee",tea:"Tea",fizzy:"Refreshing drinks",matcha:"Matcha",shake:"Shakes"}},
+  {key:"temperature",weight:4,title:"Would you prefer it hot or cold?",hint:"We'll focus on drinks served at your preferred temperature.",labels:{hot:"Hot",cold:"Cold"}},
   {key:"sweetness",weight:3,title:"How sweet do you like your drink?",hint:"Choose the sweetness you usually enjoy.",labels:{none:"Not sweet",light:"Lightly sweet",medium:"Medium sweet",sweet:"Sweet"}},
-  {key:"flavour",weight:2,title:"Which flavour sounds best?",hint:"One more detail can help us find a closer match.",labels:{coffee:"Coffee",creamy:"Smooth & creamy",chocolate:"Chocolate",fruity:"Fruity",floral:"Floral",tea:"Tea"}}
+  {key:"flavour",weight:2.4,title:"Which flavour sounds best?",hint:"Pick the flavour profile you enjoy most.",labels:{coffee:"Coffee",creamy:"Smooth & creamy",chocolate:"Chocolate",fruity:"Fruity",floral:"Floral",tea:"Tea"}},
+  {key:"caffeine",weight:1.8,title:"Would you like a caffeinated drink?",hint:"We'll use this only where the drink's caffeine profile is known.",labels:{yes:"Yes, with caffeine",no:"Prefer caffeine-free",either:"No preference"}},
+  {key:"texture",weight:1.5,title:"What kind of drink feel do you prefer?",hint:"Choose a creamy or refreshing style.",labels:{creamy:"Creamy & smooth",refreshing:"Light & refreshing"}},
+  {key:"avoid",weight:0.8,title:"Anything you'd rather avoid?",hint:"Choose one flavour to avoid, or select no preference.",labels:{none:"Nothing to avoid",coffee:"Coffee flavour",creamy:"Creamy flavours",chocolate:"Chocolate",fruity:"Fruity flavours",floral:"Floral notes",tea:"Tea flavour"}}
  ];
  const questions=[];let candidates=pool.slice(),used=[];
- for(let step=0;step<4;step++){
+ const matches=(drink,key,value)=>{
+  const p=drink.profile;
+  if(key==="flavour")return (p.flavours||[]).includes(value);
+  if(key==="avoid")return value==="none"||!(p.flavours||[]).includes(value);
+  if(key==="caffeine"&&value==="either")return true;
+  return !p[key]||p[key]===value;
+ };
+ for(let step=0;step<5;step++){
   const ranked=dimensions.filter(d=>!used.includes(d.key)).map(d=>{
-   const values=[...new Set(candidates.map(x=>d.key==="flavour"?x.profile.flavours:x.profile[d.key]).flat().filter(Boolean))];
-   const splits=values.length;
-   const distribution=values.map(value=>candidates.filter(x=>d.key==="flavour"?x.profile.flavours.includes(value):x.profile[d.key]===value).length).filter(Boolean);
-   const total=distribution.reduce((sum,n)=>sum+n,0);
-   const entropy=total?distribution.reduce((sum,n)=>{const p=n/total;return sum-p*Math.log2(p);},0):0;
-   return {...d,values,utility:splits>1?entropy*d.weight:0};
-  }).filter(d=>d.utility>0).sort((a,b)=>b.utility-a.utility);
+   let values;
+   if(d.key==="flavour")values=[...new Set(candidates.flatMap(x=>x.profile.flavours||[]))];
+   else if(d.key==="avoid")values=["none",...new Set(candidates.flatMap(x=>x.profile.flavours||[]))];
+   else values=[...new Set(candidates.map(x=>x.profile[d.key]).filter(Boolean))];
+   if(d.key==="caffeine"&&values.length>1)values.push("either");
+   let utility=0;
+   if(d.key==="avoid"){
+    const flavours=values.filter(v=>v!=="none");
+    utility=flavours.reduce((best,value)=>{
+     const yes=candidates.filter(x=>(x.profile.flavours||[]).includes(value)).length;
+     const no=candidates.length-yes;
+     const entropy=[yes,no].filter(Boolean).reduce((sum,n)=>{const p=n/candidates.length;return sum-p*Math.log2(p);},0);
+     return Math.max(best,entropy*d.weight);
+    },0);
+   }else{
+    const distribution=values.filter(v=>v!=="either").map(value=>candidates.filter(x=>d.key==="flavour"?(x.profile.flavours||[]).includes(value):x.profile[d.key]===value).length).filter(Boolean);
+    const total=distribution.reduce((sum,n)=>sum+n,0);
+    const entropy=total?distribution.reduce((sum,n)=>{const p=n/total;return sum-p*Math.log2(p);},0):0;
+    utility=values.filter(v=>v!=="either").length>1?entropy*d.weight:0;
+   }
+   return {...d,values,utility};
+  }).filter(d=>d.utility>0&&d.values.length>1).sort((a,b)=>b.utility-a.utility);
   if(!ranked.length)break;
   const d=ranked[0];used.push(d.key);
-  const values=d.values;
-  const opts=values.map(value=>[value,d.labels[value]||value]);
+  const opts=d.values.map(value=>[value,d.labels[value]||value]);
   questions.push({key:d.key,question:d.title,hint:d.hint,options:opts});
   const chosen=answers[d.key];
-  if(chosen)candidates=candidates.filter(x=>d.key==="flavour"?x.profile.flavours.includes(chosen):x.profile[d.key]===chosen);
+  if(chosen){
+   const filtered=candidates.filter(x=>matches(x,d.key,chosen));
+   if(filtered.length)candidates=filtered;
+  }
  }
  return questions;
 }
+
 const tccDrinkProfiles={
  "Ginger Honey Lemon Tea":{mood:"tea",sweetness:"light",temperature:"hot",flavours:["tea","floral"]},
  "Espresso":{mood:"coffee",sweetness:"none",temperature:"hot",flavours:["coffee"]},
@@ -4280,6 +4310,7 @@ const tccDrinkProfiles={
  "Berry Iced Tea":{mood:"tea",sweetness:"medium",temperature:"cold",flavours:["tea","fruity"]},
  "Classic Matcha Hot":{mood:"matcha",sweetness:"light",temperature:"hot",flavours:["floral","creamy"]},
  "Classic Matcha Cold":{mood:"matcha",sweetness:"light",temperature:"cold",flavours:["floral","creamy"]},
+ "Dirty Matcha":{mood:"matcha",sweetness:null,temperature:"cold",flavours:["coffee","creamy"],caffeine:"yes"},
  "Coconut Matcha Cloud":{mood:"matcha",sweetness:"medium",temperature:"cold",flavours:["creamy","floral"]},
  "Mango Passion Matcha":{mood:"matcha",sweetness:"medium",temperature:"cold",flavours:["fruity","floral"]},
  "Strawberry Matcha":{mood:"matcha",sweetness:"medium",temperature:"cold",flavours:["fruity","creamy"]},
@@ -4293,9 +4324,26 @@ const tccDrinkProfiles={
  "Orange Espresso":{mood:"coffee",sweetness:"light",temperature:"cold",flavours:["coffee","fruity"]},
  "Pineapple Float":{mood:"fizzy",sweetness:"sweet",temperature:"cold",flavours:["fruity","creamy"]}
 };
+
 function tccCleanDrinkName(item){
- const h=item.querySelector("h3");
- return (h?.cloneNode(true).textContent||"").replace(/Best Seller|NEW ARRIVAL|♛/gi,"").replace(/\s+/g," ").trim();
+ const clone=item.querySelector("h3")?.cloneNode(true);
+ clone?.querySelectorAll(".tcc-bestseller-badge,.tcc-new-arrival-badge,.food-badge,.availability-status").forEach(el=>el.remove());
+ return (clone?.textContent||"").replace(/\s+/g," ").trim();
+}
+function tccProfileForDrink(name){
+ const source=tccDrinkProfiles[name];
+ if(!source)return null;
+ const profile={...source};
+ // Only use broad caffeine/texture labels where the menu category supports them.
+ if(!profile.caffeine){
+  if(profile.mood==="coffee"||profile.mood==="matcha")profile.caffeine="yes";
+  else if(profile.mood==="fizzy")profile.caffeine="no";
+ }
+ if(!profile.texture){
+  if((profile.flavours||[]).includes("creamy"))profile.texture="creamy";
+  else if(profile.mood==="fizzy"||(profile.mood==="tea"&&profile.temperature==="cold"))profile.texture="refreshing";
+ }
+ return profile;
 }
 function tccEligibleDrinks(){
  return ["coffee","refreshers-and-tea","signatures"].flatMap(groupId=>{
@@ -4304,14 +4352,18 @@ function tccEligibleDrinks(){
    !item.querySelector(".availability-status")&&!/sold\s*out|temporarily unavailable/i.test(item.textContent)
   ).map(item=>{
    const name=tccCleanDrinkName(item);
-   return {item,name,price:[...item.children].find(el=>el.matches("strong"))?.textContent.trim()||"",profile:tccDrinkProfiles[name]||null};
+   return {item,name,price:[...item.children].find(el=>el.matches("strong"))?.textContent.trim()||"",profile:tccProfileForDrink(name)};
   });
  }).filter(x=>x.name);
 }
 function tccRenderQuizStep(){
  const questions=tccQuestionsForAnswers();
+ const options=document.getElementById("tccQuizOptions");
+ if(!questions.length){
+  tccPickMatchedDrink(false);return;
+ }
  tccQuizStep=Math.min(tccQuizStep,questions.length-1);
- const q=questions[tccQuizStep],options=document.getElementById("tccQuizOptions");
+ const q=questions[tccQuizStep];
  document.getElementById("tccQuizStepMeta").textContent="STEP "+(tccQuizStep+1)+" OF "+questions.length;
  document.getElementById("tccQuizProgressFill").style.width=((tccQuizStep+1)/questions.length*100)+"%";
  document.getElementById("tccQuizQuestion").textContent=q.question;
@@ -4321,11 +4373,8 @@ function tccRenderQuizStep(){
   const b=document.createElement("button");b.type="button";b.className="tcc-quiz-option";b.textContent=label;
   b.setAttribute("aria-pressed",String(tccQuizAnswers[q.key]===value));
   b.addEventListener("click",()=>{
-   const prior=tccQuizAnswers[q.key];tccQuizAnswers[q.key]=value;
-   if(prior!==value){
-    const order=["mood","temperature","sweetness","flavour"];
-    order.slice(order.indexOf(q.key)+1).forEach(key=>{tccQuizAnswers[key]=null;});
-   }
+   tccQuizAnswers[q.key]=value;
+   questions.slice(tccQuizStep+1).forEach(nextQuestion=>{tccQuizAnswers[nextQuestion.key]=null;});
    options.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
    document.getElementById("tccQuizNext").disabled=false;
    document.getElementById("tccQuizNext").textContent=tccQuizStep===questions.length-1?"Find my drink":"Next";
@@ -4337,53 +4386,54 @@ function tccRenderQuizStep(){
  next.disabled=!tccQuizAnswers[q.key];
  next.textContent=tccQuizStep===questions.length-1?"Find my drink":"Next";
 }
+
 function tccScoreDrink(drink){
  const p=drink.profile,a=tccQuizAnswers;
- let score=0,answered=0,hardMatch=true;
- // Drink type and temperature are strong constraints.
- if(a.mood){answered++;if(p.mood===a.mood)score+=32;else{score-=36;hardMatch=false;}}
- if(a.temperature){
-  answered++;
-  if(p.temperature===a.temperature)score+=26;
-  else if(p.temperature==="any")score+=18;
-  else{score-=32;hardMatch=false;}
- }
- // Sweetness is a gradient: a nearby level can still be a reasonable fit.
- const sweetnessOrder={none:0,light:1,medium:2,sweet:3};
+ let earned=0,possible=0,hardMatch=true,avoidPenalty=0;
+ const add=(key,weight,fit)=>{
+  if(!a[key]||!p[key])return;
+  possible+=weight;earned+=weight*fit;
+ };
+ if(a.mood){possible+=34;if(p.mood===a.mood)earned+=34;else hardMatch=false;}
+ if(a.temperature){possible+=22;if(p.temperature===a.temperature)earned+=22;else hardMatch=false;}
  if(a.sweetness&&p.sweetness){
-  answered++;
-  const distance=Math.abs(sweetnessOrder[a.sweetness]-sweetnessOrder[p.sweetness]);
-  score+=distance===0?18:distance===1?7:-5;
+  const order={none:0,light:1,medium:2,sweet:3};
+  const distance=Math.abs(order[a.sweetness]-order[p.sweetness]);
+  add("sweetness",14,distance===0?1:distance===1?0.55:0.15);
  }
- if(a.flavour){answered++;score+=p.flavours.includes(a.flavour)?20:-3;}
- // Bestseller status is only a tiny tie-breaker, never the main match signal.
- const bestsellerBonus=drink.item?.querySelector(".tcc-bestseller-badge")?1:0;
- if(bestsellerBonus)score+=bestsellerBonus;
- const maxPossible=(a.mood?32:0)+(a.temperature?26:0)+(a.sweetness?18:0)+(a.flavour?20:0);
- const matchPercent=maxPossible?Math.max(0,Math.min(100,((score-bestsellerBonus)/maxPossible)*100)):0;
- return {score,answered,hardMatch,matchPercent};
+ if(a.flavour)add("flavour",16,(p.flavours||[]).includes(a.flavour)?1:0.12);
+ if(a.caffeine&&a.caffeine!=="either")add("caffeine",7,p.caffeine===a.caffeine?1:0.05);
+ if(a.texture)add("texture",5,p.texture===a.texture?1:0.15);
+ if(a.avoid&&a.avoid!=="none"&&(p.flavours||[]).includes(a.avoid)){avoidPenalty=28;hardMatch=false;}
+ const tasteScore=possible?Math.max(0,Math.min(100,(earned/possible)*100-avoidPenalty)):0;
+ const bestsellerBonus=drink.item?.querySelector(".tcc-bestseller-badge")?0.4:0;
+ return {tasteScore,score:tasteScore+bestsellerBonus,hardMatch};
 }
 function tccDrinkSimilarity(a,b){
  const pa=a.profile,pb=b.profile;let same=0,total=0;
- ["mood","temperature","sweetness"].forEach(key=>{
-  if(pa[key]&&pb[key]){total++;if(pa[key]===pb[key]||(key==="temperature"&&(pa[key]==="any"||pb[key]==="any")))same++;}
+ ["mood","temperature","sweetness","caffeine","texture"].forEach(key=>{
+  if(pa[key]&&pb[key]){total++;if(pa[key]===pb[key])same++;}
  });
  const fa=pa.flavours||[],fb=pb.flavours||[];
  if(fa.length&&fb.length){total++;if(fa.some(x=>fb.includes(x)))same++;}
  return total?same/total:0;
 }
 function tccAlternativeNote(drink,best,index){
- if(index===0)return "Closest alternative to your choices";
- return tccDrinkSimilarity(drink,best)<=0.5?"A different taste to explore":"Another drink that fits your mood";
+ if(index===0)return "Similar taste match";
+ return "A fresh discovery, still within 90% of your taste match";
 }
 function tccDrinkReason(drink){
  const a=tccQuizAnswers,reasons=[];
  if(a.mood)reasons.push(({coffee:"coffee",tea:"tea",fizzy:"refreshing drinks",matcha:"matcha",shake:"shakes"}[a.mood]||"your chosen drink style"));
- if(a.temperature)reasons.push(a.temperature==="hot"?"a hot drink":a.temperature==="cold"?"a cold drink":"either temperature");
+ if(a.temperature)reasons.push(a.temperature==="hot"?"a hot drink":"a cold drink");
  if(a.sweetness)reasons.push(({none:"no added sweetness",light:"light sweetness",medium:"balanced sweetness",sweet:"a sweeter taste"}[a.sweetness]));
- if(a.flavour)reasons.push(({coffee:"coffee flavour",creamy:"creamy texture",chocolate:"chocolate",fruity:"fruity flavours",floral:"floral notes",tea:"tea flavour"}[a.flavour]||a.flavour));
- return reasons.length?"Matched to your preference for "+reasons.slice(0,3).join(", ")+".":"A recommended drink from the available TCC menu.";
+ if(a.flavour)reasons.push(({coffee:"coffee flavour",creamy:"creamy notes",chocolate:"chocolate",fruity:"fruity flavours",floral:"floral notes",tea:"tea flavour"}[a.flavour]||a.flavour));
+ if(a.caffeine&&a.caffeine!=="either")reasons.push(a.caffeine==="yes"?"a caffeinated drink":"a caffeine-free option");
+ if(a.texture)reasons.push(a.texture==="creamy"?"a creamy texture":"a refreshing feel");
+ if(a.avoid&&a.avoid!=="none")reasons.push("avoiding "+a.avoid+" flavours");
+ return reasons.length?"Chosen to match your preference for "+reasons.slice(0,4).join(", ")+".":"A recommended drink from the available TCC menu.";
 }
+
 function tccShowDrinkCard(drink){
  tccCurrentDrink=drink;
  document.getElementById("tccDrinkPickName").textContent=drink.name;
@@ -4460,39 +4510,47 @@ function tccShowDrinkCard(drink){
   photoBox.innerHTML='<div class="m-photo-placeholder"><strong>Photo Coming Soon</strong></div>';
  }
 }
-function tccPickMatchedDrink(){
+function tccPickMatchedDrink(excludeSeen=true){
  const eligible=tccEligibleDrinks().filter(x=>x.profile);
  const result=tccDrinkResult;
  const list=document.getElementById("tccDrinkAlternativeList");list.replaceChildren();
  if(!eligible.length){
   document.getElementById("tccQuizQuestion").textContent="Let's try another combination.";
-  document.getElementById("tccQuizHint").textContent="We couldn't find a close match in the available drinks. Change an answer or explore the drinks menu.";
+  document.getElementById("tccQuizHint").textContent="We couldn't find a suitable drink profile in the available menu. Please explore the drinks menu.";
   document.getElementById("tccQuizOptions").style.display="none";
   document.querySelector(".tcc-quiz-controls").style.display="none";
   result.classList.add("is-visible");return;
  }
  const ranked=eligible.map(x=>({...x,...tccScoreDrink(x)})).sort((a,b)=>b.score-a.score);
- // Respect selected drink type and temperature whenever the menu has an exact fit.
  const strictPool=ranked.filter(x=>x.hardMatch);
- const pool=strictPool.length?strictPool:ranked;
- // Randomise only among genuinely close matches: within 5 percentage points
- // of the strongest candidate, while preserving hard drink-style/temperature fits.
- const topMatchPercent=Math.max(...pool.map(x=>x.matchPercent));
- const nearMatchPool=pool.filter(x=>x.matchPercent>=topMatchPercent-5);
- const chosen=nearMatchPool[Math.floor(Math.random()*nearMatchPool.length)];
+ const fitPool=strictPool.length?strictPool:ranked;
+ let pool=excludeSeen?fitPool.filter(x=>!tccSeenDrinkNames.has(x.name)):fitPool;
+ if(!pool.length){
+  document.getElementById("tccQuizHint").textContent="You've explored all the matching drinks. Start again to discover more TCC favourites.";
+  document.getElementById("tccDrinkPickName").textContent="You've explored your matches!";
+  document.getElementById("tccDrinkPickPrice").textContent="";
+  document.getElementById("tccDrinkPickDescription").textContent="Start again to get a fresh set of recommendations.";
+  document.getElementById("tccDrinkPickWhy").textContent="";
+  document.getElementById("tccDrinkPickPhoto").replaceChildren();
+  document.getElementById("tccPickAnotherDrink").disabled=true;
+  result.classList.add("is-visible");return;
+ }
+ const topScore=pool[0].tasteScore;
+ const topBand=pool.filter(x=>x.tasteScore>=topScore-2);
+ const chosen=topBand[Math.floor(Math.random()*topBand.length)];
  const remaining=pool.filter(x=>x.name!==chosen.name);
- const closeMatch=remaining.slice().sort((a,b)=>{
-  const diff=b.score-a.score;
-  if(Math.abs(diff)>8)return diff;
-  return tccDrinkSimilarity(b,chosen)-tccDrinkSimilarity(a,chosen);
- })[0];
- const discovery=remaining.filter(x=>x.name!==closeMatch?.name).sort((a,b)=>{
+ const closeMatch=remaining.slice().sort((a,b)=>b.tasteScore-a.tasteScore)[0];
+ const discoveryPool=remaining.filter(x=>x.name!==closeMatch?.name&&x.tasteScore>=chosen.tasteScore-10);
+ const discovery=discoveryPool.slice().sort((a,b)=>{
   const diversity=tccDrinkSimilarity(a,chosen)-tccDrinkSimilarity(b,chosen);
-  if(Math.abs(diversity)>0.05)return diversity;
-  return b.score-a.score;
+  if(Math.abs(diversity)>0.02)return diversity;
+  return b.tasteScore-a.tasteScore;
  })[0];
  const alternatives=[closeMatch,discovery].filter(Boolean);
+ tccSeenDrinkNames.add(chosen.name);
+ alternatives.forEach(x=>tccSeenDrinkNames.add(x.name));
  tccShowDrinkCard(chosen);
+ document.getElementById("tccPickAnotherDrink").disabled=false;
  alternatives.forEach((drink,index)=>{
   const card=document.createElement("button");card.type="button";card.className="tcc-drink-alternative";
   const name=document.createElement("strong");name.textContent=drink.name;
@@ -4509,7 +4567,7 @@ function tccPickMatchedDrink(){
  document.getElementById("tccQuizStepMeta").textContent="YOUR TCC DRINK PICKS";
  document.getElementById("tccQuizProgressFill").style.width="100%";
  document.getElementById("tccQuizQuestion").textContent="Here are your best matches.";
- document.getElementById("tccQuizHint").textContent="We matched your answers with drinks currently available at TCC.";
+ document.getElementById("tccQuizHint").textContent="90% taste match, with 10% room to discover something new.";
  document.getElementById("tccQuizOptions").style.display="none";
  document.querySelector(".tcc-quiz-controls").style.display="none";
  document.getElementById("tccQuizRestart").textContent="Start again";
@@ -4519,11 +4577,14 @@ function tccPickMatchedDrink(){
 document.getElementById("tccQuizNext")?.addEventListener("click",()=>{
  const questions=tccQuestionsForAnswers();
  if(tccQuizStep<questions.length-1){tccQuizStep++;tccRenderQuizStep();}
- else tccPickMatchedDrink();
+ else tccPickMatchedDrink(false);
 });
 document.getElementById("tccQuizBack")?.addEventListener("click",()=>{if(tccQuizStep>0){tccQuizStep--;tccRenderQuizStep();}});
 function tccResetQuiz(){
- tccQuizStep=0;tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null};
+ tccQuizStep=0;
+ tccQuizAnswers={mood:null,temperature:null,sweetness:null,flavour:null,caffeine:null,texture:null,avoid:null};
+ tccSeenDrinkNames.clear();
+ document.getElementById("tccPickAnotherDrink").disabled=false;
  tccDrinkResult.classList.remove("is-visible");
  document.getElementById("tccQuizOptions").style.display="grid";
  document.querySelector(".tcc-quiz-controls").style.display="flex";
@@ -4540,8 +4601,7 @@ document.getElementById("tccAdjustDrinkAnswers")?.addEventListener("click",()=>{
  tccRenderQuizStep();
  document.getElementById("tccQuizFlow").scrollIntoView({behavior:"smooth",block:"start"});
 });
-// Keep the customer's answers and draw again from the same near-match pool.
-document.getElementById("tccPickAnotherDrink")?.addEventListener("click",tccPickMatchedDrink);
+document.getElementById("tccPickAnotherDrink")?.addEventListener("click",()=>tccPickMatchedDrink(true));
 function tccViewPickedDrink(){
  const chosen=tccCurrentDrink;
  if(!chosen?.name)return;
