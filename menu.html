@@ -2444,6 +2444,17 @@ body:not(.menu-text-mode) .menu-section .m-item{
 @media(max-width:480px){.tcc-category-end-nav{align-items:flex-start;flex-direction:column;gap:13px;padding:17px}.tcc-category-end-button{width:100%}}
 @media(prefers-reduced-motion:reduce){.tcc-category-end-button{transition:none}}
 </style>
+
+<style>
+/* TCC: consistent 14px product names on mobile in both menu views */
+@media (max-width: 699px) {
+  body .menu-section .m-item h3,
+  body .menu-group .m-item h3 {
+    font-size: 14px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <!-- HEADER -->
