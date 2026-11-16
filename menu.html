@@ -3745,6 +3745,25 @@ function showTccPhotoPlaceholder(wrap){
   wrap.innerHTML='<div class="m-photo-placeholder" role="img" aria-label="Photo coming soon"><img class="m-photo-placeholder-logo" src="images/logo.png" alt="TCC – The Coffee Club"><strong class="m-photo-coming-soon" style="color:#173d31!important;-webkit-text-fill-color:#173d31!important">Photo Coming Soon</strong></div>';
 }
 function addTccMenuPhotos(){
+  // Keep photo-backed products first in the customer-facing order.
+  // This runs before photo cards are injected, so it fixes both text and image menu views.
+  const photoFirstSections = new Set(["matcha","refreshers","cold brew"]);
+  document.querySelectorAll(".menu-section").forEach(section=>{
+    const heading=(section.querySelector("h2")?.textContent||"").trim().toLowerCase();
+    if(!photoFirstSections.has(heading)) return;
+    const list=section.querySelector(".m-list");
+    if(!list) return;
+    const items=[...list.querySelectorAll(":scope > .m-item")];
+    items.sort((a,b)=>{
+      const name=item=>{
+        const h=item.querySelector("h3")?.cloneNode(true);
+        h?.querySelectorAll(".food-badge,.best-seller,.availability-status,[class*='badge']").forEach(el=>el.remove());
+        return (h?.textContent||"").replace(/\\s+/g," ").trim();
+      };
+      return Number(!TCC_VERIFIED_PHOTOS[name(a)])-Number(!TCC_VERIFIED_PHOTOS[name(b)]);
+    });
+    items.forEach(item=>list.appendChild(item));
+  });
   document.querySelectorAll('.menu-section .m-item').forEach((item,index)=>{
     const title=item.querySelector('h3'), price=item.querySelector('strong');
     if(!title||!price||item.querySelector('.m-photo-wrap')) return;
