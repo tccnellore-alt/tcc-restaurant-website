@@ -4556,6 +4556,14 @@ function tccPickMatchedDrink(excludeSeen=true){
  tccSeenDrinkNames.add(chosen.name);
  alternatives.forEach(x=>tccSeenDrinkNames.add(x.name));
  tccShowDrinkCard(chosen);
+ // Explicitly reveal the recommendation and its parent flow on mobile browsers.
+ // This avoids a stale hidden/display state preventing the product card from appearing.
+ const quizFlow=document.getElementById("tccQuizFlow");
+ if(quizFlow)quizFlow.hidden=false;
+ if(tccDrinkPicker)tccDrinkPicker.classList.add("is-visible");
+ result.hidden=false;
+ result.style.setProperty("display","block","important");
+ result.classList.add("is-visible");
  document.getElementById("tccPickAnotherDrink").disabled=false;
  alternatives.forEach((drink,index)=>{
   const card=document.createElement("button");card.type="button";card.className="tcc-drink-alternative";
@@ -4577,13 +4585,28 @@ function tccPickMatchedDrink(excludeSeen=true){
  document.getElementById("tccQuizOptions").style.display="none";
  document.querySelector(".tcc-quiz-controls").style.display="none";
  document.getElementById("tccQuizRestart").textContent="Start again";
+ result.hidden=false;
+ result.style.setProperty("display","block","important");
  result.classList.add("is-visible");
  requestAnimationFrame(()=>result.scrollIntoView({behavior:"smooth",block:"start"}));
 }
 document.getElementById("tccQuizNext")?.addEventListener("click",()=>{
  const questions=tccQuestionsForAnswers();
- if(tccQuizStep<questions.length-1){tccQuizStep++;tccRenderQuizStep();}
- else tccPickMatchedDrink(true);
+ if(tccQuizStep<questions.length-1){tccQuizStep++;tccRenderQuizStep();return;}
+ try{
+  tccPickMatchedDrink(true);
+ }catch(error){
+  console.error("TCC Drink Finder recommendation error:",error);
+  const result=document.getElementById("tccDrinkPickResult");
+  const name=document.getElementById("tccDrinkPickName");
+  const description=document.getElementById("tccDrinkPickDescription");
+  if(name)name.textContent="Your TCC drink match";
+  if(description)description.textContent="We couldn't load the recommendation card. Please tap Start again and try once more.";
+  if(result){result.hidden=false;result.style.setProperty("display","block","important");result.classList.add("is-visible");}
+  document.getElementById("tccQuizOptions").style.display="none";
+  document.querySelector(".tcc-quiz-controls").style.display="none";
+  requestAnimationFrame(()=>result?.scrollIntoView({behavior:"smooth",block:"start"}));
+ }
 });
 document.getElementById("tccQuizBack")?.addEventListener("click",()=>{if(tccQuizStep>0){tccQuizStep--;tccRenderQuizStep();}});
 function tccResetQuiz(){
