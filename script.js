@@ -41,14 +41,16 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   style.textContent=`
     .menu-page .m-item .tcc-wish-add{position:static!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;min-height:38px!important;margin:0!important;padding:0 16px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#365442!important;box-shadow:none!important;font:700 12px/1 Arial,sans-serif!important;cursor:pointer!important;white-space:nowrap!important}
     .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important;min-width:0!important;padding-left:12px!important;padding-right:12px!important}
-    .tcc-menu-qty{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:12px!important;width:max-content!important;min-height:44px!important;margin:10px 12px 12px!important;padding:4px 8px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#173c2b!important;box-sizing:border-box!important}
-    .tcc-menu-qty button{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;padding:0!important;border:0!important;border-radius:50%!important;background:#173c2b!important;color:#fffaf0!important;font:700 18px Arial,sans-serif!important;cursor:pointer!important}
+    .tcc-price-action-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:6px!important;width:auto!important;min-width:0!important;margin:10px 12px 12px!important}
+    .tcc-price-action-row > strong{flex:0 0 auto!important;margin:0!important}
+    .tcc-price-action-row .tcc-menu-qty{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;min-height:36px!important;margin:0!important;padding:2px 4px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#173c2b!important;box-sizing:border-box!important}
+    .tcc-price-action-row .tcc-menu-qty button{width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;padding:0!important;border:0!important;border-radius:50%!important;background:#173c2b!important;color:#fffaf0!important;font:700 16px Arial,sans-serif!important;cursor:pointer!important}
     .tcc-menu-qty button[hidden],.tcc-menu-qty span[hidden],.tcc-menu-qty [hidden]{display:none!important}
     .tcc-menu-qty .tcc-wish-add[hidden]{display:none!important}
     .tcc-menu-qty span{min-width:18px;text-align:center;font:800 14px Arial,sans-serif}
     .tcc-menu-qty[hidden]{display:none!important}
-    .tcc-menu-qty:has(.tcc-wish-add:not([hidden])){min-height:0!important;margin:10px 12px 12px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;}
-    .tcc-menu-qty:has(.tcc-wish-add:not([hidden])) .tcc-wish-add{min-height:38px!important;padding:0 15px!important;border:0!important;border-radius:999px!important;background:#173c2b!important;color:#fffaf0!important;font:700 12px/1 Manrope,Arial,sans-serif!important;box-shadow:0 2px 7px rgba(23,60,43,.12)!important;}
+    .tcc-price-action-row .tcc-menu-qty:has(.tcc-wish-add:not([hidden])){min-height:34px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;}
+    .tcc-price-action-row .tcc-menu-qty:has(.tcc-wish-add:not([hidden])) .tcc-wish-add{min-height:34px!important;padding:0 9px!important;border:0!important;border-radius:999px!important;background:#173c2b!important;color:#fffaf0!important;font:700 10px/1 Manrope,Arial,sans-serif!important;box-shadow:0 2px 7px rgba(23,60,43,.12)!important;}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:7px!important;min-width:0!important;width:100%!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row h3{display:inline!important;flex:0 1 auto!important;min-width:0!important;margin:0!important}
     body.menu-text-mode .menu-page .m-item .tcc-wish-title-row .tcc-wish-add{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:100%!important;vertical-align:middle!important;white-space:nowrap!important;min-height:28px!important;margin:0!important;padding:0 10px!important;font-size:10px!important;line-height:1!important}
@@ -276,7 +278,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     count().textContent=items.reduce((sum,item)=>sum+Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll('.m-item').forEach(card=>{
       const data=getData(card),btn=card.querySelector('.tcc-wish-add');
-      if(btn){const matching=items.filter(x=>sameProduct(x,data));const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){const controls=stepper.querySelectorAll('button');const qtyLabel=stepper.querySelector('span');stepper.hidden=false;qtyLabel.textContent=String(quantity);qtyLabel.hidden=!quantity;controls[0].hidden=!quantity;controls[1].hidden=!quantity;btn.hidden=quantity>0;}btn.classList.toggle('is-added',!!quantity);btn.textContent='＋ Add to Cart';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
+      if(btn){const matching=items.filter(x=>sameProduct(x,data));const quantity=matching.reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0);const stepper=card.querySelector('.tcc-menu-qty');if(stepper){const controls=stepper.querySelectorAll('button');const qtyLabel=stepper.querySelector('span');stepper.hidden=false;qtyLabel.textContent=String(quantity);qtyLabel.hidden=!quantity;controls[0].hidden=!quantity;controls[1].hidden=!quantity;btn.hidden=quantity>0;}btn.classList.toggle('is-added',!!quantity);btn.textContent='＋ Add';btn.setAttribute('aria-label',quantity?'Add another '+data.name+' to cart':'Add '+data.name+' to cart');btn.setAttribute('title','Add to cart');btn.setAttribute('aria-pressed',String(!!quantity));}
     });
     const list=backdrop.querySelector('.tcc-wish-list');
     list.innerHTML='';
@@ -333,7 +335,14 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     }
     const price=card.querySelector(':scope > strong');
     if(price){
-      if(control.parentElement!==card||price.nextElementSibling!==control)price.insertAdjacentElement('afterend',control);
+      let row=card.querySelector(':scope > .tcc-price-action-row');
+      if(!row){
+        row=document.createElement('div');
+        row.className='tcc-price-action-row';
+        price.parentElement.insertBefore(row,price);
+      }
+      if(price.parentElement!==row)row.appendChild(price);
+      if(control.parentElement!==row)row.appendChild(control);
     }else{
       const info=card.querySelector('.m-item-info')||card;
       if(control.parentElement!==info)info.appendChild(control);
