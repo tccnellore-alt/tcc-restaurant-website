@@ -3049,29 +3049,33 @@ body:not(.menu-text-mode) .menu-section .m-item{
           </div>
         </section>
         <style>
-          .tcc-ube-teaser{position:relative;isolation:isolate;overflow:hidden;margin:24px 0 8px;padding:1px;border-radius:23px;background:linear-gradient(135deg,#d9b7ed,#8e5bb5 35%,#4d286b 68%,#d4a8e7);box-shadow:0 12px 30px rgba(65,34,83,.16)}
-          .tcc-ube-teaser-inner{position:relative;overflow:hidden;min-height:360px;padding:27px 17px 23px;border-radius:22px;background:radial-gradient(ellipse at 50% 43%,rgba(154,91,193,.28),transparent 47%),linear-gradient(155deg,#21132d 0%,#321c45 48%,#1c1328 100%);color:#fff;text-align:center}
-          .tcc-ube-teaser-inner:before,.tcc-ube-teaser-inner:after{content:"";position:absolute;z-index:-1;border:1px solid rgba(222,185,244,.15);border-radius:50%;pointer-events:none}
-          .tcc-ube-teaser-inner:before{width:260px;height:260px;top:95px;left:-145px}
-          .tcc-ube-teaser-inner:after{width:310px;height:310px;right:-185px;top:35px}
-          .tcc-ube-eyebrow{display:inline-block;color:#e5c9f5;font:800 8px/1.4 Manrope,Arial,sans-serif;letter-spacing:.19em}
-          .tcc-ube-teaser h2{margin:13px 0 5px;color:#fff5ff;font:500 clamp(30px,8vw,43px)/1.02 "Cormorant Garamond",Georgia,serif;letter-spacing:-.025em}
-          .tcc-ube-subtitle{margin:0;color:#d7c5e2;font:500 11px/1.5 Manrope,Arial,sans-serif;letter-spacing:.025em}
-          .tcc-ube-orb{position:relative;display:grid;place-items:center;width:116px;height:116px;margin:19px auto 16px;border:1px solid rgba(226,190,246,.48);border-radius:50%;background:radial-gradient(circle at 38% 32%,#bd8bd8 0%,#8a51ae 27%,#542d75 58%,#281737 78%);box-shadow:0 0 0 8px rgba(190,137,219,.055),0 0 38px rgba(175,105,214,.29),inset -9px -12px 24px rgba(12,7,20,.38),inset 7px 8px 18px rgba(255,255,255,.16);animation:ubeMysteryPulse 4s ease-in-out infinite}
-          .tcc-ube-orb span{width:65px;height:65px;border:1px solid rgba(255,235,255,.26);border-radius:50%;box-shadow:0 0 22px rgba(225,184,246,.18),inset 0 0 18px rgba(224,187,244,.12)}
-          @keyframes ubeMysteryPulse{0%,100%{transform:scale(1);filter:saturate(.92)}50%{transform:scale(1.045);filter:saturate(1.15)}}
-          .tcc-ube-local{margin:0 0 21px;color:#ead6f4;font:800 8px/1.4 Manrope,Arial,sans-serif;letter-spacing:.12em}
-          .tcc-ube-local i{padding:0 4px;color:#cda2e2;font-style:normal}
-          .tcc-ube-countdown-label{margin-bottom:10px;color:#d8b6ec;font:800 8px/1.3 Manrope,Arial,sans-serif;letter-spacing:.18em}
+          .tcc-ube-teaser{position:relative;isolation:isolate;overflow:hidden;margin:24px 0 8px;padding:1.5px;border-radius:25px;background:linear-gradient(112deg,#f8e9b7 0%,#a87932 12%,#fff0c4 23%,#875a25 39%,#e9c77f 55%,#fff4d3 68%,#8e642f 83%,#f1d99c 100%);box-shadow:0 18px 42px rgba(48,22,61,.22),0 3px 9px rgba(111,75,35,.22),inset 0 1px 0 rgba(255,255,255,.9)}
+          .tcc-ube-teaser:after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;background:linear-gradient(112deg,transparent 18%,rgba(255,255,255,.035) 34%,rgba(255,246,219,.22) 47%,rgba(255,255,255,.055) 55%,transparent 72%);transform:translateX(-115%);animation:ubeFoilSweep 8s ease-in-out infinite}
+          @keyframes ubeFoilSweep{0%,20%{transform:translateX(-115%)}65%,100%{transform:translateX(115%)}}
+          .tcc-ube-teaser-inner{position:relative;overflow:hidden;min-height:360px;padding:29px 17px 25px;border-radius:23px;background:radial-gradient(ellipse at 50% 39%,rgba(190,123,235,.36),transparent 42%),radial-gradient(ellipse at 8% 0%,rgba(123,76,157,.3),transparent 45%),linear-gradient(148deg,#170d22 0%,#2b163b 34%,#3c2052 57%,#1b1028 100%);color:#fff;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 -22px 50px rgba(7,3,13,.26)}
+          .tcc-ube-teaser-inner:before,.tcc-ube-teaser-inner:after{content:"";position:absolute;z-index:0;border:1px solid rgba(231,199,255,.17);border-radius:50%;pointer-events:none}
+          .tcc-ube-teaser-inner:before{width:280px;height:280px;top:75px;left:-155px;box-shadow:0 0 45px rgba(179,119,220,.08)}
+          .tcc-ube-teaser-inner:after{width:330px;height:330px;right:-190px;top:20px;box-shadow:0 0 45px rgba(179,119,220,.08)}
+          .tcc-ube-teaser-inner>*{position:relative;z-index:1}
+          .tcc-ube-eyebrow{display:inline-block;color:#f1d9ff;font:800 8px/1.4 Manrope,Arial,sans-serif;letter-spacing:.21em;text-shadow:0 0 14px rgba(222,177,255,.45)}
+          .tcc-ube-teaser h2{margin:14px 0 6px;color:#fff9ff;font:500 clamp(30px,8vw,43px)/1.02 "Cormorant Garamond",Georgia,serif;letter-spacing:-.025em;text-shadow:0 2px 18px rgba(235,198,255,.18)}
+          .tcc-ube-subtitle{margin:0;color:#e4d2ee;font:500 11px/1.5 Manrope,Arial,sans-serif;letter-spacing:.025em}
+          .tcc-ube-orb{position:relative;display:grid;place-items:center;width:122px;height:122px;margin:20px auto 17px;border:1px solid rgba(245,218,255,.72);border-radius:50%;background:radial-gradient(circle at 34% 25%,#edcaff 0%,#c58be8 13%,#9a5bc4 34%,#69398e 61%,#281536 84%);box-shadow:0 0 0 5px rgba(215,172,244,.08),0 0 0 10px rgba(215,172,244,.045),0 0 48px rgba(193,124,237,.55),inset -12px -15px 27px rgba(12,5,21,.55),inset 8px 9px 19px rgba(255,255,255,.36);animation:ubeMysteryPulse 4s ease-in-out infinite}
+          .tcc-ube-orb:before{content:"";position:absolute;inset:8px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:linear-gradient(135deg,rgba(255,255,255,.24),transparent 38%,rgba(18,7,30,.2) 78%);box-shadow:inset 0 2px 8px rgba(255,255,255,.15)}
+          .tcc-ube-orb span{position:relative;width:68px;height:68px;border:1px solid rgba(255,240,255,.43);border-radius:50%;box-shadow:0 0 28px rgba(239,205,255,.3),inset 0 0 24px rgba(224,187,244,.2)}
+          @keyframes ubeMysteryPulse{0%,100%{transform:scale(1);filter:saturate(1)}50%{transform:scale(1.045);filter:saturate(1.22) brightness(1.08)}}
+          .tcc-ube-local{margin:0 0 22px;color:#f0dfc0;font:800 8px/1.4 Manrope,Arial,sans-serif;letter-spacing:.13em;text-shadow:0 0 12px rgba(239,211,158,.18)}
+          .tcc-ube-local i{padding:0 4px;color:#e7c57f;font-style:normal}
+          .tcc-ube-countdown-label{margin-bottom:11px;color:#e8c98f;font:800 8px/1.3 Manrope,Arial,sans-serif;letter-spacing:.2em}
           .tcc-ube-countdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;max-width:390px;margin:0 auto}
-          .tcc-ube-countdown>div{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;padding:11px 3px 9px;border:1px solid rgba(222,190,240,.2);border-radius:12px;background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.045));box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
-          .tcc-ube-countdown strong{color:#fff;font:700 clamp(22px,6vw,29px)/1 Manrope,Arial,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
-          .tcc-ube-countdown small{margin-top:7px;color:#d5b9e5;font:800 7px/1 Manrope,Arial,sans-serif;letter-spacing:.13em}
-          .tcc-ube-foot{margin:16px 0 0;color:#bfa3ce;font:700 7px/1.4 Manrope,Arial,sans-serif;letter-spacing:.16em}
-          .tcc-ube-teaser.is-revealed .tcc-ube-eyebrow{color:#f0d69e}
-          .tcc-ube-teaser.is-revealed h2{color:#f5e0ff}
-          @media(min-width:700px){.tcc-ube-teaser{max-width:760px;margin:30px auto 12px}.tcc-ube-teaser-inner{padding:34px 28px 28px}.tcc-ube-orb{width:132px;height:132px}.tcc-ube-countdown>div{padding:14px 5px 12px}}
-          @media(max-width:360px){.tcc-ube-teaser-inner{padding:23px 11px 20px}.tcc-ube-countdown{gap:5px}.tcc-ube-countdown>div{padding:10px 2px 8px}.tcc-ube-countdown small{font-size:6px}.tcc-ube-local{font-size:7px;letter-spacing:.09em}}
+          .tcc-ube-countdown>div{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;padding:12px 3px 10px;border:1px solid rgba(232,203,150,.38);border-radius:13px;background:linear-gradient(155deg,rgba(255,255,255,.17),rgba(255,255,255,.055) 48%,rgba(9,4,17,.18));box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 7px 18px rgba(8,3,15,.16)}
+          .tcc-ube-countdown strong{color:#fff;font:700 clamp(22px,6vw,29px)/1 Manrope,Arial,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.04em;text-shadow:0 0 17px rgba(255,255,255,.28)}
+          .tcc-ube-countdown small{margin-top:7px;color:#e8d3f2;font:800 7px/1 Manrope,Arial,sans-serif;letter-spacing:.14em}
+          .tcc-ube-foot{margin:17px 0 0;color:#d1b9df;font:700 7px/1.4 Manrope,Arial,sans-serif;letter-spacing:.17em}
+          .tcc-ube-teaser.is-revealed .tcc-ube-eyebrow{color:#f5dda5}
+          .tcc-ube-teaser.is-revealed h2{color:#fff1cb}
+          @media(min-width:700px){.tcc-ube-teaser{max-width:760px;margin:30px auto 12px}.tcc-ube-teaser-inner{padding:36px 28px 29px}.tcc-ube-orb{width:136px;height:136px}.tcc-ube-countdown>div{padding:14px 5px 12px}}
+          @media(max-width:360px){.tcc-ube-teaser-inner{padding:24px 11px 21px}.tcc-ube-countdown{gap:5px}.tcc-ube-countdown>div{padding:10px 2px 8px}.tcc-ube-countdown small{font-size:6px}.tcc-ube-local{font-size:7px;letter-spacing:.09em}}
           @media(prefers-reduced-motion:reduce){.tcc-ube-orb{animation:none}}
         </style>
         <script>
