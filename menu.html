@@ -2407,6 +2407,17 @@ body:not(.menu-text-mode) .menu-section .m-item{
 .food-spotlight-image{display:block;width:100%;height:clamp(150px,29dvh,260px);max-height:260px;aspect-ratio:16/9;object-fit:cover;border-radius:13px;margin:0 auto 10px}
 
 </style>
+
+<style>
+/* TCC: consistent 14px product names on mobile in both menu views */
+@media (max-width: 699px) {
+  body .menu-section .m-item h3,
+  body .menu-group .m-item h3 {
+    font-size: 14px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <!-- HEADER -->
