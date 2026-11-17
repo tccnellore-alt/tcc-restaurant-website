@@ -133,6 +133,7 @@ internal sealed class MonitorForm : Form
 
     internal MonitorForm()
     {
+        Settings.SetStartup(true);
         Text="TCC · New Orders"; Width=390; Height=570; MinimumSize=new Size(340,300); TopMost=true;
         FormBorderStyle=FormBorderStyle.SizableToolWindow; StartPosition=FormStartPosition.Manual;
         var area=Screen.PrimaryScreen?.WorkingArea ?? new Rectangle(0,0,1200,800); Location=new Point(area.Right-Width-18,area.Bottom-Height-18);
