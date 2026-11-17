@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow">
-<title>TCC Order Desk</title><link rel="stylesheet" href="orders-dashboard.css?v=item-takeaway-2">
+<title>TCC Order Desk</title><link rel="stylesheet" href="orders-dashboard.css?v=three-stage-workflow-1">
 </head>
 <body>
 <main class="shell">
@@ -18,11 +18,10 @@
   </section>
   <section class="dashboard" id="dashboardView" hidden>
     <header class="topbar"><div><p class="eyebrow">TCC · RECEPTION</p><h1>Order Desk</h1><p class="muted" id="lastUpdated">Waiting for orders…</p></div><div class="topbar-actions"><button class="quiet sound-toggle" id="enableAlertsButton" type="button" role="switch" aria-checked="true" aria-label="Sound alerts"><span class="sound-toggle-track" aria-hidden="true"><span></span></span><span class="sound-toggle-label">Sound alerts: On</span></button><button class="quiet" id="logoutButton">Log out</button></div></header>
-    <section class="stats" id="stats" aria-label="Quick order filters">
-      <button class="stat-tile" type="button" data-quick-filter="new"><span>New orders</span><strong id="newCount">0</strong><small>Needs attention</small></button>
-      <button class="stat-tile" type="button" data-quick-filter="in-progress"><span>Preparing</span><strong id="progressCount">0</strong><small>In the kitchen</small></button>
-      <button class="stat-tile" type="button" data-quick-filter="ready"><span>Ready</span><strong id="readyCount">0</strong><small>Awaiting handover</small></button>
-      <button class="stat-tile" type="button" data-quick-filter="completed-today"><span>Completed today</span><strong id="completedCount">0</strong><small>Today's finished orders</small></button>
+    <section class="stats workflow-stages" id="stats" aria-label="Order workflow">
+      <button class="stat-tile stage-new selected" type="button" data-quick-filter="new"><span>New</span><strong id="newCount">0</strong><small>Incoming QR orders</small></button>
+      <button class="stat-tile stage-preparing" type="button" data-quick-filter="in-progress"><span>Accept &amp; Prepare</span><strong id="progressCount">0</strong><small>Enter in billing app and send KOT</small></button>
+      <button class="stat-tile stage-finished" type="button" data-quick-filter="ready-completed"><span>Ready &amp; Completed</span><strong id="readyCompletedCount">0</strong><small>Ready for handover or delivered</small></button>
     </section>
     <details class="advanced-filters" id="advancedFilters"><summary>More filters <span>Period, time and order type</span></summary>
       
@@ -45,5 +44,5 @@
     <footer>Orders refresh automatically every 8 seconds. Use the tiles above to jump to an order queue.</footer>
   </section>
 </main>
-<script src="orders-dashboard.js?v=trash-alert-fix-1"></script>
+<script src="orders-dashboard.js?v=three-stage-workflow-1"></script>
 </body></html>
