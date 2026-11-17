@@ -108,6 +108,15 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-choice-actions .secondary{display:none!important}
     @media(min-width:700px){.tcc-wish-choice{padding:20px!important}.tcc-wish-choice-panel{width:min(78vw,420px)!important;max-height:min(74dvh,620px)!important;border-radius:22px!important}.tcc-wish-choice-footer{padding:10px 14px!important}}
     @media(max-width:380px){.tcc-wish-choice{padding:10px!important}.tcc-wish-choice-header{padding:11px 12px 9px!important}.tcc-wish-choice-body{padding:9px 12px!important}.tcc-wish-choice-footer{gap:7px!important;padding-left:10px!important;padding-right:10px!important}.tcc-choice-qty{flex-basis:100px!important}}
+    /* Stronger, clearer typography for customization modal */
+    .tcc-wish-choice-panel h3{font-weight:800!important}
+    .tcc-wish-choice-panel p{font-weight:600!important}
+    .tcc-wish-choice-section-title{font-weight:800!important}
+    .tcc-wish-choice-section-title small{font-weight:700!important}
+    .tcc-wish-addon-options label{font-weight:700!important}
+    .tcc-wish-addon-options .tcc-addon-price{font-weight:800!important}
+    .tcc-choice-qty strong{font-weight:800!important}
+    .tcc-wish-choice-actions button{font-weight:800!important}
     .tcc-wish-item-note[hidden]{display:none!important}
     .tcc-wish-float{position:fixed;right:16px;bottom:calc(108px + env(safe-area-inset-bottom));z-index:2100;display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid #d6bd82;border-radius:999px;background:#173c2b;color:#fffaf0;box-shadow:0 8px 24px rgba(0,0,0,.22);font:800 12px Arial,sans-serif;cursor:pointer}
     .tcc-wish-float .tcc-wish-count{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#f2dfb0;color:#173c2b;font-size:10px}
