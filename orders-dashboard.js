@@ -2,7 +2,7 @@ const API="https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders";
 const PUBLIC_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A";
 const TOKEN_KEY="tccOrderDeskSessionV1";
 const $=s=>document.querySelector(s);
-let token=localStorage.getItem(TOKEN_KEY)||"",allOrders=[],activeOrders=[],activeFilter="all",refreshTimer,viewingTrash=false;
+let token=localStorage.getItem(TOKEN_KEY)||"",allOrders=[],activeOrders=[],activeFilter="new",refreshTimer,viewingTrash=false;
 const SOUND_PREF_KEY="tccOrderDeskSoundAlertsV1";let seenOrderIds=new Set(),ordersInitialized=false,newOrderReminderAt=new Map(),alertSoundEnabled=localStorage.getItem(SOUND_PREF_KEY)!=="off",audioContext=null;
 function renderSoundToggle(){const button=$("#enableAlertsButton");button.setAttribute("aria-checked",String(alertSoundEnabled));button.classList.toggle("sound-on",alertSoundEnabled);button.classList.toggle("sound-off",!alertSoundEnabled);button.querySelector(".sound-toggle-label").textContent="Sound alerts: "+(alertSoundEnabled?"On":"Off");}
 document.addEventListener("pointerdown",()=>{if(alertSoundEnabled&&(!audioContext||audioContext.state==="suspended"))unlockAlertAudio();},{passive:true});document.addEventListener("keydown",()=>{if(alertSoundEnabled&&(!audioContext||audioContext.state==="suspended"))unlockAlertAudio();});
