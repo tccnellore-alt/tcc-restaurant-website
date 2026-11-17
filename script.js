@@ -86,7 +86,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-item-note{width:100%;min-height:48px;box-sizing:border-box;margin-top:7px;padding:8px;border:1px solid rgba(23,60,43,.16);border-radius:8px;background:#fff;color:#173c2b;font:12px Arial,sans-serif;resize:vertical}
     /* Compact centered TCC customization modal */
     .tcc-wish-choice{align-items:center!important;justify-content:center!important;padding:14px!important;background:rgba(8,20,14,.58)!important;backdrop-filter:blur(7px)!important}
-    .tcc-wish-choice-panel{width:min(100%,480px)!important;max-height:min(78dvh,680px)!important;border-radius:22px!important;box-shadow:0 18px 55px rgba(0,0,0,.28)!important;animation:tccChoicePop .18s ease-out!important}
+    .tcc-wish-choice-panel{width:min(78vw,420px)!important;max-height:min(74dvh,620px)!important;border-radius:22px!important;box-shadow:0 18px 55px rgba(0,0,0,.28)!important;animation:tccChoicePop .18s ease-out!important}
     @keyframes tccChoicePop{from{transform:translateY(8px) scale(.985);opacity:.75}to{transform:translateY(0) scale(1);opacity:1}}
     .tcc-wish-choice-header{gap:10px!important;padding:13px 14px 11px!important}
     .tcc-wish-choice-thumb{flex-basis:56px!important;width:56px!important;height:56px!important;border-radius:13px!important}
@@ -95,8 +95,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-choice-close{display:grid!important;place-items:center!important;flex:0 0 32px!important;width:32px!important;height:32px!important;padding:0!important;border:0!important;border-radius:50%!important;background:#f0eadc!important;color:#173c2b!important;font:400 23px/1 Arial,sans-serif!important}
     .tcc-wish-choice-body{padding:11px 14px 12px!important;min-height:0!important}
     .tcc-wish-choice-section-title{margin:0 0 8px!important;font-size:13px!important}
-    .tcc-wish-addon-options{gap:6px!important}
-    .tcc-wish-addon-options label{min-height:42px!important;gap:9px!important;padding:7px 10px!important;border-radius:11px!important;font-size:12px!important}
+    .tcc-wish-addon-options{gap:5px!important}
+    .tcc-wish-addon-options label{min-height:38px!important;gap:8px!important;padding:5px 9px!important;border-radius:10px!important;font-size:12px!important}
     .tcc-wish-addon-options input{width:17px!important;height:17px!important;flex-basis:17px!important}
     .tcc-wish-addon-options .tcc-addon-price{font-size:12px!important}
     .tcc-wish-choice-footer{gap:9px!important;padding:10px 12px calc(10px + env(safe-area-inset-bottom))!important}
@@ -106,7 +106,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-choice-actions{gap:0!important}
     .tcc-wish-choice-actions button{min-height:40px!important;border-radius:10px!important;font-size:12px!important}
     .tcc-wish-choice-actions .secondary{display:none!important}
-    @media(min-width:700px){.tcc-wish-choice{padding:20px!important}.tcc-wish-choice-panel{max-height:min(78dvh,680px)!important;border-radius:22px!important}.tcc-wish-choice-footer{padding:10px 14px!important}}
+    @media(min-width:700px){.tcc-wish-choice{padding:20px!important}.tcc-wish-choice-panel{width:min(78vw,420px)!important;max-height:min(74dvh,620px)!important;border-radius:22px!important}.tcc-wish-choice-footer{padding:10px 14px!important}}
     @media(max-width:380px){.tcc-wish-choice{padding:10px!important}.tcc-wish-choice-header{padding:11px 12px 9px!important}.tcc-wish-choice-body{padding:9px 12px!important}.tcc-wish-choice-footer{gap:7px!important;padding-left:10px!important;padding-right:10px!important}.tcc-choice-qty{flex-basis:100px!important}}
     .tcc-wish-item-note[hidden]{display:none!important}
     .tcc-wish-float{position:fixed;right:16px;bottom:calc(108px + env(safe-area-inset-bottom));z-index:2100;display:flex;align-items:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid #d6bd82;border-radius:999px;background:#173c2b;color:#fffaf0;box-shadow:0 8px 24px rgba(0,0,0,.22);font:800 12px Arial,sans-serif;cursor:pointer}
