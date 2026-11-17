@@ -73,3 +73,10 @@
 
 /* Single received timer */
 .order-timing-single{grid-template-columns:minmax(150px,1fr);max-width:220px}.order-timing-single>div{padding:8px 12px}
+
+
+/* Desktop order cards: two columns; compact single column on phones */
+.orders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:16px}
+.orders>.empty{grid-column:1/-1}
+.order-card{min-width:0}
+@media(max-width:760px){.orders{grid-template-columns:minmax(0,1fr);gap:12px}}
