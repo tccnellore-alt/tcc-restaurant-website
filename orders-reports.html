@@ -6,6 +6,15 @@
 <p class="notice" id="reportNotice">Reports use online orders available in the ordering system. Billing/POS totals are maintained separately.</p>
 <p class="error" id="reportError" role="alert"></p>
 <section class="kpis"><article><span>Gross order value</span><strong id="rSales">₹0</strong><small>Excludes cancelled/rejected orders</small></article><article><span>Orders received</span><strong id="rOrders">0</strong><small>In selected period</small></article><article><span>Average order value</span><strong id="rAov">₹0</strong><small>Per valid order</small></article><article><span>Cancelled orders</span><strong id="rCancelled">0</strong><small>Cancelled / rejected</small></article></section>
+<section class="panel timing-report-panel">
+ <div class="panel-heading"><div><h2>Order timing averages</h2><p>Average time across orders in the selected report period</p></div></div>
+ <div class="timing-kpis">
+  <article><span>Average acceptance</span><strong id="rAvgAcceptance">—</strong><small id="rAcceptanceCount">0 orders measured</small></article>
+  <article><span>Average preparation</span><strong id="rAvgPreparation">—</strong><small id="rPreparationCount">0 orders measured</small></article>
+  <article><span>Average total time</span><strong id="rAvgTotal">—</strong><small id="rTotalCount">0 orders measured</small></article>
+ </div>
+ <p class="timing-footnote">Acceptance: placed → accepted · Preparation: accepted → completed · Total: placed → completed. Only orders with the required timestamps are included in each average.</p>
+</section>
 <section class="panel table-sales-panel">
  <div class="panel-heading"><div><h2>Table-wise sales</h2><p>Compare dine-in revenue by table for the selected period</p></div><div class="top-table-callout"><small>Top-performing table</small><strong id="topTableSales">—</strong></div></div>
  <p class="table-sales-footnote" id="tableSalesFootnote">Loading table sales…</p>
