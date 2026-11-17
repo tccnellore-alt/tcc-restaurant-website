@@ -34,3 +34,8 @@
 .workflow-stages .stage-preparing.selected{background:#edf3ed;border-color:#70937b}
 .workflow-stages .stage-finished.selected{background:#f3f0e5;border-color:#b79a5a}
 @media(max-width:620px){.workflow-stages{grid-template-columns:1fr;gap:8px}.workflow-stages .stat-tile{min-height:82px;padding:12px 14px}.workflow-stages .stat-tile strong{font-size:25px}}
+
+/* Per-order acceptance, preparation and total elapsed timers */
+.order-timing{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0;padding:10px;border:1px solid var(--line);border-radius:11px;background:#f7f8f4}
+.order-timing>div{min-width:0}.order-timing small{display:block;margin-bottom:4px;color:var(--muted);font-size:10px;font-weight:700}.order-timing strong{display:block;color:var(--green);font:800 16px/1.2 Arial,sans-serif;font-variant-numeric:tabular-nums}
+@media(max-width:420px){.order-timing{gap:5px;padding:8px}.order-timing strong{font-size:14px}.order-timing small{font-size:9px}}
