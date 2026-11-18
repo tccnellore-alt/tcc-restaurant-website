@@ -5090,5 +5090,45 @@ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:ha
 }
 </style>
 
+
+<style id="tcc-bestseller-price-pill-exact-match">
+/* Strongest final override: use the same compact price typography as standard cards. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  align-self:flex-start!important;
+  box-sizing:border-box!important;
+  width:auto!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:10px 12px 12px!important;
+  padding:6px 10px!important;
+  border:1px solid rgba(183,154,90,.65)!important;
+  border-radius:999px!important;
+  background:#f0dfad!important;
+  color:#244331!important;
+  font-family:Manrope,Arial,sans-serif!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+  letter-spacing:normal!important;
+  text-transform:none!important;
+  box-shadow:0 2px 5px rgba(23,60,43,.08)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong *,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong *{
+  font-size:12px!important;
+  line-height:1.2!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong::before,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong::before{
+  content:none!important;
+  display:none!important;
+}
+
+</style>
 </body>
 </html>
