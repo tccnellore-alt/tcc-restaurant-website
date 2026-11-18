@@ -4901,7 +4901,11 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
 
 
 <style id="tcc-bestseller-clean-design">
-/* Best Seller card treatment — isolated to the information panel. */
+/* Best Seller card treatment — continuous forest-green lower card panel. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge),
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge){
+  background:#123f2e!important;
+}
 body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > div,
 body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > div{
   background:#123f2e!important;
@@ -4945,12 +4949,21 @@ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > stron
 body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong::after,
 body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong::after{
   content:"TCC FAVOURITE";
-  display:inline-block;
-  margin-left:12px;
+  position:absolute;
+  left:calc(100% + 12px);
+  top:50%;
+  transform:translateY(-50%);
+  display:block;
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
   color:#ead9aa;
   font:800 8px/1.2 Manrope,Arial,sans-serif;
   letter-spacing:.075em;
   white-space:nowrap;
+  pointer-events:none;
 }
 </style>
 
