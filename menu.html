@@ -2584,16 +2584,15 @@ body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-bad
   box-shadow:0 3px 8px rgba(0,0,0,.12)!important;
   position:relative!important;
 }
-body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong:after,
-body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong:after{
+body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status))::after,
+body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status))::after{
   content:"TCC FAVOURITE";
   position:absolute;
-  left:calc(100% + 18px);
-  top:50%;
-  transform:translateY(-50%);
+  right:12px;
+  bottom:25px;
   color:#ead9aa;
-  font:800 10px/1.2 Manrope,Arial,sans-serif;
-  letter-spacing:.09em;
+  font:800 8px/1.2 Manrope,Arial,sans-serif;
+  letter-spacing:.075em;
   white-space:nowrap;
 }
 @media(max-width:480px){
@@ -2616,10 +2615,11 @@ body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-bad
     padding:9px 15px!important;
     font-size:14px!important;
   }
-  body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong:after,
-  body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong:after{
-    font-size:9px;
-    left:calc(100% + 12px);
+  body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status))::after,
+  body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status))::after{
+    right:10px;
+    bottom:24px;
+    font-size:7px;
   }
 }
 </style>
