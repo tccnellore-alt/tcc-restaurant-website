@@ -4967,5 +4967,24 @@ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > stron
 }
 </style>
 
+
+<style id="tcc-bestseller-lower-edge-cleanup">
+/* Remove the pale inset highlight that peeks through along the lower green panel edges. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge),
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge){
+  background:#123f2e!important;
+  box-shadow:0 5px 16px rgba(23,61,49,.08)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > div,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > div{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  background:#123f2e!important;
+}
+</style>
+
 </body>
 </html>
