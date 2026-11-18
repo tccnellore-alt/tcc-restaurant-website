@@ -1,26 +1,16 @@
 package com.tccnellore.orderdesk
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 
 /**
- * Native shell for the existing TCC Order Desk web dashboard.
- * Authentication and order actions remain handled by the secured web application.
+ * Android app shell for the customer-facing TCC website and menu.
  */
 class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
-
-    private val notificationPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { /* Permission is optional; the dashboard remains usable without it. */ }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,19 +26,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(webView)
 
         if (savedInstanceState == null) {
-            webView.loadUrl(ORDER_DESK_URL)
+            webView.loadUrl(TCC_WEBSITE_URL)
         } else {
             webView.restoreState(savedInstanceState)
-        }
-
-        requestNotificationPermissionIfNeeded()
-    }
-
-    private fun requestNotificationPermissionIfNeeded() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-        ) {
-            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 
@@ -67,6 +47,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val ORDER_DESK_URL = "https://tcc-restaurant-website.pages.dev/orders.html"
+        private const val TCC_WEBSITE_URL = "https://tcc-restaurant-website.pages.dev/"
     }
 }
