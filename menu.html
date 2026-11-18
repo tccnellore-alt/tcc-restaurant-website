@@ -5267,5 +5267,29 @@ body:not(.menu-text-mode) .menu-page .menu-group .m-item > strong{
 }
 </style>
 
+
+<style id="tcc-regular-price-pill-match-bestseller">
+/* Regular price chips now match the compact gold Best Seller chip.
+   Exclude Best Seller cards so their established styling is untouched. */
+body:not(.menu-text-mode) .menu-page .menu-section .m-item:not(:has(.tcc-bestseller-badge)) > strong,
+body:not(.menu-text-mode) .menu-page .menu-group .m-item:not(:has(.tcc-bestseller-badge)) > strong{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  width:56px!important;
+  min-width:56px!important;
+  max-width:56px!important;
+  height:38px!important;
+  min-height:38px!important;
+  max-height:38px!important;
+  padding:0!important;
+  margin:10px 12px 12px!important;
+  border-radius:999px!important;
+  font:800 12px/1.2 Manrope,Arial,sans-serif!important;
+  letter-spacing:0!important;
+}
+</style>
+
 </body>
 </html>
