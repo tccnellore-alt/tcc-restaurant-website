@@ -2529,6 +2529,101 @@ body:not(.menu-text-mode) .menu-section .m-item{
 }
 </style>
 
+
+<style>
+/* TCC BEST SELLER SPOTLIGHT — image menu
+   Match the approved reference: original ribbon and photo, full-width
+   forest-green details panel, cream typography, gold price, favourite label. */
+body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)),
+body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)){
+  background:#123f2e!important;
+  border:1px solid #b79a5a!important;
+  box-shadow:0 8px 22px rgba(18,63,46,.16),inset 0 0 0 1px rgba(244,223,155,.12)!important;
+  overflow:hidden!important;
+}
+body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info,
+body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding:17px 18px 7px!important;
+  background:#123f2e!important;
+  color:#f6ecd0!important;
+}
+body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) h3,
+body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) h3{
+  color:#fff4d8!important;
+  font-size:16px!important;
+  font-weight:800!important;
+  line-height:1.3!important;
+}
+body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) p,
+body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) p{
+  margin-top:8px!important;
+  color:#e5e9df!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+}
+body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong,
+body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  align-self:flex-start!important;
+  width:auto!important;
+  min-width:0!important;
+  margin:7px 18px 18px!important;
+  padding:10px 17px!important;
+  border:1px solid rgba(238,216,157,.9)!important;
+  border-radius:999px!important;
+  background:#f0dfad!important;
+  color:#244331!important;
+  font:800 16px/1.2 Manrope,Arial,sans-serif!important;
+  box-shadow:0 3px 8px rgba(0,0,0,.12)!important;
+  position:relative!important;
+}
+body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong:after,
+body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong:after{
+  content:"TCC FAVOURITE";
+  position:absolute;
+  left:calc(100% + 18px);
+  top:50%;
+  transform:translateY(-50%);
+  color:#ead9aa;
+  font:800 10px/1.2 Manrope,Arial,sans-serif;
+  letter-spacing:.09em;
+  white-space:nowrap;
+}
+@media(max-width:480px){
+  body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info,
+  body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info{
+    padding:15px 14px 6px!important;
+  }
+  body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) h3,
+  body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) h3{
+    font-size:14px!important;
+  }
+  body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) p,
+  body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) p{
+    font-size:11.5px!important;
+    line-height:1.5!important;
+  }
+  body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong,
+  body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong{
+    margin:7px 14px 15px!important;
+    padding:9px 15px!important;
+    font-size:14px!important;
+  }
+  body:not(.menu-text-mode) .menu-page .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong:after,
+  body:not(.menu-text-mode) .menu-page .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong:after{
+    font-size:9px;
+    left:calc(100% + 12px);
+  }
+}
+</style>
+
 </head>
 <body>
 <!-- HEADER -->
