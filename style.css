@@ -623,3 +623,47 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
     padding-top:6px!important;
   }
 }
+
+
+/* MINIMAL MENU — premium Best Seller information panel.
+   Deliberately scoped to text mode; Image Menu remains unchanged. */
+body.menu-text-mode .menu-page .m-item:has(.tcc-bestseller-badge){
+  background:linear-gradient(145deg,#173c2b 0%,#214b38 100%)!important;
+  border:1px solid rgba(183,154,90,.72)!important;
+  box-shadow:0 8px 22px rgba(23,60,43,.16),inset 0 0 0 1px rgba(244,223,155,.10)!important;
+}
+body.menu-text-mode .menu-page .m-item:has(.tcc-bestseller-badge) h3{
+  color:#fff6df!important;
+}
+body.menu-text-mode .menu-page .m-item:has(.tcc-bestseller-badge) p{
+  color:#e0e8df!important;
+}
+body.menu-text-mode .menu-page .m-item:has(.tcc-bestseller-badge)>strong{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 13px;
+  border:1px solid rgba(224,193,109,.72);
+  border-radius:999px;
+  background:#ead9aa;
+  color:#244331!important;
+  font-weight:800;
+  box-shadow:0 2px 6px rgba(0,0,0,.12);
+}
+body.menu-text-mode .menu-page .m-item:has(.tcc-bestseller-badge) .tcc-bestseller-badge{
+  border-color:rgba(224,193,109,.8)!important;
+  background:#ead9aa!important;
+  color:#244331!important;
+  box-shadow:none!important;
+}
+body.menu-text-mode .menu-page .m-item:has(.tcc-bestseller-badge) .tcc-bestseller-crown{
+  color:#8d7337!important;
+}
+body.menu-text-mode .menu-page .m-item:has(.tcc-bestseller-badge) .tcc-bestseller-label{
+  color:#244331!important;
+}
+@media(prefers-reduced-motion:no-preference){
+  body.menu-text-mode .menu-page .m-item:has(.tcc-bestseller-badge){
+    transition:background .2s ease,box-shadow .2s ease,border-color .2s ease;
+  }
+}
