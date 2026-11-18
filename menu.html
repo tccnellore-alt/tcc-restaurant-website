@@ -5021,5 +5021,40 @@ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .spice-
 }
 </style>
 
+
+<style id="tcc-emerald-spotlight-experiment">
+/* Emerald Spotlight — richer layered green for Best Seller cards only. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge),
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge){
+  background:
+    radial-gradient(ellipse at 88% 0%,rgba(89,132,91,.30) 0%,rgba(89,132,91,0) 48%),
+    linear-gradient(145deg,#174b38 0%,#103d2e 54%,#092f24 100%)!important;
+  border:1px solid rgba(190,160,94,.72)!important;
+  box-shadow:0 7px 20px rgba(8,35,25,.16),inset 0 1px 0 rgba(255,244,211,.10)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > div,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > div{
+  background:transparent!important;position:relative!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > div::before,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > div::before{
+  content:"";position:absolute;top:0;left:12px;right:12px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(222,195,133,.58),transparent);
+  pointer-events:none;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) h3,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) h3{
+  color:#fff0d2!important;text-shadow:0 1px 10px rgba(255,239,204,.08)!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) p,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) p{
+  color:#e1e8dc!important;-webkit-text-fill-color:#e1e8dc!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) .spice-level,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .spice-level{
+  background:rgba(246,234,207,.10)!important;border-color:rgba(225,201,151,.42)!important;
+}
+</style>
+
 </body>
 </html>
