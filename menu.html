@@ -5130,5 +5130,33 @@ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > stron
 }
 
 </style>
+
+<style id="tcc-bestseller-price-pill-size-final">
+/* Explicitly match the regular mobile price chip footprint (not just font size). */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong{
+  display:inline-flex!important;
+  width:74px!important;
+  min-width:74px!important;
+  max-width:74px!important;
+  height:50px!important;
+  min-height:50px!important;
+  max-height:50px!important;
+  box-sizing:border-box!important;
+  padding:0!important;
+  margin:10px 12px 12px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:999px!important;
+  font:800 20px/1 Manrope,Arial,sans-serif!important;
+  letter-spacing:0!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong::before,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong::before{
+  content:none!important;
+  display:none!important;
+}
+
+</style>
 </body>
 </html>
