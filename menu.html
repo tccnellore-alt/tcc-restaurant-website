@@ -4899,5 +4899,60 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
 })();
 </script>
 
+
+<style id="tcc-bestseller-clean-design">
+/* Best Seller card treatment — isolated to the information panel. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > div,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > div{
+  background:#123f2e!important;
+  color:#f5ecd4!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) h3,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) h3{
+  color:#fff2d2!important;
+  text-shadow:none!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) p,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) p{
+  color:#e5e9df!important;
+  -webkit-text-fill-color:#e5e9df!important;
+  opacity:1!important;
+}
+/* One shared price-chip specification for regular and Best Seller cards. */
+body:not(.menu-text-mode) .menu-section .m-item > strong,
+body:not(.menu-text-mode) .menu-group .m-item > strong{
+  box-sizing:border-box!important;
+  align-self:flex-start!important;
+  width:auto!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:10px 12px 12px!important;
+  padding:6px 10px!important;
+  border-radius:999px!important;
+  font:800 12px/1.2 Manrope,Arial,sans-serif!important;
+  letter-spacing:normal!important;
+}
+/* Keep the same shared size while using the warm gold treatment on Best Sellers. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong{
+  background:#f3e7ca!important;
+  border:1px solid #c9ae75!important;
+  color:#244331!important;
+  box-shadow:0 1px 2px rgba(111,82,34,.07)!important;
+}
+/* Small signature label beside the price, without changing the price pill. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong::after,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong::after{
+  content:"TCC FAVOURITE";
+  display:inline-block;
+  margin-left:12px;
+  color:#ead9aa;
+  font:800 8px/1.2 Manrope,Arial,sans-serif;
+  letter-spacing:.075em;
+  white-space:nowrap;
+}
+</style>
+
 </body>
 </html>
