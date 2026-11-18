@@ -4986,5 +4986,40 @@ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > div{
 }
 </style>
 
+
+<style id="tcc-bestseller-spice-contrast-fix">
+/* High-contrast spice indicator on forest-green Best Seller cards. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) .spice-level,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .spice-level{
+  display:inline-flex!important;
+  align-items:center!important;
+  width:max-content!important;
+  max-width:100%!important;
+  min-height:0!important;
+  margin:8px 0 3px!important;
+  padding:5px 9px!important;
+  gap:6px!important;
+  border:1px solid rgba(232,211,157,.48)!important;
+  border-radius:999px!important;
+  background:rgba(245,231,202,.12)!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) .spice-copy,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .spice-copy{
+  color:#f3e7ca!important;
+  -webkit-text-fill-color:#f3e7ca!important;
+  font:800 11px/1.3 Manrope,Arial,sans-serif!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) .spice-chillies,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .spice-chillies{
+  font-size:13px!important;
+  line-height:1.2!important;
+  opacity:1!important;
+}
+</style>
+
 </body>
 </html>
