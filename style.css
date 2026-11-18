@@ -667,3 +667,41 @@ body.menu-text-mode .menu-page .m-item:has(.tcc-bestseller-badge) .tcc-bestselle
     transition:background .2s ease,box-shadow .2s ease,border-color .2s ease;
   }
 }
+
+
+/* IMAGE MENU — highlight the full Best Seller details area too.
+   The photo and top ribbon stay unchanged; title, description and price
+   receive the same forest-green / warm-gold treatment. */
+body:not(.menu-text-mode) .menu-page .m-item:has(.tcc-bestseller-badge){
+  background:#173c2b!important;
+  border-color:rgba(183,154,90,.78)!important;
+  box-shadow:0 8px 22px rgba(23,60,43,.15),inset 0 0 0 1px rgba(244,223,155,.10)!important;
+}
+body:not(.menu-text-mode) .menu-page .m-item:has(.tcc-bestseller-badge) .m-item-info{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  padding:16px 14px 8px!important;
+  margin:0!important;
+}
+body:not(.menu-text-mode) .menu-page .m-item:has(.tcc-bestseller-badge) .m-item-info h3{
+  color:#fff6df!important;
+}
+body:not(.menu-text-mode) .menu-page .m-item:has(.tcc-bestseller-badge) .m-item-info p{
+  color:#e0e8df!important;
+}
+body:not(.menu-text-mode) .menu-page .m-item:has(.tcc-bestseller-badge)>strong{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:max-content!important;
+  margin:0 14px 15px!important;
+  padding:8px 14px!important;
+  border:1px solid rgba(224,193,109,.78)!important;
+  border-radius:999px!important;
+  background:#ead9aa!important;
+  color:#244331!important;
+  font-weight:800!important;
+  box-shadow:0 2px 6px rgba(0,0,0,.12)!important;
+}
