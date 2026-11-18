@@ -5050,5 +5050,20 @@ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:ha
 }
 </style>
 
+
+<style id="tcc-bestseller-price-consistency">
+/* Best Seller price pill must match the regular product price size. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong{
+  font:800 12px/1.2 Manrope,Arial,sans-serif!important;
+}
+/* Prices are numeric only: do not add a currency symbol with a pseudo-element. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong::before,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong::before{
+  content:none!important;
+  display:none!important;
+}
+</style>
+
 </body>
 </html>
