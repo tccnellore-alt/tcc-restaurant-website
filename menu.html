@@ -4994,5 +4994,61 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
 })();
 </script>
 
+
+<style id="tcc-bestseller-spotlight-final-override">
+/* Final cascade override: keep the full Best Seller information panel legible. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)),
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)){
+  background:#123f2e!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info{
+  background:#123f2e!important;
+  color:#f6ecd0!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info h3,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info h3{
+  color:#fff4d8!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info p,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-item-info p{
+  color:#e5e9df!important;
+  -webkit-text-fill-color:#e5e9df!important;
+  opacity:1!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong{
+  position:relative!important;
+  background:#f0dfad!important;
+  color:#244331!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong::before,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong::before{
+  content:"₹"!important;
+  margin-right:2px;
+}
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong::after,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong::after{
+  content:"TCC FAVOURITE"!important;
+  position:absolute!important;
+  left:calc(100% + 16px)!important;
+  top:50%!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:translateY(-50%)!important;
+  color:#ead9aa!important;
+  font:800 8px/1.2 Manrope,Arial,sans-serif!important;
+  letter-spacing:.075em!important;
+  white-space:nowrap!important;
+}
+@media(max-width:480px){
+ body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong::after,
+ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong::after{
+   left:calc(100% + 12px)!important;
+   font-size:7px!important;
+ }
+}
+</style>
+
 </body>
 </html>
