@@ -5065,5 +5065,30 @@ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > stron
 }
 </style>
 
+
+<style id="tcc-bestseller-price-pill-match">
+/* Match regular price pill dimensions and typography; retain Best Seller gold fill. */
+body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong,
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong{
+  box-sizing:border-box!important;
+  min-height:0!important;
+  margin:10px 12px 12px!important;
+  padding:6px 10px!important;
+  border:1px solid rgba(183,154,90,.65)!important;
+  border-radius:999px!important;
+  font:800 12px/1.2 Manrope,Arial,sans-serif!important;
+  letter-spacing:normal!important;
+  box-shadow:0 2px 5px rgba(23,60,43,.08)!important;
+}
+@media(max-width:480px){
+ body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong,
+ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong{
+  margin:10px 12px 12px!important;
+  padding:6px 10px!important;
+  font-size:12px!important;
+ }
+}
+</style>
+
 </body>
 </html>
