@@ -220,7 +220,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       .tcc-wish-row{padding:12px 0;gap:7px}
       .tcc-wish-row-price{gap:10px}
       .tcc-wish-fulfillment{margin-top:8px}
-      .tcc-wish-list{display:block!important;visibility:visible!important;overflow-y:auto;overscroll-behavior:contain;flex:0 0 auto!important;flex-shrink:0!important;min-height:0;max-height:24dvh;padding:0 2px 0 0;margin:0 0 10px}
+      .tcc-wish-list{display:block!important;visibility:visible!important;overflow-y:auto;overscroll-behavior:contain;flex:0 0 auto!important;flex-shrink:0!important;min-height:0;max-height:35dvh;padding:0 2px 0 0;margin:0 0 10px}
       .tcc-wish-customer-field{margin-top:10px}
     }
     @media(max-width:360px){
@@ -408,7 +408,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x!==item);save();render()});
       price.append(amount,qty,remove);row.append(info,price);list.append(row);
     });
-    
+    // Always show the beginning of the cart after rebuilding it. The previous
+    // scroll position could otherwise leave the first item half-hidden.
+    list.scrollTop=0;
+    list.style.setProperty('max-height','35dvh');
+    list.style.setProperty('overflow-y','auto');
+    list.style.setProperty('flex','0 0 auto','important');
     
     backdrop.querySelector('.tcc-wish-total').innerHTML='';
     backdrop.querySelector('.tcc-wish-total').style.display='none';
