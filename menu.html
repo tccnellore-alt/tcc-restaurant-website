@@ -4907,126 +4907,13 @@ document.addEventListener("DOMContentLoaded", function addTccSpiceLevels(){
 </script>
 
 
-<style id="tcc-bestseller-clean-design">
-/* Best Seller card treatment — continuous forest-green lower card panel. */
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge),
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge){
-  background:#123f2e!important;
-}
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > div,
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > div{
-  background:#123f2e!important;
-  color:#f5ecd4!important;
-}
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) h3,
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) h3{
-  color:#fff2d2!important;
-  text-shadow:none!important;
-}
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) p,
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) p{
-  color:#e5e9df!important;
-  -webkit-text-fill-color:#e5e9df!important;
-  opacity:1!important;
-}
-/* One shared price-chip specification for regular and Best Seller cards. */
-body:not(.menu-text-mode) .menu-section .m-item > strong,
-body:not(.menu-text-mode) .menu-group .m-item > strong{
-  box-sizing:border-box!important;
-  align-self:flex-start!important;
-  width:auto!important;
-  min-width:0!important;
-  height:auto!important;
-  min-height:0!important;
-  margin:10px 12px 12px!important;
-  padding:6px 10px!important;
-  border-radius:999px!important;
-  font:800 12px/1.2 Manrope,Arial,sans-serif!important;
-  letter-spacing:normal!important;
-}
-/* Keep the same shared size while using the warm gold treatment on Best Sellers. */
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong,
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong{
-  background:#f3e7ca!important;
-  border:1px solid #c9ae75!important;
-  color:#244331!important;
-  box-shadow:0 1px 2px rgba(111,82,34,.07)!important;
-}
-/* Small signature label beside the price, without changing the price pill. */
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > strong::after,
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > strong::after{
-  content:"TCC FAVOURITE";
-  position:absolute;
-  left:calc(100% + 12px);
-  top:50%;
-  transform:translateY(-50%);
-  display:block;
-  margin:0;
-  padding:0;
-  border:0;
-  background:transparent;
-  box-shadow:none;
-  color:#ead9aa;
-  font:800 8px/1.2 Manrope,Arial,sans-serif;
-  letter-spacing:.075em;
-  white-space:nowrap;
-  pointer-events:none;
-}
-</style>
 
 
-<style id="tcc-bestseller-lower-edge-cleanup">
-/* Remove the pale inset highlight that peeks through along the lower green panel edges. */
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge),
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge){
-  background:#123f2e!important;
-  box-shadow:0 5px 16px rgba(23,61,49,.08)!important;
-}
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) > div,
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) > div{
-  display:flex!important;
-  flex-direction:column!important;
-  align-items:flex-start!important;
-  width:100%!important;
-  box-sizing:border-box!important;
-  background:#123f2e!important;
-}
-</style>
 
 
-<style id="tcc-bestseller-spice-contrast-fix">
-/* High-contrast spice indicator on forest-green Best Seller cards. */
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) .spice-level,
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .spice-level{
-  display:inline-flex!important;
-  align-items:center!important;
-  width:max-content!important;
-  max-width:100%!important;
-  min-height:0!important;
-  margin:8px 0 3px!important;
-  padding:5px 9px!important;
-  gap:6px!important;
-  border:1px solid rgba(232,211,157,.48)!important;
-  border-radius:999px!important;
-  background:rgba(245,231,202,.12)!important;
-  opacity:1!important;
-  visibility:visible!important;
-}
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) .spice-copy,
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .spice-copy{
-  color:#f3e7ca!important;
-  -webkit-text-fill-color:#f3e7ca!important;
-  font:800 11px/1.3 Manrope,Arial,sans-serif!important;
-  opacity:1!important;
-  text-shadow:none!important;
-}
-body:not(.menu-text-mode) .menu-section .m-item:has(.tcc-bestseller-badge) .spice-chillies,
-body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .spice-chillies{
-  font-size:13px!important;
-  line-height:1.2!important;
-  opacity:1!important;
-}
-</style>
+
+
+
 
 </body>
 </html>
@@ -5051,32 +4938,7 @@ body.menu-text-mode .menu-group .m-item:not(:has(.availability-status)){
     transform:translateY(-2px);
   }
 }
-/* Best Seller: deep TCC forest green with the same gold frame. */
-body.menu-text-mode .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)){
-  border:1px solid rgba(183,154,90,.82)!important;
-  background:linear-gradient(135deg,#123f2e 0%,#174a35 100%)!important;
-  box-shadow:
-    inset 0 0 0 1px rgba(243,231,202,.12),
-    0 5px 16px rgba(18,63,46,.16)!important;
-}
-body.menu-text-mode .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) h3{
-  color:#fff2d2!important;
-}
-body.menu-text-mode .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) p{
-  color:#e5e9df!important;
-  -webkit-text-fill-color:#e5e9df!important;
-}
-body.menu-text-mode .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .m-photo-wrap{
-  border:1px solid rgba(215,182,109,.48)!important;
-  box-shadow:0 2px 8px rgba(0,0,0,.16)!important;
-}
-/* Keep the Best Seller seal legible against the green card. */
-body.menu-text-mode .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) .tcc-bestseller-badge{
-  border:1px solid #d1b16d!important;
-  background:linear-gradient(135deg,#f5e8c7,#ead8a9)!important;
-  color:#244331!important;
-  box-shadow:0 1px 3px rgba(0,0,0,.12)!important;
-}
+/* Best Seller cards share regular card styling; only the badge is distinct. */
 /* Price: bordered champagne-gold pill on every Minimal Menu item. */
 body.menu-text-mode .menu-group .m-item > strong{
   align-self:flex-start!important;
@@ -5089,11 +4951,6 @@ body.menu-text-mode .menu-group .m-item > strong{
   color:#80632c!important;
   font:800 12px/1.2 Manrope,Arial,sans-serif!important;
   white-space:nowrap!important;
-}
-body.menu-text-mode .menu-group .m-item:has(.tcc-bestseller-badge):not(:has(.availability-status)) > strong{
-  border-color:#c9ae75!important;
-  background:#f3e7ca!important;
-  color:#244331!important;
 }
 /* Preserve the existing sold-out treatment without a green Best Seller card. */
 body.menu-text-mode .menu-group .m-item:has(.availability-status){
