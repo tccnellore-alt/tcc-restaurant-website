@@ -187,7 +187,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-order-history-open{min-height:38px;padding:0 13px;border:1px solid rgba(23,60,43,.16);border-radius:999px;background:#f3f4ed;color:#244536;font:700 11px Arial,sans-serif;white-space:nowrap}
     .tcc-wish-close{flex:0 0 38px;width:38px;height:38px;display:grid;place-items:center;line-height:1}
     .tcc-wish-panel{display:flex;flex-direction:column;box-sizing:border-box}
-    .tcc-wish-list{min-height:0;overflow:visible}
+.tcc-wish-list{display:block!important;visibility:visible!important;min-height:0;overflow:visible}
+    .tcc-wish-list[hidden]{display:block!important}
+    .tcc-wish-empty{display:block!important;visibility:visible!important}
     .tcc-wish-row{grid-template-columns:minmax(0,1fr);gap:8px;padding:14px 0}
     .tcc-wish-row>div:first-child{width:100%;min-width:0}
     .tcc-wish-row>div:first-child strong{font:750 14px/1.35 Manrope,Arial,sans-serif;letter-spacing:-.01em}
@@ -507,6 +509,16 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   else startWishlistButtons();
   const open=()=>{
     if(backdrop.classList.contains('is-open'))return;
+    // Re-read saved cart data and rebuild rows every time the cart opens.
+    // This prevents a blank/stale item list after returning to the menu.
+    items=read().map(item=>({...item,qty:Math.max(1,Number(item.qty)||1)}));
+    render();
+    const cartList=backdrop.querySelector('.tcc-wish-list');
+    if(cartList){
+      cartList.hidden=false;
+      cartList.style.setProperty('display','block','important');
+      cartList.style.setProperty('visibility','visible','important');
+    }
     // Give the cart its own browser-history entry so Android/iOS Back closes
     // the cart first instead of leaving the menu page.
     if(!history.state?.tccCartOpen){
