@@ -382,11 +382,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     }
     const price=card.querySelector(':scope > strong');
     if(price){
-      let row=card.querySelector(':scope > .tcc-price-action-row');
+      const info=card.querySelector(':scope > .m-item-info')||card.querySelector('.m-item-info')||card;
+      let row=info.querySelector(':scope > .tcc-price-action-row');
       if(!row){
         row=document.createElement('div');
         row.className='tcc-price-action-row';
-        price.parentElement.insertBefore(row,price);
+        info.appendChild(row);
       }
       if(price.parentElement!==row)row.appendChild(price);
       if(control.parentElement!==row)row.appendChild(control);
