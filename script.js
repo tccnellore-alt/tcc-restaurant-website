@@ -41,9 +41,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   style.textContent=`
     .menu-page .m-item .tcc-wish-add{position:static!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;min-height:42px!important;margin:0!important;padding:0 12px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#365442!important;box-shadow:none!important;font:700 11px/1 Arial,sans-serif!important;cursor:pointer!important;white-space:nowrap!important}
     .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important;min-width:0!important;padding-left:12px!important;padding-right:12px!important}
-    .tcc-price-action-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;width:auto!important;min-width:0!important;min-height:40px!important;margin:6px 0 8px!important;box-sizing:border-box!important}
-    .tcc-price-action-row{margin:3px 0 0!important}
-    body:not(.menu-text-mode) .menu-page .m-item-info > .tcc-price-action-row{width:100%!important;margin-top:auto!important;padding-top:12px!important;}
+    .tcc-price-action-row{display:grid!important;grid-template-columns:max-content minmax(0,1fr)!important;align-items:center!important;justify-content:initial!important;column-gap:10px!important;row-gap:0!important;width:100%!important;min-width:0!important;min-height:40px!important;margin:8px 0 0!important;padding:0!important;box-sizing:border-box!important}
+    body:not(.menu-text-mode) .menu-page .m-item > .tcc-price-action-row{display:grid!important;grid-template-columns:max-content minmax(0,1fr)!important;width:100%!important}
+    body:not(.menu-text-mode) .menu-page .m-item-info > .tcc-price-action-row{width:100%!important;margin-top:8px!important;padding-top:0!important;}
     body:not(.menu-text-mode) .menu-page .m-item-info{padding-bottom:3px!important}
     .tcc-price-action-row > strong{display:inline-flex!important;align-items:center!important;justify-content:center!important;align-self:center!important;flex:0 0 48px!important;width:50px!important;height:40px!important;min-height:40px!important;margin:0!important;padding:0!important;border-radius:999px!important;font-size:20px!important;line-height:1!important;box-sizing:border-box!important}
     .tcc-price-action-row .tcc-menu-qty{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;min-height:36px!important;margin:0!important;padding:2px 4px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#173c2b!important;box-sizing:border-box!important}
@@ -383,12 +383,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     }
     const price=card.querySelector(':scope > strong');
     if(price){
-      const info=card.querySelector(':scope > .m-item-info')||card.querySelector('.m-item-info')||card;
-      let row=info.querySelector(':scope > .tcc-price-action-row');
+      let row=card.querySelector(':scope > .tcc-price-action-row');
       if(!row){
         row=document.createElement('div');
         row.className='tcc-price-action-row';
-        info.appendChild(row);
+        card.appendChild(row);
       }
       if(price.parentElement!==row)row.appendChild(price);
       if(control.parentElement!==row)row.appendChild(control);
