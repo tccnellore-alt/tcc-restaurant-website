@@ -505,8 +505,33 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startWishlistButtons,{once:true});
   else startWishlistButtons();
-  const open=()=>{backdrop.classList.add('is-open');backdrop.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';backdrop.querySelector('.tcc-wish-close').focus();requestAnimationFrame(()=>checkRecentOrders());setTimeout(checkRecentOrders,180);};
-  const close=()=>{backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');document.body.style.overflow=''};
+  const open=()=>{
+    if(backdrop.classList.contains('is-open'))return;
+    // Give the cart its own browser-history entry so Android/iOS Back closes
+    // the cart first instead of leaving the menu page.
+    if(!history.state?.tccCartOpen){
+      history.pushState({...history.state,tccCartOpen:true},"",window.location.href);
+    }
+    backdrop.classList.add('is-open');
+    backdrop.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    backdrop.querySelector('.tcc-wish-close').focus();
+    requestAnimationFrame(()=>checkRecentOrders());
+    setTimeout(checkRecentOrders,180);
+  };
+  const close=(fromPopState=false)=>{
+    if(!backdrop.classList.contains('is-open'))return;
+    if(!fromPopState&&history.state?.tccCartOpen){
+      history.back();
+      return;
+    }
+    backdrop.classList.remove('is-open');
+    backdrop.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  };
+  window.addEventListener('popstate',()=>{
+    if(backdrop.classList.contains('is-open'))close(true);
+  });
   float.addEventListener('click',open);
   backdrop.querySelector('.tcc-wish-close').addEventListener('click',close);
   backdrop.addEventListener('click',e=>{if(e.target===backdrop)close()});
