@@ -381,19 +381,21 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         return;
       }
     }
-    const price=card.querySelector(':scope > strong')||card.querySelector(':scope > .m-item-info > strong')||card.querySelector('.m-item-info > strong')||card.querySelector('strong');
+    const info=card.querySelector(':scope > .m-item-info')||card.querySelector('.m-item-info');
+    const rowPrice=card.querySelector('.tcc-price-action-row > strong');
+    const price=rowPrice||card.querySelector(':scope > strong')||info?.querySelector(':scope > strong');
     if(price){
-      let row=card.querySelector(':scope > .tcc-price-action-row');
-      if(!row){
-        row=document.createElement('div');
-        row.className='tcc-price-action-row';
-        card.appendChild(row);
-      }
+      let row=card.querySelector('.tcc-price-action-row');
+      if(!row){row=document.createElement('div');row.className='tcc-price-action-row';}
+      // Keep the action row inside the product-info panel, even if an earlier
+      // observer pass created it before the menu finished normalising the card.
+      const rowHost=info||card;
+      if(row.parentElement!==rowHost)rowHost.appendChild(row);
       if(price.parentElement!==row)row.appendChild(price);
       if(control.parentElement!==row)row.appendChild(control);
     }else{
-      const info=card.querySelector('.m-item-info')||card;
-      if(control.parentElement!==info)info.appendChild(control);
+      const host=info||card;
+      if(control.parentElement!==host)host.appendChild(control);
     }
   };
   document.querySelectorAll('[data-menu-view]').forEach(toggle=>{
@@ -452,8 +454,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         const card=node.matches('.m-item')?node:node.closest('.m-item');
         if(card){
           attachWishlistButtons(card);
-          const button=card.querySelector('.tcc-wish-add');
-          if(button)placeWishlistButton(card,button);
+          const place=()=>{const button=card.querySelector('.tcc-wish-add');if(button)placeWishlistButton(card,button);};
+          place();
+          requestAnimationFrame(place);
         }else if(node.querySelector?.('.m-item'))attachWishlistButtons(node);
       }));
     });
