@@ -450,8 +450,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       records.forEach(record=>record.addedNodes.forEach(node=>{
         if(node.nodeType!==1||node.classList.contains('tcc-wish-add'))return;
         const card=node.matches('.m-item')?node:node.closest('.m-item');
-        if(card)attachWishlistButtons(card);
-        else if(node.querySelector?.('.m-item'))attachWishlistButtons(node);
+        if(card){
+          attachWishlistButtons(card);
+          const button=card.querySelector('.tcc-wish-add');
+          if(button)placeWishlistButton(card,button);
+        }else if(node.querySelector?.('.m-item'))attachWishlistButtons(node);
       }));
     });
     observer.observe(menuRoot,{childList:true,subtree:true});
