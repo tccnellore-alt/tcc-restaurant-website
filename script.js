@@ -281,6 +281,42 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       .tcc-wish-total{margin:6px 0 8px!important;padding:8px 10px!important}
     }
 
+    /* Remove oversized rounded checkout cards; keep fields compact and flat. */
+    .tcc-wish-customer-field,.tcc-table-picker-field{
+      margin:5px 0!important;
+      padding:6px 0!important;
+      border:0!important;
+      border-radius:0!important;
+      background:transparent!important;
+      box-shadow:none!important;
+      gap:4px!important;
+    }
+    .tcc-wish-customer-field label,.tcc-table-picker-field>label{
+      margin:2px 0!important;
+      font-size:11px!important;
+    }
+    .tcc-wish-customer-field input{
+      min-height:36px!important;
+      padding:6px 10px!important;
+      border-radius:8px!important;
+      font-size:13px!important;
+      background:#fff!important;
+    }
+    .tcc-table-picker-trigger{
+      min-height:38px!important;
+      border-radius:8px!important;
+      background:#fff!important;
+    }
+    .tcc-wish-line-total{display:none!important}
+    .tcc-wish-total{display:none!important}
+    @media(max-width:600px){
+      .tcc-wish-customer-field,.tcc-table-picker-field{
+        margin:3px 0!important;
+        padding:4px 0!important;
+      }
+      .tcc-wish-customer-field input{min-height:34px!important}
+    }
+
   `;
   document.head.appendChild(style);
   const float=document.createElement('button');
@@ -450,9 +486,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       itemOptions.append(noteToggle);info.append(itemOptions,note);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
-      const takeawayFee=item.fulfillment_type==='takeaway'?10:0;
-      const lineTotal=(unitPrice+takeawayFee)*Math.max(1,Number(item.qty)||1);
-      const amount=document.createElement('strong');amount.className='tcc-wish-line-total';amount.textContent=money(lineTotal);
+      const amount=document.createElement('span');amount.className='tcc-wish-line-total';amount.textContent='';
       const qty=document.createElement('div');qty.className='tcc-wish-qty';
       const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.setAttribute('aria-label','Decrease '+item.name+' quantity');
       const qtyValue=document.createElement('strong');qtyValue.textContent=Math.max(1,Number(item.qty)||1);
@@ -471,11 +505,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     list.style.setProperty('overflow-y','auto');
     list.style.setProperty('flex','0 0 auto','important');
     
-    const cartSubtotal=items.reduce((sum,item)=>sum+((Number(item.price)||0)+(item.addons||[]).reduce((a,x)=>a+(Number(x.price)||0),0)+(item.fulfillment_type==='takeaway'?10:0))*Math.max(1,Number(item.qty)||1),0);
     const totalBox=backdrop.querySelector('.tcc-wish-total');
-    totalBox.innerHTML='<span>Order total</span><strong></strong>';
-    totalBox.querySelector('strong').textContent=money(cartSubtotal);
-    totalBox.style.display=items.length?'flex':'none';
+    totalBox.innerHTML='';
+    totalBox.style.display='none';
     backdrop.querySelector('.tcc-wish-table-field').style.display=items.length?'block':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
     backdrop.querySelector('.tcc-wish-continue').style.display=items.length?'block':'none';
