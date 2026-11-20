@@ -260,6 +260,27 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-table-picker-close{width:36px;height:36px;border:1px solid rgba(23,60,43,.16);border-radius:50%;background:transparent;color:#173c2b;font-size:23px}
     .tcc-table-picker-panel .tcc-table-groups{margin:8px 0 0}
 
+    /* Refined cart hierarchy: item prices, visible total and tighter form. */
+    .tcc-wish-row-price{gap:7px!important}
+    .tcc-wish-line-total{display:inline-block!important;min-width:42px!important;text-align:right!important;color:#173c2b!important;font:800 11px Manrope,Arial,sans-serif!important}
+    .tcc-wish-total{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin:8px 0 10px!important;padding:10px 12px!important;border:1px solid rgba(183,154,90,.35)!important;border-radius:11px!important;background:#f4efdf!important;color:#596454!important;font:700 12px Manrope,Arial,sans-serif!important}
+    .tcc-wish-total strong{color:#173c2b!important;font:800 17px Manrope,Arial,sans-serif!important}
+    .tcc-wish-customer-field{gap:5px!important;padding:9px 11px!important;margin:8px 0!important}
+    .tcc-wish-customer-field label{font-size:10px!important;margin-top:2px!important}
+    .tcc-wish-customer-field input{min-height:38px!important;padding:7px 10px!important;font-size:13px!important;border-radius:8px!important}
+    .tcc-table-picker-field{gap:5px!important;padding:9px 11px!important;margin:8px 0!important}
+    .tcc-table-picker-trigger{min-height:40px!important}
+    .tcc-wish-actions{gap:7px!important}
+    .tcc-wish-send{min-height:44px!important;border-radius:11px!important;font-size:12px!important;letter-spacing:.01em}
+    .tcc-wish-secondary-actions button{min-height:34px!important}
+    @media(max-width:600px){
+      .tcc-wish-panel{padding:14px 12px!important}
+      .tcc-wish-head{margin-bottom:6px!important}
+      .tcc-wish-row{padding:6px 0!important}
+      .tcc-wish-list{max-height:34dvh!important}
+      .tcc-wish-total{margin:6px 0 8px!important;padding:8px 10px!important}
+    }
+
   `;
   document.head.appendChild(style);
   const float=document.createElement('button');
@@ -429,7 +450,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       itemOptions.append(noteToggle);info.append(itemOptions,note);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
-      const amount=document.createElement('span');amount.textContent='';
+      const takeawayFee=item.fulfillment_type==='takeaway'?10:0;
+      const lineTotal=(unitPrice+takeawayFee)*Math.max(1,Number(item.qty)||1);
+      const amount=document.createElement('strong');amount.className='tcc-wish-line-total';amount.textContent=money(lineTotal);
       const qty=document.createElement('div');qty.className='tcc-wish-qty';
       const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.setAttribute('aria-label','Decrease '+item.name+' quantity');
       const qtyValue=document.createElement('strong');qtyValue.textContent=Math.max(1,Number(item.qty)||1);
@@ -448,8 +471,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     list.style.setProperty('overflow-y','auto');
     list.style.setProperty('flex','0 0 auto','important');
     
-    backdrop.querySelector('.tcc-wish-total').innerHTML='';
-    backdrop.querySelector('.tcc-wish-total').style.display='none';
+    const cartSubtotal=items.reduce((sum,item)=>sum+((Number(item.price)||0)+(item.addons||[]).reduce((a,x)=>a+(Number(x.price)||0),0)+(item.fulfillment_type==='takeaway'?10:0))*Math.max(1,Number(item.qty)||1),0);
+    const totalBox=backdrop.querySelector('.tcc-wish-total');
+    totalBox.innerHTML='<span>Order total</span><strong></strong>';
+    totalBox.querySelector('strong').textContent=money(cartSubtotal);
+    totalBox.style.display=items.length?'flex':'none';
     backdrop.querySelector('.tcc-wish-table-field').style.display=items.length?'block':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
     backdrop.querySelector('.tcc-wish-continue').style.display=items.length?'block':'none';
