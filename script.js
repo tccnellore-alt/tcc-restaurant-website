@@ -559,6 +559,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const info=document.createElement('div');info.className='tcc-wish-item-info';
       const titleLine=document.createElement('div');titleLine.className='tcc-wish-title-line';
       const title=document.createElement('strong');title.textContent=item.name;titleLine.append(title);
+      info.append(titleLine);
       if(Array.isArray(item.addons)&&item.addons.length){
         const addonLine=document.createElement('small');
         addonLine.className='tcc-wish-addon-line';
@@ -566,7 +567,6 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         info.append(addonLine);
       }
       const fulfillment=document.createElement('label');fulfillment.className='tcc-wish-fulfillment';const fulfillmentInput=document.createElement('input');fulfillmentInput.type='checkbox';fulfillmentInput.checked=item.fulfillment_type==='takeaway'||(orderType==='takeaway');fulfillmentInput.setAttribute('aria-label','Pack '+item.name+' as takeaway (+₹10 each)');fulfillmentInput.addEventListener('change',()=>{item.fulfillment_type=fulfillmentInput.checked?'takeaway':'dine-in';save();render();});const fulfillmentText=document.createElement('span');fulfillmentText.textContent='Takeaway +₹10';fulfillment.append(fulfillmentInput,fulfillmentText);
-      info.append(titleLine);
       const itemOptions=document.createElement('div');itemOptions.className='tcc-wish-item-options';itemOptions.append(fulfillment);
       info.append(itemOptions);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
