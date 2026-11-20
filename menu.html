@@ -3895,6 +3895,7 @@ function closeTccImageLightbox(){
 // Coffee add-ons are configured per exact product name so the expanded card
 // only displays options approved for that drink.
 const tccCoffeeAddonsByDrink = {
+  "Hot Chocolate": ["With Ice Cream","Without Ice Cream"],
   "Espresso": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
   "Hot Americano": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
   "Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
@@ -3956,9 +3957,11 @@ document.addEventListener("click",event=>{
         const label=document.createElement("span");
         label.textContent=addonName;
         const price=document.createElement("b");
-        price.textContent=tccCoffeeAddonPrice;
+        const freeHotChocolateOption=name==="Hot Chocolate";
+        const displayPrice=freeHotChocolateOption?"0":tccCoffeeAddonPrice;
+        price.textContent=displayPrice;
         chip.append(label,price);
-        chip.setAttribute("aria-label",addonName+"; "+tccCoffeeAddonQuantity+"; "+tccCoffeeAddonPrice);
+        chip.setAttribute("aria-label",addonName+"; "+(freeHotChocolateOption?"":tccCoffeeAddonQuantity+"; ")+displayPrice);
         tccLightboxAddonsRow.appendChild(chip);
       });
     }else if(hasPastaAddons){
