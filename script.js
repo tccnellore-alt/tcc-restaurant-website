@@ -497,7 +497,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const selected=[...choice.querySelectorAll('.tcc-wish-addon-options input[type="checkbox"]:checked,.tcc-wish-addon-options input[type="radio"][data-addon-index]:checked')].map(input=>pendingProduct.options[Number(input.value)]);
     const unit=(Number(pendingProduct.data.price)||0)+selected.reduce((sum,item)=>sum+(Number(item.price)||0),0);
     choice.querySelector('.tcc-choice-quantity').textContent=String(choiceQuantity);
-    choice.querySelector('.tcc-wish-choice-confirm').textContent=(pendingProduct.editItem?'Save Changes':'Add Item')+' · '+money(unit*choiceQuantity);
+    const confirmButton=choice.querySelector('.tcc-wish-choice-confirm');
+    confirmButton.textContent=(pendingProduct.editItem?'Save Changes':'Add Item')+' · '+money(unit*choiceQuantity);
+    const requiresHotChocolateChoice=pendingProduct.data.name==='Hot Chocolate';
+    confirmButton.disabled=requiresHotChocolateChoice&&selected.length!==1;
+    confirmButton.setAttribute('aria-disabled',String(confirmButton.disabled));
   };
   const openChoice=(card,data,options,editItem=null)=>{
     choice.querySelector('.tcc-wish-choice-footer').style.display='flex';
@@ -507,10 +511,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const thumb=choice.querySelector('.tcc-wish-choice-thumb'),source=card.querySelector('.m-photo-wrap img,.m-photo,img');thumb.replaceChildren();
     if(source?.tagName==='IMG'&&(source.currentSrc||source.src)){const image=document.createElement('img');image.src=source.currentSrc||source.src;image.alt=data.name;thumb.append(image);}else thumb.textContent='☕';
     const singleChoice=data.name==='Hot Chocolate';
-    const none=document.createElement('label'),noneInput=document.createElement('input');noneInput.type='radio';noneInput.name='tccWishNoAddon';noneInput.checked=!singleChoice&&!(editItem?.addons||[]).length;none.append(noneInput,document.createTextNode(singleChoice?'Choose an option':'No Add-ons'));wrap.append(none);
+    let noneInput=null;
+    if(!singleChoice){
+      const none=document.createElement('label');noneInput=document.createElement('input');noneInput.type='radio';noneInput.name='tccWishNoAddon';noneInput.checked=!(editItem?.addons||[]).length;none.append(noneInput,document.createTextNode('No Add-ons'));wrap.append(none);
+    }
     options.forEach((opt,index)=>{const label=document.createElement('label'),input=document.createElement('input'),name=document.createElement('span'),price=document.createElement('span');input.type=singleChoice?'radio':'checkbox';if(singleChoice){input.name='tccHotChocolateOption';input.dataset.addonIndex=String(index);}input.value=String(index);input.checked=!!editItem&&(editItem.addons||[]).some(item=>item.name===opt.name);name.textContent=opt.name;price.className='tcc-addon-price';price.textContent='+'+money(opt.price);input.addEventListener('change',()=>{if(!singleChoice&&wrap.querySelectorAll('input[type="checkbox"]:checked').length>3)input.checked=false;if(singleChoice)noneInput.checked=false;else noneInput.checked=wrap.querySelectorAll('input[type="checkbox"]:checked').length===0;updateChoiceSummary();});label.append(input,name,price);wrap.append(label);});
-    if(singleChoice&&!(editItem?.addons||[]).length)noneInput.checked=true;
-    noneInput.addEventListener('change',()=>{wrap.querySelectorAll('input[type="checkbox"],input[data-addon-index]').forEach(x=>x.checked=false);updateChoiceSummary();});
+    if(noneInput)noneInput.addEventListener('change',()=>{wrap.querySelectorAll('input[type="checkbox"],input[data-addon-index]').forEach(x=>x.checked=false);updateChoiceSummary();});
     choice.querySelector('.tcc-choice-minus').onclick=()=>{choiceQuantity=Math.max(1,choiceQuantity-1);updateChoiceSummary();};
     choice.querySelector('.tcc-choice-plus').onclick=()=>{choiceQuantity=Math.min(99,choiceQuantity+1);updateChoiceSummary();};
     choice.classList.add('is-open');choice.setAttribute('aria-hidden','false');updateChoiceSummary();
