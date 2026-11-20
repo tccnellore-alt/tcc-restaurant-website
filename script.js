@@ -494,14 +494,16 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   };
   const updateChoiceSummary=()=>{
     if(!pendingProduct)return;
-    const selected=[...choice.querySelectorAll('.tcc-wish-addon-options input[type="checkbox"]:checked,.tcc-wish-addon-options input[type="radio"][data-addon-index]:checked')].map(input=>pendingProduct.options[Number(input.value)]);
+    let selected=[...choice.querySelectorAll('.tcc-wish-addon-options input[type="checkbox"]:checked,.tcc-wish-addon-options input[type="radio"][data-addon-index]:checked')].map(input=>pendingProduct.options[Number(input.value)]);
+    if(pendingProduct.data.name==='Hot Chocolate'&&!selected.length){
+      selected=pendingProduct.options.filter(option=>option.name==='Without Ice Cream').slice(0,1);
+    }
     const unit=(Number(pendingProduct.data.price)||0)+selected.reduce((sum,item)=>sum+(Number(item.price)||0),0);
     choice.querySelector('.tcc-choice-quantity').textContent=String(choiceQuantity);
     const confirmButton=choice.querySelector('.tcc-wish-choice-confirm');
     confirmButton.textContent=(pendingProduct.editItem?'Save Changes':'Add Item')+' · '+money(unit*choiceQuantity);
-    const requiresHotChocolateChoice=pendingProduct.data.name==='Hot Chocolate';
-    confirmButton.disabled=requiresHotChocolateChoice&&selected.length!==1;
-    confirmButton.setAttribute('aria-disabled',String(confirmButton.disabled));
+    confirmButton.disabled=false;
+    confirmButton.setAttribute('aria-disabled','false');
   };
   const openChoice=(card,data,options,editItem=null)=>{
     choice.querySelector('.tcc-wish-choice-footer').style.display='flex';
@@ -750,7 +752,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   choice.querySelector('.tcc-wish-choice-confirm').addEventListener('click',()=>{
     if(!pendingProduct)return;
     const current=pendingProduct,wrap=choice.querySelector('.tcc-wish-addon-options');
-    const selected=[...wrap.querySelectorAll('input[type="checkbox"]:checked,input[type="radio"][data-addon-index]:checked')] .slice(0,3).map(input=>current.options[Number(input.value)]);
+    let selected=[...wrap.querySelectorAll('input[type="checkbox"]:checked,input[type="radio"][data-addon-index]:checked')] .slice(0,3).map(input=>current.options[Number(input.value)]);
+    if(current.data.name==='Hot Chocolate'&&!selected.length){
+      selected=current.options.filter(option=>option.name==='Without Ice Cream').slice(0,1);
+    }
     animateProductToWishlist(current.card,current.data);
     if(current.editItem){current.editItem.addons=selected;current.editItem.qty=choiceQuantity;}
     else{const sameConfig=item=>sameProduct(item,current.data)&&JSON.stringify((item.addons||[]).map(x=>x.name).sort())===JSON.stringify(selected.map(x=>x.name).sort());const found=items.find(sameConfig);if(found)found.qty=(Number(found.qty)||1)+choiceQuantity;else items.push({...current.data,addons:selected,note:'',qty:choiceQuantity,lineId:String(Date.now())+'-'+Math.random().toString(36).slice(2)});}
