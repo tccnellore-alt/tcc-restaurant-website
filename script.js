@@ -230,6 +230,23 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       .tcc-wish-panel{padding:14px 12px}
     }
 
+    /* Compact mobile cart: condensed product rows and takeaway toggle. */
+    .tcc-wish-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;gap:7px!important;padding:7px 0!important;border-bottom:1px solid rgba(23,60,43,.10)!important}
+    .tcc-wish-item-info{display:flex!important;flex-direction:column!important;gap:3px!important;min-width:0!important}
+    .tcc-wish-item-info>strong{font:750 12px/1.2 Manrope,Arial,sans-serif!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .tcc-wish-item-info .tcc-wish-addon-line{font:10px/1.2 Manrope,Arial,sans-serif!important;margin:0!important;color:#777d70!important}
+    .tcc-wish-item-options{display:flex!important;align-items:center!important;gap:9px!important;min-height:17px!important}
+    .tcc-wish-fulfillment{display:inline-flex!important;align-items:center!important;gap:4px!important;width:auto!important;max-width:100%!important;margin:0!important;padding:2px 5px!important;border:0!important;border-radius:5px!important;background:#f2efe5!important;font:650 9px/1.2 Manrope,Arial,sans-serif!important;color:#536052!important;white-space:nowrap}
+    .tcc-wish-fulfillment input{width:12px!important;height:12px!important;margin:0!important;accent-color:#173c2b}
+    .tcc-wish-note-toggle{border:0!important;background:transparent!important;padding:2px 0!important;color:#8b7440!important;font:700 9px/1 Manrope,Arial,sans-serif!important;white-space:nowrap}
+    .tcc-wish-item-note{width:100%!important;min-height:34px!important;max-height:54px!important;margin-top:3px!important;padding:6px!important;font:11px Manrope,Arial,sans-serif!important}
+    .tcc-wish-row-price{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:5px!important;flex-wrap:nowrap!important;white-space:nowrap!important}
+    .tcc-wish-qty{gap:4px!important}
+    .tcc-wish-qty button{width:23px!important;height:23px!important;font-size:13px!important}
+    .tcc-wish-qty strong{min-width:12px!important;font-size:11px!important}
+    .tcc-wish-remove{font-size:9px!important;padding:2px!important}
+    @media(max-width:600px){.tcc-wish-list{max-height:38dvh!important;overflow-y:auto!important}.tcc-wish-row{padding:6px 0!important;gap:5px!important}.tcc-wish-item-info>strong{font-size:11px!important}.tcc-wish-fulfillment{font-size:8px!important}}
+
   `;
   document.head.appendChild(style);
   const float=document.createElement('button');
@@ -387,13 +404,16 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(!items.length){list.innerHTML='<div class="tcc-wish-empty">Your cart is empty.<br>Add your favourite items from the menu.</div>';}
     items.forEach(item=>{
       const row=document.createElement('div');row.className='tcc-wish-row';
-      const info=document.createElement('div');const title=document.createElement('strong');title.textContent=item.name;const meta=document.createElement('small');meta.textContent=item.category;info.append(title,meta);
-      if(item.addons?.length){const addonLine=document.createElement('small');addonLine.textContent='Add-ons: '+item.addons.map(x=>x.name).join(', ');info.append(addonLine);}
-      const fulfillment=document.createElement('label');fulfillment.className='tcc-wish-fulfillment';const fulfillmentInput=document.createElement('input');fulfillmentInput.type='checkbox';fulfillmentInput.checked=item.fulfillment_type==='takeaway'||(orderType==='takeaway');fulfillmentInput.setAttribute('aria-label','Pack '+item.name+' as takeaway');fulfillmentInput.addEventListener('change',()=>{item.fulfillment_type=fulfillmentInput.checked?'takeaway':'dine-in';save();render();});const fulfillmentText=document.createElement('span');fulfillmentText.textContent='Pack as takeaway (+₹10 each)';fulfillment.append(fulfillmentInput,fulfillmentText);info.append(fulfillment);const noteToggle=document.createElement('button');noteToggle.type='button';noteToggle.className='tcc-wish-note-toggle';noteToggle.textContent=item.note?.trim()?'Edit note':'＋ Add note';noteToggle.setAttribute('aria-expanded','false');
-      const note=document.createElement('textarea');note.className='tcc-wish-item-note';note.placeholder='Add a note for this product (optional)';note.value=item.note||'';note.setAttribute('aria-label','Note for '+item.name);note.hidden=true;
-      noteToggle.addEventListener('click',()=>{const expanded=!note.hidden;note.hidden=expanded;noteToggle.setAttribute('aria-expanded',String(!expanded));noteToggle.textContent=expanded?(item.note?.trim()?'Edit note':'＋ Add note'):'− Hide note';if(!expanded)note.focus();});
-      note.addEventListener('input',()=>{item.note=note.value;save();if(note.value.trim())noteToggle.textContent='− Hide note';});
-      info.append(noteToggle,note);
+      const info=document.createElement('div');info.className='tcc-wish-item-info';
+      const title=document.createElement('strong');title.textContent=item.name;info.append(title);
+      if(item.addons?.length){const addonLine=document.createElement('small');addonLine.className='tcc-wish-addon-line';addonLine.textContent=item.addons.map(x=>x.name).join(' · ');info.append(addonLine);}
+      const itemOptions=document.createElement('div');itemOptions.className='tcc-wish-item-options';
+      const fulfillment=document.createElement('label');fulfillment.className='tcc-wish-fulfillment';const fulfillmentInput=document.createElement('input');fulfillmentInput.type='checkbox';fulfillmentInput.checked=item.fulfillment_type==='takeaway'||(orderType==='takeaway');fulfillmentInput.setAttribute('aria-label','Pack '+item.name+' as takeaway (+₹10 each)');fulfillmentInput.addEventListener('change',()=>{item.fulfillment_type=fulfillmentInput.checked?'takeaway':'dine-in';save();render();});const fulfillmentText=document.createElement('span');fulfillmentText.textContent='Takeaway +₹10';fulfillment.append(fulfillmentInput,fulfillmentText);itemOptions.append(fulfillment);
+      const noteToggle=document.createElement('button');noteToggle.type='button';noteToggle.className='tcc-wish-note-toggle';noteToggle.textContent=item.note?.trim()?'Edit note':'＋ Note';noteToggle.setAttribute('aria-expanded','false');
+      const note=document.createElement('textarea');note.className='tcc-wish-item-note';note.placeholder='Add a note (optional)';note.value=item.note||'';note.setAttribute('aria-label','Note for '+item.name);note.hidden=true;
+      noteToggle.addEventListener('click',()=>{const expanded=!note.hidden;note.hidden=expanded;noteToggle.setAttribute('aria-expanded',String(!expanded));noteToggle.textContent=expanded?(item.note?.trim()?'Edit note':'＋ Note'):'− Hide';if(!expanded)note.focus();});
+      note.addEventListener('input',()=>{item.note=note.value;save();if(note.value.trim())noteToggle.textContent='− Hide';});
+      itemOptions.append(noteToggle);info.append(itemOptions,note);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
       const amount=document.createElement('span');amount.textContent='';
