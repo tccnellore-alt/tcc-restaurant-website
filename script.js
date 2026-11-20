@@ -10,7 +10,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   if(!qrOrderingEnabled){
     const notice=document.createElement('div');notice.className='tcc-menu-ordering-notice';notice.textContent='Browsing the TCC menu · Scan your table QR code to place an order.';
     document.querySelector('.menu-intro .container')?.append(notice);
-    const style=document.createElement('style');style.textContent='.tcc-menu-ordering-notice{margin:22px 0 0;padding:12px 15px;border:1px solid rgba(255,255,255,.25);border-radius:12px;background:rgba(255,255,255,.09);color:#fffaf0;font:700 12px/1.5 Arial,sans-serif}.tcc-wish-float,.menu-lightbox-add-cart,.tcc-wish-add,.tcc-menu-qty{display:none!important}';document.head.append(style);
+    const style=document.createElement('style');style.textContent='.tcc-menu-ordering-notice{grid-column:1/-1;grid-row:3;display:block;width:100%;min-width:0;box-sizing:border-box;margin:0;padding:11px 14px;border:1px solid rgba(255,255,255,.22);border-radius:12px;background:rgba(255,255,255,.09);color:#fffaf0;font:600 12px/1.45 Manrope,Arial,sans-serif;text-align:center;overflow-wrap:normal;word-break:normal}.tcc-wish-float,.menu-lightbox-add-cart,.tcc-wish-add,.tcc-menu-qty{display:none!important}';document.head.append(style);
     return;
   }
   const STORAGE_KEY='tccCustomerWishlistV1';
@@ -423,7 +423,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   document.body.append(float,backdrop,choice);
   const tableField=backdrop.querySelector('.tcc-table-picker-field');
   if(tableField){tableField.querySelector('.tcc-table-label')?.setAttribute('hidden','');tableField.querySelector('.tcc-table-picker-trigger')?.setAttribute('hidden','');const lock=document.createElement('div');lock.className='tcc-qr-table-lock';lock.innerHTML='<small>YOU ARE ORDERING FOR</small><strong>TABLE '+qrTable+'</strong><span>Table is fixed by this QR code</span>';tableField.prepend(lock);}
-  const qrLockStyle=document.createElement('style');qrLockStyle.textContent='.tcc-qr-table-lock{display:flex;flex-direction:column;gap:4px;padding:10px 12px;border:1px solid rgba(183,154,90,.45);border-radius:11px;background:#f6f0e2;color:#173c2b}.tcc-qr-table-lock small{font:800 9px Arial,sans-serif;letter-spacing:.13em;color:#8d7337}.tcc-qr-table-lock strong{font:700 20px Georgia,serif}.tcc-qr-table-lock span{font:11px Arial,sans-serif;color:#6d756e}';document.head.append(qrLockStyle);
+  const qrLockStyle=document.createElement('style');qrLockStyle.textContent='.tcc-qr-table-lock{display:flex;flex-direction:column;gap:4px;padding:10px 12px;border:1px solid rgba(183,154,90,.45);border-radius:11px;background:#f6f0e2;color:#173c2b}.tcc-qr-table-lock[hidden]{display:none!important}.tcc-qr-table-picker-field.tcc-qr-locked .tcc-table-label,.tcc-qr-table-picker-field.tcc-qr-locked .tcc-table-picker-trigger,.tcc-qr-table-picker-field.tcc-qr-locked .tcc-wish-table-error,.tcc-qr-table-picker-field.tcc-qr-locked .tcc-continuation-box{display:none!important}.tcc-wish-backdrop:has(.tcc-qr-locked) .tcc-table-picker-backdrop{display:none!important}.tcc-qr-table-lock small{font:800 9px Arial,sans-serif;letter-spacing:.13em;color:#8d7337}.tcc-qr-table-lock strong{font:700 20px Georgia,serif}.tcc-qr-table-lock span{font:11px Arial,sans-serif;color:#6d756e}';document.head.append(qrLockStyle);
   let pendingProduct=null,choiceQuantity=1;
   let orderType='dine-in',selectedTable=qrTable,customerName='',customerPhone='';
   let continuationOrder=null,availableContinuationOrder=null,recentOrderCheck=0,continuationContextKey='',forceNewOrder=false;
@@ -625,11 +625,19 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const totalBox=backdrop.querySelector('.tcc-wish-total');
     totalBox.innerHTML='';
     totalBox.style.display='none';
-    backdrop.querySelector('.tcc-wish-table-field').style.display=items.length?'block':'none';
+    const tablePickerField=backdrop.querySelector('.tcc-table-picker-field');
+    tablePickerField.style.display=items.length?'block':'none';
+    tablePickerField.classList.toggle('tcc-qr-locked',qrOrderingEnabled);
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
     backdrop.querySelector('.tcc-wish-continue').style.display=items.length?'block':'none';
-    backdrop.querySelector('.tcc-table-options').hidden=false;
-    backdrop.querySelector('.tcc-table-label').hidden=false;
+    backdrop.querySelector('.tcc-table-options').hidden=!items.length||qrOrderingEnabled;
+    backdrop.querySelector('.tcc-table-label').hidden=qrOrderingEnabled;
+    const tableTrigger=backdrop.querySelector('.tcc-table-picker-trigger');
+    if(tableTrigger)tableTrigger.hidden=qrOrderingEnabled;
+    const qrLock=tablePickerField.querySelector('.tcc-qr-table-lock');
+    if(qrLock)qrLock.hidden=!qrOrderingEnabled;
+    const tableError=tablePickerField.querySelector('.tcc-wish-table-error');
+    if(tableError&&qrOrderingEnabled)tableError.textContent='';
     backdrop.querySelectorAll('[data-table]').forEach(button=>button.classList.toggle('active',button.dataset.table===selectedTable));
     const tableValue=backdrop.querySelector('.tcc-table-picker-value');
     if(tableValue)tableValue.textContent=selectedTable||'Not selected';
