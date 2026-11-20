@@ -1,12 +1,19 @@
 const body=document.body,toggle=document.querySelector('[data-toggle]'),close=document.querySelector('[data-close]'),overlay=document.querySelector('[data-overlay]');function setOpen(v){body.classList.toggle('open',v);toggle?.setAttribute('aria-expanded',v)}toggle?.addEventListener('click',()=>setOpen(!body.classList.contains('open')));close?.addEventListener('click',()=>setOpen(false));overlay?.addEventListener('click',()=>setOpen(false));document.querySelectorAll('.drawer a').forEach(a=>a.addEventListener('click',()=>setOpen(false)));document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});
 
 /* TCC Customer Wishlist — menu-page only */
-(function(){
+(async function(){
   if(!document.querySelector('.menu-page')) return;
   const TCC_QR_TABLE_TOKENS={"S1":"h2eEXris3D4D8m6IBXuXSDgM","S2":"USZthn1YoTQUFlDg0evy8Jnh","S3":"kUiCeOdrgMrN55mNBXjTJq4C","S4":"9YHH3w5ZFZh-x2tNi5Uvkg9e","S5":"-lwL62v32dRrbBlPCzYK3Lt6","S6":"JoJPpvS5L_C9K7Ls5e-xsBVD","C1":"AqU9WQNL9W2HJ1kqWNR_mNI1","C2":"eMEr26NU_D2mfU9T8F4216TK","C3":"LVD8Qv2kOOlnmkD-VEycAXGw","C4":"3uC34BgVGQUKHjlSaH7wM0dC","P1":"QwxX7hmjJ3WOVGpqTzvyOh3j","P2":"IXvzFxOnzsP4NBlmO7MT39HJ","P3":"Yb2f9Vc3_ZqKklNxyr1vqCro","T1":"KOeHHGbC0_nD4zr8yCX3gMNN","T2":"evQi4_RkKZ4UHnJ1OmgdedIo"};
   const qrParams=new URLSearchParams(location.search),qrTable=(qrParams.get('table')||'').toUpperCase(),providedQrToken=qrParams.get('qr')||'',qrSession=qrParams.get('qr_session')||'';
   const fixedQrTable=!!TCC_QR_TABLE_TOKENS[qrTable]&&TCC_QR_TABLE_TOKENS[qrTable]===providedQrToken;
-  const workerQrSession=/^[a-f0-9]{64}$/.test(qrSession);
+  let workerQrSession=false;
+  if(/^[a-f0-9]{64}$/.test(qrSession)){
+    try{
+      const verification=await fetch('https://tcc-qr-entry-prodv3.tccnellore.workers.dev/verify?token='+encodeURIComponent(qrSession),{cache:'no-store'});
+      const verificationData=await verification.json();
+      workerQrSession=verification.ok&&verificationData.valid===true;
+    }catch{}
+  }
   const qrOrderingEnabled=fixedQrTable||workerQrSession;
   const qrToken=fixedQrTable?providedQrToken:(workerQrSession?qrSession:'');
   window.TCC_QR_ORDERING={enabled:qrOrderingEnabled,table:fixedQrTable?qrTable:'',token:qrToken,manualTable:workerQrSession&&!fixedQrTable};
