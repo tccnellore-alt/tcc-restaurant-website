@@ -413,7 +413,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   document.body.append(float,backdrop,choice);
   let pendingProduct=null,choiceQuantity=1;
   let orderType='dine-in',selectedTable='',customerName='',customerPhone='';
-  let continuationOrder=null,availableContinuationOrder=null,recentOrderCheck=0;
+  let continuationOrder=null,availableContinuationOrder=null,recentOrderCheck=0,continuationContextKey='',forceNewOrder=false;
   const historyPanel=document.createElement('div');historyPanel.className='tcc-order-history-backdrop';historyPanel.setAttribute('aria-hidden','true');
   historyPanel.innerHTML='<section class="tcc-order-history-panel" role="dialog" aria-modal="true"><header><h2>Order History</h2><button type="button" class="tcc-order-history-close" aria-label="Close order history">×</button></header><div class="tcc-order-lookup"><label for="tccOrderLookup">Find orders on this or another device</label><div><input id="tccOrderLookup" type="text" maxlength="30" placeholder="Order reference or mobile number" autocomplete="off"><button type="button" class="tcc-order-lookup-button">Find</button></div><small>Enter either your order reference or the mobile number used to place the order.</small><p class="tcc-order-lookup-message" role="status"></p><div class="tcc-order-lookup-results"></div></div><h3 class="tcc-order-history-subtitle">Orders on this device</h3><div class="tcc-order-history-list"></div><button type="button" class="tcc-order-history-new">＋ Start a New Order</button></section>';
   document.body.append(historyPanel);
@@ -429,9 +429,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const activeTable=backdrop.querySelector('[data-table].active');
     if(activeTable)selectedTable=activeTable.dataset.table;
     const requestId=++recentOrderCheck,phone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
+    const contextKey=[phone,orderType,orderType==='dine-in'?selectedTable:''].join('|');
+    if(contextKey!==continuationContextKey){continuationContextKey=contextKey;forceNewOrder=false;continuationOrder=null;availableContinuationOrder=null;}
     continuationBox.hidden=true;continuationBox.replaceChildren();
     if(!/^\d{10}$/.test(phone)||(orderType==='dine-in'&&!selectedTable))return;
-    if(continuationOrder&&continuationOrder.customer_phone===phone&&continuationOrder.order_type===orderType&&(orderType!=='dine-in'||continuationOrder.table_number===selectedTable)){renderContinuationChoice();return;}
+    if((continuationOrder||forceNewOrder)&&continuationContextKey===contextKey){renderContinuationChoice();return;}
     const message=document.createElement('small');message.textContent='Checking for a recent order…';continuationBox.append(message);continuationBox.hidden=false;
     try{
       const url='https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders?action=recent-orders&phone='+encodeURIComponent(phone)+'&order_type='+encodeURIComponent(orderType)+'&table_number='+encodeURIComponent(selectedTable);
@@ -440,7 +442,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       continuationBox.replaceChildren();const orders=data.orders||[];
       if(!response.ok||!orders.length){continuationBox.hidden=true;continuationOrder=null;availableContinuationOrder=null;return;}
       availableContinuationOrder={...orders[0],customer_phone:phone,order_type:orderType,table_number:selectedTable};
-      if(!continuationOrder||continuationOrder.customer_phone!==phone||continuationOrder.order_type!==orderType||(orderType==='dine-in'&&continuationOrder.table_number!==selectedTable))continuationOrder=availableContinuationOrder;
+      continuationOrder=forceNewOrder?null:availableContinuationOrder;
       renderContinuationChoice();
     }catch{if(requestId===recentOrderCheck)continuationBox.hidden=true;}
   };
@@ -450,7 +452,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const selected=document.createElement('small');selected.textContent=continuationOrder?'Continuation order · linked to '+continuationOrder.order_number+' (default)':'New order · starts a separate order group';continuationBox.append(selected);
     const toggle=document.createElement('button');toggle.type='button';toggle.className='tcc-continuation-new';
     toggle.textContent=continuationOrder?'Place as a New Order':'Continue '+(availableContinuationOrder?.order_number||'previous order');
-    toggle.addEventListener('click',()=>{continuationOrder=continuationOrder?null:availableContinuationOrder;if(continuationOrder)continuationOrder={...continuationOrder,customer_phone:customerPhone.replace(/\\D/g,'').replace(/^91(?=\\d{10}$)/,''),order_type:orderType,table_number:selectedTable};renderContinuationChoice();});
+    toggle.addEventListener('click',()=>{forceNewOrder=!!continuationOrder;continuationOrder=forceNewOrder?null:availableContinuationOrder;if(continuationOrder)continuationOrder={...continuationOrder,customer_phone:customerPhone.replace(/\\D/g,'').replace(/^91(?=\\d{10}$)/,''),order_type:orderType,table_number:selectedTable};renderContinuationChoice();});
     continuationBox.append(toggle);
   };
 
