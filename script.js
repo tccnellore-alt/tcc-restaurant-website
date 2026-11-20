@@ -783,7 +783,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   choice.querySelector('.tcc-wish-choice-cancel').addEventListener('click',closeChoice);
   choice.addEventListener('click',event=>{if(event.target===choice)closeChoice();});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&choice.classList.contains('is-open'))closeChoice();});
-  backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];selectedTable='';save();render()});
+  backdrop.querySelector('.tcc-wish-clear').addEventListener('click',()=>{items=[];selectedTable=qrTable;save();render()});
   backdrop.querySelector('.tcc-wish-continue').addEventListener('click',close);
   backdrop.querySelector('#tccCustomerName').addEventListener('input',event=>{customerName=event.target.value.trimStart();});
   backdrop.querySelector('#tccCustomerName').addEventListener('change',event=>{customerName=event.target.value.trimStart();});
