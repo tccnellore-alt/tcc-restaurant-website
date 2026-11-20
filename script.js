@@ -26,7 +26,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const addonOptions=card=>{
     const data=getData(card),section=data.section.toLowerCase(),group=card.closest('.menu-group');
     let source=[];
-    if(group?.id==='coffee'&&typeof tccCoffeeAddonsByDrink!=='undefined'&&tccCoffeeAddonsByDrink[data.name]){
+    if(group?.id==='coffee'&&data.name==='Hot Chocolate'){
+      source=[{name:'With Ice Cream',price:0},{name:'Without Ice Cream',price:0}];
+    }else if(group?.id==='coffee'&&typeof tccCoffeeAddonsByDrink!=='undefined'&&tccCoffeeAddonsByDrink[data.name]){
       const price=typeof tccCoffeeAddonPrice!=='undefined'?Number(String(tccCoffeeAddonPrice).replace(/[^\d.]/g,''))||50:50;
       source=tccCoffeeAddonsByDrink[data.name].map(name=>({name,price}));
     }else if(section.includes('pasta')){
@@ -492,7 +494,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   };
   const updateChoiceSummary=()=>{
     if(!pendingProduct)return;
-    const selected=[...choice.querySelectorAll('.tcc-wish-addon-options input[type="checkbox"]:checked')].map(input=>pendingProduct.options[Number(input.value)]);
+    const selected=[...choice.querySelectorAll('.tcc-wish-addon-options input[type="checkbox"]:checked,.tcc-wish-addon-options input[type="radio"][data-addon-index]:checked')].map(input=>pendingProduct.options[Number(input.value)]);
     const unit=(Number(pendingProduct.data.price)||0)+selected.reduce((sum,item)=>sum+(Number(item.price)||0),0);
     choice.querySelector('.tcc-choice-quantity').textContent=String(choiceQuantity);
     choice.querySelector('.tcc-wish-choice-confirm').textContent=(pendingProduct.editItem?'Save Changes':'Add Item')+' · '+money(unit*choiceQuantity);
@@ -504,9 +506,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     choice.querySelector('.tcc-wish-choice-title').textContent=data.name;
     const thumb=choice.querySelector('.tcc-wish-choice-thumb'),source=card.querySelector('.m-photo-wrap img,.m-photo,img');thumb.replaceChildren();
     if(source?.tagName==='IMG'&&(source.currentSrc||source.src)){const image=document.createElement('img');image.src=source.currentSrc||source.src;image.alt=data.name;thumb.append(image);}else thumb.textContent='☕';
-    const none=document.createElement('label'),noneInput=document.createElement('input');noneInput.type='radio';noneInput.name='tccWishNoAddon';noneInput.checked=true;none.append(noneInput,document.createTextNode('No Add-ons'));wrap.append(none);
-    options.forEach((opt,index)=>{const label=document.createElement('label'),input=document.createElement('input'),name=document.createElement('span'),price=document.createElement('span');input.type='checkbox';input.value=String(index);input.checked=!!editItem&&(editItem.addons||[]).some(item=>item.name===opt.name);name.textContent=opt.name;price.className='tcc-addon-price';price.textContent='+'+money(opt.price);input.addEventListener('change',()=>{if(wrap.querySelectorAll('input[type="checkbox"]:checked').length>3)input.checked=false;noneInput.checked=wrap.querySelectorAll('input[type="checkbox"]:checked').length===0;updateChoiceSummary();});label.append(input,name,price);wrap.append(label);});
-    noneInput.checked=wrap.querySelectorAll('input[type="checkbox"]:checked').length===0;noneInput.addEventListener('change',()=>{wrap.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false);updateChoiceSummary();});
+    const singleChoice=data.name==='Hot Chocolate';
+    const none=document.createElement('label'),noneInput=document.createElement('input');noneInput.type='radio';noneInput.name='tccWishNoAddon';noneInput.checked=!singleChoice&&!(editItem?.addons||[]).length;none.append(noneInput,document.createTextNode(singleChoice?'Choose an option':'No Add-ons'));wrap.append(none);
+    options.forEach((opt,index)=>{const label=document.createElement('label'),input=document.createElement('input'),name=document.createElement('span'),price=document.createElement('span');input.type=singleChoice?'radio':'checkbox';if(singleChoice){input.name='tccHotChocolateOption';input.dataset.addonIndex=String(index);}input.value=String(index);input.checked=!!editItem&&(editItem.addons||[]).some(item=>item.name===opt.name);name.textContent=opt.name;price.className='tcc-addon-price';price.textContent='+'+money(opt.price);input.addEventListener('change',()=>{if(!singleChoice&&wrap.querySelectorAll('input[type="checkbox"]:checked').length>3)input.checked=false;if(singleChoice)noneInput.checked=false;else noneInput.checked=wrap.querySelectorAll('input[type="checkbox"]:checked').length===0;updateChoiceSummary();});label.append(input,name,price);wrap.append(label);});
+    if(singleChoice&&!(editItem?.addons||[]).length)noneInput.checked=true;
+    noneInput.addEventListener('change',()=>{wrap.querySelectorAll('input[type="checkbox"],input[data-addon-index]').forEach(x=>x.checked=false);updateChoiceSummary();});
     choice.querySelector('.tcc-choice-minus').onclick=()=>{choiceQuantity=Math.max(1,choiceQuantity-1);updateChoiceSummary();};
     choice.querySelector('.tcc-choice-plus').onclick=()=>{choiceQuantity=Math.min(99,choiceQuantity+1);updateChoiceSummary();};
     choice.classList.add('is-open');choice.setAttribute('aria-hidden','false');updateChoiceSummary();
@@ -740,7 +744,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   choice.querySelector('.tcc-wish-choice-confirm').addEventListener('click',()=>{
     if(!pendingProduct)return;
     const current=pendingProduct,wrap=choice.querySelector('.tcc-wish-addon-options');
-    const selected=[...wrap.querySelectorAll('input[type="checkbox"]:checked')] .slice(0,3).map(input=>current.options[Number(input.value)]);
+    const selected=[...wrap.querySelectorAll('input[type="checkbox"]:checked,input[type="radio"][data-addon-index]:checked')] .slice(0,3).map(input=>current.options[Number(input.value)]);
     animateProductToWishlist(current.card,current.data);
     if(current.editItem){current.editItem.addons=selected;current.editItem.qty=choiceQuantity;}
     else{const sameConfig=item=>sameProduct(item,current.data)&&JSON.stringify((item.addons||[]).map(x=>x.name).sort())===JSON.stringify(selected.map(x=>x.name).sort());const found=items.find(sameConfig);if(found)found.qty=(Number(found.qty)||1)+choiceQuantity;else items.push({...current.data,addons:selected,note:'',qty:choiceQuantity,lineId:String(Date.now())+'-'+Math.random().toString(36).slice(2)});}
