@@ -391,6 +391,14 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       .tcc-wish-fulfillment{font-size:9px!important;min-height:25px!important}
     }
 
+    .tcc-wish-addon-line{
+      display:block!important;
+      margin:2px 0 1px!important;
+      color:#737b6e!important;
+      font:600 11px/1.3 Manrope,Arial,sans-serif!important;
+      overflow-wrap:anywhere!important;
+    }
+
   `;
   document.head.appendChild(style);
   const float=document.createElement('button');
@@ -551,6 +559,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const info=document.createElement('div');info.className='tcc-wish-item-info';
       const titleLine=document.createElement('div');titleLine.className='tcc-wish-title-line';
       const title=document.createElement('strong');title.textContent=item.name;titleLine.append(title);
+      if(Array.isArray(item.addons)&&item.addons.length){
+        const addonLine=document.createElement('small');
+        addonLine.className='tcc-wish-addon-line';
+        addonLine.textContent='Add-ons: '+item.addons.map(addon=>addon.name).filter(Boolean).join(' · ');
+        info.append(addonLine);
+      }
       const fulfillment=document.createElement('label');fulfillment.className='tcc-wish-fulfillment';const fulfillmentInput=document.createElement('input');fulfillmentInput.type='checkbox';fulfillmentInput.checked=item.fulfillment_type==='takeaway'||(orderType==='takeaway');fulfillmentInput.setAttribute('aria-label','Pack '+item.name+' as takeaway (+₹10 each)');fulfillmentInput.addEventListener('change',()=>{item.fulfillment_type=fulfillmentInput.checked?'takeaway':'dine-in';save();render();});const fulfillmentText=document.createElement('span');fulfillmentText.textContent='Takeaway +₹10';fulfillment.append(fulfillmentInput,fulfillmentText);
       info.append(titleLine);
       const itemOptions=document.createElement('div');itemOptions.className='tcc-wish-item-options';itemOptions.append(fulfillment);
