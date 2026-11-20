@@ -433,7 +433,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(contextKey!==continuationContextKey){continuationContextKey=contextKey;forceNewOrder=false;continuationOrder=null;availableContinuationOrder=null;}
     continuationBox.hidden=true;continuationBox.replaceChildren();
     if(!/^\d{10}$/.test(phone)||(orderType==='dine-in'&&!selectedTable))return;
-    if((continuationOrder||forceNewOrder)&&continuationContextKey===contextKey){renderContinuationChoice();return;}
+    // Re-check the server each time so a 3-hour inactivity expiry is applied even
+    // when the customer keeps the cart open on the same device.
     const message=document.createElement('small');message.textContent='Checking for a recent order…';continuationBox.append(message);continuationBox.hidden=false;
     try{
       const url='https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders?action=recent-orders&phone='+encodeURIComponent(phone)+'&order_type='+encodeURIComponent(orderType)+'&table_number='+encodeURIComponent(selectedTable);
