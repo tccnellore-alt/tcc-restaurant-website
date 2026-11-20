@@ -303,10 +303,18 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       background:#fff!important;
     }
     .tcc-table-picker-trigger{
-      min-height:38px!important;
-      border-radius:8px!important;
-      background:#fff!important;
+      min-height:48px!important;
+      padding:0 14px!important;
+      border:2px solid #8d7337!important;
+      border-radius:11px!important;
+      background:#fffdf7!important;
+      box-shadow:0 2px 0 rgba(141,115,55,.12),0 0 0 3px rgba(141,115,55,.09)!important;
+      cursor:pointer!important;
     }
+    .tcc-table-picker-caption{color:#526354!important;font:750 12px Manrope,Arial,sans-serif!important}
+    .tcc-table-picker-value{color:#173c2b!important;font:850 14px Manrope,Arial,sans-serif!important}
+    .tcc-table-picker-trigger>span:last-child{display:grid!important;place-items:center!important;width:25px!important;height:25px!important;border-radius:7px!important;background:#173c2b!important;color:#fffaf0!important;font-size:17px!important;font-weight:900!important}
+    .tcc-table-picker-trigger:focus-visible{outline:3px solid rgba(141,115,55,.35)!important;outline-offset:2px!important}
     .tcc-wish-line-total{display:none!important}
     .tcc-wish-total{display:none!important}
     @media(max-width:600px){
