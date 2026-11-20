@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow">
+<title>TCC Order Desk</title><link rel="stylesheet" href="orders-dashboard.css?v=linked-order-groups-1">
+</head>
+<body>
+<main class="shell">
+  <section class="login-card" id="loginView">
+    <div class="brand-mark">TCC</div><p class="eyebrow">THE COFFEE CLUB · NELLORE</p>
+    <h1>Order Desk</h1><p class="muted">Sign in to manage incoming customer orders.</p>
+    <form id="loginForm">
+      <label for="username">Username</label><input id="username" name="username" autocomplete="username" required value="">
+      <label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required>
+      <p class="error" id="loginError" role="alert"></p><button class="primary" type="submit">Sign in</button>
+    </form>
+  </section>
+  <section class="dashboard" id="dashboardView" hidden>
+    <header class="topbar"><div><p class="eyebrow">TCC · RECEPTION</p><h1>Order Desk</h1><p class="muted" id="lastUpdated">Waiting for orders…</p></div><div class="topbar-actions"><button class="quiet sound-toggle" id="enableAlertsButton" type="button" role="switch" aria-checked="true" aria-label="Sound alerts"><span class="sound-toggle-track" aria-hidden="true"><span></span></span><span class="sound-toggle-label">Sound alerts: On</span></button><button class="quiet" id="logoutButton">Log out</button></div></header>
+    <section class="stats workflow-stages" id="stats" aria-label="Order workflow">
+      <button class="stat-tile stage-new selected" type="button" data-quick-filter="new"><span>New</span><strong id="newCount">0</strong><small>Incoming QR orders</small></button>
+      <button class="stat-tile stage-preparing" type="button" data-quick-filter="in-progress"><span>Accepted &amp; Preparing</span><strong id="progressCount">0</strong><small>Accepted · Entered in billing app · KOT sent</small></button>
+      <button class="stat-tile stage-finished" type="button" data-quick-filter="ready-completed"><span>Ready &amp; Completed</span><strong id="readyCompletedCount">0</strong><small>Ready for handover or delivered</small></button>
+    </section>
+    <details class="advanced-filters" id="advancedFilters"><summary>More filters <span>Period, time and order type</span></summary>
+      
+      <div class="filter-row">
+        <label>Period<select id="periodFilter"><option value="today">Today</option><option value="yesterday">Yesterday</option><option value="7days">Last 7 days</option><option value="30days">Last 30 days</option><option value="all">All time</option><option value="custom">Custom range</option></select></label>
+        <label>Hour<select id="hourFilter"><option value="all">All hours</option><option value="0">00:00–00:59</option><option value="1">01:00–01:59</option><option value="2">02:00–02:59</option><option value="3">03:00–03:59</option><option value="4">04:00–04:59</option><option value="5">05:00–05:59</option><option value="6">06:00–06:59</option><option value="7">07:00–07:59</option><option value="8">08:00–08:59</option><option value="9">09:00–09:59</option><option value="10">10:00–10:59</option><option value="11">11:00–11:59</option><option value="12">12:00–12:59</option><option value="13">13:00–13:59</option><option value="14">14:00–14:59</option><option value="15">15:00–15:59</option><option value="16">16:00–16:59</option><option value="17">17:00–17:59</option><option value="18">18:00–18:59</option><option value="19">19:00–19:59</option><option value="20">20:00–20:59</option><option value="21">21:00–21:59</option><option value="22">22:00–22:59</option><option value="23">23:00–23:59</option></select></label>
+        <label>Order type<select id="typeFilter"><option value="all">All types</option><option value="dine-in">Dine-in</option><option value="takeaway">Takeaway</option></select></label>
+      </div>
+      <div class="filter-row custom-dates" id="customDates" hidden><label>From<input type="date" id="dateFrom"></label><label>To<input type="date" id="dateTo"></label></div>
+
+    
+    </details>
+    <div class="quick-search"><label for="orderSearch">Find an order</label><input id="orderSearch" type="search" placeholder="Search order ID, customer or mobile"><button class="quiet" id="clearFiltersButton" type="button">Clear filters</button></div>
+    <div class="toolbar"><div class="filters" id="filters">
+      <button class="filter active" data-status="all">All orders</button><button class="filter" data-status="new">New</button><button class="filter" data-status="preparing">Preparing</button><button class="filter" data-status="ready">Ready</button><button class="filter" data-status="completed">Completed</button><button class="filter" data-status="cancelled">Cancelled</button>
+    </div><div class="order-view-actions"><button class="quiet" id="trashViewButton" type="button">🗑 Trash / Restore</button><button class="quiet" id="refreshButton">Refresh</button></div></div>
+    <p class="reports-shortcut"><span>Need sales trends, product performance or exports?</span><a href="orders-reports.html">Open Reports →</a></p><p class="reports-shortcut"><span>Customer directory, repeat visits and billing history</span><a href="customers.html">Open Customers →</a></p><p class="results-summary" id="resultsSummary">Showing today's orders</p>
+    <p class="error" id="dashboardError" role="alert"></p>
+    <section class="orders" id="ordersList" aria-live="polite"><p class="empty">Loading orders…</p></section>
+    <footer>Orders refresh automatically every 4 seconds. Use the tiles above to jump to an order queue.</footer>
+  </section>
+</main>
+<script src="orders-dashboard.js?v=linked-order-groups-1"></script>
+</body></html>
