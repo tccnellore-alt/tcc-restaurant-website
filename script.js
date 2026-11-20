@@ -4,12 +4,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
 (function(){
   if(!document.querySelector('.menu-page')) return;
   const TCC_QR_TABLE_TOKENS={"S1":"h2eEXris3D4D8m6IBXuXSDgM","S2":"USZthn1YoTQUFlDg0evy8Jnh","S3":"kUiCeOdrgMrN55mNBXjTJq4C","S4":"9YHH3w5ZFZh-x2tNi5Uvkg9e","S5":"-lwL62v32dRrbBlPCzYK3Lt6","S6":"JoJPpvS5L_C9K7Ls5e-xsBVD","C1":"AqU9WQNL9W2HJ1kqWNR_mNI1","C2":"eMEr26NU_D2mfU9T8F4216TK","C3":"LVD8Qv2kOOlnmkD-VEycAXGw","C4":"3uC34BgVGQUKHjlSaH7wM0dC","P1":"QwxX7hmjJ3WOVGpqTzvyOh3j","P2":"IXvzFxOnzsP4NBlmO7MT39HJ","P3":"Yb2f9Vc3_ZqKklNxyr1vqCro","T1":"KOeHHGbC0_nD4zr8yCX3gMNN","T2":"evQi4_RkKZ4UHnJ1OmgdedIo"};
-  const qrParams=new URLSearchParams(location.search),qrTable=(qrParams.get('table')||'').toUpperCase(),providedQrToken=qrParams.get('qr')||'';
+  const qrParams=new URLSearchParams(location.search),qrTable=(qrParams.get('table')||'').toUpperCase(),providedQrToken=qrParams.get('qr')||'',qrSession=qrParams.get('qr_session')||'';
   const fixedQrTable=!!TCC_QR_TABLE_TOKENS[qrTable]&&TCC_QR_TABLE_TOKENS[qrTable]===providedQrToken;
-  const legacyMenuQr=qrParams.get('utm_source')==='chatgpt.com';
-  const qrOrderingEnabled=fixedQrTable||legacyMenuQr;
-  const qrToken=fixedQrTable?providedQrToken:(legacyMenuQr?'legacy-menu-qr':'');
-  window.TCC_QR_ORDERING={enabled:qrOrderingEnabled,table:fixedQrTable?qrTable:'',token:qrToken,manualTable:legacyMenuQr&&!fixedQrTable};
+  const workerQrSession=/^[a-f0-9]{64}$/.test(qrSession);
+  const qrOrderingEnabled=fixedQrTable||workerQrSession;
+  const qrToken=fixedQrTable?providedQrToken:(workerQrSession?qrSession:'');
+  window.TCC_QR_ORDERING={enabled:qrOrderingEnabled,table:fixedQrTable?qrTable:'',token:qrToken,manualTable:workerQrSession&&!fixedQrTable};
   if(!qrOrderingEnabled){
     const notice=document.createElement('div');notice.className='tcc-menu-ordering-notice';notice.textContent='Browsing the TCC menu · Scan your table QR code to place an order.';
     document.querySelector('.menu-intro .container')?.append(notice);
