@@ -1,0 +1,30 @@
+name: Build TCC Floating Order Monitor
+on:
+  workflow_dispatch:
+  push:
+    branches: [prodv1]
+    paths:
+      - 'windows-order-monitor/**'
+      - '.github/workflows/windows-order-monitor.yml'
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Publish Windows x64 single-file app
+        run: dotnet publish windows-order-monitor/TccOrderMonitor.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+      - name: Package application
+        shell: pwsh
+        run: |
+          $publish = "windows-order-monitor/bin/Release/net8.0-windows/win-x64/publish"
+          New-Item -ItemType Directory -Force -Path artifacts | Out-Null
+          Compress-Archive -Path "$publish/*" -DestinationPath "artifacts/TCC-Floating-Order-Monitor-Windows-x64.zip" -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TCC-Floating-Order-Monitor-Windows-x64
+          path: artifacts/TCC-Floating-Order-Monitor-Windows-x64.zip
+          retention-days: 30

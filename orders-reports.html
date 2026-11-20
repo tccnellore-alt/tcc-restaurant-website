@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow"><title>TCC Reports</title><link rel="stylesheet" href="orders-reports.css?v=2"></head>
+<body><main class="report-shell">
+<header class="report-header"><div><p class="eyebrow">THE COFFEE CLUB · NELLORE</p><h1>Business reports</h1><p class="muted" id="reportUpdated">Loading order data…</p></div><div class="header-actions"><a class="button secondary" href="orders.html">← Order Desk</a><button class="button secondary" id="reportRefresh">Refresh</button><button class="button secondary" id="reportLogout">Log out</button></div></header>
+<section class="report-controls"><label>Report period<select id="reportPeriod"><option value="today">Today</option><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="all">All available data</option><option value="custom">Custom range</option></select></label><label id="fromWrap" hidden>From<input type="date" id="reportFrom"></label><label id="toWrap" hidden>To<input type="date" id="reportTo"></label><button class="button primary" id="reportExport">Export CSV</button></section>
+<p class="notice" id="reportNotice">Reports use online orders available in the ordering system. Billing/POS totals are maintained separately.</p>
+<p class="error" id="reportError" role="alert"></p>
+<section class="kpis"><article><span>Gross order value</span><strong id="rSales">₹0</strong><small>Excludes cancelled/rejected orders</small></article><article><span>Orders received</span><strong id="rOrders">0</strong><small>In selected period</small></article><article><span>Average order value</span><strong id="rAov">₹0</strong><small>Per valid order</small></article><article><span>Cancelled orders</span><strong id="rCancelled">0</strong><small>Cancelled / rejected</small></article></section>
+<section class="panel timing-report-panel">
+ <div class="panel-heading"><div><h2>Order timing averages</h2><p>Average time across orders in the selected report period</p></div></div>
+ <div class="timing-kpis">
+  <article><span>Average acceptance</span><strong id="rAvgAcceptance">—</strong><small id="rAcceptanceCount">0 orders measured</small></article>
+  <article><span>Average preparation</span><strong id="rAvgPreparation">—</strong><small id="rPreparationCount">0 orders measured</small></article>
+  <article><span>Average total time</span><strong id="rAvgTotal">—</strong><small id="rTotalCount">0 orders measured</small></article>
+ </div>
+ <p class="timing-footnote">Acceptance: placed → accepted · Preparation: accepted → completed · Total: placed → completed. Only orders with the required timestamps are included in each average.</p>
+</section>
+<section class="panel table-sales-panel">
+ <div class="panel-heading"><div><h2>Table-wise sales</h2><p>Compare dine-in revenue by table for the selected period</p></div><div class="top-table-callout"><small>Top-performing table</small><strong id="topTableSales">—</strong></div></div>
+ <p class="table-sales-footnote" id="tableSalesFootnote">Loading table sales…</p>
+ <div class="table-scroll" id="tableSalesWrap"><table class="sales-table"><thead><tr><th>Table</th><th>Orders</th><th class="numeric">Total sales</th><th class="numeric">Avg. order</th><th class="numeric">Sales share</th></tr></thead><tbody id="tableSalesBody"></tbody></table></div>
+ <p class="table-sales-empty" id="tableSalesEmpty" hidden>No dine-in table sales in this period.</p>
+ <p class="takeaway-sales-summary" id="takeawaySalesSummary">0 takeaway orders · ₹0 (reported separately)</p>
+ </section>
+<section class="kpis customer-kpis"><article><span>Unique customers</span><strong id="rCustomers">0</strong><small>Identified by mobile number</small></article><article><span>New customers today</span><strong id="rNewCustomers">0</strong><small>First order today</small></article><article><span>Returning customers today</span><strong id="rReturningCustomers">0</strong><small>Ordered before today</small></article><article><span>Top billing customer</span><strong id="rTopCustomer">—</strong><small id="rTopCustomerSpend">₹0 total spend</small></article></section><section class="panel wide"><div class="panel-heading"><div><h2>Top billing customers</h2><p>Ranked by total valid order value in the selected period</p></div></div><div id="topCustomers" class="ranking"></div></section><section class="report-grid"><article class="panel wide"><div class="panel-heading"><div><h2>Daily order activity</h2><p>Orders and order value by day</p></div></div><div id="dailyChart" class="daily-chart"></div></article>
+<article class="panel"><div class="panel-heading"><div><h2>Order channels</h2><p>Dine-in versus takeaway</p></div></div><div id="channelChart" class="horizontal-chart"></div></article>
+<article class="panel"><div class="panel-heading"><div><h2>Order status</h2><p>Current status of orders in this period</p></div></div><div id="statusChart" class="horizontal-chart"></div></article>
+<article class="panel"><div class="panel-heading"><div><h2>Busy hours</h2><p>When customers place orders</p></div></div><div id="hourChart" class="hour-chart"></div></article>
+<article class="panel"><div class="panel-heading"><div><h2>Most ordered products</h2><p>Based on item quantities</p></div></div><div id="productTable" class="ranking"></div></article></section>
+<footer>Online order analytics · This page does not replace your billing software reports.</footer></main><script src="orders-reports.js?v=7"></script></body></html>
