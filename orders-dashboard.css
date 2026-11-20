@@ -80,3 +80,12 @@
 .orders>.empty{grid-column:1/-1}
 .order-card{min-width:0}
 @media(max-width:760px){.orders{grid-template-columns:minmax(0,1fr);gap:12px}}
+
+/* Linked continuation order groups */
+.order-group-link{margin:10px 0;padding:9px 11px;border:1px solid #c8b77f;border-radius:10px;background:#fbf7eb}
+.order-group-toggle{width:100%;text-align:left;border:0;background:transparent;color:#173c2b;font-weight:800;padding:3px;cursor:pointer}
+.order-group-details{display:grid;gap:7px;margin-top:8px}
+.order-group-member{display:flex;justify-content:space-between;padding:7px 8px;border-radius:7px;background:#fffdf7;border:1px solid #e6dfcd}
+.order-group-member strong,.order-group-member small{display:block}
+.order-group-member strong{font-size:12px;color:#173c2b}
+.order-group-member small{font-size:11px;color:#737b6e;margin-top:3px}
