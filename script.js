@@ -764,6 +764,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   else startWishlistButtons();
   const open=()=>{
     if(!tccCustomerOrderingEnabled)return;
+    if(tableQrToken&&!tableQrVerified){tableQrBanner.scrollIntoView?.({block:'nearest'});return;}
     if(backdrop.classList.contains('is-open'))return;
     // Re-read saved cart data and rebuild rows every time the cart opens.
     // This prevents a blank/stale item list after returning to the menu.
