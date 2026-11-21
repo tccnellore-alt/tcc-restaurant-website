@@ -693,8 +693,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       minus.addEventListener('click',()=>{item.qty=Math.max(1,(Number(item.qty)||1)-1);save();render()});
       plus.addEventListener('click',()=>{item.qty=(Number(item.qty)||1)+1;save();render()});
       qty.append(minus,qtyValue,plus);
-      if((item.addons||[]).length){const edit=document.createElement('button');edit.type='button';edit.className='tcc-wish-remove';edit.textContent='Edit';edit.addEventListener('click',()=>{const card=[...document.querySelectorAll('.m-item')].find(node=>sameProduct(item,getData(node)));if(card)openChoice(card,getData(card),addonOptions(card),item);});price.append(edit);}
-      const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x!==item);save();render()});
+      if((item.addons||[]).length){const edit=document.createElement('button');edit.type='button';edit.className='tcc-wish-edit';edit.textContent='Edit';edit.setAttribute('aria-label','Edit add-ons for '+item.name);edit.addEventListener('click',()=>{const card=[...document.querySelectorAll('.m-item')].find(node=>sameProduct(item,getData(node)));if(card)openChoice(card,getData(card),addonOptions(card),item);});price.append(edit);}
+      const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m3 3v7m6-7v7"/></svg>';remove.setAttribute('aria-label','Remove '+item.name);remove.title='Remove '+item.name;remove.addEventListener('click',()=>{items=items.filter(x=>x!==item);save();render()});
       price.append(amount,qty,remove);row.append(info,price,noteEditor);list.append(row);
     });
     // Always show the beginning of the cart after rebuilding it. The previous
@@ -1911,6 +1911,44 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       background:#FFFCF5!important;
       border-color:#D5C39D!important;
       color:#263B3B!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Cart action clarity: visible edit control and compact trash icon */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-edit-and-trash-controls';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-edit{
+      display:inline-flex!important;align-items:center!important;justify-content:center!important;
+      flex:0 0 auto!important;min-width:42px!important;height:34px!important;padding:0 9px!important;
+      border:1px solid #B99A62!important;border-radius:9px!important;
+      background:#FFF7E5!important;color:#244432!important;
+      font:800 11px/1 Manrope,Arial,sans-serif!important;
+      opacity:1!important;visibility:visible!important;
+      box-shadow:0 1px 3px rgba(45,52,39,.08)!important;
+    }
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-edit:active{transform:scale(.97)}
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove{
+      display:inline-flex!important;align-items:center!important;justify-content:center!important;
+      flex:0 0 34px!important;width:34px!important;min-width:34px!important;height:34px!important;
+      padding:0!important;border:1px solid rgba(99,103,91,.35)!important;border-radius:9px!important;
+      background:rgba(255,255,255,.68)!important;color:#39483F!important;
+      opacity:1!important;visibility:visible!important;
+    }
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove svg{
+      display:block!important;width:17px!important;height:17px!important;
+      fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;
+      stroke-linecap:round!important;stroke-linejoin:round!important;
+    }
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove:active{transform:scale(.95)}
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-row-price .tcc-wish-edit{min-width:40px!important;height:32px!important}
+      .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove{flex-basis:32px!important;width:32px!important;min-width:32px!important;height:32px!important}
+      .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove svg{width:16px!important;height:16px!important}
     }
   `;
   document.head.appendChild(style);
