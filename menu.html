@@ -4086,7 +4086,7 @@ document.addEventListener("click",event=>{
     const sectionName=section?.querySelector("h2")?.textContent.trim().toLowerCase()||"";
     const addonPanel=document.querySelector("[data-addon-panel] .addons-row");
     const isCoffeeSection=!!item?.closest("#coffee")&&(sectionName.includes("hot coffee")||sectionName.includes("cold coffee"));
-    const coffeeAddons=isCoffeeSection&&name!=="Hot Chocolate"&&tccCoffeeAddonsByDrink[name]?[...tccCoffeeAddonsByDrink[name],tccExtraEspressoShot]:(isCoffeeSection?(tccCoffeeAddonsByDrink[name]||[]):[]);
+    const coffeeAddons=isCoffeeSection&&name!=="Hot Chocolate"&&tccCoffeeAddonsByDrink[name]?[tccExtraEspressoShot,...tccCoffeeAddonsByDrink[name]]:(isCoffeeSection?(tccCoffeeAddonsByDrink[name]||[]):[]);
     const hasCoffeeAddons=coffeeAddons.length>0;
     const hasPastaAddons=sectionName.includes("pasta")&&!!addonPanel;
     tccLightboxAddonsRow.replaceChildren();
