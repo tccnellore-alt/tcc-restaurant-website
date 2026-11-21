@@ -54,7 +54,7 @@ button:disabled{opacity:.5;cursor:wait}.quiet{background:#e9e5d9;color:var(--gre
 (()=> {
   const API="https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders",KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A",SESSION_KEY='tccAdminSession';
   const $=id=>document.getElementById(id),headers=()=>({'apikey':KEY,'Authorization':'Bearer '+KEY,'x-tcc-admin-session':sessionStorage.getItem(SESSION_KEY)||''});
-  const tables=['S1','S2','S3','S4','S5','S6','C1','C2','C3','C4','P1','P2','P3'];
+  const tables=['S1','S2','S3','S4','S5','S6','C1','C2','C3','C4','P1','P2','P3','T1','T2'];
   const request=async(action,options={})=>{const response=await fetch(API+'?action='+action,{...options,headers:{...headers(),...(options.headers||{})}});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Request failed.');return data;};
   const showDashboard=async()=>{$('login').hidden=true;$('dashboard').hidden=false;await loadTables();};
   const login=async(username,password)=>{const response=await fetch(API+'?action=login',{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify({username,password})});const data=await response.json().catch(()=>({}));if(!response.ok||!data.token)throw new Error(data.error||'Sign-in failed.');sessionStorage.setItem(SESSION_KEY,data.token);};
