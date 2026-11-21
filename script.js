@@ -1276,3 +1276,90 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* TCC Heritage Green + Champagne Gold — premium matte cart finish */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-heritage-finish';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row{
+      position:relative!important;
+      overflow:hidden!important;
+      background-color:#244936!important;
+      background-image:
+        radial-gradient(ellipse at 82% 16%,rgba(218,197,145,.075),transparent 44%),
+        linear-gradient(118deg,rgba(255,255,255,.025),transparent 42%,rgba(5,24,15,.10))!important;
+      border:1px solid rgba(194,161,96,.78)!important;
+      border-radius:13px!important;
+      box-shadow:
+        0 3px 8px rgba(21,37,27,.12),
+        inset 0 1px 0 rgba(255,250,232,.09),
+        inset 0 -1px 0 rgba(8,29,18,.20)!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:before{
+      content:""!important;position:absolute!important;
+      left:12px!important;right:12px!important;top:0!important;height:1px!important;
+      background:linear-gradient(90deg,transparent,rgba(238,218,171,.52),transparent)!important;
+      pointer-events:none!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:after{
+      content:""!important;position:absolute!important;
+      width:130px!important;height:130px!important;right:-34px!important;top:-58px!important;
+      border-radius:50%!important;pointer-events:none!important;
+      background:radial-gradient(circle,rgba(220,201,157,.045),transparent 68%)!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info,
+    .tcc-wish-panel .tcc-wish-row-price{position:relative!important;z-index:1!important}
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line>strong{
+      color:#fff5df!important;
+      text-shadow:0 1px 1px rgba(0,0,0,.18)!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info .tcc-wish-addon-line{
+      color:#e4d8bd!important;
+    }
+    .tcc-wish-panel .tcc-wish-fulfillment{
+      background:rgba(244,235,213,.10)!important;
+      border:1px solid rgba(221,196,145,.42)!important;
+      color:#f5ead0!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-toggle{
+      color:#e9ca85!important;
+      text-shadow:0 1px 1px rgba(0,0,0,.14)!important;
+    }
+    .tcc-wish-panel .tcc-wish-qty{
+      background:#f8efd9!important;
+      border:1px solid rgba(205,177,117,.72)!important;
+      box-shadow:inset 0 1px 2px rgba(44,37,20,.08)!important;
+    }
+    .tcc-wish-panel .tcc-wish-qty button{
+      background:#28513d!important;
+      color:#fff5df!important;
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]{
+      background:rgba(245,235,214,.07)!important;
+      border:1px solid rgba(221,196,145,.46)!important;
+      color:#f7ead0!important;
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]:before{color:#f7ead0!important}
+    .tcc-wish-panel .tcc-wish-note-editor .tcc-wish-item-note{
+      border:1px solid rgba(194,161,96,.68)!important;
+      background:#fff9eb!important;color:#244432!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-save{
+      border:1px solid #c5a15b!important;
+      background:linear-gradient(180deg,#f5e5bd,#e9d19a)!important;
+      color:#244432!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-send{
+      background:linear-gradient(135deg,#28513d,#1e422f)!important;
+      border:1px solid #c8a65f!important;
+      box-shadow:0 4px 12px rgba(16,42,27,.18),inset 0 1px 0 rgba(255,255,255,.10)!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-secondary-actions button{
+      border:1px solid rgba(183,151,88,.55)!important;
+      background:#fffaf0!important;color:#294735!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
