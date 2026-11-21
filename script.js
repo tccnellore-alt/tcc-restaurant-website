@@ -655,26 +655,35 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       noteToggle.className='tcc-wish-note-toggle';
       noteToggle.textContent=item.note?'Edit note':'＋ Add note';
       noteToggle.setAttribute('aria-expanded',item.note?'true':'false');
+      const noteEditor=document.createElement('div');
+      noteEditor.className='tcc-wish-note-editor';
+      noteEditor.hidden=true;
       const noteInput=document.createElement('textarea');
       noteInput.className='tcc-wish-item-note';
       noteInput.placeholder='Add a note for the kitchen…';
       noteInput.maxLength=180;
       noteInput.value=item.note||'';
-      noteInput.hidden=!item.note;
       noteInput.setAttribute('aria-label','Note for '+item.name);
-      noteToggle.addEventListener('click',()=>{
-        noteInput.hidden=!noteInput.hidden;
-        noteToggle.textContent=noteInput.hidden?(item.note?'Edit note':'＋ Add note'):'− Hide note';
-        noteToggle.setAttribute('aria-expanded',String(!noteInput.hidden));
-        if(!noteInput.hidden)noteInput.focus();
-      });
-      noteInput.addEventListener('input',()=>{
-        item.note=noteInput.value;
+      const noteSave=document.createElement('button');
+      noteSave.type='button';
+      noteSave.className='tcc-wish-note-save';
+      noteSave.textContent='Save note';
+      noteSave.addEventListener('click',()=>{
+        item.note=noteInput.value.trim();
         save();
-        if(item.note)noteToggle.textContent='Edit note';
+        noteEditor.hidden=true;
+        noteToggle.textContent=item.note?'Edit note':'＋ Add note';
+        noteToggle.setAttribute('aria-expanded','false');
+      });
+      noteEditor.append(noteInput,noteSave);
+      noteToggle.addEventListener('click',()=>{
+        noteEditor.hidden=!noteEditor.hidden;
+        noteToggle.textContent=noteEditor.hidden?(item.note?'Edit note':'＋ Add note'):'− Hide note';
+        noteToggle.setAttribute('aria-expanded',String(!noteEditor.hidden));
+        if(!noteEditor.hidden){noteInput.value=item.note||'';noteInput.focus();}
       });
       itemOptions.append(noteToggle);
-      info.append(noteInput);
+      info.append(noteEditor);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
       const amount=document.createElement('span');amount.className='tcc-wish-line-total';amount.textContent='';
@@ -1153,6 +1162,22 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         width:26px!important;min-width:26px!important;min-height:26px!important
       }
     }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Note editor with explicit save action */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-note-save-button';
+  style.textContent=`
+    .tcc-wish-note-editor{display:flex;align-items:stretch;gap:7px;width:100%;margin-top:3px}
+    .tcc-wish-note-editor[hidden]{display:none!important}
+    .tcc-wish-note-editor .tcc-wish-item-note{flex:1 1 auto;min-width:0;min-height:38px;max-height:64px;margin:0!important;padding:8px 9px!important;resize:vertical}
+    .tcc-wish-note-save{flex:0 0 auto;min-width:66px;padding:0 10px;border:1px solid #d6b66b;border-radius:8px;background:#f3dfad;color:#173c2b;font:800 10px Manrope,Arial,sans-serif;cursor:pointer}
+    .tcc-wish-note-save:active{transform:scale(.97)}
+    @media(max-width:380px){.tcc-wish-note-editor{gap:5px}.tcc-wish-note-save{min-width:58px;padding:0 7px;font-size:9px}}
   `;
   document.head.appendChild(style);
 })();
