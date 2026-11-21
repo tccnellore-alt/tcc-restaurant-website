@@ -2806,7 +2806,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
             <span class="eyebrow">MAKE IT YOUR OWN</span>
             <strong>Make It Your Own</strong>
           </div>
-          <p class="coffee-addons-subtitle"><span class="addon-serving-note">All add-ons · 30 ml each</span><span class="coffee-addons-subtitle-copy">Add a little extra to your favourite coffee.</span></p>
+          <p class="coffee-addons-subtitle"><span class="addon-serving-note">Syrups &amp; honey · 30 ml · Extra shot · 1 shot</span><span class="coffee-addons-subtitle-copy">Add a little extra to your favourite coffee.</span></p>
           <div class="addons-row">
             <span><span class="addon-name">Hazelnut Syrup</span><span class="addon-meta"><b>50</b></span></span>
             <span><span class="addon-name">Caramel Syrup</span><span class="addon-meta"><b>50</b></span></span>
@@ -2815,6 +2815,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
             <span><span class="addon-name">Vanilla Ice Cream</span><span class="addon-meta"><b>50</b></span></span>
             <span><span class="addon-name">Chocolate Ice Cream</span><span class="addon-meta"><b>50</b></span></span>
             <span><span class="addon-name">Honey</span><span class="addon-meta"><b>50</b></span></span>
+            <span><span class="addon-name">Extra Espresso Shot</span><span class="addon-meta"><b>50</b></span></span>
           </div>
         </section>
         
@@ -4050,6 +4051,7 @@ const tccCoffeeAddonsByDrink = {
 };
 const tccCoffeeAddonPrice = "50";
 const tccCoffeeAddonQuantity = "30 ml";
+const tccExtraEspressoShot = "Extra Espresso Shot";
 
 document.addEventListener("click",event=>{
   // Open the product lightbox only when the customer taps the product photo or name.
@@ -4084,7 +4086,7 @@ document.addEventListener("click",event=>{
     const sectionName=section?.querySelector("h2")?.textContent.trim().toLowerCase()||"";
     const addonPanel=document.querySelector("[data-addon-panel] .addons-row");
     const isCoffeeSection=!!item?.closest("#coffee")&&(sectionName.includes("hot coffee")||sectionName.includes("cold coffee"));
-    const coffeeAddons=isCoffeeSection?(tccCoffeeAddonsByDrink[name]||[]):[];
+    const coffeeAddons=isCoffeeSection&&name!=="Hot Chocolate"?[...(tccCoffeeAddonsByDrink[name]||["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"]),tccExtraEspressoShot]:(isCoffeeSection?(tccCoffeeAddonsByDrink[name]||[]):[]);
     const hasCoffeeAddons=coffeeAddons.length>0;
     const hasPastaAddons=sectionName.includes("pasta")&&!!addonPanel;
     tccLightboxAddonsRow.replaceChildren();
