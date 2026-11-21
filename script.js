@@ -166,6 +166,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-table-groups [data-table="S3"]{grid-column:1;grid-row:4}.tcc-table-groups [data-table="C1"]{grid-column:2;grid-row:4}
     .tcc-table-groups [data-table="S2"]{grid-column:1;grid-row:5}.tcc-table-groups [data-table="S1"]{grid-column:1;grid-row:6}
     .tcc-table-groups [data-table="P3"]{grid-column:3;grid-row:1}.tcc-table-groups [data-table="P2"]{grid-column:3;grid-row:2}.tcc-table-groups [data-table="P1"]{grid-column:3;grid-row:3}
+    .tcc-table-groups [data-table="T1"]{grid-column:2;grid-row:5}.tcc-table-groups [data-table="T2"]{grid-column:2;grid-row:6}
     .tcc-table-counter{grid-column:3;grid-row:5 / span 2;display:flex;align-items:center;justify-content:center;border:1px solid #c8bda4;border-radius:10px;background:#49443a;color:#fffaf0;font:800 12px Arial,sans-serif;letter-spacing:.04em}
     .tcc-table-entrance{grid-column:2;grid-row:7;justify-self:center;align-self:center;color:#788075;font:700 10px Arial,sans-serif;letter-spacing:.08em}
     .tcc-table-groups{grid-template-rows:repeat(6,48px) 18px}
@@ -414,7 +415,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   float.type='button';float.className='tcc-wish-float';float.innerHTML='<svg class="tcc-cart-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path></svg><span>Cart</span><span class="tcc-wish-count">0</span>';
   float.setAttribute('aria-label','Open cart');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
-  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Cart</h2><div class="tcc-wish-head-actions"><button type="button" class="tcc-order-history-open">Order History</button><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field tcc-wish-customer-field"><label for="tccCustomerName">Customer name <small>(Optional)</small></label><input id="tccCustomerName" type="text" maxlength="60" placeholder="Enter your name (optional)" autocomplete="name" /><label for="tccCustomerPhone">Mobile number <span>*</span></label><input id="tccCustomerPhone" type="tel" maxlength="15" inputmode="numeric" placeholder="Enter 10-digit mobile number" autocomplete="tel" required /></div><div class="tcc-wish-table-field tcc-table-picker-field"><label class="tcc-table-label">Select table <span>*</span></label><button type="button" class="tcc-table-picker-trigger"><span class="tcc-table-picker-caption">Choose your table</span><strong class="tcc-table-picker-value">Not selected</strong><span aria-hidden="true">⌄</span></button><small class="tcc-wish-table-error" role="alert"></small><div class="tcc-continuation-box" aria-live="polite" hidden></div></div><div class="tcc-table-picker-backdrop" aria-hidden="true"><section class="tcc-table-picker-panel" role="dialog" aria-modal="true" aria-labelledby="tccTablePickerTitle"><header><div><h3 id="tccTablePickerTitle">Choose Your Table</h3><small>Select your table from the café layout</small></div><button type="button" class="tcc-table-picker-close" aria-label="Close table selector">×</button></header><div class="tcc-table-groups" aria-label="Café floor plan table selector"><div class="tcc-table-options"><button type="button" data-table="S6">S6</button><button type="button" data-table="S5">S5</button><button type="button" data-table="S4">S4</button><button type="button" data-table="S3">S3</button><button type="button" data-table="S2">S2</button><button type="button" data-table="S1">S1</button><button type="button" data-table="C4">C4</button><button type="button" data-table="C3">C3</button><button type="button" data-table="C2">C2</button><button type="button" data-table="C1">C1</button><button type="button" data-table="P3">P3</button><button type="button" data-table="P2">P2</button><button type="button" data-table="P1">P1</button></div><div class="tcc-table-counter" aria-label="Counter">COUNTER</div><div class="tcc-table-entrance" aria-hidden="true">ENTRANCE</div></div></section></div><div class="tcc-wish-total"><span>Order subtotal</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Place Order</button><div class="tcc-wish-secondary-actions"><button type="button" class="tcc-wish-clear secondary">Clear Cart</button><button type="button" class="tcc-wish-continue">Continue browsing</button></div></div><p class="tcc-wish-hint">Your order will be sent directly to the TCC kitchen. You will receive an order reference after successful placement.</p></section>';
+  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Cart</h2><div class="tcc-wish-head-actions"><button type="button" class="tcc-order-history-open">Order History</button><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field tcc-wish-customer-field"><label for="tccCustomerName">Customer name <small>(Optional)</small></label><input id="tccCustomerName" type="text" maxlength="60" placeholder="Enter your name (optional)" autocomplete="name" /><label for="tccCustomerPhone">Mobile number <span>*</span></label><input id="tccCustomerPhone" type="tel" maxlength="15" inputmode="numeric" placeholder="Enter 10-digit mobile number" autocomplete="tel" required /></div><div class="tcc-wish-table-field tcc-table-picker-field"><label class="tcc-table-label">Select table <span>*</span></label><button type="button" class="tcc-table-picker-trigger"><span class="tcc-table-picker-caption">Choose your table</span><strong class="tcc-table-picker-value">Not selected</strong><span aria-hidden="true">⌄</span></button><small class="tcc-wish-table-error" role="alert"></small><div class="tcc-continuation-box" aria-live="polite" hidden></div></div><div class="tcc-table-picker-backdrop" aria-hidden="true"><section class="tcc-table-picker-panel" role="dialog" aria-modal="true" aria-labelledby="tccTablePickerTitle"><header><div><h3 id="tccTablePickerTitle">Choose Your Table</h3><small>Select your table from the café layout</small></div><button type="button" class="tcc-table-picker-close" aria-label="Close table selector">×</button></header><div class="tcc-table-groups" aria-label="Café floor plan table selector"><div class="tcc-table-options"><button type="button" data-table="S6">S6</button><button type="button" data-table="S5">S5</button><button type="button" data-table="S4">S4</button><button type="button" data-table="S3">S3</button><button type="button" data-table="S2">S2</button><button type="button" data-table="S1">S1</button><button type="button" data-table="C4">C4</button><button type="button" data-table="C3">C3</button><button type="button" data-table="C2">C2</button><button type="button" data-table="C1">C1</button><button type="button" data-table="P3">P3</button><button type="button" data-table="P2">P2</button><button type="button" data-table="P1">P1</button><button type="button" data-table="T1">T1</button><button type="button" data-table="T2">T2</button></div><div class="tcc-table-counter" aria-label="Counter">COUNTER</div><div class="tcc-table-entrance" aria-hidden="true">ENTRANCE</div></div></section></div><div class="tcc-wish-total"><span>Order subtotal</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Place Order</button><div class="tcc-wish-secondary-actions"><button type="button" class="tcc-wish-clear secondary">Clear Cart</button><button type="button" class="tcc-wish-continue">Continue browsing</button></div></div><p class="tcc-wish-hint">Your order will be sent directly to the TCC kitchen. You will receive an order reference after successful placement.</p></section>';
   const choice=document.createElement('div');choice.className='tcc-wish-choice';choice.setAttribute('aria-hidden','true');
   choice.innerHTML='<section class="tcc-wish-choice-panel" role="dialog" aria-modal="true" aria-labelledby="tccChoiceTitle"><header class="tcc-wish-choice-header"><div class="tcc-wish-choice-thumb"></div><div class="tcc-wish-choice-heading"><h3 id="tccChoiceTitle" class="tcc-wish-choice-title">Choose add-ons</h3><p>Select up to 3 add-ons · No Add-ons is also available</p></div><button type="button" class="tcc-wish-choice-close" aria-label="Close customisation">×</button></header><div class="tcc-wish-choice-body"><div class="tcc-wish-choice-section-title"><span>Choose your add-ons</span><small>Up to 3</small></div><div class="tcc-wish-addon-options"></div></div><footer class="tcc-wish-choice-footer"><div class="tcc-choice-qty"><button type="button" class="tcc-choice-minus" aria-label="Decrease quantity">−</button><strong class="tcc-choice-quantity">1</strong><button type="button" class="tcc-choice-plus" aria-label="Increase quantity">+</button></div><div class="tcc-wish-choice-actions"><button type="button" class="tcc-wish-choice-confirm">Add Item · ₹0</button><button type="button" class="tcc-wish-choice-cancel secondary">Cancel</button></div></footer></section>';
   document.body.append(float,backdrop,choice);
@@ -427,6 +428,45 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const closeChoice=()=>{choice.classList.remove('is-open');choice.setAttribute('aria-hidden','true');pendingProduct=null;};
   const lookupInput=historyPanel.querySelector('#tccOrderLookup'),lookupButton=historyPanel.querySelector('.tcc-order-lookup-button'),lookupMessage=historyPanel.querySelector('.tcc-order-lookup-message'),lookupResults=historyPanel.querySelector('.tcc-order-lookup-results');
   const continuationBox=backdrop.querySelector('.tcc-continuation-box');
+  // Dedicated table QR mode: resolve the opaque token before allowing checkout.
+  const tableQrToken=new URLSearchParams(window.location.search).get('tcc_qr')?.trim()||'';
+  let tableQrVerified=!tableQrToken,tableQrTable='';
+  const tableQrBanner=document.createElement('div');
+  tableQrBanner.className='tcc-table-qr-banner';
+  tableQrBanner.setAttribute('role','status');
+  tableQrBanner.style.cssText='margin:8px 0;padding:10px 12px;border:1px solid rgba(23,60,43,.18);border-radius:10px;background:#f2f5ef;color:#173c2b;font:700 13px/1.4 Manrope,Arial,sans-serif;';
+  if(tableQrToken){
+    const tableField=backdrop.querySelector('.tcc-table-picker-field');
+    const trigger=tableField?.querySelector('.tcc-table-picker-trigger');
+    if(trigger)trigger.hidden=true;
+    const label=tableField?.querySelector('.tcc-table-label');
+    if(label)label.textContent='Your table';
+    tableField?.insertBefore(tableQrBanner,tableField.querySelector('.tcc-wish-table-error'));
+    tableQrBanner.textContent='Verifying your table QR…';
+    const resolveTableQr=async()=>{
+      try{
+        const response=await fetch(TCC_ORDERING_API+'?action=resolve-table-qr&token='+encodeURIComponent(tableQrToken),{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store'});
+        const data=await response.json().catch(()=>({}));
+        if(!response.ok||!data.table_number)throw new Error(data.error||'This table QR is invalid or has been disabled.');
+        tableQrTable=String(data.table_number).toUpperCase();
+        selectedTable=tableQrTable;
+        orderType='dine-in';
+        tableQrVerified=true;
+        tableQrBanner.textContent='✓ Ordering for Table '+tableQrTable;
+        tableQrBanner.style.background='#edf5ed';
+        tableQrBanner.style.borderColor='rgba(33,134,90,.35)';
+        if(typeof tablePicker!=='undefined')tablePicker.classList.remove('is-open');
+      }catch(error){
+        tableQrVerified=false;
+        tableQrBanner.textContent=error.message||'Unable to verify this table QR. Please ask our team for assistance.';
+        tableQrBanner.style.background='#fff0ed';
+        tableQrBanner.style.color='#a12b20';
+        tableQrBanner.style.borderColor='rgba(161,43,32,.3)';
+      }
+    };
+    resolveTableQr();
+  }
+
   const checkRecentOrders=async()=>{
     // Read the live form values as browsers may autofill fields without firing input events.
     customerName=backdrop.querySelector('#tccCustomerName').value.trimStart();
@@ -435,6 +475,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(activeOrderType)orderType=activeOrderType.dataset.orderType;
     const activeTable=backdrop.querySelector('[data-table].active');
     if(activeTable)selectedTable=activeTable.dataset.table;
+    if(tableQrToken){selectedTable=tableQrTable;orderType='dine-in';continuationBox.hidden=true;continuationBox.replaceChildren();return;}
     const requestId=++recentOrderCheck,phone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
     const contextKey=[phone,orderType,orderType==='dine-in'?selectedTable:''].join('|');
     if(contextKey!==continuationContextKey){continuationContextKey=contextKey;forceNewOrder=false;continuationOrder=null;availableContinuationOrder=null;}
@@ -723,6 +764,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   else startWishlistButtons();
   const open=()=>{
     if(!tccCustomerOrderingEnabled)return;
+    if(tableQrToken&&!tableQrVerified){tableQrBanner.scrollIntoView?.({block:'nearest'});return;}
     if(backdrop.classList.contains('is-open'))return;
     // Re-read saved cart data and rebuild rows every time the cart opens.
     // This prevents a blank/stale item list after returning to the menu.
@@ -796,13 +838,15 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('.tcc-table-picker-trigger').addEventListener('click',()=>{tablePicker.classList.add('is-open');tablePicker.setAttribute('aria-hidden','false');});
   tablePicker.querySelector('.tcc-table-picker-close').addEventListener('click',closeTablePicker);
   tablePicker.addEventListener('click',event=>{if(event.target===tablePicker)closeTablePicker();});
-  tablePicker.querySelectorAll('[data-table]').forEach(button=>button.addEventListener('click',()=>{selectedTable=button.dataset.table;continuationOrder=null;backdrop.querySelector('.tcc-wish-table-error').textContent='';render();closeTablePicker();checkRecentOrders();}));
+  tablePicker.querySelectorAll('[data-table]').forEach(button=>button.addEventListener('click',()=>{if(tableQrToken)return;selectedTable=button.dataset.table;continuationOrder=null;backdrop.querySelector('.tcc-wish-table-error').textContent='';render();closeTablePicker();checkRecentOrders();}));
 
   let orderSubmissionBusy=false;
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',async()=>{
     if(!tccCustomerOrderingEnabled){backdrop.querySelector('.tcc-wish-table-error').textContent='Online ordering is currently paused. Please ask our team for assistance.';return;}
     if(orderSubmissionBusy||!items.length)return;
     const tableError=backdrop.querySelector('.tcc-wish-table-error');
+    if(tableQrToken&&!tableQrVerified){tableError.textContent='This table QR could not be verified. Please scan the QR again or ask our team.';return;}
+    if(tableQrToken){selectedTable=tableQrTable;orderType='dine-in';}
     const normalizedPhone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
     if(!/^\d{10}$/.test(normalizedPhone)){tableError.textContent='Please enter a valid 10-digit mobile number.';backdrop.querySelector('#tccCustomerPhone').focus();return;}
     if(orderType==='dine-in'&&!selectedTable){tableError.textContent='Please select your table number to continue.';return;}
@@ -823,7 +867,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const apiResponse=await fetch('https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders?action=create-order',{
         method:'POST',
         headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A'},
-        body:JSON.stringify({idempotency_key:requestKey,parent_order_number:continuationOrder?.order_number||null,customer_name:customerName.trim(),customer_phone:normalizedPhone,order_type:orderType,table_number:tableNumber,items:items.map(item=>({name:item.name,quantity:item.qty,unit_price:item.price,category:item.category,section:item.section,addons:item.addons||[],note:item.note||'',fulfillment_type:orderType==='takeaway'?'takeaway':(item.fulfillment_type==='takeaway'?'takeaway':'dine-in')}))})
+        body:JSON.stringify({idempotency_key:requestKey,parent_order_number:continuationOrder?.order_number||null,customer_name:customerName.trim(),customer_phone:normalizedPhone,order_type:orderType,table_number:tableNumber,table_qr_token:tableQrToken||null,items:items.map(item=>({name:item.name,quantity:item.qty,unit_price:item.price,category:item.category,section:item.section,addons:item.addons||[],note:item.note||'',fulfillment_type:orderType==='takeaway'?'takeaway':(item.fulfillment_type==='takeaway'?'takeaway':'dine-in')}))})
       });
       const saved=await apiResponse.json().catch(()=>({}));
       if(!apiResponse.ok||!saved.order)throw new Error(saved.error||'We could not confirm your order. Your cart is saved; please retry.');

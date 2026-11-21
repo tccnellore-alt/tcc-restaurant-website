@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow">
+<title>TCC Table QR Manager</title>
+<style>
+:root{color-scheme:light;--green:#173c2b;--cream:#fffaf0;--gold:#b79a5a;--muted:#788075}
+*{box-sizing:border-box}body{margin:0;background:#f5f2e9;color:#263b2e;font:15px/1.5 Manrope,Arial,sans-serif}
+main{width:min(100% - 28px,900px);margin:34px auto 70px}
+.panel{background:var(--cream);border:1px solid rgba(23,60,43,.12);border-radius:18px;padding:22px;box-shadow:0 12px 36px rgba(23,60,43,.08)}
+.brand{font:700 26px Georgia,serif;letter-spacing:.12em;color:var(--green)}.eyebrow{font-size:10px;letter-spacing:.16em;color:var(--gold);font-weight:800}
+h1{font:700 clamp(27px,5vw,38px) Georgia,serif;color:var(--green);margin:8px 0}
+.muted{color:var(--muted);font-size:13px}
+label{display:block;font-size:12px;font-weight:800;margin:12px 0 5px}
+input{width:100%;padding:12px;border:1px solid #d8d5c9;border-radius:9px;background:#fff;font:inherit}
+button,.button{border:0;border-radius:9px;padding:11px 15px;background:var(--green);color:white;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+button:disabled{opacity:.5;cursor:wait}.quiet{background:#e9e5d9;color:var(--green)}.danger{background:#9f3028}.small{padding:8px 11px;font-size:12px}
+.error{color:#a12b20;min-height:20px;font-size:12px}.success{color:#247449;font-size:12px}
+#dashboard[hidden],#login[hidden]{display:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:20px}
+.table{background:white;border:1px solid rgba(23,60,43,.13);border-radius:13px;padding:15px}
+.table h2{margin:0 0 4px;color:var(--green);font:700 23px Georgia,serif}
+.status{font-size:11px;color:var(--muted);margin-bottom:12px}.actions{display:flex;gap:7px;flex-wrap:wrap}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#qrResult{margin-top:18px;display:none}.qrbox{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:12px 0}
+#qrcode{background:white;padding:12px;border:1px solid #ddd;border-radius:10px;min-width:190px;min-height:190px}
+#qrLink{overflow-wrap:anywhere;font-size:12px;color:#315f48}
+@media(max-width:520px){.panel{padding:16px}main{margin-top:16px}}
+</style>
+</head>
+<body>
+<main>
+<section class="panel" id="login">
+  <div class="brand">TCC</div><p class="eyebrow">THE COFFEE CLUB · NELLORE</p>
+  <h1>Table QR Manager</h1><p class="muted">Sign in with your TCC Order Desk credentials to create, regenerate or revoke table QR codes.</p>
+  <form id="loginForm">
+    <label for="username">Username</label><input id="username" autocomplete="username" required>
+    <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required>
+    <p class="error" id="loginError" role="alert"></p><button type="submit">Sign in</button>
+  </form>
+</section>
+<section class="panel" id="dashboard" hidden>
+  <div class="top"><div><div class="brand">TCC</div><p class="eyebrow">TABLE QR MANAGEMENT</p><h1>Dedicated table QRs</h1><p class="muted">Each table has one active QR credential. Regenerating a QR immediately invalidates its previous link.</p></div><button class="quiet" id="logout">Log out</button></div>
+  <p class="error" id="pageError" role="alert"></p><div class="grid" id="tables"></div>
+  <section id="qrResult" class="table">
+    <div class="top"><h2 id="qrTitle">Table QR</h2><button class="quiet small" id="closeQr">Close</button></div>
+    <div class="qrbox"><div id="qrcode"></div><div><p class="muted">Print this QR and place it on the matching table. This secret link is shown only once; save or print it now.</p><a id="qrLink" target="_blank" rel="noopener"></a><p><button class="small" id="copyLink">Copy QR link</button></p></div></div>
+  </section>
+</section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(()=> {
+  const API="https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders",KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A",SESSION_KEY='tccAdminSession';
+  const $=id=>document.getElementById(id),headers=()=>({'apikey':KEY,'Authorization':'Bearer '+KEY,'x-tcc-admin-session':sessionStorage.getItem(SESSION_KEY)||''});
+  const tables=['S1','S2','S3','S4','S5','S6','C1','C2','C3','C4','P1','P2','P3','T1','T2'];
+  const request=async(action,options={})=>{const response=await fetch(API+'?action='+action,{...options,headers:{...headers(),...(options.headers||{})}});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Request failed.');return data;};
+  const showDashboard=async()=>{$('login').hidden=true;$('dashboard').hidden=false;await loadTables();};
+  const login=async(username,password)=>{const response=await fetch(API+'?action=login',{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify({username,password})});const data=await response.json().catch(()=>({}));if(!response.ok||!data.token)throw new Error(data.error||'Sign-in failed.');sessionStorage.setItem(SESSION_KEY,data.token);};
+  const loadTables=async()=>{ $('pageError').textContent='';try{const data=await request('table-qr-list');const rows=new Map((data.tables||[]).map(row=>[row.table_number,row]));$('tables').replaceChildren();tables.forEach(table=>{const row=rows.get(table),card=document.createElement('article');card.className='table';const title=document.createElement('h2');title.textContent=table;const status=document.createElement('p');status.className='status';status.textContent=!row?'QR not created':row.is_active?'Active QR · created '+new Date(row.created_at).toLocaleDateString('en-IN'):'QR revoked';const actions=document.createElement('div');actions.className='actions';const create=document.createElement('button');create.className='small';create.textContent=row?.is_active?'Regenerate QR':row?'Create new QR':'Generate QR';create.addEventListener('click',()=>createQr(table,!!row?.is_active));actions.append(create);if(row?.is_active){const revoke=document.createElement('button');revoke.className='danger small';revoke.textContent='Revoke';revoke.addEventListener('click',()=>revokeQr(table));actions.append(revoke);}card.append(title,status,actions);$('tables').append(card);});}catch(error){$('pageError').textContent=error.message; if(/log in|session/i.test(error.message))logout();}};
+  const createQr=async(table,active)=>{if(active&&!confirm('Regenerate '+table+' QR? The old QR will stop working immediately.'))return;try{const data=await request('table-qr-create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({table_number:table})});$('qrTitle').textContent='Table '+table+' QR';$('qrLink').href=data.qr_url;$('qrLink').textContent=data.qr_url;$('qrcode').replaceChildren();if(window.QRCode)new QRCode($('qrcode'),{text:data.qr_url,width:190,height:190,colorDark:'#173c2b',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});else $('qrcode').textContent='QR library unavailable. Copy the link and generate a QR locally.';$('qrResult').style.display='block';$('qrResult').scrollIntoView({behavior:'smooth',block:'center'});await loadTables();}catch(error){$('pageError').textContent=error.message;}};
+  const revokeQr=async(table)=>{if(!confirm('Revoke '+table+' QR? Anyone using the old QR will no longer be able to place orders.'))return;try{await request('table-qr-revoke',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({table_number:table})});$('qrResult').style.display='none';await loadTables();}catch(error){$('pageError').textContent=error.message;}};
+  const logout=()=>{sessionStorage.removeItem(SESSION_KEY);$('dashboard').hidden=true;$('login').hidden=false;};
+  $('loginForm').addEventListener('submit',async event=>{event.preventDefault();$('loginError').textContent='';try{await login($('username').value.trim(),$('password').value);await showDashboard();}catch(error){$('loginError').textContent=error.message;}});
+  $('logout').addEventListener('click',logout);$('closeQr').addEventListener('click',()=>$('qrResult').style.display='none');
+  $('copyLink').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('qrLink').href);$('copyLink').textContent='Copied';setTimeout(()=>$('copyLink').textContent='Copy QR link',1400);}catch{$('pageError').textContent='Could not copy automatically. Select and copy the link above.';}});
+  if(sessionStorage.getItem(SESSION_KEY))showDashboard().catch(logout);
+})();
+</script>
+</body>
+</html>
