@@ -1479,3 +1479,121 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* Cart checkout fields — consistent side insets and clean alignment */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-checkout-field-alignment';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-customer-field,
+    .tcc-wish-panel .tcc-table-picker-field{
+      display:grid!important;
+      grid-template-columns:minmax(0,1fr)!important;
+      align-items:stretch!important;
+      gap:7px!important;
+      width:100%!important;
+      box-sizing:border-box!important;
+      padding:13px 14px!important;
+      margin:0 0 10px!important;
+      border:1px solid rgba(181,151,91,.48)!important;
+      border-radius:15px!important;
+      background:linear-gradient(180deg,#fffdf7 0%,#fbf7ec 100%)!important;
+      box-shadow:0 2px 8px rgba(30,55,38,.045),inset 0 1px 0 rgba(255,255,255,.9)!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field label,
+    .tcc-wish-panel .tcc-table-picker-field>.tcc-table-label{
+      display:block!important;
+      width:100%!important;
+      margin:0!important;
+      padding:0 1px!important;
+      box-sizing:border-box!important;
+      color:#244432!important;
+      font:750 12px/1.35 Manrope,Arial,sans-serif!important;
+      text-align:left!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field input{
+      display:block!important;
+      width:100%!important;
+      min-width:0!important;
+      min-height:46px!important;
+      box-sizing:border-box!important;
+      margin:0 0 3px!important;
+      padding:10px 13px!important;
+      border:1px solid rgba(43,74,53,.20)!important;
+      border-radius:11px!important;
+      background:#fff!important;
+      color:#244432!important;
+      font:500 14px/1.3 Manrope,Arial,sans-serif!important;
+      box-shadow:inset 0 1px 2px rgba(27,48,34,.035)!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field input::placeholder{
+      color:#9a9b91!important;opacity:1!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field input:focus{
+      outline:none!important;
+      border-color:#b39455!important;
+      box-shadow:0 0 0 3px rgba(179,148,85,.13)!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-field{
+      gap:8px!important;
+      margin-top:0!important;
+      margin-bottom:12px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-trigger{
+      display:grid!important;
+      grid-template-columns:minmax(0,1fr) auto 38px!important;
+      align-items:center!important;
+      gap:10px!important;
+      width:100%!important;
+      min-width:0!important;
+      min-height:50px!important;
+      box-sizing:border-box!important;
+      margin:0!important;
+      padding:8px 9px 8px 13px!important;
+      border:1px solid #b99a59!important;
+      border-radius:11px!important;
+      background:#fffdf7!important;
+      text-align:left!important;
+      box-shadow:0 2px 5px rgba(36,68,50,.05)!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-caption{
+      min-width:0!important;
+      color:#666c60!important;
+      font:650 12px/1.3 Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-value{
+      color:#244432!important;
+      font:800 14px/1.2 Manrope,Arial,sans-serif!important;
+      white-space:nowrap!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-trigger>span:last-child{
+      display:grid!important;
+      place-items:center!important;
+      width:34px!important;height:34px!important;
+      border-radius:9px!important;
+      background:#214a35!important;color:#fff4dc!important;
+      font-size:17px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-field>.tcc-wish-table-error{
+      margin:0!important;padding:0 1px!important;
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-customer-field,
+      .tcc-wish-panel .tcc-table-picker-field{
+        padding:12px 13px!important;
+        border-radius:14px!important;
+      }
+      .tcc-wish-panel .tcc-wish-customer-field input{
+        min-height:45px!important;
+        font-size:13px!important;
+      }
+      .tcc-wish-panel .tcc-table-picker-trigger{
+        min-height:48px!important;
+        grid-template-columns:minmax(0,1fr) auto 36px!important;
+        gap:7px!important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
