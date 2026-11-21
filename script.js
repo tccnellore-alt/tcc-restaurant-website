@@ -683,7 +683,6 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         if(!noteEditor.hidden){noteInput.value=item.note||'';noteInput.focus();}
       });
       itemOptions.append(noteToggle);
-      info.append(noteEditor);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
       const amount=document.createElement('span');amount.className='tcc-wish-line-total';amount.textContent='';
@@ -696,7 +695,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       qty.append(minus,qtyValue,plus);
       if((item.addons||[]).length){const edit=document.createElement('button');edit.type='button';edit.className='tcc-wish-remove';edit.textContent='Edit';edit.addEventListener('click',()=>{const card=[...document.querySelectorAll('.m-item')].find(node=>sameProduct(item,getData(node)));if(card)openChoice(card,getData(card),addonOptions(card),item);});price.append(edit);}
       const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x!==item);save();render()});
-      price.append(amount,qty,remove);row.append(info,price);list.append(row);
+      price.append(amount,qty,remove);row.append(info,price,noteEditor);list.append(row);
     });
     // Always show the beginning of the cart after rebuilding it. The previous
     // scroll position could otherwise leave the first item half-hidden.
@@ -1178,6 +1177,33 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-note-save{flex:0 0 auto;min-width:66px;padding:0 10px;border:1px solid #d6b66b;border-radius:8px;background:#f3dfad;color:#173c2b;font:800 10px Manrope,Arial,sans-serif;cursor:pointer}
     .tcc-wish-note-save:active{transform:scale(.97)}
     @media(max-width:380px){.tcc-wish-note-editor{gap:5px}.tcc-wish-note-save{min-width:58px;padding:0 7px;font-size:9px}}
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Give the expanded note editor the full width of its product tile. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-note-editor-full-row';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-note-editor{
+      grid-column:1 / -1!important;
+      width:100%!important;
+      min-width:0!important;
+      box-sizing:border-box!important;
+      margin:2px 0 0!important;
+    }
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-note-editor .tcc-wish-item-note{
+      flex:1 1 auto!important;
+      width:100%!important;
+      min-width:0!important;
+      box-sizing:border-box!important;
+    }
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-note-editor .tcc-wish-note-save{
+      flex:0 0 auto!important;
+      min-width:76px!important;
+    }
   `;
   document.head.appendChild(style);
 })();
