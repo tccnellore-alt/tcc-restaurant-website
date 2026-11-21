@@ -1671,3 +1671,64 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* Alternating TCC cart tiles: muted sage-grey + dusty rose */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-alternating-sage-rose';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(odd){
+      background-color:#AEB9A8!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.04) 58%,rgba(63,76,59,.08))!important;
+      border-color:#8E9B83!important;
+      box-shadow:0 4px 10px rgba(39,52,39,.11),inset 0 1px 0 rgba(255,255,255,.52),inset 0 0 0 1px rgba(255,255,255,.16)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(even){
+      background-color:#D8B8A9!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.30),rgba(255,255,255,.05) 58%,rgba(105,65,48,.07))!important;
+      border-color:#BD947C!important;
+      box-shadow:0 4px 10px rgba(73,49,39,.10),inset 0 1px 0 rgba(255,255,255,.58),inset 0 0 0 1px rgba(255,255,255,.18)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:before{
+      border-color:rgba(116,88,54,.30)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:after{
+      background:linear-gradient(180deg,#d7b36e 0%,#a77a39 50%,#d7b36e 100%)!important;
+      box-shadow:0 0 5px rgba(116,82,39,.16)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line>strong{
+      color:#24392d!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.28)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-addon-line{
+      color:#514638!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-fulfillment{
+      background:rgba(255,250,239,.48)!important;
+      border-color:rgba(107,94,69,.42)!important;
+      color:#293d30!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-toggle{
+      color:#72502b!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.35)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-qty{
+      background:#fff8e9!important;
+      border-color:#b99a62!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]{
+      background:rgba(255,250,239,.38)!important;
+      border-color:rgba(92,76,57,.48)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]:before{
+      color:#3c382e!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-editor .tcc-wish-item-note{
+      background:#fffaf0!important;
+      border-color:#b99a62!important;
+      color:#263b2f!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
