@@ -1597,3 +1597,77 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* Compact premium checkout fields — reduce vertical footprint without losing touch comfort. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-checkout-compact-refinement';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-customer-field,
+    .tcc-wish-panel .tcc-table-picker-field{
+      gap:5px!important;
+      padding:9px 11px!important;
+      margin:0 0 8px!important;
+      border-radius:12px!important;
+      box-shadow:0 1px 5px rgba(30,55,38,.035),inset 0 1px 0 rgba(255,255,255,.85)!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field label,
+    .tcc-wish-panel .tcc-table-picker-field>.tcc-table-label{
+      padding:0!important;
+      font-size:11px!important;
+      line-height:1.2!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field input{
+      min-height:40px!important;
+      height:40px!important;
+      margin:0 0 2px!important;
+      padding:8px 11px!important;
+      border-radius:9px!important;
+      font-size:13px!important;
+      line-height:1.2!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-field{
+      gap:6px!important;
+      margin-bottom:9px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-trigger{
+      min-height:43px!important;
+      grid-template-columns:minmax(0,1fr) auto 32px!important;
+      gap:7px!important;
+      padding:6px 7px 6px 11px!important;
+      border-radius:9px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-caption{
+      font-size:11px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-value{
+      font-size:13px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-trigger>span:last-child{
+      width:29px!important;height:29px!important;
+      border-radius:8px!important;font-size:15px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-field>.tcc-wish-table-error{
+      font-size:10px!important;
+      line-height:1.2!important;
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-customer-field,
+      .tcc-wish-panel .tcc-table-picker-field{
+        padding:9px 10px!important;
+        border-radius:11px!important;
+      }
+      .tcc-wish-panel .tcc-wish-customer-field input{
+        min-height:40px!important;height:40px!important;
+        font-size:13px!important;
+      }
+      .tcc-wish-panel .tcc-table-picker-trigger{
+        min-height:43px!important;
+        grid-template-columns:minmax(0,1fr) auto 31px!important;
+        gap:6px!important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
