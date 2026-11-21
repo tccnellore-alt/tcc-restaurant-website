@@ -407,8 +407,68 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   let tccCustomerOrderingEnabled=true;
   const TCC_ORDERING_API='https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders';
   const TCC_ORDERING_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A';
-  const applyTccOrderingState=enabled=>{tccCustomerOrderingEnabled=enabled===true;document.body.classList.toggle('tcc-ordering-enabled',tccCustomerOrderingEnabled);document.body.classList.toggle('tcc-ordering-disabled',!tccCustomerOrderingEnabled);document.querySelectorAll('.tcc-wish-add,.menu-lightbox-add-cart').forEach(button=>{button.hidden=!tccCustomerOrderingEnabled;});if(!tccCustomerOrderingEnabled){document.querySelector('.tcc-wish-backdrop.is-open .tcc-wish-close')?.click();}};
+  const applyTccOrderingState=enabled=>{tccCustomerOrderingEnabled=enabled===true;document.body.classList.toggle('tcc-ordering-enabled',tccCustomerOrderingEnabled);document.body.classList.toggle('tcc-ordering-disabled',!tccCustomerOrderingEnabled);document.querySelectorAll('.tcc-wish-add,.menu-lightbox-add-cart').forEach(button=>{button.hidden=!tccCustomerOrderingEnabled;});if(!tccCustomerOrderingEnabled){document.querySelector('.tcc-wish-backdrop.is-open .tcc-wish-close')?.click();closeTccOrderTutorial();}else maybeShowTccOrderTutorial();};
   const refreshTccOrderingState=async()=>{try{const response=await fetch(TCC_ORDERING_API+'?action=ordering-status',{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store'});if(!response.ok)throw new Error('Unable to check ordering status');const data=await response.json();applyTccOrderingState(data.enabled);}catch(error){console.warn('TCC ordering status check failed:',error);}};
+  const TCC_TUTORIAL_KEY='tccOrderTutorialSeenV1';
+  const tccTutorialSteps=[
+    {eyebrow:'STEP 01 · EXPLORE',title:'Find something delicious',copy:'Browse Coffee & Tea, Refreshers, Signatures, Food and more. Switch between photo and text menus whenever you like.',visual:'☕',caption:'EXPLORE THE MENU'},
+    {eyebrow:'STEP 02 · CHOOSE',title:'Pick your favourites',copy:'Tap Add to Cart on any item. Choose quantities and explore available add-ons to make it your own.',visual:'🥐',caption:'CHOOSE YOUR ITEMS'},
+    {eyebrow:'STEP 03 · YOUR CART',title:'Review what you love',copy:'Open your cart to check quantities, customizations and your order total. You can continue browsing to add more.',visual:'🛍️',caption:'CHECK YOUR CART'},
+    {eyebrow:'STEP 04 · DETAILS',title:'Tell us how you’re dining',copy:'Enter your mobile number, then choose Dine-in and select your table, or choose Takeaway. Takeaway has a ₹10 packaging charge per item.',visual:'🪑',caption:'DINE IN OR TAKE AWAY'},
+    {eyebrow:'STEP 05 · CONFIRM',title:'Place your order',copy:'Give everything one final check and tap Place Order. Your order goes straight to the TCC team for preparation.',visual:'✨',caption:'YOU’RE ALL SET'}
+  ];
+  const tutorialStyle=document.createElement('style');
+  tutorialStyle.textContent=`
+    .tcc-order-help-trigger{display:flex;align-items:center;gap:12px;width:100%;padding:12px 15px;border:1px solid rgba(183,154,90,.42);border-radius:15px;background:linear-gradient(110deg,#fffdf7,#f4eddf);color:#173c2b;text-align:left;cursor:pointer;box-shadow:0 3px 12px rgba(18,48,32,.05)}
+    .tcc-order-help-icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:#173c2b;color:#e8d6a8;font-size:20px}
+    .tcc-order-help-trigger>span:nth-child(2){display:grid;gap:2px;flex:1}
+    .tcc-order-help-trigger strong{font:800 12px/1.25 Manrope,Arial,sans-serif}
+    .tcc-order-help-trigger small{color:#68756b;font:11px/1.4 Manrope,Arial,sans-serif}
+    .tcc-order-help-arrow{font:20px Arial;color:#9a7a3c}
+    .tcc-order-tutorial{position:fixed;inset:0;z-index:100500;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(8,25,17,.72);backdrop-filter:blur(9px)}
+    .tcc-order-tutorial.is-open{display:flex}
+    .tcc-order-tutorial-panel{position:relative;width:min(100%,440px);max-height:min(760px,92dvh);overflow:auto;border:1px solid rgba(183,154,90,.42);border-radius:25px;background:#fffaf0;box-shadow:0 28px 90px rgba(0,0,0,.3);padding:22px 22px 18px;color:#173c2b}
+    .tcc-order-tutorial-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .tcc-order-tutorial-brand{font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.18em;color:#9a7b40}
+    .tcc-order-tutorial-close{width:34px;height:34px;border:1px solid rgba(23,60,43,.12);border-radius:50%;background:#f3eddf;color:#173c2b;font:22px/1 Arial;cursor:pointer}
+    .tcc-order-tutorial-progress{display:flex;gap:5px;margin:17px 0 20px}
+    .tcc-order-tutorial-progress span{height:4px;flex:1;border-radius:99px;background:#e5dfd1}
+    .tcc-order-tutorial-progress span.active{background:#b79a5a}
+    .tcc-order-tutorial-visual{position:relative;display:grid;place-items:center;min-height:190px;overflow:hidden;border-radius:18px;background:radial-gradient(circle at 50% 42%,#f7edcf 0,#e8e2ce 42%,#dce4d9 100%);border:1px solid rgba(23,60,43,.08)}
+    .tcc-order-tutorial-visual:before,.tcc-order-tutorial-visual:after{content:"";position:absolute;border:1px solid rgba(23,60,43,.12);border-radius:50%;width:210px;height:210px}
+    .tcc-order-tutorial-visual:after{width:155px;height:155px}
+    .tcc-order-tutorial-emoji{position:relative;z-index:1;display:grid;place-items:center;width:112px;height:112px;border-radius:32px;background:rgba(255,253,247,.82);box-shadow:0 12px 28px rgba(23,60,43,.12);font-size:58px}
+    .tcc-order-tutorial-caption{position:absolute;z-index:2;bottom:13px;left:0;right:0;text-align:center;color:#6b744f;font:800 8px/1.2 Manrope,Arial,sans-serif;letter-spacing:.2em}
+    .tcc-order-tutorial-copy{padding:20px 2px 12px}
+    .tcc-order-tutorial-eyebrow{display:block;margin-bottom:8px;color:#9a7b40;font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.17em}
+    .tcc-order-tutorial-copy h2{margin:0 0 8px;color:#173c2b;font:600 clamp(25px,6vw,32px)/1.08 Georgia,serif;letter-spacing:-.02em}
+    .tcc-order-tutorial-copy p{margin:0;color:#667268;font:13px/1.65 Manrope,Arial,sans-serif}
+    .tcc-order-tutorial-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid rgba(23,60,43,.1)}
+    .tcc-order-tutorial-skip,.tcc-order-tutorial-back{border:0;background:transparent;color:#6b756b;font:700 11px Manrope,Arial,sans-serif;padding:10px 2px;cursor:pointer}
+    .tcc-order-tutorial-actions{display:flex;align-items:center;gap:8px}
+    .tcc-order-tutorial-next{min-height:43px;padding:0 19px;border:1px solid #173c2b;border-radius:999px;background:#173c2b;color:#fffaf0;font:800 11px Manrope,Arial,sans-serif;cursor:pointer;box-shadow:0 5px 12px rgba(23,60,43,.16)}
+    .tcc-order-tutorial-next:focus-visible,.tcc-order-tutorial-close:focus-visible,.tcc-order-help-trigger:focus-visible{outline:3px solid #b79a5a;outline-offset:3px}
+    @media(max-width:480px){.tcc-order-tutorial{padding:12px}.tcc-order-tutorial-panel{padding:17px 16px 14px;border-radius:21px}.tcc-order-tutorial-visual{min-height:168px}.tcc-order-tutorial-emoji{width:96px;height:96px;font-size:49px}.tcc-order-tutorial-copy{padding-top:17px}.tcc-order-tutorial-copy p{font-size:12px}}
+    @media(prefers-reduced-motion:no-preference){.tcc-order-tutorial-panel{animation:tccTutorialIn .24s ease-out}@keyframes tccTutorialIn{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}}
+  `;
+  document.head.appendChild(tutorialStyle);
+  const tutorial=document.createElement('div');tutorial.className='tcc-order-tutorial';tutorial.id='tccOrderTutorial';tutorial.setAttribute('aria-hidden','true');
+  tutorial.innerHTML='<section class="tcc-order-tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="tccOrderTutorialTitle"><div class="tcc-order-tutorial-top"><span class="tcc-order-tutorial-brand">TCC · THE COFFEE CLUB</span><button class="tcc-order-tutorial-close" type="button" aria-label="Close tutorial">×</button></div><div class="tcc-order-tutorial-progress" aria-label="Tutorial progress"></div><div class="tcc-order-tutorial-visual"><div class="tcc-order-tutorial-emoji" aria-hidden="true"></div><span class="tcc-order-tutorial-caption"></span></div><div class="tcc-order-tutorial-copy"><span class="tcc-order-tutorial-eyebrow"></span><h2 id="tccOrderTutorialTitle"></h2><p></p></div><div class="tcc-order-tutorial-footer"><button class="tcc-order-tutorial-skip" type="button">Skip tutorial</button><div class="tcc-order-tutorial-actions"><button class="tcc-order-tutorial-back" type="button">Back</button><button class="tcc-order-tutorial-next" type="button">Next →</button></div></div></section>';
+  document.body.appendChild(tutorial);
+  let tutorialIndex=0;
+  const tutorialSeen=()=>{try{return localStorage.getItem(TCC_TUTORIAL_KEY)==='1'}catch{return false}};
+  const markTutorialSeen=()=>{try{localStorage.setItem(TCC_TUTORIAL_KEY,'1')}catch{}};
+  const renderTutorial=()=>{const step=tccTutorialSteps[tutorialIndex];tutorial.querySelector('.tcc-order-tutorial-progress').innerHTML=tccTutorialSteps.map((_,i)=>'<span class="'+(i<=tutorialIndex?'active':'')+'"></span>').join('');tutorial.querySelector('.tcc-order-tutorial-emoji').textContent=step.visual;tutorial.querySelector('.tcc-order-tutorial-caption').textContent=step.caption;tutorial.querySelector('.tcc-order-tutorial-eyebrow').textContent=step.eyebrow;tutorial.querySelector('h2').textContent=step.title;tutorial.querySelector('.tcc-order-tutorial-copy p').textContent=step.copy;tutorial.querySelector('.tcc-order-tutorial-back').style.visibility=tutorialIndex===0?'hidden':'visible';tutorial.querySelector('.tcc-order-tutorial-next').textContent=tutorialIndex===tccTutorialSteps.length-1?'Start ordering →':'Next →';tutorial.querySelector('.tcc-order-tutorial-skip').textContent=tutorialIndex===tccTutorialSteps.length-1?'Finish':'Skip tutorial';};
+  const closeTccOrderTutorial=()=>{if(!tutorial.classList.contains('is-open'))return;tutorial.classList.remove('is-open');tutorial.setAttribute('aria-hidden','true');document.body.style.overflow='';markTutorialSeen();};
+  const openTccOrderTutorial=()=>{if(!tccCustomerOrderingEnabled)return;tutorialIndex=0;renderTutorial();tutorial.classList.add('is-open');tutorial.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';tutorial.querySelector('.tcc-order-tutorial-next').focus();};
+  const maybeShowTccOrderTutorial=()=>{if(tccCustomerOrderingEnabled&&!tutorialSeen()&&!tutorial.classList.contains('is-open'))openTccOrderTutorial();};
+  tutorial.querySelector('.tcc-order-tutorial-close').addEventListener('click',closeTccOrderTutorial);
+  tutorial.querySelector('.tcc-order-tutorial-skip').addEventListener('click',closeTccOrderTutorial);
+  tutorial.querySelector('.tcc-order-tutorial-back').addEventListener('click',()=>{if(tutorialIndex>0){tutorialIndex--;renderTutorial();}});
+  tutorial.querySelector('.tcc-order-tutorial-next').addEventListener('click',()=>{if(tutorialIndex<tccTutorialSteps.length-1){tutorialIndex++;renderTutorial();}else closeTccOrderTutorial();});
+  tutorial.addEventListener('click',event=>{if(event.target===tutorial)closeTccOrderTutorial();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&tutorial.classList.contains('is-open'))closeTccOrderTutorial();});
+  document.querySelector('.tcc-order-help-trigger')?.addEventListener('click',openTccOrderTutorial);
   refreshTccOrderingState();setInterval(refreshTccOrderingState,10000);
   const float=document.createElement('button');
   float.type='button';float.className='tcc-wish-float';float.innerHTML='<svg class="tcc-cart-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path></svg><span>Cart</span><span class="tcc-wish-count">0</span>';
