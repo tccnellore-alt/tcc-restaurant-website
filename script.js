@@ -165,7 +165,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-table-groups [data-table="S4"]{grid-column:1;grid-row:3}.tcc-table-groups [data-table="C2"]{grid-column:2;grid-row:3}
     .tcc-table-groups [data-table="S3"]{grid-column:1;grid-row:4}.tcc-table-groups [data-table="C1"]{grid-column:2;grid-row:4}
     .tcc-table-groups [data-table="S2"]{grid-column:1;grid-row:5}.tcc-table-groups [data-table="S1"]{grid-column:1;grid-row:6}
-    .tcc-table-groups [data-table="P3"]{grid-column:3;grid-row:1}.tcc-table-groups [data-table="P2"]{grid-column:3;grid-row:2}.tcc-table-groups [data-table="P1"]{grid-column:3;grid-row:3}\n    .tcc-table-groups [data-table="T1"]{grid-column:2;grid-row:5}.tcc-table-groups [data-table="T2"]{grid-column:2;grid-row:6}
+    .tcc-table-groups [data-table="P3"]{grid-column:3;grid-row:1}.tcc-table-groups [data-table="P2"]{grid-column:3;grid-row:2}.tcc-table-groups [data-table="P1"]{grid-column:3;grid-row:3}
+    .tcc-table-groups [data-table="T1"]{grid-column:2;grid-row:5}.tcc-table-groups [data-table="T2"]{grid-column:2;grid-row:6}
     .tcc-table-counter{grid-column:3;grid-row:5 / span 2;display:flex;align-items:center;justify-content:center;border:1px solid #c8bda4;border-radius:10px;background:#49443a;color:#fffaf0;font:800 12px Arial,sans-serif;letter-spacing:.04em}
     .tcc-table-entrance{grid-column:2;grid-row:7;justify-self:center;align-self:center;color:#788075;font:700 10px Arial,sans-serif;letter-spacing:.08em}
     .tcc-table-groups{grid-template-rows:repeat(6,48px) 18px}
@@ -474,7 +475,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(activeOrderType)orderType=activeOrderType.dataset.orderType;
     const activeTable=backdrop.querySelector('[data-table].active');
     if(activeTable)selectedTable=activeTable.dataset.table;
-    if(tableQrToken){selectedTable=tableQrTable;orderType='dine-in';continuationBox.hidden=true;continuationBox.replaceChildren();return;}\n    const requestId=++recentOrderCheck,phone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
+    if(tableQrToken){selectedTable=tableQrTable;orderType='dine-in';continuationBox.hidden=true;continuationBox.replaceChildren();return;}
+    const requestId=++recentOrderCheck,phone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
     const contextKey=[phone,orderType,orderType==='dine-in'?selectedTable:''].join('|');
     if(contextKey!==continuationContextKey){continuationContextKey=contextKey;forceNewOrder=false;continuationOrder=null;availableContinuationOrder=null;}
     continuationBox.hidden=true;continuationBox.replaceChildren();
@@ -841,7 +843,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',async()=>{
     if(!tccCustomerOrderingEnabled){backdrop.querySelector('.tcc-wish-table-error').textContent='Online ordering is currently paused. Please ask our team for assistance.';return;}
     if(orderSubmissionBusy||!items.length)return;
-    const tableError=backdrop.querySelector('.tcc-wish-table-error');\n    if(tableQrToken&&!tableQrVerified){tableError.textContent='This table QR could not be verified. Please scan the QR again or ask our team.';return;}\n    if(tableQrToken){selectedTable=tableQrTable;orderType='dine-in';}
+    const tableError=backdrop.querySelector('.tcc-wish-table-error');
+    if(tableQrToken&&!tableQrVerified){tableError.textContent='This table QR could not be verified. Please scan the QR again or ask our team.';return;}
+    if(tableQrToken){selectedTable=tableQrTable;orderType='dine-in';}
     const normalizedPhone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
     if(!/^\d{10}$/.test(normalizedPhone)){tableError.textContent='Please enter a valid 10-digit mobile number.';backdrop.querySelector('#tccCustomerPhone').focus();return;}
     if(orderType==='dine-in'&&!selectedTable){tableError.textContent='Please select your table number to continue.';return;}
