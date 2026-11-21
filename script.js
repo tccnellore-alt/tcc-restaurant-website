@@ -673,7 +673,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         save();
         if(item.note)noteToggle.textContent='Edit note';
       });
-      info.append(noteToggle,noteInput);
+      itemOptions.append(noteToggle);
+      info.append(noteInput);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
       const amount=document.createElement('span');amount.className='tcc-wish-line-total';amount.textContent='';
