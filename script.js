@@ -422,7 +422,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   float.type='button';float.className='tcc-wish-float';float.innerHTML='<svg class="tcc-cart-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path></svg><span>Cart</span><span class="tcc-wish-count">0</span>';
   float.setAttribute('aria-label','Open cart');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
-  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Cart</h2><div class="tcc-wish-head-actions"><button type="button" class="tcc-order-history-open">Order History</button><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field tcc-wish-customer-field"><label for="tccCustomerName">Customer name <small>(Optional)</small></label><input id="tccCustomerName" type="text" maxlength="60" placeholder="Enter your name (optional)" autocomplete="name" /><label for="tccCustomerPhone">Mobile number <span>*</span></label><input id="tccCustomerPhone" type="tel" maxlength="15" inputmode="numeric" placeholder="Enter 10-digit mobile number" autocomplete="tel" required /></div><div class="tcc-wish-table-field tcc-table-picker-field"><label class="tcc-table-label">Select table <span>*</span></label><button type="button" class="tcc-table-picker-trigger"><span class="tcc-table-picker-caption">Choose your table</span><strong class="tcc-table-picker-value">Not selected</strong><span aria-hidden="true">⌄</span></button><small class="tcc-wish-table-error" role="alert"></small><div class="tcc-continuation-box" aria-live="polite" hidden></div></div><div class="tcc-table-picker-backdrop" aria-hidden="true"><section class="tcc-table-picker-panel" role="dialog" aria-modal="true" aria-labelledby="tccTablePickerTitle"><header><div><h3 id="tccTablePickerTitle">Choose Your Table</h3><small>Select your table from the café layout</small></div><button type="button" class="tcc-table-picker-close" aria-label="Close table selector">×</button></header><div class="tcc-table-groups" aria-label="Café floor plan table selector"><div class="tcc-table-options"><button type="button" data-table="S6">S6</button><button type="button" data-table="S5">S5</button><button type="button" data-table="S4">S4</button><button type="button" data-table="S3">S3</button><button type="button" data-table="S2">S2</button><button type="button" data-table="S1">S1</button><button type="button" data-table="C4">C4</button><button type="button" data-table="C3">C3</button><button type="button" data-table="C2">C2</button><button type="button" data-table="C1">C1</button><button type="button" data-table="P3">P3</button><button type="button" data-table="P2">P2</button><button type="button" data-table="P1">P1</button><button type="button" data-table="T1">T1</button><button type="button" data-table="T2">T2</button></div><div class="tcc-table-counter" aria-label="Counter">COUNTER</div><div class="tcc-table-entrance" aria-hidden="true">ENTRANCE</div></div></section></div><div class="tcc-wish-total"><span>Order subtotal</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Place Order</button><div class="tcc-wish-secondary-actions"><button type="button" class="tcc-wish-clear secondary">Clear Cart</button><button type="button" class="tcc-wish-continue">Continue browsing</button></div></div><p class="tcc-wish-hint">Your order will be sent directly to the TCC kitchen. You will receive an order reference after successful placement.</p></section>';
+  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Cart</h2><div class="tcc-wish-head-actions"><button type="button" class="tcc-order-history-open">Order History</button><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field tcc-wish-customer-field"><label for="tccCustomerName">Customer name <small>(Optional)</small></label><input id="tccCustomerName" type="text" maxlength="60" placeholder="Enter your name (optional)" autocomplete="name" /><label for="tccCustomerPhone">Mobile number <span>*</span></label><input id="tccCustomerPhone" type="tel" maxlength="15" inputmode="numeric" placeholder="Enter 10-digit mobile number" autocomplete="tel" required /></div><div class="tcc-wish-table-field tcc-table-picker-field"><label class="tcc-table-label">Select table <span>*</span></label><button type="button" class="tcc-table-picker-trigger"><span class="tcc-table-picker-caption">Choose your table</span><strong class="tcc-table-picker-value">Not selected</strong><span aria-hidden="true">⌄</span></button><small class="tcc-wish-table-error" role="alert"></small><div class="tcc-continuation-box" aria-live="polite" hidden></div></div><div class="tcc-table-picker-backdrop" aria-hidden="true"><section class="tcc-table-picker-panel" role="dialog" aria-modal="true" aria-labelledby="tccTablePickerTitle"><header><div><h3 id="tccTablePickerTitle">Choose Your Table</h3><small>Select your table from the café layout</small></div><button type="button" class="tcc-table-picker-close" aria-label="Close table selector">×</button></header><div class="tcc-table-groups" aria-label="Café floor plan table selector"><div class="tcc-table-options"><button type="button" data-table="S6">S6</button><button type="button" data-table="S5">S5</button><button type="button" data-table="S4">S4</button><button type="button" data-table="S3">S3</button><button type="button" data-table="S2">S2</button><button type="button" data-table="S1">S1</button><button type="button" data-table="C4">C4</button><button type="button" data-table="C3">C3</button><button type="button" data-table="C2">C2</button><button type="button" data-table="C1">C1</button><button type="button" data-table="P3">P3</button><button type="button" data-table="P2">P2</button><button type="button" data-table="P1">P1</button><button type="button" data-table="T1">T1</button><button type="button" data-table="T2">T2</button></div><div class="tcc-table-counter" aria-label="Counter">COUNTER</div><div class="tcc-table-entrance" aria-hidden="true">ENTRANCE</div></div></section></div><div class="tcc-wish-total"><span>Order subtotal</span><strong>₹0</strong></div><div class="tcc-wish-actions"><div class="tcc-wish-secondary-actions"><button type="button" class="tcc-wish-clear secondary">Clear Cart</button><button type="button" class="tcc-wish-continue">Continue browsing</button></div></div><p class="tcc-wish-hint">Your order will be sent directly to the TCC kitchen. You will receive an order reference after successful placement.</p><div class="tcc-wish-sticky-order"><button type="button" class="tcc-wish-send">Place Order</button></div></section>';
   const choice=document.createElement('div');choice.className='tcc-wish-choice';choice.setAttribute('aria-hidden','true');
   choice.innerHTML='<section class="tcc-wish-choice-panel" role="dialog" aria-modal="true" aria-labelledby="tccChoiceTitle"><header class="tcc-wish-choice-header"><div class="tcc-wish-choice-thumb"></div><div class="tcc-wish-choice-heading"><h3 id="tccChoiceTitle" class="tcc-wish-choice-title">Choose add-ons</h3><p>Select up to 3 add-ons · No Add-ons is also available</p></div><button type="button" class="tcc-wish-choice-close" aria-label="Close customisation">×</button></header><div class="tcc-wish-choice-body"><div class="tcc-wish-choice-section-title"><span>Choose your add-ons</span><small>Up to 3</small></div><div class="tcc-wish-addon-options"></div></div><footer class="tcc-wish-choice-footer"><div class="tcc-choice-qty"><button type="button" class="tcc-choice-minus" aria-label="Decrease quantity">−</button><strong class="tcc-choice-quantity">1</strong><button type="button" class="tcc-choice-plus" aria-label="Increase quantity">+</button></div><div class="tcc-wish-choice-actions"><button type="button" class="tcc-wish-choice-confirm">Add Item · ₹0</button><button type="button" class="tcc-wish-choice-cancel secondary">Cancel</button></div></footer></section>';
   document.body.append(float,backdrop,choice);
@@ -710,6 +710,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     totalBox.style.display='none';
     backdrop.querySelector('.tcc-wish-table-field').style.display=items.length?'block':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
+    backdrop.querySelector('.tcc-wish-sticky-order').style.display=items.length?'block':'none';
     backdrop.querySelector('.tcc-wish-continue').style.display=items.length?'block':'none';
     backdrop.querySelector('.tcc-table-options').hidden=false;
     backdrop.querySelector('.tcc-table-label').hidden=false;
@@ -1203,6 +1204,50 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-panel .tcc-wish-row .tcc-wish-note-editor .tcc-wish-note-save{
       flex:0 0 auto!important;
       min-width:76px!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Sticky Place Order action stays visible while cart content scrolls. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-sticky-place-order';
+  style.textContent=`
+    .tcc-wish-panel{position:relative!important;overflow-y:auto!important;overscroll-behavior:contain!important}
+    .tcc-wish-sticky-order{
+      position:sticky!important;
+      bottom:-16px!important;
+      z-index:20!important;
+      display:none;
+      margin:10px -14px -16px!important;
+      padding:10px 14px calc(10px + env(safe-area-inset-bottom))!important;
+      border-top:1px solid rgba(183,154,90,.35)!important;
+      background:linear-gradient(180deg,rgba(255,249,237,.94),#fff9ed 24%)!important;
+      box-shadow:0 -7px 18px rgba(23,60,43,.09)!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-send{
+      display:block!important;
+      width:100%!important;
+      min-height:50px!important;
+      margin:0!important;
+      border:1px solid #d8b96f!important;
+      border-radius:12px!important;
+      background:linear-gradient(135deg,#285b42,#17442f)!important;
+      color:#fff7e6!important;
+      font:800 14px Manrope,Arial,sans-serif!important;
+      box-shadow:0 4px 12px rgba(12,45,29,.20)!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-send:active{transform:translateY(1px)}
+    .tcc-wish-actions{margin-top:8px!important}
+    @media(max-width:600px){
+      .tcc-wish-sticky-order{
+        bottom:-16px!important;
+        margin:8px -14px -16px!important;
+        padding:9px 14px calc(9px + env(safe-area-inset-bottom))!important;
+      }
+      .tcc-wish-sticky-order .tcc-wish-send{min-height:48px!important}
     }
   `;
   document.head.appendChild(style);
