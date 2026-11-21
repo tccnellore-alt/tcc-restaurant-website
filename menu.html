@@ -3766,7 +3766,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
   </div>
 </footer>
 <nav class="mobile-bar" aria-label="Quick actions"><a href="tel:+919059059553" aria-label="Call TCC">☎ Call</a><a class="accent" href="menu.html">☕ Menu</a><button type="button" class="tcc-mobile-track" aria-label="Track Order">⌕ Track</button><button type="button" class="tcc-mobile-history" aria-label="Order History">▤ Orders</button><a href="https://maps.app.goo.gl/LTdYTXNZPJU4qetv6?g_st=ac" target="_blank" rel="noopener" aria-label="Open TCC Map">⌖ Map</a><a href="https://search.google.com/local/writereview?placeid=ChIJRY3c3XnzTDoRMsXmWvt_FMg" target="_blank" rel="noopener" aria-label="Rate TCC on Google">★ Rate</a></nav>
-<script src="script.js?v=extra-espresso-shot-1"></script>
+<script src="script.js?v=coffee-addons-approved-only-2"></script>
 
 <script>
 /* TCC MENU EXPERIENCE ENHANCEMENTS v2 */
@@ -4086,7 +4086,7 @@ document.addEventListener("click",event=>{
     const sectionName=section?.querySelector("h2")?.textContent.trim().toLowerCase()||"";
     const addonPanel=document.querySelector("[data-addon-panel] .addons-row");
     const isCoffeeSection=!!item?.closest("#coffee")&&(sectionName.includes("hot coffee")||sectionName.includes("cold coffee"));
-    const coffeeAddons=isCoffeeSection&&name!=="Hot Chocolate"?[...(tccCoffeeAddonsByDrink[name]||["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"]),tccExtraEspressoShot]:(isCoffeeSection?(tccCoffeeAddonsByDrink[name]||[]):[]);
+    const coffeeAddons=isCoffeeSection&&name!=="Hot Chocolate"&&tccCoffeeAddonsByDrink[name]?[...tccCoffeeAddonsByDrink[name],tccExtraEspressoShot]:(isCoffeeSection?(tccCoffeeAddonsByDrink[name]||[]):[]);
     const hasCoffeeAddons=coffeeAddons.length>0;
     const hasPastaAddons=sectionName.includes("pasta")&&!!addonPanel;
     tccLightboxAddonsRow.replaceChildren();
