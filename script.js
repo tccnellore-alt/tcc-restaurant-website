@@ -1072,3 +1072,62 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* TCC cart tiles — lighter forest green and tighter mobile proportions. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-tile-compact-light-refinement';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-list{gap:7px!important}
+    .tcc-wish-panel .tcc-wish-row{
+      padding:9px 10px!important;
+      gap:6px 8px!important;
+      border-color:rgba(205,174,111,.82)!important;
+      border-radius:12px!important;
+      background:linear-gradient(145deg,#285b42 0%,#214f39 58%,#1b4532 100%)!important;
+      box-shadow:0 3px 9px rgba(10,35,23,.12),inset 0 1px 0 rgba(255,255,255,.10)!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:before{
+      left:10px!important;right:10px!important;
+      background:linear-gradient(90deg,transparent,rgba(246,224,174,.68),transparent)!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info{gap:4px!important}
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line > strong{
+      color:#fff7e6!important;
+      font-size:14px!important;
+      line-height:1.22!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info .tcc-wish-addon-line{
+      color:#f0e4ca!important;font-size:9px!important;line-height:1.25!important
+    }
+    .tcc-wish-panel .tcc-wish-fulfillment{
+      padding:4px 7px!important;
+      background:rgba(255,249,231,.13)!important;
+      border-color:rgba(240,218,169,.48)!important;
+      color:#fff2d5!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-toggle{padding:3px 0!important}
+    .tcc-wish-panel .tcc-wish-qty{padding:2px!important}
+    .tcc-wish-panel .tcc-wish-qty button{
+      width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]{
+      width:27px!important;min-width:27px!important;min-height:27px!important
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-list{gap:6px!important}
+      .tcc-wish-panel .tcc-wish-row{padding:8px 9px!important;gap:5px 7px!important}
+      .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line > strong{
+        font-size:12.5px!important;line-height:1.2!important
+      }
+      .tcc-wish-panel .tcc-wish-qty button{
+        width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important
+      }
+      .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]{
+        width:26px!important;min-width:26px!important;min-height:26px!important
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
