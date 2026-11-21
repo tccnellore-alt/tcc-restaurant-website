@@ -1049,3 +1049,26 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* Cart tile title contrast fix: target the actual nested title-line markup. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-title-contrast-fix';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line > strong{
+      color:#fff5dc!important;
+      font:700 15px/1.3 Georgia,serif!important;
+      letter-spacing:.005em!important;
+      opacity:1!important;
+      text-shadow:0 1px 1px rgba(0,0,0,.16)!important;
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line > strong{
+        color:#fff5dc!important;
+        font-size:13px!important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
