@@ -1975,3 +1975,21 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* Trash icon only: suppress legacy remove-button X pseudo-element */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-trash-icon-only';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove[aria-label^="Remove"]:before{
+      content:none!important;
+      display:none!important;
+    }
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove{
+      gap:0!important;
+      font-size:0!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
