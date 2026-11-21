@@ -1953,3 +1953,25 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* Extra-light premium cart tiles: ice blue + porcelain ivory */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-extra-light-palette';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(odd){
+      background-color:#EEF5F8!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.28) 60%,rgba(91,122,140,.018))!important;
+      border-color:#D5E2E9!important;
+      box-shadow:0 2px 7px rgba(52,73,85,.045),inset 0 1px 0 rgba(255,255,255,.92),inset 0 0 0 1px rgba(255,255,255,.35)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(even){
+      background-color:#FBF5E8!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.82),rgba(255,255,255,.30) 60%,rgba(125,101,53,.018))!important;
+      border-color:#E9DEC5!important;
+      box-shadow:0 2px 7px rgba(90,75,44,.04),inset 0 1px 0 rgba(255,255,255,.94),inset 0 0 0 1px rgba(255,255,255,.36)!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
