@@ -650,6 +650,30 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const fulfillment=document.createElement('label');fulfillment.className='tcc-wish-fulfillment';const fulfillmentInput=document.createElement('input');fulfillmentInput.type='checkbox';fulfillmentInput.checked=item.fulfillment_type==='takeaway'||(orderType==='takeaway');fulfillmentInput.setAttribute('aria-label','Pack '+item.name+' as takeaway (+₹10 each)');fulfillmentInput.addEventListener('change',()=>{item.fulfillment_type=fulfillmentInput.checked?'takeaway':'dine-in';save();render();});const fulfillmentText=document.createElement('span');fulfillmentText.textContent='Takeaway +₹10';fulfillment.append(fulfillmentInput,fulfillmentText);
       const itemOptions=document.createElement('div');itemOptions.className='tcc-wish-item-options';itemOptions.append(fulfillment);
       info.append(itemOptions);
+      const noteToggle=document.createElement('button');
+      noteToggle.type='button';
+      noteToggle.className='tcc-wish-note-toggle';
+      noteToggle.textContent=item.note?'Edit note':'＋ Add note';
+      noteToggle.setAttribute('aria-expanded',item.note?'true':'false');
+      const noteInput=document.createElement('textarea');
+      noteInput.className='tcc-wish-item-note';
+      noteInput.placeholder='Add a note for the kitchen…';
+      noteInput.maxLength=180;
+      noteInput.value=item.note||'';
+      noteInput.hidden=!item.note;
+      noteInput.setAttribute('aria-label','Note for '+item.name);
+      noteToggle.addEventListener('click',()=>{
+        noteInput.hidden=!noteInput.hidden;
+        noteToggle.textContent=noteInput.hidden?(item.note?'Edit note':'＋ Add note'):'− Hide note';
+        noteToggle.setAttribute('aria-expanded',String(!noteInput.hidden));
+        if(!noteInput.hidden)noteInput.focus();
+      });
+      noteInput.addEventListener('input',()=>{
+        item.note=noteInput.value;
+        save();
+        if(item.note)noteToggle.textContent='Edit note';
+      });
+      info.append(noteToggle,noteInput);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
       const amount=document.createElement('span');amount.className='tcc-wish-line-total';amount.textContent='';
