@@ -898,3 +898,154 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   });
   render();
 })();
+
+/* TCC PREMIUM CART TILES — text-only product cards in the forest-green / antique-gold identity */
+(function(){
+  if(!document.querySelector('.menu-page')) return;
+  const style=document.createElement('style');
+  style.id='tcc-premium-cart-tiles';
+  style.textContent=`
+    .tcc-wish-panel{
+      background:#fff9ed!important;
+      border:1px solid #c6a45b!important;
+      box-shadow:0 24px 72px rgba(3,18,11,.42),inset 0 0 0 1px rgba(255,255,255,.7)!important;
+    }
+    .tcc-wish-head{
+      margin:-16px -14px 13px!important;
+      padding:14px 14px 12px!important;
+      border:1px solid rgba(218,185,111,.62)!important;
+      border-radius:16px 16px 12px 12px!important;
+      background:linear-gradient(135deg,#17442f 0%,#0d2d20 100%)!important;
+      box-shadow:0 5px 16px rgba(12,39,26,.16)!important;
+    }
+    .tcc-wish-head h2{color:#fff5dc!important;font:700 25px/1.05 Georgia,serif!important;letter-spacing:.01em}
+    .tcc-wish-close{border:1px solid rgba(225,198,137,.7)!important;background:rgba(255,249,237,.08)!important;color:#fff5dc!important}
+    .tcc-order-history-open{border:1px solid rgba(225,198,137,.65)!important;background:#f5e8c9!important;color:#173c2b!important}
+    .tcc-wish-list{display:grid!important;gap:9px!important;padding:1px 1px 8px!important}
+    .tcc-wish-row{
+      position:relative!important;
+      display:grid!important;
+      grid-template-columns:minmax(0,1fr) auto!important;
+      align-items:center!important;
+      gap:8px 10px!important;
+      min-width:0!important;
+      margin:0!important;
+      padding:12px 11px!important;
+      border:1px solid rgba(211,177,102,.78)!important;
+      border-radius:14px!important;
+      background:linear-gradient(145deg,#17442f 0%,#103523 58%,#0c2b1e 100%)!important;
+      box-shadow:0 5px 13px rgba(10,35,23,.14),inset 0 1px 0 rgba(255,255,255,.07)!important;
+    }
+    .tcc-wish-row:before{
+      content:"";
+      position:absolute;left:11px;right:11px;top:0;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(238,211,151,.78),transparent);
+    }
+    .tcc-wish-item-info{gap:5px!important;min-width:0!important}
+    .tcc-wish-item-info>strong{
+      color:#fff5dc!important;
+      font:700 14px/1.28 Georgia,serif!important;
+      letter-spacing:.005em!important;
+      white-space:normal!important;
+      overflow:visible!important;
+      text-overflow:clip!important;
+    }
+    .tcc-wish-item-info .tcc-wish-addon-line{
+      margin:0!important;color:#e6d8b8!important;
+      font:500 10px/1.35 Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-item-options{display:flex!important;align-items:center!important;gap:9px!important;flex-wrap:wrap!important}
+    .tcc-wish-fulfillment{
+      display:inline-flex!important;align-items:center!important;gap:5px!important;
+      width:max-content!important;max-width:100%!important;margin:0!important;
+      padding:5px 8px!important;border:1px solid rgba(221,190,125,.38)!important;
+      border-radius:8px!important;background:rgba(255,248,229,.10)!important;
+      color:#f5e8c9!important;font:700 9px/1.2 Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-fulfillment input{width:14px!important;height:14px!important;min-height:14px!important;accent-color:#d7b66e!important}
+    .tcc-wish-note-toggle{
+      display:inline-flex!important;align-items:center!important;gap:4px!important;
+      margin:0!important;padding:5px 0!important;border:0!important;
+      background:transparent!important;color:#e5c477!important;
+      font:700 10px/1.2 Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-item-note{
+      min-height:34px!important;max-height:64px!important;margin-top:2px!important;
+      border:1px solid rgba(221,190,125,.55)!important;border-radius:8px!important;
+      background:#fff9ed!important;color:#173c2b!important;
+    }
+    .tcc-wish-row-price{
+      display:flex!important;align-items:center!important;justify-content:flex-end!important;
+      gap:6px!important;flex-wrap:nowrap!important;white-space:nowrap!important;
+    }
+    .tcc-wish-line-total{display:none!important}
+    .tcc-wish-qty{
+      display:inline-flex!important;align-items:center!important;gap:4px!important;
+      margin:0!important;padding:3px!important;border:1px solid rgba(224,195,133,.75)!important;
+      border-radius:999px!important;background:#fff5dc!important;color:#173c2b!important;
+    }
+    .tcc-wish-qty button{
+      display:grid!important;place-items:center!important;width:27px!important;height:27px!important;
+      min-width:27px!important;min-height:27px!important;padding:0!important;
+      border:0!important;border-radius:50%!important;background:#17442f!important;
+      color:#fff5dc!important;font:800 16px/1 Arial,sans-serif!important;
+    }
+    .tcc-wish-qty strong{min-width:15px!important;color:#173c2b!important;font:800 12px Manrope,Arial,sans-serif!important;text-align:center!important}
+    .tcc-wish-remove{
+      display:grid!important;place-items:center!important;flex:0 0 auto!important;
+      min-width:30px!important;min-height:30px!important;margin:0!important;padding:0 7px!important;
+      border:1px solid rgba(223,169,151,.35)!important;border-radius:8px!important;
+      background:rgba(164,65,54,.18)!important;color:#ffe0d8!important;
+      font:700 10px Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-remove[aria-label^="Remove"]{
+      width:30px!important;min-width:30px!important;padding:0!important;
+      font-size:0!important;
+    }
+    .tcc-wish-remove[aria-label^="Remove"]:before{content:"×";font:400 21px/1 Arial,sans-serif!important;color:#ffe0d8!important}
+    .tcc-wish-row-price .tcc-wish-remove:not([aria-label^="Remove"]){
+      min-width:34px!important;padding:0 8px!important;border-color:rgba(224,195,133,.48)!important;
+      background:rgba(239,213,160,.13)!important;color:#f4d58e!important;
+    }
+    .tcc-wish-customer-field,.tcc-wish-table-field:not(.tcc-wish-customer-field){
+      border:1px solid rgba(183,154,90,.48)!important;
+      border-radius:13px!important;background:#fffdf7!important;
+      box-shadow:0 3px 12px rgba(23,60,43,.045)!important;
+    }
+    .tcc-wish-customer-field input,.tcc-wish-table-picker-trigger{
+      border-color:rgba(23,60,43,.2)!important;background:#fff!important;border-radius:9px!important;
+    }
+    .tcc-wish-table-picker-trigger{border:1px solid #b99a59!important}
+    .tcc-wish-actions>.tcc-wish-send{
+      min-height:49px!important;border:1px solid #d8b96f!important;
+      border-radius:11px!important;
+      background:linear-gradient(135deg,#17442f,#0d2d20)!important;
+      color:#fff5dc!important;font:800 13px Manrope,Arial,sans-serif!important;
+      box-shadow:0 5px 14px rgba(12,45,29,.18)!important;
+    }
+    .tcc-wish-secondary-actions button{
+      border-color:rgba(23,60,43,.22)!important;border-radius:9px!important;
+      background:#fffdf7!important;color:#254b38!important;
+    }
+    .tcc-wish-panel .tcc-wish-hint{color:#777365!important}
+    @media(max-width:600px){
+      .tcc-wish-head{margin:-16px -14px 11px!important;padding:13px 13px 11px!important}
+      .tcc-wish-list{gap:8px!important;max-height:39dvh!important;overflow-y:auto!important}
+      .tcc-wish-row{padding:10px 9px!important;gap:7px 8px!important;border-radius:12px!important}
+      .tcc-wish-item-info>strong{font-size:13px!important}
+      .tcc-wish-item-info .tcc-wish-addon-line{font-size:9px!important}
+      .tcc-wish-fulfillment{padding:4px 6px!important;font-size:8px!important}
+      .tcc-wish-qty button{width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important}
+      .tcc-wish-remove{min-width:28px!important;min-height:28px!important}
+      .tcc-wish-remove[aria-label^="Remove"]{width:28px!important;min-width:28px!important}
+    }
+    @media(max-width:360px){
+      .tcc-wish-row{grid-template-columns:minmax(0,1fr) auto!important;gap:6px!important;padding:9px 8px!important}
+      .tcc-wish-row-price{gap:4px!important}
+      .tcc-wish-qty{gap:2px!important;padding:2px!important}
+      .tcc-wish-qty button{width:23px!important;height:23px!important;min-width:23px!important;min-height:23px!important}
+      .tcc-wish-remove[aria-label^="Remove"]{width:26px!important;min-width:26px!important}
+    }
+  `;
+  document.head.appendChild(style);
+})();
