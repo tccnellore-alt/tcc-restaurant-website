@@ -32,9 +32,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const price=typeof tccCoffeeAddonPrice!=='undefined'?Number(String(tccCoffeeAddonPrice).replace(/[^\d.]/g,''))||50:50;
       source=tccCoffeeAddonsByDrink[data.name].map(name=>({name,price}));
       source.push({name:"Extra Espresso Shot",price:50});
-    }else if(group?.id==="coffee"&&!section.includes("tea")&&data.name!=="Hot Chocolate"){
-      source=[{name:"Hazelnut Syrup",price:50},{name:"Caramel Syrup",price:50},{name:"Vanilla Syrup",price:50},{name:"Irish Syrup",price:50},{name:"Honey",price:50},{name:"Extra Espresso Shot",price:50}];
-    }else if(section.includes("pasta")){
+    else if(section.includes("pasta")){
       source=[...document.querySelectorAll('.pasta-addon-inline[aria-label="Pasta add-ons"] .addons-row>span')].map(el=>({name:clean(el.firstChild?.textContent||el.textContent),price:Number((el.querySelector('b')?.textContent.match(/[\d,]+/)||['0'])[0].replace(/,/g,''))}));
     }else if(section.includes('pizza')){
       const panel=card.closest('.menu-section')?.querySelector('.pizza-addon-inline');
