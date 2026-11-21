@@ -80,3 +80,6 @@
 .orders>.empty{grid-column:1/-1}
 .order-card{min-width:0}
 @media(max-width:760px){.orders{grid-template-columns:minmax(0,1fr);gap:12px}}
+
+/* Clear order fulfilment type labels */
+.order-type-badge{display:inline-flex;align-items:center;justify-content:center;width:max-content;margin:7px 0 2px;padding:7px 12px;border-radius:8px;font-size:11px;font-weight:900;letter-spacing:.09em;line-height:1.1;border:1px solid transparent}.order-type-badge.dine-in{background:#e4f1e7;color:#155b32;border-color:#a9cfb2}.order-type-badge.takeaway{background:#fff0d8;color:#8a4b08;border-color:#e9c58e}
