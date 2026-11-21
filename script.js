@@ -427,6 +427,45 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const closeChoice=()=>{choice.classList.remove('is-open');choice.setAttribute('aria-hidden','true');pendingProduct=null;};
   const lookupInput=historyPanel.querySelector('#tccOrderLookup'),lookupButton=historyPanel.querySelector('.tcc-order-lookup-button'),lookupMessage=historyPanel.querySelector('.tcc-order-lookup-message'),lookupResults=historyPanel.querySelector('.tcc-order-lookup-results');
   const continuationBox=backdrop.querySelector('.tcc-continuation-box');
+  // Dedicated table QR mode: resolve the opaque token before allowing checkout.
+  const tableQrToken=new URLSearchParams(window.location.search).get('tcc_qr')?.trim()||'';
+  let tableQrVerified=!tableQrToken,tableQrTable='';
+  const tableQrBanner=document.createElement('div');
+  tableQrBanner.className='tcc-table-qr-banner';
+  tableQrBanner.setAttribute('role','status');
+  tableQrBanner.style.cssText='margin:8px 0;padding:10px 12px;border:1px solid rgba(23,60,43,.18);border-radius:10px;background:#f2f5ef;color:#173c2b;font:700 13px/1.4 Manrope,Arial,sans-serif;';
+  if(tableQrToken){
+    const tableField=backdrop.querySelector('.tcc-table-picker-field');
+    const trigger=tableField?.querySelector('.tcc-table-picker-trigger');
+    if(trigger)trigger.hidden=true;
+    const label=tableField?.querySelector('.tcc-table-label');
+    if(label)label.textContent='Your table';
+    tableField?.insertBefore(tableQrBanner,tableField.querySelector('.tcc-wish-table-error'));
+    tableQrBanner.textContent='Verifying your table QR…';
+    const resolveTableQr=async()=>{
+      try{
+        const response=await fetch(TCC_ORDERING_API+'?action=resolve-table-qr&token='+encodeURIComponent(tableQrToken),{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store'});
+        const data=await response.json().catch(()=>({}));
+        if(!response.ok||!data.table_number)throw new Error(data.error||'This table QR is invalid or has been disabled.');
+        tableQrTable=String(data.table_number).toUpperCase();
+        selectedTable=tableQrTable;
+        orderType='dine-in';
+        tableQrVerified=true;
+        tableQrBanner.textContent='✓ Ordering for Table '+tableQrTable;
+        tableQrBanner.style.background='#edf5ed';
+        tableQrBanner.style.borderColor='rgba(33,134,90,.35)';
+        if(typeof tablePicker!=='undefined')tablePicker.classList.remove('is-open');
+      }catch(error){
+        tableQrVerified=false;
+        tableQrBanner.textContent=error.message||'Unable to verify this table QR. Please ask our team for assistance.';
+        tableQrBanner.style.background='#fff0ed';
+        tableQrBanner.style.color='#a12b20';
+        tableQrBanner.style.borderColor='rgba(161,43,32,.3)';
+      }
+    };
+    resolveTableQr();
+  }
+
   const checkRecentOrders=async()=>{
     // Read the live form values as browsers may autofill fields without firing input events.
     customerName=backdrop.querySelector('#tccCustomerName').value.trimStart();
@@ -435,7 +474,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(activeOrderType)orderType=activeOrderType.dataset.orderType;
     const activeTable=backdrop.querySelector('[data-table].active');
     if(activeTable)selectedTable=activeTable.dataset.table;
-    const requestId=++recentOrderCheck,phone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
+    if(tableQrToken){selectedTable=tableQrTable;orderType='dine-in';continuationBox.hidden=true;continuationBox.replaceChildren();return;}\n    const requestId=++recentOrderCheck,phone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
     const contextKey=[phone,orderType,orderType==='dine-in'?selectedTable:''].join('|');
     if(contextKey!==continuationContextKey){continuationContextKey=contextKey;forceNewOrder=false;continuationOrder=null;availableContinuationOrder=null;}
     continuationBox.hidden=true;continuationBox.replaceChildren();
@@ -796,13 +835,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('.tcc-table-picker-trigger').addEventListener('click',()=>{tablePicker.classList.add('is-open');tablePicker.setAttribute('aria-hidden','false');});
   tablePicker.querySelector('.tcc-table-picker-close').addEventListener('click',closeTablePicker);
   tablePicker.addEventListener('click',event=>{if(event.target===tablePicker)closeTablePicker();});
-  tablePicker.querySelectorAll('[data-table]').forEach(button=>button.addEventListener('click',()=>{selectedTable=button.dataset.table;continuationOrder=null;backdrop.querySelector('.tcc-wish-table-error').textContent='';render();closeTablePicker();checkRecentOrders();}));
+  tablePicker.querySelectorAll('[data-table]').forEach(button=>button.addEventListener('click',()=>{if(tableQrToken)return;selectedTable=button.dataset.table;continuationOrder=null;backdrop.querySelector('.tcc-wish-table-error').textContent='';render();closeTablePicker();checkRecentOrders();}));
 
   let orderSubmissionBusy=false;
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',async()=>{
     if(!tccCustomerOrderingEnabled){backdrop.querySelector('.tcc-wish-table-error').textContent='Online ordering is currently paused. Please ask our team for assistance.';return;}
     if(orderSubmissionBusy||!items.length)return;
-    const tableError=backdrop.querySelector('.tcc-wish-table-error');
+    const tableError=backdrop.querySelector('.tcc-wish-table-error');\n    if(tableQrToken&&!tableQrVerified){tableError.textContent='This table QR could not be verified. Please scan the QR again or ask our team.';return;}\n    if(tableQrToken){selectedTable=tableQrTable;orderType='dine-in';}
     const normalizedPhone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
     if(!/^\d{10}$/.test(normalizedPhone)){tableError.textContent='Please enter a valid 10-digit mobile number.';backdrop.querySelector('#tccCustomerPhone').focus();return;}
     if(orderType==='dine-in'&&!selectedTable){tableError.textContent='Please select your table number to continue.';return;}
@@ -823,7 +862,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const apiResponse=await fetch('https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders?action=create-order',{
         method:'POST',
         headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A'},
-        body:JSON.stringify({idempotency_key:requestKey,parent_order_number:continuationOrder?.order_number||null,customer_name:customerName.trim(),customer_phone:normalizedPhone,order_type:orderType,table_number:tableNumber,items:items.map(item=>({name:item.name,quantity:item.qty,unit_price:item.price,category:item.category,section:item.section,addons:item.addons||[],note:item.note||'',fulfillment_type:orderType==='takeaway'?'takeaway':(item.fulfillment_type==='takeaway'?'takeaway':'dine-in')}))})
+        body:JSON.stringify({idempotency_key:requestKey,parent_order_number:continuationOrder?.order_number||null,customer_name:customerName.trim(),customer_phone:normalizedPhone,order_type:orderType,table_number:tableNumber,table_qr_token:tableQrToken||null,items:items.map(item=>({name:item.name,quantity:item.qty,unit_price:item.price,category:item.category,section:item.section,addons:item.addons||[],note:item.note||'',fulfillment_type:orderType==='takeaway'?'takeaway':(item.fulfillment_type==='takeaway'?'takeaway':'dine-in')}))})
       });
       const saved=await apiResponse.json().catch(()=>({}));
       if(!apiResponse.ok||!saved.order)throw new Error(saved.error||'We could not confirm your order. Your cart is saved; please retry.');
