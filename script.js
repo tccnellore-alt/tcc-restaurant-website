@@ -411,55 +411,69 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     }
 
 
-    /* Checkout layout refresh — isolated to the cart panel. */
-    .tcc-wish-panel{display:flex!important;flex-direction:column!important;overflow-y:auto!important;overscroll-behavior:contain!important}
-    .tcc-wish-head{min-height:42px!important;gap:9px!important;margin:0 0 8px!important}
-    .tcc-wish-head h2{font-size:clamp(23px,5vw,27px)!important;line-height:1!important;letter-spacing:-.02em!important}
-    .tcc-order-history-open{min-height:32px!important;padding:0 11px!important;border-color:rgba(23,60,43,.13)!important;background:transparent!important;color:#667368!important;font:650 10px Manrope,Arial,sans-serif!important}
-    .tcc-wish-close{flex:0 0 34px!important;width:34px!important;height:34px!important;font-size:21px!important}
-    .tcc-wish-list{flex:0 0 auto!important;max-height:none!important;overflow:visible!important;margin-bottom:5px!important}
-    .tcc-wish-row{grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;gap:10px!important;padding:9px 0!important}
-    .tcc-wish-item-info{gap:3px!important}
-    .tcc-wish-item-info>strong{font:750 13px/1.25 Manrope,Arial,sans-serif!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}
-    .tcc-wish-item-info .tcc-wish-addon-line{font:10.5px/1.35 Manrope,Arial,sans-serif!important;color:#7b8177!important}
-    .tcc-wish-item-options{margin-top:2px!important}
-    .tcc-wish-row-price{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:7px!important;white-space:nowrap!important}
-    .tcc-wish-qty{display:flex!important;align-items:center!important;gap:5px!important;margin:0!important}
-    .tcc-wish-qty button{width:29px!important;height:29px!important;font-size:16px!important}
-    .tcc-wish-qty strong{min-width:14px!important;text-align:center!important;font:800 12px Manrope,Arial,sans-serif!important}
-    .tcc-wish-edit{border:0!important;background:transparent!important;padding:4px 2px!important;color:#8d7337!important;font:700 10px Manrope,Arial,sans-serif!important;cursor:pointer!important}
-    .tcc-wish-delete{display:grid!important;place-items:center!important;width:27px!important;height:29px!important;padding:4px!important;border:0!important;border-radius:7px!important;background:transparent!important;color:#9a655d!important;cursor:pointer!important}
-    .tcc-wish-delete svg{width:15px!important;height:15px!important;display:block!important}
-    .tcc-wish-note-toggle{align-self:flex-start!important;margin:1px 0 0!important;padding:2px 0!important;color:#8d7337!important;font:700 10px Manrope,Arial,sans-serif!important}
-    .tcc-wish-item-note{display:block!important;width:100%!important;min-height:38px!important;max-height:72px!important;box-sizing:border-box!important;margin:3px 0 2px!important;padding:8px 9px!important;border:1px solid rgba(23,60,43,.15)!important;border-radius:9px!important;background:#fffdf8!important;color:#173c2b!important;font:11px/1.4 Manrope,Arial,sans-serif!important;resize:vertical!important}
+
+    /* Checkout v2 — clean sheet with a dedicated scroll area and fixed action footer. */
+    .tcc-wish-backdrop{align-items:center!important;justify-content:center!important;padding:12px!important;background:rgba(9,22,15,.62)!important;backdrop-filter:blur(5px)!important}
+    .tcc-wish-panel{display:flex!important;flex-direction:column!important;width:min(100%,520px)!important;height:min( min(88dvh,780px), 780px )!important;max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;min-height:0!important;overflow:hidden!important;padding:0!important;border:1px solid rgba(183,154,90,.48)!important;border-radius:22px!important;background:#fffaf0!important;box-shadow:0 18px 56px rgba(0,0,0,.28)!important}
+    .tcc-wish-head{display:flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;min-height:62px!important;margin:0!important;padding:12px 17px!important;border-bottom:1px solid rgba(23,60,43,.10)!important}
+    .tcc-wish-head h2{margin:0!important;font:700 25px/1 Georgia,serif!important;letter-spacing:-.02em!important;color:#173c2b!important}
+    .tcc-wish-head-actions{display:flex!important;align-items:center!important;gap:8px!important}
+    .tcc-order-history-open{min-height:32px!important;padding:0 11px!important;border:1px solid rgba(23,60,43,.15)!important;border-radius:999px!important;background:transparent!important;color:#657268!important;font:700 10px Manrope,Arial,sans-serif!important}
+    .tcc-wish-close{flex:0 0 34px!important;width:34px!important;height:34px!important;border:1px solid rgba(23,60,43,.16)!important;border-radius:50%!important;background:transparent!important;color:#173c2b!important;font-size:22px!important}
+    .tcc-cart-scroll{display:block!important;flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important;padding:0 17px 12px!important;scrollbar-width:thin!important;scrollbar-color:rgba(23,60,43,.2) transparent!important}
+    .tcc-wish-list{display:block!important;flex:0 0 auto!important;max-height:none!important;overflow:visible!important;margin:0!important;padding:0!important}
+    .tcc-wish-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;gap:12px!important;padding:13px 0!important;border-bottom:1px solid rgba(23,60,43,.09)!important}
+    .tcc-wish-item-info{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:4px!important;min-width:0!important}
+    .tcc-wish-item-info>strong{display:block!important;max-width:100%!important;font:750 13px/1.3 Manrope,Arial,sans-serif!important;color:#213f32!important;white-space:normal!important;overflow-wrap:anywhere!important}
+    .tcc-wish-item-info .tcc-wish-addon-line{display:block!important;margin:0!important;color:#7b8177!important;font:10.5px/1.35 Manrope,Arial,sans-serif!important}
+    .tcc-wish-item-options{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:9px!important;min-height:20px!important;margin-top:2px!important}
+    .tcc-wish-fulfillment{display:inline-flex!important;align-items:center!important;gap:5px!important;margin:0!important;color:#667166!important;font:650 10px Manrope,Arial,sans-serif!important}
+    .tcc-wish-fulfillment input{width:15px!important;height:15px!important;min-height:15px!important}
+    .tcc-wish-note-toggle{display:inline-flex!important;align-items:center!important;margin:0!important;padding:2px 0!important;border:0!important;background:transparent!important;color:#927a43!important;font:700 10px Manrope,Arial,sans-serif!important}
+    .tcc-wish-item-note{display:block!important;width:100%!important;min-height:36px!important;max-height:64px!important;margin:3px 0 0!important;padding:7px 9px!important;border:1px solid rgba(23,60,43,.14)!important;border-radius:8px!important;background:#fffdf8!important;color:#173c2b!important;font:11px/1.35 Manrope,Arial,sans-serif!important}
     .tcc-wish-item-note[hidden]{display:none!important}
-    .tcc-wish-actions{position:sticky!important;bottom:-1px!important;z-index:5!important;flex:0 0 auto!important;margin:10px -2px 0!important;padding:10px 2px 4px!important;background:linear-gradient(180deg,rgba(255,250,240,.88),#fffaf0 22%)!important}
-    .tcc-wish-actions>.tcc-wish-send{width:100%!important;min-height:50px!important;border-radius:12px!important;font:800 13px Manrope,Arial,sans-serif!important;box-shadow:0 5px 14px rgba(23,60,43,.13)!important}
+    .tcc-wish-row-price{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:6px!important;flex-wrap:nowrap!important;white-space:nowrap!important}
+    .tcc-wish-line-total{display:none!important}
+    .tcc-wish-qty{display:flex!important;align-items:center!important;gap:4px!important;margin:0!important}
+    .tcc-wish-qty button{display:grid!important;place-items:center!important;width:28px!important;height:28px!important;border:1px solid rgba(23,60,43,.17)!important;border-radius:50%!important;background:#fff!important;color:#173c2b!important;font:700 15px Arial,sans-serif!important}
+    .tcc-wish-qty strong{min-width:13px!important;margin:0!important;text-align:center!important;font:800 12px Manrope,Arial,sans-serif!important;color:#173c2b!important}
+    .tcc-wish-edit{padding:3px 2px!important;border:0!important;background:transparent!important;color:#927a43!important;font:700 10px Manrope,Arial,sans-serif!important}
+    .tcc-wish-delete{display:grid!important;place-items:center!important;width:24px!important;height:28px!important;padding:3px!important;border:0!important;border-radius:6px!important;background:transparent!important;color:#9b746b!important}
+    .tcc-wish-delete svg{display:block!important;width:15px!important;height:15px!important}
+    .tcc-wish-customer-field,.tcc-table-picker-field{display:grid!important;gap:6px!important;margin:15px 0 0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important}
+    .tcc-wish-customer-field label,.tcc-table-picker-field>label{margin:0!important;color:#294637!important;font:750 11px Manrope,Arial,sans-serif!important}
+    .tcc-wish-customer-field label small{color:#7e847b!important;font-weight:500!important}
+    .tcc-wish-customer-field input{width:100%!important;min-height:42px!important;padding:9px 11px!important;border:1px solid rgba(23,60,43,.16)!important;border-radius:9px!important;background:#fff!important;color:#173c2b!important;font:500 13px Manrope,Arial,sans-serif!important;text-transform:none!important}
+    .tcc-table-picker-trigger{width:100%!important;min-height:48px!important;padding:0 12px!important;border:1.5px solid #b69b63!important;border-radius:11px!important;background:#fffdf8!important}
+    .tcc-wish-table-error{display:block!important;min-height:0!important}
+    .tcc-continuation-box{margin-top:6px!important}
+    .tcc-wish-total{display:none!important}
+    .tcc-cart-footer{display:flex!important;flex:0 0 auto!important;flex-direction:column!important;gap:8px!important;padding:10px 17px calc(12px + env(safe-area-inset-bottom))!important;border-top:1px solid rgba(23,60,43,.10)!important;background:#fffaf0!important;box-shadow:0 -7px 18px rgba(23,60,43,.045)!important}
+    .tcc-wish-actions{display:grid!important;gap:7px!important;margin:0!important;padding:0!important;background:transparent!important}
+    .tcc-wish-actions>.tcc-wish-send{display:block!important;width:100%!important;min-height:49px!important;margin:0!important;border:0!important;border-radius:11px!important;background:#173c2b!important;color:#fffaf0!important;font:800 13px Manrope,Arial,sans-serif!important;box-shadow:none!important}
+    .tcc-wish-actions>.tcc-wish-send:disabled{opacity:.65!important}
     .tcc-wish-secondary-actions{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important}
-    .tcc-wish-secondary-actions .tcc-wish-clear{min-height:34px!important;padding:0 12px!important;border:1px solid rgba(23,60,43,.22)!important;border-radius:9px!important;background:transparent!important;color:#52675a!important;font:700 10px Manrope,Arial,sans-serif!important}
-    .tcc-wish-secondary-actions .tcc-wish-continue{width:auto!important;min-height:34px!important;padding:0 8px!important;border:0!important;background:transparent!important;color:#8a8e83!important;font:650 10px Manrope,Arial,sans-serif!important;text-align:right!important}
-    .tcc-wish-hint{margin:6px 0 0!important;padding-bottom:2px!important;font-size:10px!important}
+    .tcc-wish-secondary-actions .tcc-wish-clear{min-height:31px!important;padding:0 10px!important;border:1px solid rgba(23,60,43,.17)!important;border-radius:8px!important;background:transparent!important;color:#657268!important;font:700 10px Manrope,Arial,sans-serif!important}
+    .tcc-wish-secondary-actions .tcc-wish-continue{width:auto!important;min-height:31px!important;padding:0 4px!important;border:0!important;background:transparent!important;color:#8a8e83!important;font:650 10px Manrope,Arial,sans-serif!important}
+    .tcc-wish-hint{margin:0!important;padding:0!important;color:#85877d!important;font:10px/1.35 Manrope,Arial,sans-serif!important;text-align:center!important}
     @media(max-width:600px){
-      .tcc-wish-backdrop{padding:8px 10px calc(8px + env(safe-area-inset-bottom))!important}
-      .tcc-wish-panel{max-height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;padding:13px 13px 10px!important;border-radius:19px!important}
-      .tcc-wish-head{min-height:36px!important;margin-bottom:5px!important}
+      .tcc-wish-backdrop{align-items:center!important;padding:8px 10px calc(8px + env(safe-area-inset-bottom))!important}
+      .tcc-wish-panel{width:100%!important;height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;max-height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;border-radius:20px!important}
+      .tcc-wish-head{min-height:56px!important;padding:10px 14px!important}
       .tcc-wish-head h2{font-size:23px!important}
-      .tcc-order-history-open{min-height:29px!important;padding:0 9px!important;font-size:9px!important}
-      .tcc-wish-close{flex-basis:32px!important;width:32px!important;height:32px!important}
-      .tcc-wish-row{gap:7px!important;padding:8px 0!important}
-      .tcc-wish-qty{gap:4px!important}
+      .tcc-cart-scroll{padding:0 14px 10px!important}
+      .tcc-wish-row{gap:7px!important;padding:11px 0!important}
       .tcc-wish-qty button{width:27px!important;height:27px!important}
-      .tcc-wish-edit{font-size:9px!important}
-      .tcc-wish-delete{width:24px!important;height:27px!important}
-      .tcc-wish-delete svg{width:14px!important;height:14px!important}
-      .tcc-wish-list{max-height:38dvh!important;overflow-y:auto!important;overscroll-behavior:contain!important}
-      .tcc-wish-actions{margin-top:7px!important;padding-top:8px!important}
-      .tcc-wish-actions>.tcc-wish-send{min-height:48px!important}
+      .tcc-cart-footer{gap:7px!important;padding:9px 14px calc(10px + env(safe-area-inset-bottom))!important}
+      .tcc-wish-actions>.tcc-wish-send{min-height:47px!important}
     }
     @media(max-width:360px){
+      .tcc-wish-head{padding-left:12px!important;padding-right:12px!important}
+      .tcc-cart-scroll{padding-left:12px!important;padding-right:12px!important}
       .tcc-wish-row{grid-template-columns:minmax(0,1fr) auto!important;gap:5px!important}
       .tcc-wish-row-price{gap:4px!important}
       .tcc-wish-qty button{width:25px!important;height:25px!important}
+      .tcc-cart-footer{padding-left:12px!important;padding-right:12px!important}
     }
 
   `;
@@ -475,6 +489,23 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   float.setAttribute('aria-label','Open cart');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
   backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Cart</h2><div class="tcc-wish-head-actions"><button type="button" class="tcc-order-history-open">Order History</button><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field tcc-wish-customer-field"><label for="tccCustomerName">Customer name <small>(Optional)</small></label><input id="tccCustomerName" type="text" maxlength="60" placeholder="Enter your name (optional)" autocomplete="name" /><label for="tccCustomerPhone">Mobile number <span>*</span></label><input id="tccCustomerPhone" type="tel" maxlength="15" inputmode="numeric" placeholder="Enter 10-digit mobile number" autocomplete="tel" required /></div><div class="tcc-wish-table-field tcc-table-picker-field"><label class="tcc-table-label">Select table <span>*</span></label><button type="button" class="tcc-table-picker-trigger"><span class="tcc-table-picker-caption">Choose your table</span><strong class="tcc-table-picker-value">Not selected</strong><span aria-hidden="true">⌄</span></button><small class="tcc-wish-table-error" role="alert"></small><div class="tcc-continuation-box" aria-live="polite" hidden></div></div><div class="tcc-table-picker-backdrop" aria-hidden="true"><section class="tcc-table-picker-panel" role="dialog" aria-modal="true" aria-labelledby="tccTablePickerTitle"><header><div><h3 id="tccTablePickerTitle">Choose Your Table</h3><small>Select your table from the café layout</small></div><button type="button" class="tcc-table-picker-close" aria-label="Close table selector">×</button></header><div class="tcc-table-groups" aria-label="Café floor plan table selector"><div class="tcc-table-options"><button type="button" data-table="S6">S6</button><button type="button" data-table="S5">S5</button><button type="button" data-table="S4">S4</button><button type="button" data-table="S3">S3</button><button type="button" data-table="S2">S2</button><button type="button" data-table="S1">S1</button><button type="button" data-table="C4">C4</button><button type="button" data-table="C3">C3</button><button type="button" data-table="C2">C2</button><button type="button" data-table="C1">C1</button><button type="button" data-table="P3">P3</button><button type="button" data-table="P2">P2</button><button type="button" data-table="P1">P1</button><button type="button" data-table="T1">T1</button><button type="button" data-table="T2">T2</button></div><div class="tcc-table-counter" aria-label="Counter">COUNTER</div><div class="tcc-table-entrance" aria-hidden="true">ENTRANCE</div></div></section></div><div class="tcc-wish-total"><span>Order subtotal</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Place Order</button><div class="tcc-wish-secondary-actions"><button type="button" class="tcc-wish-clear secondary">Clear Cart</button><button type="button" class="tcc-wish-continue">Continue browsing</button></div></div><p class="tcc-wish-hint">Your order will be sent directly to the TCC kitchen. You will receive an order reference after successful placement.</p></section>';
+  // Rebuild the cart into three stable zones: header, independently scrollable
+  // content, and a footer that never covers the table selector or form fields.
+  const cartPanel=backdrop.querySelector('.tcc-wish-panel');
+  const cartScroll=document.createElement('div');cartScroll.className='tcc-cart-scroll';
+  const cartFooter=document.createElement('div');cartFooter.className='tcc-cart-footer';
+  const cartList=cartPanel.querySelector('.tcc-wish-list');
+  const customerFields=cartPanel.querySelector('.tcc-wish-customer-field');
+  const tableFields=cartPanel.querySelector('.tcc-table-picker-field');
+  const tablePickerOverlay=cartPanel.querySelector('.tcc-table-picker-backdrop');
+  const cartTotal=cartPanel.querySelector('.tcc-wish-total');
+  const cartActions=cartPanel.querySelector('.tcc-wish-actions');
+  const cartHint=cartPanel.querySelector('.tcc-wish-hint');
+  [cartList,customerFields,tableFields].forEach(node=>node&&cartScroll.appendChild(node));
+  if(tablePickerOverlay)cartPanel.appendChild(tablePickerOverlay);
+  [cartTotal,cartActions,cartHint].forEach(node=>node&&cartFooter.appendChild(node));
+  cartPanel.append(cartScroll,cartFooter);
+
   const choice=document.createElement('div');choice.className='tcc-wish-choice';choice.setAttribute('aria-hidden','true');
   choice.innerHTML='<section class="tcc-wish-choice-panel" role="dialog" aria-modal="true" aria-labelledby="tccChoiceTitle"><header class="tcc-wish-choice-header"><div class="tcc-wish-choice-thumb"></div><div class="tcc-wish-choice-heading"><h3 id="tccChoiceTitle" class="tcc-wish-choice-title">Choose add-ons</h3><p>Select up to 3 add-ons · No Add-ons is also available</p></div><button type="button" class="tcc-wish-choice-close" aria-label="Close customisation">×</button></header><div class="tcc-wish-choice-body"><div class="tcc-wish-choice-section-title"><span>Choose your add-ons</span><small>Up to 3</small></div><div class="tcc-wish-addon-options"></div></div><footer class="tcc-wish-choice-footer"><div class="tcc-choice-qty"><button type="button" class="tcc-choice-minus" aria-label="Decrease quantity">−</button><strong class="tcc-choice-quantity">1</strong><button type="button" class="tcc-choice-plus" aria-label="Increase quantity">+</button></div><div class="tcc-wish-choice-actions"><button type="button" class="tcc-wish-choice-confirm">Add Item · ₹0</button><button type="button" class="tcc-wish-choice-cancel secondary">Cancel</button></div></footer></section>';
   document.body.append(float,backdrop,choice);
@@ -706,7 +737,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const noteInput=document.createElement('textarea');noteInput.className='tcc-wish-item-note';noteInput.placeholder='Add a note for the kitchen (optional)';noteInput.maxLength=180;noteInput.value=item.note||'';noteInput.hidden=!item.note?.trim();noteInput.setAttribute('aria-label','Optional kitchen note for '+item.name);
       noteToggle.addEventListener('click',()=>{noteInput.hidden=!noteInput.hidden;noteToggle.textContent=noteInput.hidden?(item.note?.trim()?'Edit note':'+ Add note'):'Hide note';noteToggle.setAttribute('aria-expanded',String(!noteInput.hidden));if(!noteInput.hidden)noteInput.focus();});
       noteInput.addEventListener('input',()=>{item.note=noteInput.value;save();});
-      info.append(noteToggle,noteInput);
+      itemOptions.append(noteToggle);
+      info.append(noteInput);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
       const amount=document.createElement('span');amount.className='tcc-wish-line-total';amount.textContent='';
