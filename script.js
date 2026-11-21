@@ -878,7 +878,6 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('#tccCustomerPhone').addEventListener('change',checkRecentOrders);
   backdrop.querySelector('#tccCustomerPhone').addEventListener('blur',checkRecentOrders);
   backdrop.querySelector('.tcc-order-history-open').addEventListener('click',openHistory);
-  document.querySelector('.tcc-mobile-track')?.addEventListener('click',()=>{openHistory();setTimeout(()=>lookupInput?.focus(),80);});
   document.querySelector('.tcc-mobile-history')?.addEventListener('click',()=>{openHistory();setTimeout(()=>historyPanel.querySelector('.tcc-order-history-subtitle')?.scrollIntoView({block:'start',behavior:'smooth'}),100);});
   historyPanel.querySelector('.tcc-order-history-close').addEventListener('click',closeHistory);
   historyPanel.querySelector('.tcc-order-history-new').addEventListener('click',()=>{closeHistory();backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');});
