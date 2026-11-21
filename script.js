@@ -440,7 +440,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-edit{padding:3px 2px!important;border:0!important;background:transparent!important;color:#927a43!important;font:700 10px Manrope,Arial,sans-serif!important}
     .tcc-wish-delete{display:grid!important;place-items:center!important;width:24px!important;height:28px!important;padding:3px!important;border:0!important;border-radius:6px!important;background:transparent!important;color:#9b746b!important}
     .tcc-wish-delete svg{display:block!important;width:15px!important;height:15px!important}
-    .tcc-wish-customer-field,.tcc-table-picker-field{display:grid!important;gap:6px!important;margin:15px 0 0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important}
+    .tcc-wish-customer-field,.tcc-table-picker-field{gap:6px!important;margin:15px 0 0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important}
     .tcc-wish-customer-field label,.tcc-table-picker-field>label{margin:0!important;color:#294637!important;font:750 11px Manrope,Arial,sans-serif!important}
     .tcc-wish-customer-field label small{color:#7e847b!important;font-weight:500!important}
     .tcc-wish-customer-field input{width:100%!important;min-height:42px!important;padding:9px 11px!important;border:1px solid rgba(23,60,43,.16)!important;border-radius:9px!important;background:#fff!important;color:#173c2b!important;font:500 13px Manrope,Arial,sans-serif!important;text-transform:none!important}
