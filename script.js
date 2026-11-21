@@ -442,6 +442,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(tableField){
       tableField.hidden=true;
       tableField.setAttribute('aria-hidden','true');
+      // The cart stylesheet sets display:grid on this field, which overrides
+      // the browser's default [hidden] display rule. Force it off explicitly.
+      tableField.style.setProperty('display','none','important');
       tableField.insertAdjacentElement('beforebegin',tableQrBanner);
     }
     tableQrBanner.textContent='Verifying your table QR…';
