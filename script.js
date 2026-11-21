@@ -437,11 +437,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   tableQrBanner.style.cssText='margin:8px 0;padding:10px 12px;border:1px solid rgba(23,60,43,.18);border-radius:10px;background:#f2f5ef;color:#173c2b;font:700 13px/1.4 Manrope,Arial,sans-serif;';
   if(tableQrToken){
     const tableField=backdrop.querySelector('.tcc-table-picker-field');
-    const trigger=tableField?.querySelector('.tcc-table-picker-trigger');
-    if(trigger)trigger.hidden=true;
-    const label=tableField?.querySelector('.tcc-table-label');
-    if(label)label.textContent='Your table';
-    tableField?.insertBefore(tableQrBanner,tableField.querySelector('.tcc-wish-table-error'));
+    // Hide the complete manual table-selection field, not only its button.
+    // Keep the verified QR status visible as a separate row in the cart.
+    if(tableField){
+      tableField.hidden=true;
+      tableField.setAttribute('aria-hidden','true');
+      tableField.insertAdjacentElement('beforebegin',tableQrBanner);
+    }
     tableQrBanner.textContent='Verifying your table QR…';
     const resolveTableQr=async()=>{
       try{
