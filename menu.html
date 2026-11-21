@@ -2415,6 +2415,10 @@ body.menu-text-mode .menu-group .m-photo-placeholder strong{
 .tcc-order-guide-content .tcc-order-guide-steps small{font-size:10px!important}
 .tcc-order-guide-content .tcc-order-guide-help{margin:10px 0 0!important;font-size:10px!important}
 @media(min-width:850px){.tcc-order-guide-content .tcc-order-guide-steps{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+
+/* Ordering instructions are visible only after the live store setting confirms ordering is ON. */
+.tcc-order-guide-wrap{display:none!important}
+body.tcc-ordering-enabled .tcc-order-guide-wrap{display:block!important}
 </style>
 <style id="tcc-category-end-nav-styles">
 /* TCC category-end navigation */
@@ -3698,7 +3702,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
   </div>
 </footer>
 <nav class="mobile-bar" aria-label="Quick actions"><a href="tel:+919059059553" aria-label="Call TCC">☎ Call</a><a class="accent" href="menu.html">☕ Menu</a><button type="button" class="tcc-mobile-track" aria-label="Track Order">⌕ Track</button><button type="button" class="tcc-mobile-history" aria-label="Order History">▤ Orders</button><a href="https://maps.app.goo.gl/LTdYTXNZPJU4qetv6?g_st=ac" target="_blank" rel="noopener" aria-label="Open TCC Map">⌖ Map</a><a href="https://search.google.com/local/writereview?placeid=ChIJRY3c3XnzTDoRMsXmWvt_FMg" target="_blank" rel="noopener" aria-label="Rate TCC on Google">★ Rate</a></nav>
-<script src="script.js?v=customer-order-guide-3"></script>
+<script src="script.js?v=customer-order-guide-4"></script>
 
 <script>
 /* TCC MENU EXPERIENCE ENHANCEMENTS v2 */
