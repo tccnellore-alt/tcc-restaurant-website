@@ -33,10 +33,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       source=[{name:"Extra Espresso Shot",price:50},...tccCoffeeAddonsByDrink[data.name].map(name=>({name,price}))];
     }else if(section.includes('rice bowls')&&data.name==='Emadazi'){
       source=[
-        {name:'Grilled Chicken',price:60},
-        {name:'Crispy Chicken',price:60},
+        {name:'Grilled Chicken',price:40},
+        {name:'Crispy Chicken',price:40},
         {name:'Mushroom',price:40},
-        {name:'Prawns',price:80}
+        {name:'Prawns',price:60}
       ];
     }else if(section.includes("pasta")){
       source=[...document.querySelectorAll('.pasta-addon-inline[aria-label="Pasta add-ons"] .addons-row>span')].map(el=>({name:clean(el.firstChild?.textContent||el.textContent),price:Number((el.querySelector('b')?.textContent.match(/[\d,]+/)||['0'])[0].replace(/,/g,''))}));
