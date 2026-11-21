@@ -343,6 +343,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .tcc-wish-row{padding:5px 0!important;gap:4px!important}
     .tcc-wish-item-info{gap:2px!important}
     .tcc-wish-item-info>strong{font-size:11px!important;line-height:1.15!important}
+    body.tcc-ordering-disabled .tcc-wish-float,body.tcc-ordering-disabled .tcc-wish-add,body.tcc-ordering-disabled .menu-lightbox-add-cart{display:none!important;}
     .tcc-wish-addon-line{display:block!important;font-size:9px!important;line-height:1.15!important;color:#788075!important}
     .tcc-wish-item-options{gap:7px!important;min-height:15px!important}
     .tcc-wish-fulfillment{padding:1px 4px!important;font-size:8px!important}
@@ -403,6 +404,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
 
   `;
   document.head.appendChild(style);
+  let tccCustomerOrderingEnabled=true;
+  const TCC_ORDERING_API='https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders';
+  const TCC_ORDERING_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A';
+  const applyTccOrderingState=enabled=>{tccCustomerOrderingEnabled=enabled!==false;document.body.classList.toggle('tcc-ordering-disabled',!tccCustomerOrderingEnabled);document.querySelectorAll('.tcc-wish-add,.menu-lightbox-add-cart').forEach(button=>{button.hidden=!tccCustomerOrderingEnabled;});if(!tccCustomerOrderingEnabled){document.querySelector('.tcc-wish-backdrop.is-open .tcc-wish-close')?.click();}};
+  const refreshTccOrderingState=async()=>{try{const response=await fetch(TCC_ORDERING_API+'?action=ordering-status',{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store'});if(!response.ok)throw new Error('Unable to check ordering status');const data=await response.json();applyTccOrderingState(data.enabled);}catch(error){console.warn('TCC ordering status check failed:',error);}};
+  refreshTccOrderingState();setInterval(refreshTccOrderingState,10000);
   const float=document.createElement('button');
   float.type='button';float.className='tcc-wish-float';float.innerHTML='<svg class="tcc-cart-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path></svg><span>Cart</span><span class="tcc-wish-count">0</span>';
   float.setAttribute('aria-label','Open cart');
@@ -676,9 +683,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       plus.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const options=addonOptions(card);if(options.length){openChoice(card,data,options);return;}const last=items.filter(x=>sameProduct(x,data)).slice(-1)[0];if(last){last.qty=(Number(last.qty)||1)+1;save();render();}else btn.click();});
       stepper.append(minus,qty,plus);
       const btn=document.createElement('button');
-      btn.type='button';btn.className='tcc-wish-add';
+      btn.type='button';btn.className='tcc-wish-add';btn.hidden=!tccCustomerOrderingEnabled;
       btn.addEventListener('click',event=>{
         event.preventDefault();event.stopPropagation();
+        if(!tccCustomerOrderingEnabled){alert('Online ordering is currently paused. Please ask our team for assistance.');return;}
         const options=addonOptions(card);
         if(options.length){openChoice(card,data,options);return;}
         animateProductToWishlist(card,data);
@@ -714,6 +722,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startWishlistButtons,{once:true});
   else startWishlistButtons();
   const open=()=>{
+    if(!tccCustomerOrderingEnabled)return;
     if(backdrop.classList.contains('is-open'))return;
     // Re-read saved cart data and rebuild rows every time the cart opens.
     // This prevents a blank/stale item list after returning to the menu.
@@ -791,6 +800,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
 
   let orderSubmissionBusy=false;
   backdrop.querySelector('.tcc-wish-send').addEventListener('click',async()=>{
+    if(!tccCustomerOrderingEnabled){backdrop.querySelector('.tcc-wish-table-error').textContent='Online ordering is currently paused. Please ask our team for assistance.';return;}
     if(orderSubmissionBusy||!items.length)return;
     const tableError=backdrop.querySelector('.tcc-wish-table-error');
     const normalizedPhone=customerPhone.replace(/\D/g,'').replace(/^91(?=\d{10}$)/,'');
