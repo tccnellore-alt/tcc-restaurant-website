@@ -422,7 +422,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   float.type='button';float.className='tcc-wish-float';float.innerHTML='<svg class="tcc-cart-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path></svg><span>Cart</span><span class="tcc-wish-count">0</span>';
   float.setAttribute('aria-label','Open cart');
   const backdrop=document.createElement('div');backdrop.className='tcc-wish-backdrop';backdrop.setAttribute('aria-hidden','true');
-  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Cart</h2><div class="tcc-wish-head-actions"><button type="button" class="tcc-order-history-open">Order History</button><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field tcc-wish-customer-field"><label for="tccCustomerName">Customer name <small>(Optional)</small></label><input id="tccCustomerName" type="text" maxlength="60" placeholder="Enter your name (optional)" autocomplete="name" /><label for="tccCustomerPhone">Mobile number <span>*</span></label><input id="tccCustomerPhone" type="tel" maxlength="15" inputmode="numeric" placeholder="Enter 10-digit mobile number" autocomplete="tel" required /></div><div class="tcc-wish-table-field tcc-table-picker-field"><label class="tcc-table-label">Select table <span>*</span></label><button type="button" class="tcc-table-picker-trigger"><span class="tcc-table-picker-caption">Choose your table</span><strong class="tcc-table-picker-value">Not selected</strong><span aria-hidden="true">⌄</span></button><small class="tcc-wish-table-error" role="alert"></small><div class="tcc-continuation-box" aria-live="polite" hidden></div></div><div class="tcc-table-picker-backdrop" aria-hidden="true"><section class="tcc-table-picker-panel" role="dialog" aria-modal="true" aria-labelledby="tccTablePickerTitle"><header><div><h3 id="tccTablePickerTitle">Choose Your Table</h3><small>Select your table from the café layout</small></div><button type="button" class="tcc-table-picker-close" aria-label="Close table selector">×</button></header><div class="tcc-table-groups" aria-label="Café floor plan table selector"><div class="tcc-table-options"><button type="button" data-table="S6">S6</button><button type="button" data-table="S5">S5</button><button type="button" data-table="S4">S4</button><button type="button" data-table="S3">S3</button><button type="button" data-table="S2">S2</button><button type="button" data-table="S1">S1</button><button type="button" data-table="C4">C4</button><button type="button" data-table="C3">C3</button><button type="button" data-table="C2">C2</button><button type="button" data-table="C1">C1</button><button type="button" data-table="P3">P3</button><button type="button" data-table="P2">P2</button><button type="button" data-table="P1">P1</button><button type="button" data-table="T1">T1</button><button type="button" data-table="T2">T2</button></div><div class="tcc-table-counter" aria-label="Counter">COUNTER</div><div class="tcc-table-entrance" aria-hidden="true">ENTRANCE</div></div></section></div><div class="tcc-wish-total"><span>Order subtotal</span><strong>₹0</strong></div><div class="tcc-wish-actions"><button type="button" class="tcc-wish-send">Place Order</button><div class="tcc-wish-secondary-actions"><button type="button" class="tcc-wish-clear secondary">Clear Cart</button><button type="button" class="tcc-wish-continue">Continue browsing</button></div></div><p class="tcc-wish-hint">Your order will be sent directly to the TCC kitchen. You will receive an order reference after successful placement.</p></section>';
+  backdrop.innerHTML='<section class="tcc-wish-panel" role="dialog" aria-modal="true" aria-labelledby="tccWishTitle"><div class="tcc-wish-head"><h2 id="tccWishTitle">Your Cart</h2><div class="tcc-wish-head-actions"><button type="button" class="tcc-order-history-open">Order History</button><button type="button" class="tcc-wish-close" aria-label="Close cart">×</button></div></div><div class="tcc-wish-list"></div><div class="tcc-wish-table-field tcc-wish-customer-field"><label for="tccCustomerName">Customer name <small>(Optional)</small></label><input id="tccCustomerName" type="text" maxlength="60" placeholder="Enter your name (optional)" autocomplete="name" /><label for="tccCustomerPhone">Mobile number <span>*</span></label><input id="tccCustomerPhone" type="tel" maxlength="15" inputmode="numeric" placeholder="Enter 10-digit mobile number" autocomplete="tel" required /></div><div class="tcc-wish-table-field tcc-table-picker-field"><label class="tcc-table-label">Select table <span>*</span></label><button type="button" class="tcc-table-picker-trigger"><span class="tcc-table-picker-caption">Choose your table</span><strong class="tcc-table-picker-value">Not selected</strong><span aria-hidden="true">⌄</span></button><small class="tcc-wish-table-error" role="alert"></small><div class="tcc-continuation-box" aria-live="polite" hidden></div></div><div class="tcc-table-picker-backdrop" aria-hidden="true"><section class="tcc-table-picker-panel" role="dialog" aria-modal="true" aria-labelledby="tccTablePickerTitle"><header><div><h3 id="tccTablePickerTitle">Choose Your Table</h3><small>Select your table from the café layout</small></div><button type="button" class="tcc-table-picker-close" aria-label="Close table selector">×</button></header><div class="tcc-table-groups" aria-label="Café floor plan table selector"><div class="tcc-table-options"><button type="button" data-table="S6">S6</button><button type="button" data-table="S5">S5</button><button type="button" data-table="S4">S4</button><button type="button" data-table="S3">S3</button><button type="button" data-table="S2">S2</button><button type="button" data-table="S1">S1</button><button type="button" data-table="C4">C4</button><button type="button" data-table="C3">C3</button><button type="button" data-table="C2">C2</button><button type="button" data-table="C1">C1</button><button type="button" data-table="P3">P3</button><button type="button" data-table="P2">P2</button><button type="button" data-table="P1">P1</button><button type="button" data-table="T1">T1</button><button type="button" data-table="T2">T2</button></div><div class="tcc-table-counter" aria-label="Counter">COUNTER</div><div class="tcc-table-entrance" aria-hidden="true">ENTRANCE</div></div></section></div><div class="tcc-wish-total"><span>Order subtotal</span><strong>₹0</strong></div><div class="tcc-wish-actions"></div><p class="tcc-wish-hint">Your order will be sent directly to the TCC kitchen. You will receive an order reference after successful placement.</p><div class="tcc-wish-sticky-order"><button type="button" class="tcc-wish-send">Place Order</button><div class="tcc-wish-secondary-actions"><button type="button" class="tcc-wish-clear secondary">Clear Cart</button><button type="button" class="tcc-wish-continue">Continue browsing</button></div></div></section>';
   const choice=document.createElement('div');choice.className='tcc-wish-choice';choice.setAttribute('aria-hidden','true');
   choice.innerHTML='<section class="tcc-wish-choice-panel" role="dialog" aria-modal="true" aria-labelledby="tccChoiceTitle"><header class="tcc-wish-choice-header"><div class="tcc-wish-choice-thumb"></div><div class="tcc-wish-choice-heading"><h3 id="tccChoiceTitle" class="tcc-wish-choice-title">Choose add-ons</h3><p>Select up to 3 add-ons · No Add-ons is also available</p></div><button type="button" class="tcc-wish-choice-close" aria-label="Close customisation">×</button></header><div class="tcc-wish-choice-body"><div class="tcc-wish-choice-section-title"><span>Choose your add-ons</span><small>Up to 3</small></div><div class="tcc-wish-addon-options"></div></div><footer class="tcc-wish-choice-footer"><div class="tcc-choice-qty"><button type="button" class="tcc-choice-minus" aria-label="Decrease quantity">−</button><strong class="tcc-choice-quantity">1</strong><button type="button" class="tcc-choice-plus" aria-label="Increase quantity">+</button></div><div class="tcc-wish-choice-actions"><button type="button" class="tcc-wish-choice-confirm">Add Item · ₹0</button><button type="button" class="tcc-wish-choice-cancel secondary">Cancel</button></div></footer></section>';
   document.body.append(float,backdrop,choice);
@@ -650,6 +650,39 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const fulfillment=document.createElement('label');fulfillment.className='tcc-wish-fulfillment';const fulfillmentInput=document.createElement('input');fulfillmentInput.type='checkbox';fulfillmentInput.checked=item.fulfillment_type==='takeaway'||(orderType==='takeaway');fulfillmentInput.setAttribute('aria-label','Pack '+item.name+' as takeaway (+₹10 each)');fulfillmentInput.addEventListener('change',()=>{item.fulfillment_type=fulfillmentInput.checked?'takeaway':'dine-in';save();render();});const fulfillmentText=document.createElement('span');fulfillmentText.textContent='Takeaway +₹10';fulfillment.append(fulfillmentInput,fulfillmentText);
       const itemOptions=document.createElement('div');itemOptions.className='tcc-wish-item-options';itemOptions.append(fulfillment);
       info.append(itemOptions);
+      const noteToggle=document.createElement('button');
+      noteToggle.type='button';
+      noteToggle.className='tcc-wish-note-toggle';
+      noteToggle.textContent=item.note?'Edit note':'＋ Add note';
+      noteToggle.setAttribute('aria-expanded',item.note?'true':'false');
+      const noteEditor=document.createElement('div');
+      noteEditor.className='tcc-wish-note-editor';
+      noteEditor.hidden=true;
+      const noteInput=document.createElement('textarea');
+      noteInput.className='tcc-wish-item-note';
+      noteInput.placeholder='Add a note for the kitchen…';
+      noteInput.maxLength=180;
+      noteInput.value=item.note||'';
+      noteInput.setAttribute('aria-label','Note for '+item.name);
+      const noteSave=document.createElement('button');
+      noteSave.type='button';
+      noteSave.className='tcc-wish-note-save';
+      noteSave.textContent='Save note';
+      noteSave.addEventListener('click',()=>{
+        item.note=noteInput.value.trim();
+        save();
+        noteEditor.hidden=true;
+        noteToggle.textContent=item.note?'Edit note':'＋ Add note';
+        noteToggle.setAttribute('aria-expanded','false');
+      });
+      noteEditor.append(noteInput,noteSave);
+      noteToggle.addEventListener('click',()=>{
+        noteEditor.hidden=!noteEditor.hidden;
+        noteToggle.textContent=noteEditor.hidden?(item.note?'Edit note':'＋ Add note'):'− Hide note';
+        noteToggle.setAttribute('aria-expanded',String(!noteEditor.hidden));
+        if(!noteEditor.hidden){noteInput.value=item.note||'';noteInput.focus();}
+      });
+      itemOptions.append(noteToggle);
       const price=document.createElement('div');price.className='tcc-wish-row-price';
       const unitPrice=item.price+(item.addons||[]).reduce((sum,x)=>sum+x.price,0);
       const amount=document.createElement('span');amount.className='tcc-wish-line-total';amount.textContent='';
@@ -660,9 +693,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       minus.addEventListener('click',()=>{item.qty=Math.max(1,(Number(item.qty)||1)-1);save();render()});
       plus.addEventListener('click',()=>{item.qty=(Number(item.qty)||1)+1;save();render()});
       qty.append(minus,qtyValue,plus);
-      if((item.addons||[]).length){const edit=document.createElement('button');edit.type='button';edit.className='tcc-wish-remove';edit.textContent='Edit';edit.addEventListener('click',()=>{const card=[...document.querySelectorAll('.m-item')].find(node=>sameProduct(item,getData(node)));if(card)openChoice(card,getData(card),addonOptions(card),item);});price.append(edit);}
-      const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.textContent='Remove';remove.setAttribute('aria-label','Remove '+item.name);remove.addEventListener('click',()=>{items=items.filter(x=>x!==item);save();render()});
-      price.append(amount,qty,remove);row.append(info,price);list.append(row);
+      if((item.addons||[]).length){const edit=document.createElement('button');edit.type='button';edit.className='tcc-wish-edit';edit.textContent='Edit';edit.setAttribute('aria-label','Edit add-ons for '+item.name);edit.addEventListener('click',()=>{const card=[...document.querySelectorAll('.m-item')].find(node=>sameProduct(item,getData(node)));if(card)openChoice(card,getData(card),addonOptions(card),item);});price.append(edit);}
+      const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m3 3v7m6-7v7"/></svg>';remove.setAttribute('aria-label','Remove '+item.name);remove.title='Remove '+item.name;remove.addEventListener('click',()=>{items=items.filter(x=>x!==item);save();render()});
+      price.append(amount,qty,remove);row.append(info,price,noteEditor);list.append(row);
     });
     // Always show the beginning of the cart after rebuilding it. The previous
     // scroll position could otherwise leave the first item half-hidden.
@@ -677,6 +710,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     totalBox.style.display='none';
     backdrop.querySelector('.tcc-wish-table-field').style.display=items.length?'block':'none';
     backdrop.querySelector('.tcc-wish-actions').style.display=items.length?'grid':'none';
+    backdrop.querySelector('.tcc-wish-sticky-order').style.display=items.length?'block':'none';
     backdrop.querySelector('.tcc-wish-continue').style.display=items.length?'block':'none';
     backdrop.querySelector('.tcc-table-options').hidden=false;
     backdrop.querySelector('.tcc-table-label').hidden=false;
@@ -844,7 +878,6 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   backdrop.querySelector('#tccCustomerPhone').addEventListener('change',checkRecentOrders);
   backdrop.querySelector('#tccCustomerPhone').addEventListener('blur',checkRecentOrders);
   backdrop.querySelector('.tcc-order-history-open').addEventListener('click',openHistory);
-  document.querySelector('.tcc-mobile-track')?.addEventListener('click',()=>{openHistory();setTimeout(()=>lookupInput?.focus(),80);});
   document.querySelector('.tcc-mobile-history')?.addEventListener('click',()=>{openHistory();setTimeout(()=>historyPanel.querySelector('.tcc-order-history-subtitle')?.scrollIntoView({block:'start',behavior:'smooth'}),100);});
   historyPanel.querySelector('.tcc-order-history-close').addEventListener('click',closeHistory);
   historyPanel.querySelector('.tcc-order-history-new').addEventListener('click',()=>{closeHistory();backdrop.classList.remove('is-open');backdrop.setAttribute('aria-hidden','true');});
@@ -897,4 +930,1065 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     finally{orderSubmissionBusy=false;sendButton.disabled=false;sendButton.textContent='Place Order';}
   });
   render();
+})();
+
+/* TCC PREMIUM CART TILES — text-only product cards in the forest-green / antique-gold identity */
+(function(){
+  if(!document.querySelector('.menu-page')) return;
+  const style=document.createElement('style');
+  style.id='tcc-premium-cart-tiles';
+  style.textContent=`
+    .tcc-wish-panel{
+      background:#fff9ed!important;
+      border:1px solid #c6a45b!important;
+      box-shadow:0 24px 72px rgba(3,18,11,.42),inset 0 0 0 1px rgba(255,255,255,.7)!important;
+    }
+    .tcc-wish-head{
+      margin:-16px -14px 13px!important;
+      padding:14px 14px 12px!important;
+      border:1px solid rgba(218,185,111,.62)!important;
+      border-radius:16px 16px 12px 12px!important;
+      background:linear-gradient(135deg,#17442f 0%,#0d2d20 100%)!important;
+      box-shadow:0 5px 16px rgba(12,39,26,.16)!important;
+    }
+    .tcc-wish-head h2{color:#fff5dc!important;font:700 25px/1.05 Georgia,serif!important;letter-spacing:.01em}
+    .tcc-wish-close{border:1px solid rgba(225,198,137,.7)!important;background:rgba(255,249,237,.08)!important;color:#fff5dc!important}
+    .tcc-order-history-open{border:1px solid rgba(225,198,137,.65)!important;background:#f5e8c9!important;color:#173c2b!important}
+    .tcc-wish-list{display:grid!important;gap:9px!important;padding:1px 1px 8px!important}
+    .tcc-wish-row{
+      position:relative!important;
+      display:grid!important;
+      grid-template-columns:minmax(0,1fr) auto!important;
+      align-items:center!important;
+      gap:8px 10px!important;
+      min-width:0!important;
+      margin:0!important;
+      padding:12px 11px!important;
+      border:1px solid rgba(211,177,102,.78)!important;
+      border-radius:14px!important;
+      background:linear-gradient(145deg,#17442f 0%,#103523 58%,#0c2b1e 100%)!important;
+      box-shadow:0 5px 13px rgba(10,35,23,.14),inset 0 1px 0 rgba(255,255,255,.07)!important;
+    }
+    .tcc-wish-row:before{
+      content:"";
+      position:absolute;left:11px;right:11px;top:0;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(238,211,151,.78),transparent);
+    }
+    .tcc-wish-item-info{gap:5px!important;min-width:0!important}
+    .tcc-wish-item-info>strong{
+      color:#fff5dc!important;
+      font:700 14px/1.28 Georgia,serif!important;
+      letter-spacing:.005em!important;
+      white-space:normal!important;
+      overflow:visible!important;
+      text-overflow:clip!important;
+    }
+    .tcc-wish-item-info .tcc-wish-addon-line{
+      margin:0!important;color:#e6d8b8!important;
+      font:500 10px/1.35 Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-item-options{display:flex!important;align-items:center!important;gap:9px!important;flex-wrap:wrap!important}
+    .tcc-wish-fulfillment{
+      display:inline-flex!important;align-items:center!important;gap:5px!important;
+      width:max-content!important;max-width:100%!important;margin:0!important;
+      padding:5px 8px!important;border:1px solid rgba(221,190,125,.38)!important;
+      border-radius:8px!important;background:rgba(255,248,229,.10)!important;
+      color:#f5e8c9!important;font:700 9px/1.2 Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-fulfillment input{width:14px!important;height:14px!important;min-height:14px!important;accent-color:#d7b66e!important}
+    .tcc-wish-note-toggle{
+      display:inline-flex!important;align-items:center!important;gap:4px!important;
+      margin:0!important;padding:5px 0!important;border:0!important;
+      background:transparent!important;color:#e5c477!important;
+      font:700 10px/1.2 Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-item-note{
+      min-height:34px!important;max-height:64px!important;margin-top:2px!important;
+      border:1px solid rgba(221,190,125,.55)!important;border-radius:8px!important;
+      background:#fff9ed!important;color:#173c2b!important;
+    }
+    .tcc-wish-row-price{
+      display:flex!important;align-items:center!important;justify-content:flex-end!important;
+      gap:6px!important;flex-wrap:nowrap!important;white-space:nowrap!important;
+    }
+    .tcc-wish-line-total{display:none!important}
+    .tcc-wish-qty{
+      display:inline-flex!important;align-items:center!important;gap:4px!important;
+      margin:0!important;padding:3px!important;border:1px solid rgba(224,195,133,.75)!important;
+      border-radius:999px!important;background:#fff5dc!important;color:#173c2b!important;
+    }
+    .tcc-wish-qty button{
+      display:grid!important;place-items:center!important;width:27px!important;height:27px!important;
+      min-width:27px!important;min-height:27px!important;padding:0!important;
+      border:0!important;border-radius:50%!important;background:#17442f!important;
+      color:#fff5dc!important;font:800 16px/1 Arial,sans-serif!important;
+    }
+    .tcc-wish-qty strong{min-width:15px!important;color:#173c2b!important;font:800 12px Manrope,Arial,sans-serif!important;text-align:center!important}
+    .tcc-wish-remove{
+      display:grid!important;place-items:center!important;flex:0 0 auto!important;
+      min-width:30px!important;min-height:30px!important;margin:0!important;padding:0 7px!important;
+      border:1px solid rgba(223,169,151,.35)!important;border-radius:8px!important;
+      background:rgba(164,65,54,.18)!important;color:#ffe0d8!important;
+      font:700 10px Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-remove[aria-label^="Remove"]{
+      width:30px!important;min-width:30px!important;padding:0!important;
+      font-size:0!important;
+    }
+    .tcc-wish-remove[aria-label^="Remove"]:before{content:"×";font:400 21px/1 Arial,sans-serif!important;color:#ffe0d8!important}
+    .tcc-wish-row-price .tcc-wish-remove:not([aria-label^="Remove"]){
+      min-width:34px!important;padding:0 8px!important;border-color:rgba(224,195,133,.48)!important;
+      background:rgba(239,213,160,.13)!important;color:#f4d58e!important;
+    }
+    .tcc-wish-customer-field,.tcc-wish-table-field:not(.tcc-wish-customer-field){
+      border:1px solid rgba(183,154,90,.48)!important;
+      border-radius:13px!important;background:#fffdf7!important;
+      box-shadow:0 3px 12px rgba(23,60,43,.045)!important;
+    }
+    .tcc-wish-customer-field input,.tcc-wish-table-picker-trigger{
+      border-color:rgba(23,60,43,.2)!important;background:#fff!important;border-radius:9px!important;
+    }
+    .tcc-wish-table-picker-trigger{border:1px solid #b99a59!important}
+    .tcc-wish-actions>.tcc-wish-send{
+      min-height:49px!important;border:1px solid #d8b96f!important;
+      border-radius:11px!important;
+      background:linear-gradient(135deg,#17442f,#0d2d20)!important;
+      color:#fff5dc!important;font:800 13px Manrope,Arial,sans-serif!important;
+      box-shadow:0 5px 14px rgba(12,45,29,.18)!important;
+    }
+    .tcc-wish-secondary-actions button{
+      border-color:rgba(23,60,43,.22)!important;border-radius:9px!important;
+      background:#fffdf7!important;color:#254b38!important;
+    }
+    .tcc-wish-panel .tcc-wish-hint{color:#777365!important}
+    @media(max-width:600px){
+      .tcc-wish-head{margin:-16px -14px 11px!important;padding:13px 13px 11px!important}
+      .tcc-wish-list{gap:8px!important;max-height:39dvh!important;overflow-y:auto!important}
+      .tcc-wish-row{padding:10px 9px!important;gap:7px 8px!important;border-radius:12px!important}
+      .tcc-wish-item-info>strong{font-size:13px!important}
+      .tcc-wish-item-info .tcc-wish-addon-line{font-size:9px!important}
+      .tcc-wish-fulfillment{padding:4px 6px!important;font-size:8px!important}
+      .tcc-wish-qty button{width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important}
+      .tcc-wish-remove{min-width:28px!important;min-height:28px!important}
+      .tcc-wish-remove[aria-label^="Remove"]{width:28px!important;min-width:28px!important}
+    }
+    @media(max-width:360px){
+      .tcc-wish-row{grid-template-columns:minmax(0,1fr) auto!important;gap:6px!important;padding:9px 8px!important}
+      .tcc-wish-row-price{gap:4px!important}
+      .tcc-wish-qty{gap:2px!important;padding:2px!important}
+      .tcc-wish-qty button{width:23px!important;height:23px!important;min-width:23px!important;min-height:23px!important}
+      .tcc-wish-remove[aria-label^="Remove"]{width:26px!important;min-width:26px!important}
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Cart tile title contrast fix: target the actual nested title-line markup. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-title-contrast-fix';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line > strong{
+      color:#fff5dc!important;
+      font:700 15px/1.3 Georgia,serif!important;
+      letter-spacing:.005em!important;
+      opacity:1!important;
+      text-shadow:0 1px 1px rgba(0,0,0,.16)!important;
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line > strong{
+        color:#fff5dc!important;
+        font-size:13px!important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* TCC cart tiles — lighter forest green and tighter mobile proportions. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-tile-compact-light-refinement';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-list{gap:7px!important}
+    .tcc-wish-panel .tcc-wish-row{
+      padding:9px 10px!important;
+      gap:6px 8px!important;
+      border-color:rgba(205,174,111,.82)!important;
+      border-radius:12px!important;
+      background:linear-gradient(145deg,#285b42 0%,#214f39 58%,#1b4532 100%)!important;
+      box-shadow:0 3px 9px rgba(10,35,23,.12),inset 0 1px 0 rgba(255,255,255,.10)!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:before{
+      left:10px!important;right:10px!important;
+      background:linear-gradient(90deg,transparent,rgba(246,224,174,.68),transparent)!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info{gap:4px!important}
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line > strong{
+      color:#fff7e6!important;
+      font-size:14px!important;
+      line-height:1.22!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info .tcc-wish-addon-line{
+      color:#f0e4ca!important;font-size:9px!important;line-height:1.25!important
+    }
+    .tcc-wish-panel .tcc-wish-fulfillment{
+      padding:4px 7px!important;
+      background:rgba(255,249,231,.13)!important;
+      border-color:rgba(240,218,169,.48)!important;
+      color:#fff2d5!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-toggle{padding:3px 0!important}
+    .tcc-wish-panel .tcc-wish-qty{padding:2px!important}
+    .tcc-wish-panel .tcc-wish-qty button{
+      width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]{
+      width:27px!important;min-width:27px!important;min-height:27px!important
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-list{gap:6px!important}
+      .tcc-wish-panel .tcc-wish-row{padding:8px 9px!important;gap:5px 7px!important}
+      .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line > strong{
+        font-size:12.5px!important;line-height:1.2!important
+      }
+      .tcc-wish-panel .tcc-wish-qty button{
+        width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important
+      }
+      .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]{
+        width:26px!important;min-width:26px!important;min-height:26px!important
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Note editor with explicit save action */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-note-save-button';
+  style.textContent=`
+    .tcc-wish-note-editor{display:flex;align-items:stretch;gap:7px;width:100%;margin-top:3px}
+    .tcc-wish-note-editor[hidden]{display:none!important}
+    .tcc-wish-note-editor .tcc-wish-item-note{flex:1 1 auto;min-width:0;min-height:38px;max-height:64px;margin:0!important;padding:8px 9px!important;resize:vertical}
+    .tcc-wish-note-save{flex:0 0 auto;min-width:66px;padding:0 10px;border:1px solid #d6b66b;border-radius:8px;background:#f3dfad;color:#173c2b;font:800 10px Manrope,Arial,sans-serif;cursor:pointer}
+    .tcc-wish-note-save:active{transform:scale(.97)}
+    @media(max-width:380px){.tcc-wish-note-editor{gap:5px}.tcc-wish-note-save{min-width:58px;padding:0 7px;font-size:9px}}
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Give the expanded note editor the full width of its product tile. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-note-editor-full-row';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-note-editor{
+      grid-column:1 / -1!important;
+      width:100%!important;
+      min-width:0!important;
+      box-sizing:border-box!important;
+      margin:2px 0 0!important;
+    }
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-note-editor .tcc-wish-item-note{
+      flex:1 1 auto!important;
+      width:100%!important;
+      min-width:0!important;
+      box-sizing:border-box!important;
+    }
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-note-editor .tcc-wish-note-save{
+      flex:0 0 auto!important;
+      min-width:76px!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Sticky Place Order action stays visible while cart content scrolls. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-sticky-place-order';
+  style.textContent=`
+    .tcc-wish-panel{position:relative!important;overflow-y:auto!important;overscroll-behavior:contain!important}
+    .tcc-wish-sticky-order{
+      position:sticky!important;
+      bottom:-16px!important;
+      z-index:20!important;
+      display:none;
+      margin:10px -14px -16px!important;
+      padding:10px 14px calc(10px + env(safe-area-inset-bottom))!important;
+      border-top:1px solid rgba(183,154,90,.35)!important;
+      background:linear-gradient(180deg,rgba(255,249,237,.94),#fff9ed 24%)!important;
+      box-shadow:0 -7px 18px rgba(23,60,43,.09)!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-send{
+      display:block!important;
+      width:100%!important;
+      min-height:50px!important;
+      margin:0!important;
+      border:1px solid #d8b96f!important;
+      border-radius:12px!important;
+      background:linear-gradient(135deg,#285b42,#17442f)!important;
+      color:#fff7e6!important;
+      font:800 14px Manrope,Arial,sans-serif!important;
+      box-shadow:0 4px 12px rgba(12,45,29,.20)!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-send:active{transform:translateY(1px)}
+    .tcc-wish-actions{margin-top:8px!important}
+    @media(max-width:600px){
+      .tcc-wish-sticky-order{
+        bottom:-16px!important;
+        margin:8px -14px -16px!important;
+        padding:9px 14px calc(9px + env(safe-area-inset-bottom))!important;
+      }
+      .tcc-wish-sticky-order .tcc-wish-send{min-height:48px!important}
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Keep all cart actions together in the sticky footer. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-sticky-all-actions';
+  style.textContent=`
+    .tcc-wish-sticky-order{display:none;gap:8px!important}
+    .tcc-wish-sticky-order .tcc-wish-secondary-actions{
+      display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;
+      width:100%!important;margin:0!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-secondary-actions button{
+      width:100%!important;min-height:40px!important;margin:0!important;
+      border:1px solid rgba(23,60,43,.22)!important;border-radius:10px!important;
+      background:#fffdf7!important;color:#254b38!important;
+      font:750 11px Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-send{order:0!important}
+    .tcc-wish-sticky-order .tcc-wish-secondary-actions{order:1!important}
+    .tcc-wish-actions{display:none!important}
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* TCC Heritage Green + Champagne Gold — premium matte cart finish */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-heritage-finish';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row{
+      position:relative!important;
+      overflow:hidden!important;
+      background-color:#244936!important;
+      background-image:
+        radial-gradient(ellipse at 82% 16%,rgba(218,197,145,.075),transparent 44%),
+        linear-gradient(118deg,rgba(255,255,255,.025),transparent 42%,rgba(5,24,15,.10))!important;
+      border:1px solid rgba(194,161,96,.78)!important;
+      border-radius:13px!important;
+      box-shadow:
+        0 3px 8px rgba(21,37,27,.12),
+        inset 0 1px 0 rgba(255,250,232,.09),
+        inset 0 -1px 0 rgba(8,29,18,.20)!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:before{
+      content:""!important;position:absolute!important;
+      left:12px!important;right:12px!important;top:0!important;height:1px!important;
+      background:linear-gradient(90deg,transparent,rgba(238,218,171,.52),transparent)!important;
+      pointer-events:none!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:after{
+      content:""!important;position:absolute!important;
+      width:130px!important;height:130px!important;right:-34px!important;top:-58px!important;
+      border-radius:50%!important;pointer-events:none!important;
+      background:radial-gradient(circle,rgba(220,201,157,.045),transparent 68%)!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info,
+    .tcc-wish-panel .tcc-wish-row-price{position:relative!important;z-index:1!important}
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line>strong{
+      color:#fff5df!important;
+      text-shadow:0 1px 1px rgba(0,0,0,.18)!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info .tcc-wish-addon-line{
+      color:#e4d8bd!important;
+    }
+    .tcc-wish-panel .tcc-wish-fulfillment{
+      background:rgba(244,235,213,.10)!important;
+      border:1px solid rgba(221,196,145,.42)!important;
+      color:#f5ead0!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-toggle{
+      color:#e9ca85!important;
+      text-shadow:0 1px 1px rgba(0,0,0,.14)!important;
+    }
+    .tcc-wish-panel .tcc-wish-qty{
+      background:#f8efd9!important;
+      border:1px solid rgba(205,177,117,.72)!important;
+      box-shadow:inset 0 1px 2px rgba(44,37,20,.08)!important;
+    }
+    .tcc-wish-panel .tcc-wish-qty button{
+      background:#28513d!important;
+      color:#fff5df!important;
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]{
+      background:rgba(245,235,214,.07)!important;
+      border:1px solid rgba(221,196,145,.46)!important;
+      color:#f7ead0!important;
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]:before{color:#f7ead0!important}
+    .tcc-wish-panel .tcc-wish-note-editor .tcc-wish-item-note{
+      border:1px solid rgba(194,161,96,.68)!important;
+      background:#fff9eb!important;color:#244432!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-save{
+      border:1px solid #c5a15b!important;
+      background:linear-gradient(180deg,#f5e5bd,#e9d19a)!important;
+      color:#244432!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-send{
+      background:linear-gradient(135deg,#28513d,#1e422f)!important;
+      border:1px solid #c8a65f!important;
+      box-shadow:0 4px 12px rgba(16,42,27,.18),inset 0 1px 0 rgba(255,255,255,.10)!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-secondary-actions button{
+      border:1px solid rgba(183,151,88,.55)!important;
+      background:#fffaf0!important;color:#294735!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Stronger TCC signature tile treatment: deep evergreen, double gold keyline, gold spine. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-signature-tile-treatment';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row{
+      position:relative!important;
+      isolation:isolate!important;
+      overflow:hidden!important;
+      padding-left:18px!important;
+      border:1px solid #c5a45f!important;
+      border-radius:14px!important;
+      background-color:#173b29!important;
+      background-image:
+        radial-gradient(ellipse at 18% 0%,rgba(117,151,105,.20),transparent 54%),
+        linear-gradient(112deg,#214b35 0%,#183d2b 48%,#102f20 100%),
+        repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0 1px,transparent 1px 4px)!important;
+      box-shadow:
+        0 5px 12px rgba(10,29,19,.19),
+        inset 0 1px 0 rgba(255,248,226,.16),
+        inset 0 -2px 0 rgba(5,24,15,.30),
+        inset 0 0 0 1px rgba(231,204,147,.13)!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:before{
+      content:""!important;
+      position:absolute!important;
+      inset:4px!important;
+      z-index:0!important;
+      width:auto!important;height:auto!important;
+      border:1px solid rgba(221,188,119,.48)!important;
+      border-radius:9px!important;
+      background:none!important;
+      pointer-events:none!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:after{
+      content:""!important;
+      position:absolute!important;
+      left:9px!important;top:15px!important;bottom:15px!important;
+      right:auto!important;width:3px!important;height:auto!important;
+      border-radius:99px!important;
+      background:linear-gradient(180deg,#f0d58d 0%,#c29b4e 50%,#f0d58d 100%)!important;
+      box-shadow:0 0 7px rgba(226,192,115,.22)!important;
+      pointer-events:none!important;
+    }
+    .tcc-wish-panel .tcc-wish-row>*{
+      position:relative!important;z-index:1!important;
+    }
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line>strong{
+      color:#fff4d9!important;
+      font-family:Georgia,serif!important;
+      font-weight:700!important;
+      letter-spacing:.01em!important;
+      text-shadow:0 1px 2px rgba(0,0,0,.28)!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info .tcc-wish-addon-line{
+      color:#dfd3b7!important;
+    }
+    .tcc-wish-panel .tcc-wish-fulfillment{
+      background:rgba(255,246,221,.09)!important;
+      border:1px solid rgba(224,197,142,.54)!important;
+      color:#f8edcf!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-toggle{
+      color:#f0d18a!important;
+      font-weight:800!important;
+    }
+    .tcc-wish-panel .tcc-wish-qty{
+      background:#fff4dc!important;
+      border:1px solid #d2b879!important;
+      box-shadow:0 2px 5px rgba(0,0,0,.16),inset 0 1px 0 #fff!important;
+    }
+    .tcc-wish-panel .tcc-wish-qty button{
+      background:#1c4932!important;
+      border:1px solid rgba(204,174,111,.45)!important;
+      color:#fff5dc!important;
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]{
+      background:rgba(255,244,220,.08)!important;
+      border:1px solid rgba(220,190,132,.68)!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]:before{
+      color:#fff1d1!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-editor{
+      position:relative!important;z-index:1!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-editor .tcc-wish-item-note{
+      border:1px solid #c7a65f!important;
+      background:#fff8e8!important;
+      color:#183b2a!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-save{
+      border:1px solid #b8944e!important;
+      background:linear-gradient(180deg,#f6e7c1,#e5c987)!important;
+      color:#173b29!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-send{
+      background:linear-gradient(112deg,#214b35 0%,#173b29 58%,#102f20 100%)!important;
+      border:1px solid #c8a65f!important;
+      box-shadow:0 5px 13px rgba(10,29,19,.20),inset 0 1px 0 rgba(255,248,226,.16)!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-secondary-actions button{
+      border:1px solid #c4a35e!important;
+      background:linear-gradient(180deg,#fff9eb,#f5e9ce)!important;
+      color:#173b29!important;
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-row{padding-left:16px!important}
+      .tcc-wish-panel .tcc-wish-row:after{left:8px!important;top:13px!important;bottom:13px!important}
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Cart checkout fields — consistent side insets and clean alignment */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-checkout-field-alignment';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-customer-field,
+    .tcc-wish-panel .tcc-table-picker-field{
+      display:grid!important;
+      grid-template-columns:minmax(0,1fr)!important;
+      align-items:stretch!important;
+      gap:7px!important;
+      width:100%!important;
+      box-sizing:border-box!important;
+      padding:13px 14px!important;
+      margin:0 0 10px!important;
+      border:1px solid rgba(181,151,91,.48)!important;
+      border-radius:15px!important;
+      background:linear-gradient(180deg,#fffdf7 0%,#fbf7ec 100%)!important;
+      box-shadow:0 2px 8px rgba(30,55,38,.045),inset 0 1px 0 rgba(255,255,255,.9)!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field label,
+    .tcc-wish-panel .tcc-table-picker-field>.tcc-table-label{
+      display:block!important;
+      width:100%!important;
+      margin:0!important;
+      padding:0 1px!important;
+      box-sizing:border-box!important;
+      color:#244432!important;
+      font:750 12px/1.35 Manrope,Arial,sans-serif!important;
+      text-align:left!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field input{
+      display:block!important;
+      width:100%!important;
+      min-width:0!important;
+      min-height:46px!important;
+      box-sizing:border-box!important;
+      margin:0 0 3px!important;
+      padding:10px 13px!important;
+      border:1px solid rgba(43,74,53,.20)!important;
+      border-radius:11px!important;
+      background:#fff!important;
+      color:#244432!important;
+      font:500 14px/1.3 Manrope,Arial,sans-serif!important;
+      box-shadow:inset 0 1px 2px rgba(27,48,34,.035)!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field input::placeholder{
+      color:#9a9b91!important;opacity:1!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field input:focus{
+      outline:none!important;
+      border-color:#b39455!important;
+      box-shadow:0 0 0 3px rgba(179,148,85,.13)!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-field{
+      gap:8px!important;
+      margin-top:0!important;
+      margin-bottom:12px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-trigger{
+      display:grid!important;
+      grid-template-columns:minmax(0,1fr) auto 38px!important;
+      align-items:center!important;
+      gap:10px!important;
+      width:100%!important;
+      min-width:0!important;
+      min-height:50px!important;
+      box-sizing:border-box!important;
+      margin:0!important;
+      padding:8px 9px 8px 13px!important;
+      border:1px solid #b99a59!important;
+      border-radius:11px!important;
+      background:#fffdf7!important;
+      text-align:left!important;
+      box-shadow:0 2px 5px rgba(36,68,50,.05)!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-caption{
+      min-width:0!important;
+      color:#666c60!important;
+      font:650 12px/1.3 Manrope,Arial,sans-serif!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-value{
+      color:#244432!important;
+      font:800 14px/1.2 Manrope,Arial,sans-serif!important;
+      white-space:nowrap!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-trigger>span:last-child{
+      display:grid!important;
+      place-items:center!important;
+      width:34px!important;height:34px!important;
+      border-radius:9px!important;
+      background:#214a35!important;color:#fff4dc!important;
+      font-size:17px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-field>.tcc-wish-table-error{
+      margin:0!important;padding:0 1px!important;
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-customer-field,
+      .tcc-wish-panel .tcc-table-picker-field{
+        padding:12px 13px!important;
+        border-radius:14px!important;
+      }
+      .tcc-wish-panel .tcc-wish-customer-field input{
+        min-height:45px!important;
+        font-size:13px!important;
+      }
+      .tcc-wish-panel .tcc-table-picker-trigger{
+        min-height:48px!important;
+        grid-template-columns:minmax(0,1fr) auto 36px!important;
+        gap:7px!important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Compact premium checkout fields — reduce vertical footprint without losing touch comfort. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-checkout-compact-refinement';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-customer-field,
+    .tcc-wish-panel .tcc-table-picker-field{
+      gap:5px!important;
+      padding:9px 11px!important;
+      margin:0 0 8px!important;
+      border-radius:12px!important;
+      box-shadow:0 1px 5px rgba(30,55,38,.035),inset 0 1px 0 rgba(255,255,255,.85)!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field label,
+    .tcc-wish-panel .tcc-table-picker-field>.tcc-table-label{
+      padding:0!important;
+      font-size:11px!important;
+      line-height:1.2!important;
+    }
+    .tcc-wish-panel .tcc-wish-customer-field input{
+      min-height:40px!important;
+      height:40px!important;
+      margin:0 0 2px!important;
+      padding:8px 11px!important;
+      border-radius:9px!important;
+      font-size:13px!important;
+      line-height:1.2!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-field{
+      gap:6px!important;
+      margin-bottom:9px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-trigger{
+      min-height:43px!important;
+      grid-template-columns:minmax(0,1fr) auto 32px!important;
+      gap:7px!important;
+      padding:6px 7px 6px 11px!important;
+      border-radius:9px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-caption{
+      font-size:11px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-value{
+      font-size:13px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-trigger>span:last-child{
+      width:29px!important;height:29px!important;
+      border-radius:8px!important;font-size:15px!important;
+    }
+    .tcc-wish-panel .tcc-table-picker-field>.tcc-wish-table-error{
+      font-size:10px!important;
+      line-height:1.2!important;
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-customer-field,
+      .tcc-wish-panel .tcc-table-picker-field{
+        padding:9px 10px!important;
+        border-radius:11px!important;
+      }
+      .tcc-wish-panel .tcc-wish-customer-field input{
+        min-height:40px!important;height:40px!important;
+        font-size:13px!important;
+      }
+      .tcc-wish-panel .tcc-table-picker-trigger{
+        min-height:43px!important;
+        grid-template-columns:minmax(0,1fr) auto 31px!important;
+        gap:6px!important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Alternating TCC cart tiles: muted sage-grey + dusty rose */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-alternating-sage-rose';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(odd){
+      background-color:#AEB9A8!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.04) 58%,rgba(63,76,59,.08))!important;
+      border-color:#8E9B83!important;
+      box-shadow:0 4px 10px rgba(39,52,39,.11),inset 0 1px 0 rgba(255,255,255,.52),inset 0 0 0 1px rgba(255,255,255,.16)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(even){
+      background-color:#D8B8A9!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.30),rgba(255,255,255,.05) 58%,rgba(105,65,48,.07))!important;
+      border-color:#BD947C!important;
+      box-shadow:0 4px 10px rgba(73,49,39,.10),inset 0 1px 0 rgba(255,255,255,.58),inset 0 0 0 1px rgba(255,255,255,.18)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:before{
+      border-color:rgba(116,88,54,.30)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:after{
+      background:linear-gradient(180deg,#d7b36e 0%,#a77a39 50%,#d7b36e 100%)!important;
+      box-shadow:0 0 5px rgba(116,82,39,.16)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line>strong{
+      color:#24392d!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.28)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-addon-line{
+      color:#514638!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-fulfillment{
+      background:rgba(255,250,239,.48)!important;
+      border-color:rgba(107,94,69,.42)!important;
+      color:#293d30!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-toggle{
+      color:#72502b!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.35)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-qty{
+      background:#fff8e9!important;
+      border-color:#b99a62!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]{
+      background:rgba(255,250,239,.38)!important;
+      border-color:rgba(92,76,57,.48)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]:before{
+      color:#3c382e!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-editor .tcc-wish-item-note{
+      background:#fffaf0!important;
+      border-color:#b99a62!important;
+      color:#263b2f!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* TCC cart palette option 1: slate blue + dusty terracotta */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-slate-blue-terracotta';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(odd){
+      background-color:#A9BBC7!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.30),rgba(255,255,255,.04) 58%,rgba(42,65,80,.08))!important;
+      border-color:#879EAD!important;
+      box-shadow:0 4px 10px rgba(39,52,61,.11),inset 0 1px 0 rgba(255,255,255,.58),inset 0 0 0 1px rgba(255,255,255,.18)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(even){
+      background-color:#C9917D!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.04) 58%,rgba(91,49,37,.08))!important;
+      border-color:#B47D69!important;
+      box-shadow:0 4px 10px rgba(73,49,39,.10),inset 0 1px 0 rgba(255,255,255,.54),inset 0 0 0 1px rgba(255,255,255,.17)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:before{
+      border-color:rgba(92,76,61,.32)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:after{
+      background:linear-gradient(180deg,#d9b875 0%,#a77b3e 50%,#d9b875 100%)!important;
+      box-shadow:0 0 5px rgba(116,82,39,.16)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line>strong{
+      color:#263A43!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.34)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-addon-line{
+      color:#4A4C48!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-fulfillment{
+      background:rgba(255,250,239,.52)!important;
+      border-color:rgba(87,83,72,.40)!important;
+      color:#293D3C!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-toggle{
+      color:#654B37!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.36)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-qty{
+      background:#FFF8E9!important;
+      border-color:#B99A62!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]{
+      background:rgba(255,250,239,.42)!important;
+      border-color:rgba(78,72,63,.48)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]:before{
+      color:#343A38!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-editor .tcc-wish-item-note{
+      background:#FFFAF0!important;
+      border-color:#B99A62!important;
+      color:#263B3B!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Lighter cart palette: powder blue + soft peach */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-light-powder-blue-peach';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(odd){
+      background-color:#DCE8EF!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 58%,rgba(78,111,132,.035))!important;
+      border-color:#B9CCD7!important;
+      box-shadow:0 3px 8px rgba(55,78,91,.075),inset 0 1px 0 rgba(255,255,255,.78),inset 0 0 0 1px rgba(255,255,255,.24)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(even){
+      background-color:#F3DDD2!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.56),rgba(255,255,255,.12) 58%,rgba(137,83,62,.035))!important;
+      border-color:#DDBEAF!important;
+      box-shadow:0 3px 8px rgba(95,65,52,.07),inset 0 1px 0 rgba(255,255,255,.80),inset 0 0 0 1px rgba(255,255,255,.24)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:before{
+      border-color:rgba(153,128,91,.24)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:after{
+      background:linear-gradient(180deg,#e1c98f 0%,#b99554 50%,#e1c98f 100%)!important;
+      box-shadow:0 0 4px rgba(116,82,39,.10)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line>strong{
+      color:#263B43!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.48)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-addon-line{
+      color:#59615F!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-fulfillment{
+      background:rgba(255,255,255,.54)!important;
+      border-color:rgba(112,119,112,.28)!important;
+      color:#31433D!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-toggle{
+      color:#76583D!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.48)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-qty{
+      background:#FFFCF3!important;
+      border-color:#D5C39D!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]{
+      background:rgba(255,255,255,.48)!important;
+      border-color:rgba(105,111,106,.34)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]:before{
+      color:#3C4844!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-editor .tcc-wish-item-note{
+      background:#FFFCF5!important;
+      border-color:#D5C39D!important;
+      color:#263B3B!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* TCC cart palette option 4: pale blue-grey + soft butter */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-bluegrey-softbutter';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(odd){
+      background-color:#D8E2E8!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.58),rgba(255,255,255,.14) 58%,rgba(70,94,108,.035))!important;
+      border-color:#BCCAD2!important;
+      box-shadow:0 3px 8px rgba(52,73,85,.065),inset 0 1px 0 rgba(255,255,255,.84),inset 0 0 0 1px rgba(255,255,255,.24)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(even){
+      background-color:#F0E5C9!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.60),rgba(255,255,255,.13) 58%,rgba(125,101,53,.035))!important;
+      border-color:#D9C89F!important;
+      box-shadow:0 3px 8px rgba(90,75,44,.06),inset 0 1px 0 rgba(255,255,255,.86),inset 0 0 0 1px rgba(255,255,255,.24)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:before{
+      border-color:rgba(153,128,91,.24)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:after{
+      background:linear-gradient(180deg,#e1c98f 0%,#b99554 50%,#e1c98f 100%)!important;
+      box-shadow:0 0 4px rgba(116,82,39,.10)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line>strong{
+      color:#263B43!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.48)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-addon-line{
+      color:#59615F!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-fulfillment{
+      background:rgba(255,255,255,.56)!important;
+      border-color:rgba(112,119,112,.28)!important;
+      color:#31433D!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-toggle{
+      color:#765F35!important;
+      text-shadow:0 1px 0 rgba(255,255,255,.48)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-qty{
+      background:#FFFCF3!important;
+      border-color:#D5C39D!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]{
+      background:rgba(255,255,255,.52)!important;
+      border-color:rgba(105,111,106,.34)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-remove[aria-label^="Remove"]:before{
+      color:#3C4844!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row .tcc-wish-note-editor .tcc-wish-item-note{
+      background:#FFFCF5!important;
+      border-color:#D5C39D!important;
+      color:#263B3B!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Cart action clarity: visible edit control and compact trash icon */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-edit-and-trash-controls';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-edit{
+      display:inline-flex!important;align-items:center!important;justify-content:center!important;
+      flex:0 0 auto!important;min-width:42px!important;height:34px!important;padding:0 9px!important;
+      border:1px solid #B99A62!important;border-radius:9px!important;
+      background:#FFF7E5!important;color:#244432!important;
+      font:800 11px/1 Manrope,Arial,sans-serif!important;
+      opacity:1!important;visibility:visible!important;
+      box-shadow:0 1px 3px rgba(45,52,39,.08)!important;
+    }
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-edit:active{transform:scale(.97)}
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove{
+      display:inline-flex!important;align-items:center!important;justify-content:center!important;
+      flex:0 0 34px!important;width:34px!important;min-width:34px!important;height:34px!important;
+      padding:0!important;border:1px solid rgba(99,103,91,.35)!important;border-radius:9px!important;
+      background:rgba(255,255,255,.68)!important;color:#39483F!important;
+      opacity:1!important;visibility:visible!important;
+    }
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove svg{
+      display:block!important;width:17px!important;height:17px!important;
+      fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;
+      stroke-linecap:round!important;stroke-linejoin:round!important;
+    }
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove:active{transform:scale(.95)}
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-row-price .tcc-wish-edit{min-width:40px!important;height:32px!important}
+      .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove{flex-basis:32px!important;width:32px!important;min-width:32px!important;height:32px!important}
+      .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove svg{width:16px!important;height:16px!important}
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Extra-light premium cart tiles: ice blue + porcelain ivory */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-extra-light-palette';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(odd){
+      background-color:#EEF5F8!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.28) 60%,rgba(91,122,140,.018))!important;
+      border-color:#D5E2E9!important;
+      box-shadow:0 2px 7px rgba(52,73,85,.045),inset 0 1px 0 rgba(255,255,255,.92),inset 0 0 0 1px rgba(255,255,255,.35)!important;
+    }
+    .tcc-wish-panel .tcc-wish-list>.tcc-wish-row:nth-child(even){
+      background-color:#FBF5E8!important;
+      background-image:linear-gradient(135deg,rgba(255,255,255,.82),rgba(255,255,255,.30) 60%,rgba(125,101,53,.018))!important;
+      border-color:#E9DEC5!important;
+      box-shadow:0 2px 7px rgba(90,75,44,.04),inset 0 1px 0 rgba(255,255,255,.94),inset 0 0 0 1px rgba(255,255,255,.36)!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+
+/* Trash icon only: suppress legacy remove-button X pseudo-element */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-trash-icon-only';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove[aria-label^="Remove"]:before{
+      content:none!important;
+      display:none!important;
+    }
+    .tcc-wish-panel .tcc-wish-row-price .tcc-wish-remove{
+      gap:0!important;
+      font-size:0!important;
+    }
+  `;
+  document.head.appendChild(style);
 })();
