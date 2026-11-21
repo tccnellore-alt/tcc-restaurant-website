@@ -31,6 +31,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     }else if(group?.id==='coffee'&&typeof tccCoffeeAddonsByDrink!=='undefined'&&tccCoffeeAddonsByDrink[data.name]){
       const price=typeof tccCoffeeAddonPrice!=='undefined'?Number(String(tccCoffeeAddonPrice).replace(/[^\d.]/g,''))||50:50;
       source=[{name:"Extra Espresso Shot",price:50},...tccCoffeeAddonsByDrink[data.name].map(name=>({name,price}))];
+    }else if(section.includes('rice bowls')&&data.name==='Emadazi'){
+      source=[
+        {name:'Grilled Chicken',price:60},
+        {name:'Crispy Chicken',price:60},
+        {name:'Mushroom',price:40},
+        {name:'Prawns',price:80}
+      ];
     }else if(section.includes("pasta")){
       source=[...document.querySelectorAll('.pasta-addon-inline[aria-label="Pasta add-ons"] .addons-row>span')].map(el=>({name:clean(el.firstChild?.textContent||el.textContent),price:Number((el.querySelector('b')?.textContent.match(/[\d,]+/)||['0'])[0].replace(/,/g,''))}));
     }else if(section.includes('pizza')){
@@ -572,11 +579,14 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const thumb=choice.querySelector('.tcc-wish-choice-thumb'),source=card.querySelector('.m-photo-wrap img,.m-photo,img');thumb.replaceChildren();
     if(source?.tagName==='IMG'&&(source.currentSrc||source.src)){const image=document.createElement('img');image.src=source.currentSrc||source.src;image.alt=data.name;thumb.append(image);}else thumb.textContent='☕';
     const singleChoice=data.name==='Hot Chocolate';
+    const maxAddons=data.name==='Emadazi'?4:3;
+    choice.querySelector('.tcc-wish-choice-heading p').textContent='Select up to '+maxAddons+' add-ons · No Add-ons is also available';
+    choice.querySelector('.tcc-wish-choice-section-title small').textContent='Up to '+maxAddons;
     let noneInput=null;
     if(!singleChoice){
       const none=document.createElement('label');noneInput=document.createElement('input');noneInput.type='radio';noneInput.name='tccWishNoAddon';noneInput.checked=!(editItem?.addons||[]).length;none.append(noneInput,document.createTextNode('No Add-ons'));wrap.append(none);
     }
-    options.forEach((opt,index)=>{const label=document.createElement('label'),input=document.createElement('input'),name=document.createElement('span'),price=document.createElement('span');input.type=singleChoice?'radio':'checkbox';if(singleChoice){input.name='tccHotChocolateOption';input.dataset.addonIndex=String(index);}input.value=String(index);input.checked=!!editItem&&(editItem.addons||[]).some(item=>item.name===opt.name);name.textContent=opt.name;price.className='tcc-addon-price';price.textContent='+'+money(opt.price);input.addEventListener('change',()=>{if(!singleChoice&&wrap.querySelectorAll('input[type="checkbox"]:checked').length>3)input.checked=false;if(singleChoice)noneInput.checked=false;else noneInput.checked=wrap.querySelectorAll('input[type="checkbox"]:checked').length===0;updateChoiceSummary();});label.append(input,name,price);wrap.append(label);});
+    options.forEach((opt,index)=>{const label=document.createElement('label'),input=document.createElement('input'),name=document.createElement('span'),price=document.createElement('span');input.type=singleChoice?'radio':'checkbox';if(singleChoice){input.name='tccHotChocolateOption';input.dataset.addonIndex=String(index);}input.value=String(index);input.checked=!!editItem&&(editItem.addons||[]).some(item=>item.name===opt.name);name.textContent=opt.name;price.className='tcc-addon-price';price.textContent='+'+money(opt.price);input.addEventListener('change',()=>{if(!singleChoice&&wrap.querySelectorAll('input[type="checkbox"]:checked').length>maxAddons)input.checked=false;if(singleChoice)noneInput.checked=false;else noneInput.checked=wrap.querySelectorAll('input[type="checkbox"]:checked').length===0;updateChoiceSummary();});label.append(input,name,price);wrap.append(label);});
     if(noneInput)noneInput.addEventListener('change',()=>{wrap.querySelectorAll('input[type="checkbox"],input[data-addon-index]').forEach(x=>x.checked=false);updateChoiceSummary();});
     choice.querySelector('.tcc-choice-minus').onclick=()=>{choiceQuantity=Math.max(1,choiceQuantity-1);updateChoiceSummary();};
     choice.querySelector('.tcc-choice-plus').onclick=()=>{choiceQuantity=Math.min(99,choiceQuantity+1);updateChoiceSummary();};
