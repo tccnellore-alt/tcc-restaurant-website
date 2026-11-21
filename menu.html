@@ -2976,7 +2976,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
       </article>
       <article class="m-item">
         <div class="m-item-info">
-          <h3>Classic Cold Coffee<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
+          <h3>TCC&#39;s Signature Cold Coffee<span class="tcc-bestseller-badge" role="img" aria-label="Best Seller"><span class="tcc-bestseller-crown" aria-hidden="true">♛</span><span class="tcc-bestseller-label">Best Seller</span></span></h3>
         </div>
         <strong>275</strong>
       </article>
@@ -3646,9 +3646,10 @@ body:not(.menu-text-mode) .menu-section .m-item{
           </div>
           <div class="m-list">
             <article class="m-item"><div><h3>Emadazi</h3></div><strong>279</strong></article>
-            <article class="m-item"><div><h3>Veggie Sun Rice</h3></div><strong>279</strong></article>
+            <article class="m-item" data-temporarily-hidden="true" hidden><div><h3>Veggie's &amp; Rice</h3></div><strong>279</strong></article>
           </div>
         </section>
+      </div>
       <div class="menu-group" id="desserts" data-group="Desserts">
         <section class="menu-section" data-group="Desserts">
           <h2>South Indian Favourites</h2>
@@ -3923,7 +3924,7 @@ const TCC_VERIFIED_PHOTOS = {
   "Chicken Pizzaiola": {url:"images/menu/optimized/chicken-pizzaiola-400.webp",large:"images/menu/optimized/chicken-pizzaiola-800.webp"},
   "Hearty Minestrone Soup": {url:"images/menu/optimized/hearty-minestrone-soup-400.webp",large:"images/menu/optimized/hearty-minestrone-soup-800.webp"},
   "Pesto Chicken Pizza": {url:"images/menu/optimized/pesto-chicken-pizza-400.webp",large:"images/menu/optimized/pesto-chicken-pizza-800.webp"},
-  "Classic Cold Coffee": {url:"images/menu/optimized/classic-cold-coffee-400.webp",large:"images/menu/optimized/classic-cold-coffee-800.webp"},
+  "TCC's Signature Cold Coffee": {url:"images/menu/optimized/classic-cold-coffee-400.webp",large:"images/menu/optimized/classic-cold-coffee-800.webp"},
 };
 function tccPexelsUrl(id){
   return 'https://images.pexels.com/photos/'+id+'/pexels-photo-'+id+'.jpeg?auto=compress&cs=tinysrgb&w=900';
@@ -4059,7 +4060,7 @@ const tccCoffeeAddonsByDrink = {
   "Iced Americano": [],
   "Iced Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
   "Iced Mocha": ["Chocolate Ice Cream"],
-  "Classic Cold Coffee": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
+  "TCC's Signature Cold Coffee": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
   "Spanish Iced Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream"]
 };
 const tccCoffeeAddonPrice = "50";
@@ -4484,7 +4485,7 @@ const tccDrinkProfiles={
  "Iced Americano":{mood:"coffee",sweetness:"none",temperature:"cold",flavours:["coffee"]},
  "Iced Latte":{mood:"coffee",sweetness:"light",temperature:"cold",flavours:["coffee","creamy"]},
  "Iced Mocha":{mood:"coffee",sweetness:"medium",temperature:"cold",flavours:["coffee","chocolate"]},
- "Classic Cold Coffee":{mood:"coffee",sweetness:"medium",temperature:"cold",flavours:["coffee","creamy"]},
+ "TCC's Signature Cold Coffee":{mood:"coffee",sweetness:"medium",temperature:"cold",flavours:["coffee","creamy"]},
  "Spanish Iced Latte":{mood:"coffee",sweetness:"sweet",temperature:"cold",flavours:["coffee","creamy"]},
  "Classic Cold Brew":{mood:"coffee",sweetness:"none",temperature:"cold",flavours:["coffee"]},
  "Coco Brew":{mood:"coffee",sweetness:"light",temperature:"cold",flavours:["coffee","creamy"]},
@@ -4957,6 +4958,7 @@ function filter(q){
         if(sec.hasAttribute("data-menu-paused")){sec.style.display="none";return;}
         let sectionFound=0;
         sec.querySelectorAll(".m-item").forEach(item=>{
+          if(item.dataset.temporarilyHidden==="true"){item.style.setProperty("display","none","important");return;}
           const matchesText=item.textContent.toLowerCase().includes(q);
           const matchesFoodFilters=!applyFilters(g)||itemPassesFoodFilters(item);
           const ok=matchesText&&matchesFoodFilters;
@@ -4977,6 +4979,7 @@ function filter(q){
       if(sec.hasAttribute("data-menu-paused")){sec.style.display="none";return;}
       let sectionFound=0;
       sec.querySelectorAll(".m-item").forEach(item=>{
+        if(item.dataset.temporarilyHidden==="true"){item.style.setProperty("display","none","important");return;}
         const ok=!applyFilters(active)||itemPassesFoodFilters(item);
         item.style.setProperty("display",ok?"flex":"none","important");
         if(ok)sectionFound++;
