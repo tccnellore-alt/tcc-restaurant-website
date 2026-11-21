@@ -4059,17 +4059,17 @@ function closeTccImageLightbox(){
 // only displays options approved for that drink.
 const tccCoffeeAddonsByDrink = {
   "Hot Chocolate": ["With Ice Cream","Without Ice Cream"],
-  "Espresso": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
-  "Hot Americano": [],
-  "Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
-  "Spanish Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
-  "Cappuccino": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
+  "Espresso": ["Extra Espresso Shot"],
+  "Hot Americano": ["Extra Espresso Shot"],
+  "Latte": ["Extra Espresso Shot","Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup"],
+  "Spanish Latte": ["Extra Espresso Shot"],
+  "Cappuccino": ["Extra Espresso Shot","Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey"],
   "Vietnamese Coffee": [],
-  "Iced Americano": [],
-  "Iced Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
-  "Iced Mocha": ["Chocolate Ice Cream"],
-  "TCC's Signature Cold Coffee": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream","Chocolate Ice Cream"],
-  "Spanish Iced Latte": ["Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup","Honey","Vanilla Ice Cream"]
+  "Iced Americano": ["Extra Espresso Shot"],
+  "Iced Latte": ["Extra Espresso Shot","Hazelnut Syrup","Caramel Syrup","Vanilla Syrup","Irish Syrup"],
+  "Iced Mocha": ["Extra Espresso Shot"],
+  "TCC's Signature Cold Coffee": [],
+  "Spanish Iced Latte": []
 };
 const tccCoffeeAddonPrice = "50";
 const tccCoffeeAddonQuantity = "30 ml";
@@ -4108,7 +4108,7 @@ document.addEventListener("click",event=>{
     const sectionName=section?.querySelector("h2")?.textContent.trim().toLowerCase()||"";
     const addonPanel=document.querySelector("[data-addon-panel] .addons-row");
     const isCoffeeSection=!!item?.closest("#coffee")&&(sectionName.includes("hot coffee")||sectionName.includes("cold coffee"));
-    const coffeeAddons=isCoffeeSection&&name!=="Hot Chocolate"&&tccCoffeeAddonsByDrink[name]?[tccExtraEspressoShot,...tccCoffeeAddonsByDrink[name]]:(isCoffeeSection?(tccCoffeeAddonsByDrink[name]||[]):[]);
+    const coffeeAddons=isCoffeeSection?(tccCoffeeAddonsByDrink[name]||[]):[];
     const hasCoffeeAddons=coffeeAddons.length>0;
     const hasPastaAddons=sectionName.includes("pasta")&&!!addonPanel;
     tccLightboxAddonsRow.replaceChildren();
