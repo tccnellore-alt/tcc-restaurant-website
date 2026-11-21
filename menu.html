@@ -3646,7 +3646,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
           </div>
           <div class="m-list">
             <article class="m-item"><div><h3>Emadazi</h3></div><strong>279</strong></article>
-            <article class="m-item"><div><h3>Veggie's &amp; Rice</h3></div><strong>279</strong></article>
+            <article class="m-item" data-temporarily-hidden="true" hidden><div><h3>Veggie's &amp; Rice</h3></div><strong>279</strong></article>
           </div>
         </section>
       <div class="menu-group" id="desserts" data-group="Desserts">
@@ -4957,6 +4957,7 @@ function filter(q){
         if(sec.hasAttribute("data-menu-paused")){sec.style.display="none";return;}
         let sectionFound=0;
         sec.querySelectorAll(".m-item").forEach(item=>{
+          if(item.dataset.temporarilyHidden==="true"){item.style.setProperty("display","none","important");return;}
           const matchesText=item.textContent.toLowerCase().includes(q);
           const matchesFoodFilters=!applyFilters(g)||itemPassesFoodFilters(item);
           const ok=matchesText&&matchesFoodFilters;
@@ -4977,6 +4978,7 @@ function filter(q){
       if(sec.hasAttribute("data-menu-paused")){sec.style.display="none";return;}
       let sectionFound=0;
       sec.querySelectorAll(".m-item").forEach(item=>{
+        if(item.dataset.temporarilyHidden==="true"){item.style.setProperty("display","none","important");return;}
         const ok=!applyFilters(active)||itemPassesFoodFilters(item);
         item.style.setProperty("display",ok?"flex":"none","important");
         if(ok)sectionFound++;
