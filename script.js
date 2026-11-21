@@ -1363,3 +1363,119 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* Stronger TCC signature tile treatment: deep evergreen, double gold keyline, gold spine. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-signature-tile-treatment';
+  style.textContent=`
+    .tcc-wish-panel .tcc-wish-row{
+      position:relative!important;
+      isolation:isolate!important;
+      overflow:hidden!important;
+      padding-left:18px!important;
+      border:1px solid #c5a45f!important;
+      border-radius:14px!important;
+      background-color:#173b29!important;
+      background-image:
+        radial-gradient(ellipse at 18% 0%,rgba(117,151,105,.20),transparent 54%),
+        linear-gradient(112deg,#214b35 0%,#183d2b 48%,#102f20 100%),
+        repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0 1px,transparent 1px 4px)!important;
+      box-shadow:
+        0 5px 12px rgba(10,29,19,.19),
+        inset 0 1px 0 rgba(255,248,226,.16),
+        inset 0 -2px 0 rgba(5,24,15,.30),
+        inset 0 0 0 1px rgba(231,204,147,.13)!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:before{
+      content:""!important;
+      position:absolute!important;
+      inset:4px!important;
+      z-index:0!important;
+      width:auto!important;height:auto!important;
+      border:1px solid rgba(221,188,119,.48)!important;
+      border-radius:9px!important;
+      background:none!important;
+      pointer-events:none!important;
+    }
+    .tcc-wish-panel .tcc-wish-row:after{
+      content:""!important;
+      position:absolute!important;
+      left:9px!important;top:15px!important;bottom:15px!important;
+      right:auto!important;width:3px!important;height:auto!important;
+      border-radius:99px!important;
+      background:linear-gradient(180deg,#f0d58d 0%,#c29b4e 50%,#f0d58d 100%)!important;
+      box-shadow:0 0 7px rgba(226,192,115,.22)!important;
+      pointer-events:none!important;
+    }
+    .tcc-wish-panel .tcc-wish-row>*{
+      position:relative!important;z-index:1!important;
+    }
+    .tcc-wish-panel .tcc-wish-row .tcc-wish-item-info .tcc-wish-title-line>strong{
+      color:#fff4d9!important;
+      font-family:Georgia,serif!important;
+      font-weight:700!important;
+      letter-spacing:.01em!important;
+      text-shadow:0 1px 2px rgba(0,0,0,.28)!important;
+    }
+    .tcc-wish-panel .tcc-wish-item-info .tcc-wish-addon-line{
+      color:#dfd3b7!important;
+    }
+    .tcc-wish-panel .tcc-wish-fulfillment{
+      background:rgba(255,246,221,.09)!important;
+      border:1px solid rgba(224,197,142,.54)!important;
+      color:#f8edcf!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-toggle{
+      color:#f0d18a!important;
+      font-weight:800!important;
+    }
+    .tcc-wish-panel .tcc-wish-qty{
+      background:#fff4dc!important;
+      border:1px solid #d2b879!important;
+      box-shadow:0 2px 5px rgba(0,0,0,.16),inset 0 1px 0 #fff!important;
+    }
+    .tcc-wish-panel .tcc-wish-qty button{
+      background:#1c4932!important;
+      border:1px solid rgba(204,174,111,.45)!important;
+      color:#fff5dc!important;
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]{
+      background:rgba(255,244,220,.08)!important;
+      border:1px solid rgba(220,190,132,.68)!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+    }
+    .tcc-wish-panel .tcc-wish-remove[aria-label^="Remove"]:before{
+      color:#fff1d1!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-editor{
+      position:relative!important;z-index:1!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-editor .tcc-wish-item-note{
+      border:1px solid #c7a65f!important;
+      background:#fff8e8!important;
+      color:#183b2a!important;
+    }
+    .tcc-wish-panel .tcc-wish-note-save{
+      border:1px solid #b8944e!important;
+      background:linear-gradient(180deg,#f6e7c1,#e5c987)!important;
+      color:#173b29!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-send{
+      background:linear-gradient(112deg,#214b35 0%,#173b29 58%,#102f20 100%)!important;
+      border:1px solid #c8a65f!important;
+      box-shadow:0 5px 13px rgba(10,29,19,.20),inset 0 1px 0 rgba(255,248,226,.16)!important;
+    }
+    .tcc-wish-sticky-order .tcc-wish-secondary-actions button{
+      border:1px solid #c4a35e!important;
+      background:linear-gradient(180deg,#fff9eb,#f5e9ce)!important;
+      color:#173b29!important;
+    }
+    @media(max-width:600px){
+      .tcc-wish-panel .tcc-wish-row{padding-left:16px!important}
+      .tcc-wish-panel .tcc-wish-row:after{left:8px!important;top:13px!important;bottom:13px!important}
+    }
+  `;
+  document.head.appendChild(style);
+})();
