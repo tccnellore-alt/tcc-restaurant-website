@@ -52,34 +52,6 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     .menu-page .m-item .tcc-wish-add.is-added{background:#173c2b!important;color:#fffaf0!important;border-color:#173c2b!important;min-width:0!important;padding-left:12px!important;padding-right:12px!important}
     .tcc-price-action-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;width:auto!important;min-width:0!important;min-height:40px!important;margin:6px 0 8px!important;box-sizing:border-box!important}
     .tcc-price-action-row{margin:3px 0 0!important}
-    /* Keep price and quantity controls inside narrow two-column product cards. */
-    @media(max-width:600px){
-      .menu-page .m-item .tcc-price-action-row{
-        display:flex!important;align-items:center!important;justify-content:space-between!important;
-        width:100%!important;max-width:100%!important;gap:5px!important;min-width:0!important;
-        box-sizing:border-box!important;overflow:visible!important;
-      }
-      .menu-page .m-item .tcc-price-action-row > strong{
-        flex:0 0 44px!important;width:44px!important;min-width:44px!important;
-      }
-      .menu-page .m-item .tcc-price-action-row .tcc-menu-qty{
-        flex:0 1 auto!important;min-width:0!important;max-width:calc(100% - 49px)!important;
-        gap:3px!important;margin:0!important;padding:2px!important;
-      }
-      .menu-page .m-item .tcc-price-action-row .tcc-menu-qty button{
-        flex:0 0 23px!important;width:23px!important;min-width:23px!important;
-        height:23px!important;min-height:23px!important;
-      }
-      .menu-page .m-item .tcc-price-action-row .tcc-menu-qty span{
-        flex:0 0 16px!important;min-width:16px!important;
-      }
-      .menu-page .m-item .tcc-price-action-row .tcc-menu-qty:has(.tcc-wish-add:not([hidden])){
-        max-width:calc(100% - 49px)!important;
-      }
-      .menu-page .m-item .tcc-price-action-row .tcc-menu-qty:has(.tcc-wish-add:not([hidden])) .tcc-wish-add{
-        max-width:100%!important;margin:0!important;padding:0 8px!important;font-size:10px!important;
-      }
-    }
     body:not(.menu-text-mode) .menu-page .m-item-info{padding-bottom:3px!important}
     .tcc-price-action-row > strong{display:inline-flex!important;align-items:center!important;justify-content:center!important;align-self:center!important;flex:0 0 48px!important;width:50px!important;height:40px!important;min-height:40px!important;margin:0!important;padding:0!important;border-radius:999px!important;font-size:20px!important;line-height:1!important;box-sizing:border-box!important}
     .tcc-price-action-row .tcc-menu-qty{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;min-height:36px!important;margin:0 12px 0 0!important;padding:2px 4px!important;border:1px solid rgba(23,60,43,.18)!important;border-radius:999px!important;background:#f5f0e5!important;color:#173c2b!important;box-sizing:border-box!important}
