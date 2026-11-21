@@ -30,8 +30,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       source=[{name:'With Ice Cream',price:0},{name:'Without Ice Cream',price:0}];
     }else if(group?.id==='coffee'&&typeof tccCoffeeAddonsByDrink!=='undefined'&&tccCoffeeAddonsByDrink[data.name]){
       const price=typeof tccCoffeeAddonPrice!=='undefined'?Number(String(tccCoffeeAddonPrice).replace(/[^\d.]/g,''))||50:50;
-      source=tccCoffeeAddonsByDrink[data.name].map(name=>({name,price}));
-      source.push({name:"Extra Espresso Shot",price:50});
+      source=[{name:"Extra Espresso Shot",price:50},...tccCoffeeAddonsByDrink[data.name].map(name=>({name,price}))];
     else if(section.includes("pasta")){
       source=[...document.querySelectorAll('.pasta-addon-inline[aria-label="Pasta add-ons"] .addons-row>span')].map(el=>({name:clean(el.firstChild?.textContent||el.textContent),price:Number((el.querySelector('b')?.textContent.match(/[\d,]+/)||['0'])[0].replace(/,/g,''))}));
     }else if(section.includes('pizza')){
