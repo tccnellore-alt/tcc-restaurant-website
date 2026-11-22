@@ -5,7 +5,7 @@ if(!QR||!/^[A-Za-z0-9_-]{40,80}$/.test(QR))return;
 const API="https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-game";
 const KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A";
 const STORE="tccPerfect10SessionV1";
-let game=null,startedAt=0,frame=0,running=false;
+let game=null,startedAt=0,frame=0,running=false,displayedElapsedMs=0;
 async function request(action,{method="GET",body}={}){const r=await fetch(API+"?action="+encodeURIComponent(action),{method,headers:{apikey:KEY,Authorization:"Bearer "+KEY,"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined,cache:"no-store"});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||"Perfect 10 is temporarily unavailable.");return data;}
 const format=ms=>(Math.max(0,ms)/1000).toFixed(2);
 function mountEntry(){
@@ -36,11 +36,12 @@ function renderState(){
  if(remaining===0){button.disabled=true;button.textContent="NO ATTEMPTS LEFT";feedback.textContent="Thank you for playing. Enjoy your time at TCC!";return;}
  button.disabled=false;button.textContent="START ATTEMPT";feedback.textContent="Ready when you are.";
 }
-function tick(){if(!running)return;const elapsed=performance.now()-startedAt;document.getElementById("tccP10Clock").textContent=format(elapsed);frame=requestAnimationFrame(tick);}
+function tick(){if(!running)return;const elapsed=performance.now()-startedAt;displayedElapsedMs=Math.round(elapsed/10)*10;document.getElementById("tccP10Clock").textContent=format(displayedElapsedMs);frame=requestAnimationFrame(tick);}
 async function toggleAttempt(){
  const button=document.getElementById("tccP10Start"),feedback=document.getElementById("tccP10Feedback");
- if(!running){running=true;startedAt=performance.now();button.textContent="STOP";feedback.textContent="Tap STOP when you think it is 10.00.";tick();return;}
- running=false;cancelAnimationFrame(frame);const elapsed=Math.round(performance.now()-startedAt);
+ if(!running){running=true;startedAt=performance.now();displayedElapsedMs=0;button.textContent="STOP";feedback.textContent="Tap STOP when you think it is 10.00.";tick();return;}
+ // Freeze and submit the exact value already visible on screen. Do not recalculate on click.
+ running=false;cancelAnimationFrame(frame);const elapsed=displayedElapsedMs;
  button.disabled=true;button.textContent="CHECKING…";feedback.textContent="Checking your attempt…";
  try{
   const result=await request("game-attempt",{method:"POST",body:{session_token:game.session_token,elapsed_ms:elapsed}});
