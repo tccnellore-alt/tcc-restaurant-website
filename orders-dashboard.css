@@ -196,3 +196,10 @@
 .actions .restore-order{grid-column:1/-1;justify-self:start;border-color:#cbdccf;background:#edf5ee;color:#245b37}
 @media(max-width:900px){.actions{grid-template-columns:minmax(0,1fr) auto}.actions .primary-action{grid-column:1/-1}.actions .edit-products-action{justify-self:start}.actions .delete-order{justify-self:end}}
 @media(max-width:480px){.actions{grid-template-columns:1fr 1fr;gap:8px}.actions .edit-products-action,.actions .delete-order{width:100%;justify-self:stretch}.actions .primary-action{min-height:52px}.accept-copy strong{font-size:13px}.accept-copy small{font-size:9px}}
+
+/* Make product quantities unmistakable on order cards */
+.order-item-heading{display:flex;align-items:flex-start;flex-wrap:wrap;gap:8px;min-width:0}
+.order-item-quantity{display:inline-flex;flex:0 0 auto;align-items:center;justify-content:center;min-width:42px;padding:4px 9px;border:1px solid #b7cbb8;border-radius:8px;background:#e6f1e6;color:#174c2e;font-size:14px;font-weight:900;line-height:1.2;letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.order-item-description{min-width:0;flex:1 1 130px;font-weight:800}
+@media(min-width:900px){.order-item-quantity{min-width:48px;padding:5px 10px;font-size:15px}}
+@media(max-width:520px){.order-item-heading{gap:7px}.order-item-quantity{min-width:40px;padding:4px 8px;font-size:13px}}
