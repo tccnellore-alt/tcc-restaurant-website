@@ -59,9 +59,26 @@ async function editOrderProducts(order){
 }
 
 
-/* Desktop sidebar collapse/expand preference */
+/* Responsive sidebar: desktop collapse + mobile slide-out navigation */
 (()=>{
  const dashboard=$("#dashboardView"),toggle=$("#sidebarCollapseToggle"),key="tccOrderDeskSidebarCollapsedV1";
+ const mobileToggle=$("#mobileNavToggle"),backdrop=$("#mobileNavBackdrop"),sidebar=$("#deskSidebar");
+ const closeMobile=()=>{
+  dashboard.classList.remove("mobile-nav-open");document.body.classList.remove("mobile-nav-lock");
+  mobileToggle?.setAttribute("aria-expanded","false");mobileToggle?.setAttribute("aria-label","Open navigation");
+  if(mobileToggle)mobileToggle.textContent="☰";
+ };
+ const openMobile=()=>{
+  dashboard.classList.add("mobile-nav-open");document.body.classList.add("mobile-nav-lock");
+  mobileToggle?.setAttribute("aria-expanded","true");mobileToggle?.setAttribute("aria-label","Close navigation");
+  if(mobileToggle)mobileToggle.textContent="✕";
+ };
+ mobileToggle?.addEventListener("click",()=>dashboard.classList.contains("mobile-nav-open")?closeMobile():openMobile());
+ backdrop?.addEventListener("click",closeMobile);
+ sidebar?.addEventListener("click",e=>{if(e.target.closest("a,button"))closeMobile();});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMobile();});
+ window.addEventListener("resize",()=>{if(window.innerWidth>900)closeMobile();});
+ if(!dashboard||!toggle)return;
  if(!dashboard||!toggle)return;
  const links=[...document.querySelectorAll(".sidebar-nav .sidebar-link")];
  links.forEach(link=>{const label=link.querySelector("span:not(.sidebar-icon)");if(label)link.title=label.textContent.trim();});
