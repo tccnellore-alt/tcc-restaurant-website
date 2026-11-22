@@ -436,3 +436,9 @@
  .order-item-quantity{min-width:38px;padding:4px 7px}
  .order-item>strong{font-size:12px}
 }
+
+
+/* Order Desk: show three order tiles per row on desktop-sized screens. */
+@media(min-width:1100px){
+ .orders{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+}
