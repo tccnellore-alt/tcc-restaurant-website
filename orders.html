@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow">
-<title>TCC Order Desk</title><link rel="stylesheet" href="orders-dashboard.css?v=order-type-badges-main-1">
+<title>TCC Order Desk</title><link rel="stylesheet" href="orders-dashboard.css?v=desktop-operations-redesign-1">
 </head>
 <body>
 <main class="shell">
@@ -17,7 +17,21 @@
     </form>
   </section>
   <section class="dashboard" id="dashboardView" hidden>
-    <header class="topbar"><div><p class="eyebrow">TCC · RECEPTION</p><h1>Order Desk</h1><p class="muted" id="lastUpdated">Waiting for orders…</p></div><div class="topbar-actions"><button class="quiet sound-toggle" id="enableAlertsButton" type="button" role="switch" aria-checked="true" aria-label="Sound alerts"><span class="sound-toggle-track" aria-hidden="true"><span></span></span><span class="sound-toggle-label">Sound alerts: On</span></button><a class="quiet" href="table-qr-admin.html" style="text-decoration:none;display:inline-flex;align-items:center;padding:10px 13px;border-radius:9px">Table QR Codes</a><button class="quiet" id="logoutButton">Log out</button></div></header>
+    <aside class="desk-sidebar" aria-label="Order Desk navigation">
+      <a class="sidebar-brand" href="orders.html" aria-label="TCC Order Desk home"><span class="sidebar-brand-mark">TCC</span><strong>The Coffee Club</strong><small>NELLORE</small></a>
+      <p class="sidebar-caption">OPERATIONS</p>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link active" href="orders.html" aria-current="page"><span class="sidebar-icon">▣</span><span>New Orders</span><b id="sidebarNewCount">0</b></a>
+        <a class="sidebar-link" href="orders-reports.html"><span class="sidebar-icon">▥</span><span>Reports &amp; Analytics</span></a>
+        <a class="sidebar-link" href="customers.html"><span class="sidebar-icon">♙</span><span>Customer Management</span></a>
+        <a class="sidebar-link" href="table-qr-admin.html"><span class="sidebar-icon">▦</span><span>Table QR Codes</span></a>
+        <button class="sidebar-link" id="sidebarTrashButton" type="button"><span class="sidebar-icon">▤</span><span>Trash / Restore</span></button>
+        <button class="sidebar-link" id="sidebarPreferencesButton" type="button"><span class="sidebar-icon">⚙</span><span>Preferences</span></button>
+      </nav>
+      <div class="sidebar-bottom"><span class="sidebar-live"><i></i> Live order updates</span><button id="sidebarLogoutButton" type="button">Log out</button></div>
+    </aside>
+    <div class="desk-main">
+    <header class="topbar"><div><p class="eyebrow">TCC · RECEPTION</p><h1>Order Desk</h1><p class="muted" id="lastUpdated">Waiting for orders…</p></div><div class="topbar-actions"><span class="live-status"><i></i> LIVE · 4 SEC REFRESH</span><button class="quiet sound-toggle" id="enableAlertsButton" type="button" role="switch" aria-checked="true" aria-label="Sound alerts"><span class="sound-toggle-track" aria-hidden="true"><span></span></span><span class="sound-toggle-label">Sound alerts: On</span></button><button class="quiet" id="refreshButton" type="button">↻ Refresh</button></div></header>
     <section class="stats workflow-stages" id="stats" aria-label="Order workflow">
       <button class="stat-tile stage-new selected" type="button" data-quick-filter="new"><span>New</span><strong id="newCount">0</strong><small>Incoming QR orders</small></button>
       <button class="stat-tile stage-preparing" type="button" data-quick-filter="in-progress"><span>Accepted &amp; Preparing</span><strong id="progressCount">0</strong><small>Accepted · Entered in billing app · KOT sent</small></button>
@@ -37,12 +51,13 @@
     <div class="quick-search"><label for="orderSearch">Find an order</label><input id="orderSearch" type="search" placeholder="Search order ID, customer or mobile"><button class="quiet" id="clearFiltersButton" type="button">Clear filters</button></div>
     <div class="toolbar"><div class="filters" id="filters">
       <button class="filter active" data-status="all">All orders</button><button class="filter" data-status="new">New</button><button class="filter" data-status="preparing">Preparing</button><button class="filter" data-status="ready">Ready</button><button class="filter" data-status="completed">Completed</button><button class="filter" data-status="cancelled">Cancelled</button>
-    </div><div class="order-view-actions"><button class="quiet" id="trashViewButton" type="button">🗑 Trash / Restore</button><button class="quiet" id="refreshButton">Refresh</button></div></div>
-    <p class="reports-shortcut"><span>Need sales trends, product performance or exports?</span><a href="orders-reports.html">Open Reports →</a></p><p class="reports-shortcut"><span>Customer directory, repeat visits and billing history</span><a href="customers.html">Open Customers →</a></p><p class="results-summary" id="resultsSummary">Showing today's orders</p>
+    </div></div>
+    <p class="results-summary" id="resultsSummary">Showing today's orders</p>
     <p class="error" id="dashboardError" role="alert"></p>
     <section class="orders" id="ordersList" aria-live="polite"><p class="empty">Loading orders…</p></section>
-    <footer>Orders refresh automatically every 4 seconds. Use the tiles above to jump to an order queue.</footer>
+    <footer>Orders refresh automatically every 4 seconds. Select a workflow tile to jump to its queue.</footer>
+    </div>
   </section>
 </main>
-<script src="orders-dashboard.js?v=acceptance-only-delay-alerts-main-1"></script>
+<script src="orders-dashboard.js?v=desktop-operations-redesign-1"></script>
 </body></html>
