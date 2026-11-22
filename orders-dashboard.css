@@ -442,3 +442,32 @@
 @media(min-width:1100px){
  .orders{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
 }
+
+
+/* Collapsible desktop navigation rail */
+@media(min-width:901px){
+ .dashboard{transition:grid-template-columns .22s ease}
+ .desk-sidebar{position:sticky;transition:padding .22s ease}
+ .sidebar-collapse-toggle{position:absolute;top:13px;right:12px;z-index:2;display:grid;place-items:center;width:30px;height:30px;border:1px solid rgba(237,221,181,.28);border-radius:9px;background:rgba(255,255,255,.08);color:#f8f2e5;font-size:22px;line-height:1;cursor:pointer}
+ .sidebar-collapse-toggle:hover{background:rgba(255,255,255,.16)}
+ .sidebar-brand{padding-top:34px}
+ .dashboard.sidebar-collapsed{grid-template-columns:78px minmax(0,1fr)}
+ .dashboard.sidebar-collapsed .desk-sidebar{padding:52px 9px 16px}
+ .dashboard.sidebar-collapsed .sidebar-collapse-toggle{right:24px}
+ .dashboard.sidebar-collapsed .sidebar-collapse-toggle span{transform:rotate(180deg)}
+ .dashboard.sidebar-collapsed .sidebar-brand{gap:0;padding:8px 0 17px}
+ .dashboard.sidebar-collapsed .sidebar-brand-mark{width:46px;height:46px;border-radius:13px;font-size:19px}
+ .dashboard.sidebar-collapsed .sidebar-brand strong,
+ .dashboard.sidebar-collapsed .sidebar-brand small,
+ .dashboard.sidebar-collapsed .sidebar-caption,
+ .dashboard.sidebar-collapsed .sidebar-link>span:not(.sidebar-icon),
+ .dashboard.sidebar-collapsed .sidebar-live{display:none}
+ .dashboard.sidebar-collapsed .sidebar-nav{gap:8px}
+ .dashboard.sidebar-collapsed .sidebar-link{position:relative;justify-content:center;gap:0;min-height:45px;padding:8px 4px}
+ .dashboard.sidebar-collapsed .sidebar-icon{width:100%;flex-basis:100%;font-size:20px}
+ .dashboard.sidebar-collapsed .sidebar-link b{position:absolute;top:1px;right:1px;min-width:17px;height:17px;padding:0 4px;font-size:9px}
+ .dashboard.sidebar-collapsed .sidebar-bottom{padding:12px 0 0}
+ .dashboard.sidebar-collapsed .sidebar-bottom button{font-size:0;min-height:39px;padding:8px}
+ .dashboard.sidebar-collapsed .sidebar-bottom button:before{content:"↪";font-size:17px}
+ .dashboard.sidebar-collapsed .sidebar-link[title]:hover:after{content:attr(title);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);z-index:50;white-space:nowrap;padding:8px 10px;border-radius:8px;background:#102f20;color:#fff8e9;font-size:11px;font-weight:700;box-shadow:0 5px 18px #0003}
+}
