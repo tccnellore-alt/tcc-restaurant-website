@@ -32,6 +32,7 @@
     </aside>
     <div class="desk-main">
     <header class="topbar"><div><p class="eyebrow">TCC · RECEPTION</p><h1>Order Desk</h1><p class="muted" id="lastUpdated">Waiting for orders…</p></div><div class="topbar-actions"><span class="live-status"><i></i> LIVE · 4 SEC REFRESH</span><button class="quiet sound-toggle" id="enableAlertsButton" type="button" role="switch" aria-checked="true" aria-label="Sound alerts"><span class="sound-toggle-track" aria-hidden="true"><span></span></span><span class="sound-toggle-label">Sound alerts: On</span></button><button class="quiet" id="refreshButton" type="button">↻ Refresh</button></div></header>
+    <div class="order-view-tabs" id="historyTabs" role="group" aria-label="Order date view"><button type="button" id="todayOrdersTab" class="order-view-tab active" aria-pressed="true"><span>Today</span><small>Live orders</small></button><button type="button" id="orderHistoryTab" class="order-view-tab" aria-pressed="false"><span>Order History</span><small>Previous days</small></button></div>
     <section class="stats workflow-stages" id="stats" aria-label="Order workflow">
       <button class="stat-tile stage-new selected" type="button" data-quick-filter="new"><span>New</span><strong id="newCount">0</strong><small>Incoming QR orders</small></button>
       <button class="stat-tile stage-preparing" type="button" data-quick-filter="in-progress"><span>Accepted &amp; Preparing</span><strong id="progressCount">0</strong><small>Accepted · Entered in billing app · KOT sent</small></button>
