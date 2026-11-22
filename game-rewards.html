@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow">
 <title>Perfect 10 · TCC Order Desk</title>
 <link rel="stylesheet" href="orders-dashboard.css?v=desktop-operations-redesign-1">
-<link rel="stylesheet" href="game-rewards.css?v=1">
+<link rel="stylesheet" href="game-rewards.css?v=2">
 </head>
 <body>
 <section class="dashboard game-desk-dashboard">
@@ -24,12 +24,23 @@
   </aside>
   <main class="desk-main game-desk-main">
     <header class="topbar">
-      <div class="topbar-heading"><div><p class="eyebrow">TCC · GUEST EXPERIENCE</p><h1>Perfect 10</h1><p class="muted">Manage the customer game, winning codes and beverage rewards.</p></div></div>
+      <div class="topbar-heading"><div><p class="eyebrow">TCC · GUEST EXPERIENCE</p><h1>Perfect 10</h1><p class="muted">Manage the customer game, winning range and beverage rewards.</p></div></div>
       <div class="topbar-actions"><span class="live-status"><i></i> LIVE · 4 SEC REFRESH</span><a class="quiet game-mobile-back" href="orders.html">← Orders</a></div>
     </header>
     <section class="p10-settings-card">
       <div><span class="p10-kicker">GAME CONTROL</span><h2>Customer game availability</h2><p>When disabled, Perfect 10 is hidden from table QR menus and new attempts are blocked.</p></div>
       <div class="p10-toggle-wrap"><span id="gameToggleStatus" class="p10-status-pill">DISABLED</span><button id="gameToggle" class="p10-switch" type="button" role="switch" aria-checked="false" aria-label="Enable Perfect 10"><span></span></button></div>
+    </section>
+    <section class="p10-winning-card">
+      <div><span class="p10-kicker">GAME RULES</span><h2>Winning time range</h2><p>Set the inclusive time range customers must hit to win the 10% beverage discount.</p></div>
+      <form id="winningRangeForm" class="p10-range-form">
+        <label><span>Minimum time (seconds)</span><input id="winningMin" type="number" inputmode="decimal" min="0" max="60" step="0.001" required></label>
+        <span class="p10-range-separator">TO</span>
+        <label><span>Maximum time (seconds)</span><input id="winningMax" type="number" inputmode="decimal" min="0" max="60" step="0.001" required></label>
+        <button class="p10-primary" id="saveWinningRange" type="submit">Save winning range</button>
+      </form>
+      <p class="p10-range-help">Example: 9.991 to 10.009 seconds. Both endpoints count as a win. Changes take effect immediately for new attempts.</p>
+      <p id="winningRangeMessage" class="p10-message" role="status"></p>
     </section>
     <section class="p10-redemption-card">
       <div class="p10-section-heading"><div><span class="p10-kicker">STAFF REDEMPTION</span><h2>Validate a reward code</h2><p>Apply the 10% beverage discount in SR POS first, then mark the code as redeemed here.</p></div></div>
@@ -44,5 +55,5 @@
     <footer>Rewards are valid for the game session's visit window (3 hours from the start of play). Discount applies to all beverages only and cannot be combined with other offers.</footer>
   </main>
 </section>
-<script src="game-rewards.js?v=1"></script>
+<script src="game-rewards.js?v=2"></script>
 </body></html>
