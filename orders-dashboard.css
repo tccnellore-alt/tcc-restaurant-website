@@ -365,3 +365,20 @@
 .date-custom-fields .date-control{flex:1}
 @media(min-width:901px){.date-filter-panel{padding:20px 22px}.date-filter-head h2{font-size:19px}.date-range-chip{min-height:38px;padding:9px 16px;font-size:12px}.date-control select,.date-control input{height:44px;font-size:13px}}
 @media(max-width:620px){.date-filter-panel{padding:13px;border-radius:14px}.date-filter-head{margin-bottom:11px}.date-filter-head h2{font-size:15px}.date-filter-icon{width:37px;height:37px}.date-quick-ranges{gap:6px;margin-bottom:11px}.date-range-chip{min-height:33px;padding:7px 10px;font-size:10px}.date-filter-controls{grid-template-columns:1fr 1fr;gap:8px}.date-period-control{grid-column:1/-1}.date-control select,.date-control input{height:40px;padding:0 8px;font-size:11px}.date-custom-fields{gap:8px;padding:9px}}
+
+
+/* Keep history-only filters off the live Today view */
+#historyTools[hidden]{display:none!important}
+#historyTools{display:grid;gap:10px;margin-bottom:16px}
+.date-filter-panel{padding:15px 17px;border-radius:15px}
+.date-filter-head{margin-bottom:11px}
+.date-filter-head h2{font-size:16px}
+.date-filter-head p{font-size:11px}
+.date-quick-ranges{gap:7px;margin-bottom:10px}
+.date-range-chip{min-height:34px;padding:7px 12px;font-size:11px}
+.date-range-chip.date-range-custom{border-style:dashed;border-color:#b6c4b5;background:#f8faf6;color:#355b40}
+.date-range-chip.date-range-custom.active{border-style:solid;background:#173c2b;color:#fff}
+.date-filter-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.date-custom-fields{margin:0 0 10px}
+#historyTools .quick-search{margin:0}
+@media(max-width:620px){#historyTools{gap:8px}.date-filter-panel{padding:12px}.date-filter-head{margin-bottom:9px}.date-filter-head h2{font-size:15px}.date-quick-ranges{gap:6px}.date-range-chip{min-height:32px;padding:7px 10px;font-size:10px}.date-filter-controls{grid-template-columns:1fr 1fr}.date-control select,.date-control input{height:39px}}
