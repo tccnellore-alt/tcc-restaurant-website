@@ -38,7 +38,7 @@ import { getMessaging, getToken, onMessage, isSupported } from "https://www.gsta
       await navigator.serviceWorker.ready;
       const token = await getToken(messaging, { vapidKey: VAPID, serviceWorkerRegistration: sw });
       if (!token) throw new Error("Firebase did not return a device registration.");
-      await api("register", { token, device_name: navigator.userAgent.slice(0, 180) });
+      await api("register", { token, manager_username: localStorage.getItem("tccOrderDeskManager") || "manager", device_name: navigator.userAgent.slice(0, 180) });
       showStatus("This phone is registered for TCC order alerts.");
       document.querySelector("#tccEnablePush").textContent = "Notifications enabled";
       document.querySelector("#tccEnablePush").disabled = true;
@@ -56,6 +56,10 @@ import { getMessaging, getToken, onMessage, isSupported } from "https://www.gsta
   function mount() {
     const topbar = document.querySelector(".topbar-actions");
     if (!topbar || document.querySelector("#tccEnablePush") || !ready()) return;
+    const installButton = document.createElement("button");
+    installButton.id = "tccInstallApp"; installButton.type = "button"; installButton.className = "quiet"; installButton.textContent = "Install TCC Manager"; installButton.hidden = true;
+    installButton.addEventListener("click", async () => { if (window.__tccInstallPrompt) { window.__tccInstallPrompt.prompt(); await window.__tccInstallPrompt.userChoice; window.__tccInstallPrompt = null; installButton.hidden = true; } else showStatus("In Chrome, open ⋮ menu and choose Install app or Add to Home screen."); });
+    topbar.insertBefore(installButton, topbar.firstChild);
     const button = document.createElement("button");
     button.id = "tccEnablePush"; button.type = "button"; button.className = "quiet";
     button.textContent = Notification.permission === "granted" ? "Enable order alerts on this phone" : "Enable mobile notifications";
@@ -65,6 +69,8 @@ import { getMessaging, getToken, onMessage, isSupported } from "https://www.gsta
     topbar.parentElement.append(status);
     if (!validConfig) showStatus("Firebase setup pending — mobile push will activate after configuration.");
   }
+  window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); window.__tccInstallPrompt = event; mount(); const install = document.querySelector("#tccInstallApp"); if (install) install.hidden = false; });
+  window.addEventListener("appinstalled", () => { const install = document.querySelector("#tccInstallApp"); if (install) install.remove(); });
   const observer = new MutationObserver(mount);
   observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
   document.addEventListener("DOMContentLoaded", mount);
