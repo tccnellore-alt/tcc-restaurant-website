@@ -211,3 +211,38 @@
 .order-view-tab.active{background:var(--green);color:#fff;box-shadow:0 3px 10px #173c2b22}.order-view-tab.active small{color:#e1eadf}
 .order-view-tab:focus-visible{outline:3px solid #b79a5a;outline-offset:2px}
 @media(max-width:520px){.order-view-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:5px}.order-view-tab{min-width:0;padding:10px 12px}.order-view-tab span{font-size:13px}}
+
+
+/* Strong visual separation for item modifiers, serving mode and instructions */
+.item-addons{
+  display:inline-flex!important;align-items:center;gap:6px;
+  margin-top:8px!important;padding:7px 11px!important;
+  border:1px solid #dfb96f!important;border-left:4px solid #c58a27!important;
+  border-radius:8px!important;background:#fff3d9!important;color:#75460b!important;
+  font-size:12px!important;font-weight:900!important;letter-spacing:.015em;
+}
+.item-addons::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:#f0d49c;color:#71450c;font-size:13px;font-weight:900}
+.item-fulfillment{
+  display:inline-flex!important;align-items:center;gap:6px;
+  margin-top:8px!important;padding:8px 11px!important;
+  border:1px solid #9ebbd2!important;border-left:4px solid #477da5!important;
+  border-radius:8px!important;background:#eaf3fa!important;color:#234f70!important;
+  font-size:11px!important;font-weight:900!important;letter-spacing:.035em;
+}
+.item-fulfillment::before{content:"SERVE";font-size:9px;font-weight:1000;letter-spacing:.08em;color:#477da5;padding-right:5px;border-right:1px solid #b8cddd}
+.item-note{
+  display:flex!important;align-items:flex-start;gap:8px;
+  width:fit-content;max-width:100%;margin-top:8px!important;padding:8px 11px!important;
+  border:1px solid #e0a39a!important;border-left:4px solid #c45b4c!important;
+  border-radius:8px!important;background:#fff0ed!important;color:#8b352b!important;
+  font-size:12px!important;font-weight:800!important;line-height:1.45!important;white-space:normal;
+}
+.item-note::before{content:"NOTE";flex:0 0 auto;margin-top:1px;padding:3px 6px;border-radius:5px;background:#f4d1cb;color:#8b352b;font-size:9px;font-weight:1000;letter-spacing:.07em}
+.customer-note-panel{border-color:#e0a39a!important;background:#fff0ed!important;color:#8b352b!important}
+.customer-note-panel:before{background:#f4d1cb!important;color:#8b352b!important}
+.order-type-badge.dine-in{background:#eaf3fa!important;color:#234f70!important;border-color:#9ebbd2!important}
+.order-type-badge.takeaway{background:#fff0d8!important;color:#8a4b08!important;border-color:#e9c58e!important}
+@media(min-width:900px){
+ .item-addons,.item-note{font-size:12px!important;padding:8px 12px!important}
+ .item-fulfillment{font-size:11px!important;padding:8px 12px!important}
+}
