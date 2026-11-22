@@ -1992,3 +1992,16 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* Small breathing space between Place Order and secondary cart actions */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-sticky-order-button-spacing';
+  style.textContent=`
+    .tcc-wish-sticky-order .tcc-wish-send{
+      margin-bottom:6px!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
