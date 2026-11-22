@@ -27,12 +27,13 @@ button:disabled{opacity:.5;cursor:wait}.quiet{background:#e9e5d9;color:var(--gre
 #qrcode{background:white;padding:12px;border:1px solid #ddd;border-radius:10px;min-width:190px;min-height:190px}
 #qrLink{overflow-wrap:anywhere;font-size:12px;color:#315f48}
 @media(max-width:520px){.panel{padding:16px}main{margin-top:16px}}
-</style>
+.qr-header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.secondary-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:18px 0;padding:9px;border:1px solid rgba(23,60,43,.12);border-radius:13px;background:#fffdf7}.secondary-nav a{display:inline-flex;align-items:center;padding:9px 13px;border-radius:9px;color:#315b40;text-decoration:none;font-size:12px;font-weight:800}.secondary-nav a:first-child{background:#173c2b;color:#fff}.secondary-nav a.active{background:#efe6d1;color:#173c2b}@media(max-width:600px){.qr-header-actions{width:100%}.secondary-nav{gap:5px}.secondary-nav a{font-size:10px;padding:8px 9px}}</style>
 </head>
 <body>
 <main>
 <section class="panel" id="login">
   <div class="brand">TCC</div><p class="eyebrow">THE COFFEE CLUB · NELLORE</p>
+  <a class="quiet" href="orders.html" style="display:inline-flex;margin:4px 0 10px;text-decoration:none">← Back to New Orders</a>
   <h1>Table QR Manager</h1><p class="muted">Sign in with your TCC Order Desk credentials to create, regenerate or revoke table QR codes.</p>
   <form id="loginForm">
     <label for="username">Username</label><input id="username" autocomplete="username" required>
@@ -41,8 +42,8 @@ button:disabled{opacity:.5;cursor:wait}.quiet{background:#e9e5d9;color:var(--gre
   </form>
 </section>
 <section class="panel" id="dashboard" hidden>
-  <div class="top"><div><div class="brand">TCC</div><p class="eyebrow">TABLE QR MANAGEMENT</p><h1>Dedicated table QRs</h1><p class="muted">Each table has one active QR credential. Regenerating a QR immediately invalidates its previous link.</p></div><button class="quiet" id="logout">Log out</button></div>
-  <p class="error" id="pageError" role="alert"></p><div class="grid" id="tables"></div>
+  <div class="top"><div><div class="brand">TCC</div><p class="eyebrow">TABLE QR MANAGEMENT</p><h1>Dedicated table QRs</h1><p class="muted">Each table has one active QR credential. Regenerating a QR immediately invalidates its previous link.</p></div><div class="qr-header-actions"><a class="quiet" href="orders.html">← Back to New Orders</a><button class="quiet" id="logout">Log out</button></div></div>
+  <nav class="secondary-nav" aria-label="Order Desk sections"><a href="orders.html">← New Orders</a><a href="orders-reports.html">Reports</a><a href="customers.html">Customers</a><a class="active" href="table-qr-admin.html">Table QR Codes</a></nav><p class="error" id="pageError" role="alert"></p><div class="grid" id="tables"></div>
   <section id="qrResult" class="table">
     <div class="top"><h2 id="qrTitle">Table QR</h2><button class="quiet small" id="closeQr">Close</button></div>
     <div class="qrbox"><div id="qrcode"></div><div><p class="muted">Print this QR and place it on the matching table. This secret link is shown only once; save or print it now.</p><a id="qrLink" target="_blank" rel="noopener"></a><p><button class="small" id="copyLink">Copy QR link</button></p></div></div>

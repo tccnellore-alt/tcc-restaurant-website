@@ -26,3 +26,9 @@
 .timing-kpis strong{display:block;margin:8px 0;color:var(--green);font:700 24px Georgia,serif;font-variant-numeric:tabular-nums}
 .timing-footnote{margin:8px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
 @media(max-width:700px){.timing-kpis{grid-template-columns:1fr}.timing-kpis article{padding:12px}.timing-kpis strong{font-size:22px}}
+
+/* TCC secondary-page navigation */
+.secondary-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 18px;padding:9px;border:1px solid rgba(23,60,43,.12);border-radius:13px;background:#fffdf7}
+.secondary-nav a{display:inline-flex;align-items:center;padding:9px 13px;border-radius:9px;color:#315b40;text-decoration:none;font-size:12px;font-weight:800}
+.secondary-nav a:first-child{background:#173c2b;color:#fff}
+.secondary-nav a.active{background:#efe6d1;color:#173c2b}
