@@ -8,6 +8,7 @@ const digest=async(v:string)=>b64(new Uint8Array(await crypto.subtle.digest("SHA
 const newToken=()=>b64(crypto.getRandomValues(new Uint8Array(32))).replaceAll("+","-").replaceAll("/","_").replaceAll("=","");
 const adminSession=async(req:Request)=>{const token=req.headers.get("x-tcc-admin-session")||"";if(token.length<32)return false;const rows=await db(`tcc_admin_sessions?token_hash=eq.${encodeURIComponent(await digest(token))}&expires_at=gt.${encodeURIComponent(new Date().toISOString())}&select=id&limit=1`);return Array.isArray(rows)&&rows.length===1;};
 const gameEnabled=async()=>{const rows=await db("tcc_store_settings?setting_key=eq.perfect_10_enabled&select=setting_value&limit=1");return rows?.[0]?.setting_value===true;};
+const gameRange=async()=>{const rows=await db("tcc_store_settings?setting_key=in.(perfect_10_min_ms,perfect_10_max_ms)&select=setting_key,setting_value");const values=new Map((rows||[]).map((r:any)=>[r.setting_key,Number(r.setting_value)]));let min=Number.isInteger(values.get("perfect_10_min_ms"))?values.get("perfect_10_min_ms"):9993;let max=Number.isInteger(values.get("perfect_10_max_ms"))?values.get("perfect_10_max_ms"):10007;if(min<0||max>60000||min>=max){min=9993;max=10007;}return {winning_min_ms:min,winning_max_ms:max};};
 const requireAdmin=async(req:Request)=>await adminSession(req)?null:json({error:"Your TCC Desk session has expired. Please sign in again."},401);
 Deno.serve(async(req:Request)=>{if(req.method==="OPTIONS")return new Response("ok",{headers:corsHeaders});try{
  const url=new URL(req.url),action=url.searchParams.get("action");
@@ -42,7 +43,7 @@ Deno.serve(async(req:Request)=>{if(req.method==="OPTIONS")return new Response("o
  if(req.method==="GET"&&action==="game-rewards"){
   const denied=await requireAdmin(req);if(denied)return denied;
   const rows=await db("tcc_game_rewards?select=id,reward_code,session_id,table_number,discount_percent,discount_scope,combine_with_offers,status,created_at,expires_at,redeemed_at,redeemed_by&order=created_at.desc&limit=250");
-  return json({rewards:rows||[],enabled:await gameEnabled()});
+  return json({rewards:rows||[],enabled:await gameEnabled(),...await gameRange()});
  }
  if(req.method==="GET"&&action==="game-validate"){
   const denied=await requireAdmin(req);if(denied)return denied;
@@ -59,6 +60,13 @@ Deno.serve(async(req:Request)=>{if(req.method==="OPTIONS")return new Response("o
   const body=await req.json(),enabled=body.enabled===true;
   await db("tcc_store_settings?on_conflict=setting_key",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({setting_key:"perfect_10_enabled",setting_value:enabled,updated_at:new Date().toISOString()})});
   return json({enabled});
+ }
+ if(req.method==="PATCH"&&action==="game-winning-range"){
+  const denied=await requireAdmin(req);if(denied)return denied;
+  const body=await req.json(),min=Number(body.min_ms),max=Number(body.max_ms);
+  if(!Number.isInteger(min)||!Number.isInteger(max)||min<0||max>60000||min>=max)return json({error:"Enter a valid winning range. Minimum must be lower than maximum and both must be between 0 and 60000 milliseconds."},400);
+  await db("tcc_store_settings?on_conflict=setting_key",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify([{setting_key:"perfect_10_min_ms",setting_value:min,updated_at:new Date().toISOString()},{setting_key:"perfect_10_max_ms",setting_value:max,updated_at:new Date().toISOString()}])});
+  return json({winning_min_ms:min,winning_max_ms:max});
  }
  if(req.method==="POST"&&action==="game-redeem"){
   const denied=await requireAdmin(req);if(denied)return denied;
