@@ -343,3 +343,25 @@
  .ops-settings-footer>span{display:none}
  .ops-settings-footer{justify-content:flex-end}
 }
+
+
+/* Visual date explorer and richer order filtering */
+.date-filter-panel{margin:0 0 15px;padding:18px 20px;border:1px solid #e1e5dc;border-radius:17px;background:linear-gradient(135deg,#fff 0%,#fbfaf5 100%);box-shadow:0 5px 18px #173c2b08}
+.date-filter-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+.date-filter-kicker{color:#a58a4e;font-size:9px;font-weight:900;letter-spacing:.16em}
+.date-filter-head h2{margin:3px 0 0;color:#173c2b;font-size:17px;font-weight:900}
+.date-filter-head p{margin:4px 0 0;color:#7b837b;font-size:11px}
+.date-filter-icon{display:grid;place-items:center;width:43px;height:43px;border-radius:13px;background:#edf3eb;color:#24583a;font-size:22px}
+.date-quick-ranges{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.date-range-chip{min-height:35px;padding:8px 13px;border:1px solid #dfe5dc;border-radius:9px;background:#fff;color:#56665a;font-size:11px;font-weight:800;cursor:pointer;transition:.15s}
+.date-range-chip:hover{border-color:#8ba992;background:#f4f8f2}
+.date-range-chip.active{border-color:#173c2b;background:#173c2b;color:#fff;box-shadow:0 3px 8px #173c2b22}
+.date-filter-controls{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px}
+.date-control{display:grid;gap:6px;min-width:0;color:#536257;font-size:10px;font-weight:900}
+.date-control select,.date-control input{width:100%;min-width:0;height:42px;padding:0 11px;border:1px solid #dce2d9;border-radius:9px;background:#fff;color:#263d2e;font-size:12px;font-weight:700}
+.date-control select:focus,.date-control input:focus{outline:2px solid #b7cbb8;border-color:#78947d}
+.date-custom-fields{display:flex;gap:10px;margin-top:12px;padding:12px;border:1px solid #e8e4d7;border-radius:11px;background:#faf8f1}
+.date-custom-fields[hidden]{display:none}
+.date-custom-fields .date-control{flex:1}
+@media(min-width:901px){.date-filter-panel{padding:20px 22px}.date-filter-head h2{font-size:19px}.date-range-chip{min-height:38px;padding:9px 16px;font-size:12px}.date-control select,.date-control input{height:44px;font-size:13px}}
+@media(max-width:620px){.date-filter-panel{padding:13px;border-radius:14px}.date-filter-head{margin-bottom:11px}.date-filter-head h2{font-size:15px}.date-filter-icon{width:37px;height:37px}.date-quick-ranges{gap:6px;margin-bottom:11px}.date-range-chip{min-height:33px;padding:7px 10px;font-size:10px}.date-filter-controls{grid-template-columns:1fr 1fr;gap:8px}.date-period-control{grid-column:1/-1}.date-control select,.date-control input{height:40px;padding:0 8px;font-size:11px}.date-custom-fields{gap:8px;padding:9px}}
