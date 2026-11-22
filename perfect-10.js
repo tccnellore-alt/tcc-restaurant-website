@@ -10,7 +10,7 @@ async function request(action,{method="GET",body}={}){const r=await fetch(API+"?
 const format=ms=>(Math.max(0,ms)/1000).toFixed(2);
 function mountEntry(){
  if(document.getElementById("tccPerfect10Entry"))return;
- const host=document.querySelector("#menu")||document.querySelector("main")||document.body;
+ const host=document.querySelector(".menu-content .container")||document.querySelector("main")||document.body;
  const entry=document.createElement("section");entry.id="tccPerfect10Entry";entry.className="tcc-p10-entry";
  entry.innerHTML='<div class="tcc-p10-entry-copy"><span class="tcc-p10-eyebrow">A LITTLE TCC CHALLENGE</span><h2>THE PERFECT 10</h2><p>Stop the timer at exactly <strong>10.00 seconds</strong> and win 10% off all beverages.</p><small>3 attempts · Valid during this visit</small></div><button type="button" class="tcc-p10-play">PLAY NOW <span aria-hidden="true">→</span></button>';
  entry.querySelector("button").addEventListener("click",openGame);host.prepend(entry);
@@ -52,11 +52,15 @@ async function toggleAttempt(){
 }
 function showWinner(reward){
  const box=document.getElementById("tccP10Reward"),button=document.getElementById("tccP10Start"),feedback=document.getElementById("tccP10Feedback");
+ const expired=reward.expires_at&&Date.parse(reward.expires_at)<=Date.now();
  button.hidden=true;document.getElementById("tccP10Attempts").textContent="CHALLENGE COMPLETED";
  document.getElementById("tccP10Clock").textContent="10.00";
- feedback.textContent="You did it! Perfect timing.";
- box.hidden=false;box.innerHTML='<div class="tcc-p10-won">YOU DID IT!</div><h3>10% OFF ALL BEVERAGES</h3><p>Show this reward code to our team before you pay.</p><div class="tcc-p10-code">'+reward.code+'</div><button type="button" class="tcc-p10-copy">COPY REWARD CODE</button><small>Table '+reward.table_number+' · Valid during this visit</small><small>Cannot be combined with other offers.</small>';
- box.querySelector(".tcc-p10-copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(reward.code);box.querySelector(".tcc-p10-copy").textContent="COPIED";}catch{box.querySelector(".tcc-p10-copy").textContent=reward.code;}});
+ feedback.textContent=expired?"Your visit reward window has ended.":"You did it! Perfect timing.";
+ box.hidden=false;
+ if(expired){box.innerHTML='<div class="tcc-p10-won">YOU DID IT!</div><h3>VISIT REWARD EXPIRED</h3><p>Your 10% beverage reward was valid during this visit window.</p>';}
+ else{box.innerHTML='<div class="tcc-p10-won">YOU DID IT!</div><h3>10% OFF ALL BEVERAGES</h3><p>Show this reward code to our team before you pay.</p><div class="tcc-p10-code">'+reward.code+'</div><button type="button" class="tcc-p10-copy">COPY REWARD CODE</button><small>Table '+reward.table_number+' · Expires '+new Date(reward.expires_at).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})+'</small><small>Cannot be combined with other offers.</small>';
+  box.querySelector(".tcc-p10-copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(reward.code);box.querySelector(".tcc-p10-copy").textContent="COPIED";}catch{box.querySelector(".tcc-p10-copy").textContent=reward.code;}});
+ }
  const fx=document.getElementById("tccP10Fireworks");for(let i=0;i<34;i++){const p=document.createElement("i");p.style.setProperty("--x",Math.round(Math.random()*100)+"%");p.style.setProperty("--delay",(Math.random()*1.1)+"s");p.style.setProperty("--h",Math.round(Math.random()*360));fx.append(p);}
 }
 async function init(){
@@ -68,6 +72,7 @@ async function init(){
   localStorage.setItem(STORE,JSON.stringify({qr_token:QR,session_token:game.session_token}));
   if(!game.table_number)return;
   mountEntry();ensureModal();
+  setInterval(async()=>{try{const current=await request("game-status");if(!current.enabled){document.getElementById("tccPerfect10Entry")?.remove();closeGame();}}catch{}},12000);
   if(game.is_winner&&game.reward){game.reward={...game.reward,code:game.reward.reward_code};}
  }catch(error){console.warn("Perfect 10 unavailable:",error);}
 }
