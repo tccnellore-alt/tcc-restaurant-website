@@ -246,3 +246,20 @@
  .item-addons,.item-note{font-size:12px!important;padding:8px 12px!important}
  .item-fulfillment{font-size:11px!important;padding:8px 12px!important}
 }
+
+
+/* Dine-in stays understated; takeaway gets a distinct warm highlight */
+.order-type-badge.dine-in{
+ background:#f3f1eb!important;color:#59645c!important;border-color:#dedbd1!important;
+}
+.order-type-badge.takeaway{
+ background:#fff0d8!important;color:#8a4b08!important;border-color:#e9c58e!important;
+}
+.item-fulfillment.fulfillment-dine-in{
+ background:#f3f1eb!important;color:#59645c!important;border:1px solid #dedbd1!important;border-left:3px solid #a9aaa1!important;
+}
+.item-fulfillment.fulfillment-dine-in::before{color:#737a72!important;border-right-color:#d5d2c9!important}
+.item-fulfillment.fulfillment-takeaway{
+ background:#fff0d8!important;color:#8a4b08!important;border:1px solid #e9c58e!important;border-left:4px solid #c58a27!important;
+}
+.item-fulfillment.fulfillment-takeaway::before{color:#9a5b13!important;border-right-color:#e5c78f!important}
