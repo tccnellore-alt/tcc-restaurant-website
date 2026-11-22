@@ -24,7 +24,7 @@ self.addEventListener("notificationclick", event => {
   })());
 });
 const CACHE = "tcc-manager-shell-v1";
-const SHELL = ["/orders.html", "/orders-dashboard.css", "/orders-dashboard.js", "/tcc-manager-pwa.css", "/manager-firebase-config.js", "/tcc-manager-icon.svg", "/manager.webmanifest"];
+const SHELL = ["/orders.html", "/orders-dashboard.css", "/orders-dashboard.js", "/tcc-manager-pwa.css", "/manager-firebase-config.js", "/tcc-manager-push.js", "/tcc-manager-icon.svg", "/manager.webmanifest"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener("activate", event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())));
 self.addEventListener("fetch", event => {
