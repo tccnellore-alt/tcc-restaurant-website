@@ -471,3 +471,24 @@
  .dashboard.sidebar-collapsed .sidebar-bottom button:before{content:"↪";font-size:17px}
  .dashboard.sidebar-collapsed .sidebar-link[title]:hover:after{content:attr(title);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);z-index:50;white-space:nowrap;padding:8px 10px;border-radius:8px;background:#102f20;color:#fff8e9;font-size:11px;font-weight:700;box-shadow:0 5px 18px #0003}
 }
+
+/* Mobile navigation drawer */
+.mobile-nav-toggle,.mobile-nav-backdrop{display:none}
+@media(max-width:900px){
+ .topbar-heading{display:flex;align-items:flex-start;gap:12px;min-width:0}
+ .mobile-nav-toggle{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;margin-top:5px;border:1px solid #d8c99f;border-radius:12px;background:#173c2b;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 3px 10px rgba(23,60,43,.12)}
+ .mobile-nav-backdrop:not([hidden]){display:block;position:fixed;inset:0;z-index:1000;background:rgba(13,30,21,.48);backdrop-filter:blur(2px)}
+ .desk-sidebar{display:flex;position:fixed;inset:0 auto 0 0;z-index:1001;width:min(82vw,310px);height:100dvh;min-height:100vh;overflow-y:auto;flex-direction:column;padding:22px 16px 18px;background:linear-gradient(180deg,#123b29 0%,#0d2b1d 100%);color:#f8f2e5;box-shadow:12px 0 35px rgba(0,0,0,.2);transform:translateX(-110%);visibility:hidden;transition:transform .24s ease,visibility .24s ease}
+ .dashboard.mobile-nav-open .desk-sidebar{transform:translateX(0);visibility:visible}
+ .desk-sidebar .sidebar-collapse-toggle{display:none}
+ .desk-sidebar .sidebar-brand{padding:8px 8px 20px}
+ .desk-sidebar .sidebar-caption{margin:22px 10px 10px}
+ .desk-sidebar .sidebar-nav{display:grid;gap:7px}
+ .desk-sidebar .sidebar-link{display:flex;align-items:center;gap:12px;min-height:48px;padding:11px 12px;border:1px solid transparent;border-radius:11px;background:transparent;color:#e9eee6;text-decoration:none;text-align:left;font:700 13px Arial,sans-serif}
+ .desk-sidebar .sidebar-link.active{background:#f5efdf;color:#173c2b;border-color:#c8ad70}
+ .desk-sidebar .sidebar-icon{display:grid;place-items:center;width:24px;flex:0 0 24px;font-size:19px}
+ .desk-sidebar .sidebar-link b{margin-left:auto}
+ .desk-sidebar .sidebar-bottom{margin-top:auto;padding-top:18px}
+ body.mobile-nav-lock{overflow:hidden}
+}
+@media(max-width:600px){.topbar-heading{gap:9px}.mobile-nav-toggle{width:40px;height:40px;flex-basis:40px}.topbar h1{font-size:30px}}
