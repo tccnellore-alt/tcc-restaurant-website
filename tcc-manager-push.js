@@ -34,7 +34,7 @@ import { getMessaging, getToken, onMessage, isSupported } from "https://www.gsta
       if (!supported) throw new Error("Firebase push is not supported by this browser.");
       const app = getApps().length ? getApps()[0] : initializeApp(CONFIG);
       messaging = getMessaging(app);
-      const sw = await navigator.serviceWorker.register("/firebase-messaging-sw.js", { scope: "/" });
+      const sw = await navigator.serviceWorker.register("/service-worker.js", { scope: "/" });
       await navigator.serviceWorker.ready;
       const token = await getToken(messaging, { vapidKey: VAPID, serviceWorkerRegistration: sw });
       if (!token) throw new Error("Firebase did not return a device registration.");
