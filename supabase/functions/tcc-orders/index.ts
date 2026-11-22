@@ -47,7 +47,7 @@ if(req.method==="GET"&&action==="table-assistance-status"){
  const rows=await db("tcc_table_assistance_requests?table_number=eq."+encodeURIComponent(tableNumber)+"&status=eq.pending&select=id,table_number,status,created_at&order=created_at.desc&limit=1");
  return json({request:rows?.[0]||null});
 }
-\nif(!(await session(req)))return json({error:"Please log in again."},401);
+if(!(await session(req)))return json({error:"Please log in again."},401);
 if(req.method==="GET"&&action==="table-assistance-requests"){
  const rows=await db("tcc_table_assistance_requests?select=id,table_number,status,created_at,attended_at,attended_by&order=created_at.desc&limit=100");
  return json({requests:rows||[]});
