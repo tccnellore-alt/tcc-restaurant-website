@@ -12,7 +12,8 @@ function mountEntry(){
  if(document.getElementById("tccPerfect10Entry"))return;
  const host=document.querySelector(".menu-content .container")||document.querySelector("main")||document.body;
  const entry=document.createElement("section");entry.id="tccPerfect10Entry";entry.className="tcc-p10-entry";
- const isTestTable=String(game?.table_number||"").toUpperCase()==="T4";\n entry.innerHTML='<div class="tcc-p10-entry-copy"><span class="tcc-p10-eyebrow">A LITTLE TCC CHALLENGE</span><h2>THE PERFECT 10</h2><p>Stop the timer at exactly <strong>10.00 seconds</strong> and win 10% off all beverages.</p><small>'+(isTestTable?"T4 TEST TABLE · UNLIMITED ATTEMPTS":"3 attempts · Valid during this visit")+'</small></div><button type="button" class="tcc-p10-play">PLAY NOW <span aria-hidden="true">→</span></button>';
+ const isTestTable=String(game?.table_number||"").toUpperCase()==="T4";
+ entry.innerHTML='<div class="tcc-p10-entry-copy"><span class="tcc-p10-eyebrow">A LITTLE TCC CHALLENGE</span><h2>THE PERFECT 10</h2><p>Stop the timer at exactly <strong>10.00 seconds</strong> and win 10% off all beverages.</p><small>'+(isTestTable?"T4 TEST TABLE · UNLIMITED ATTEMPTS":"3 attempts · Valid during this visit")+'</small></div><button type="button" class="tcc-p10-play">PLAY NOW <span aria-hidden="true">→</span></button>';
  entry.querySelector("button").addEventListener("click",openGame);host.prepend(entry);
 }
 function ensureModal(){
