@@ -662,7 +662,7 @@
 }
 
 /* TCC takeaway pricing notice — visible in both menu views. */
-.takeaway-charge-notice{display:flex;align-items:center;justify-content:center;gap:11px;width:min(100%,520px);margin:12px auto 0;padding:10px 16px;box-sizing:border-box;border:1px solid rgba(226,211,169,.58);border-radius:12px;background:rgba(255,250,240,.97);color:#173c2b;box-shadow:0 5px 16px rgba(0,0,0,.12);text-align:left}
+.menu-intro-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(130px,.9fr);align-items:center;gap:12px;width:min(100%,700px);margin:12px auto 0}.menu-intro-actions .takeaway-charge-notice{width:100%;max-width:none;margin:0}.tcc-call-staff-action{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:76px;padding:12px;border:1px solid rgba(226,211,169,.62);border-radius:14px;background:#fffaf0;color:#173c2b;box-shadow:0 5px 16px rgba(0,0,0,.12);font:800 14px/1.25 Manrope,Arial,sans-serif;cursor:pointer}.tcc-call-staff-action:disabled{opacity:1;background:#eaf1e8;color:#24583c}.tcc-call-staff-note{grid-column:2;color:#e8efdf;font:600 11px/1.35 Manrope,Arial,sans-serif;text-align:center;margin-top:-5px}@media(max-width:480px){.menu-intro-actions{grid-template-columns:minmax(0,1fr) minmax(112px,.9fr);gap:9px}.menu-intro-actions .takeaway-charge-notice{padding:10px 9px;gap:7px}.menu-intro-actions .takeaway-charge-notice strong{font-size:8px}.menu-intro-actions .takeaway-charge-notice .takeaway-charge-amount{font-size:13px}.menu-intro-actions .takeaway-charge-notice .takeaway-charge-detail{font-size:9px}.tcc-call-staff-action{min-height:76px;padding:8px;font-size:12px;border-radius:12px}.tcc-call-staff-note{font-size:10px}}.takeaway-charge-notice{display:flex;align-items:center;justify-content:center;gap:11px;width:min(100%,520px);margin:12px auto 0;padding:10px 16px;box-sizing:border-box;border:1px solid rgba(226,211,169,.58);border-radius:12px;background:rgba(255,250,240,.97);color:#173c2b;box-shadow:0 5px 16px rgba(0,0,0,.12);text-align:left}
 .takeaway-charge-icon{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#e9dfc6;color:#173c2b;font:800 18px/1 Arial,sans-serif}
 .takeaway-charge-notice strong{display:block;color:#8d7337;font:800 9px/1.2 Manrope,Arial,sans-serif;letter-spacing:.14em}
 .takeaway-charge-notice small{display:block;margin-top:3px;color:#263b32;font:700 12px/1.35 Manrope,Arial,sans-serif}.takeaway-charge-notice .takeaway-charge-amount{margin-top:3px;color:#173c2b;font:800 15px/1.25 Manrope,Arial,sans-serif;letter-spacing:-.02em}.takeaway-charge-notice .takeaway-charge-detail{margin-top:2px;color:#526057;font:500 11px/1.35 Manrope,Arial,sans-serif}
@@ -2567,9 +2567,11 @@ body:not(.menu-text-mode) .menu-section .m-item{
     <div class="eyebrow">THE TCC MENU</div>
     <h1>The TCC Menu</h1>
     <p>Coffee, food, signatures and more.</p>
-    <div class="takeaway-charge-notice" role="note" aria-label="Takeaway packaging charge">
-      <span class="takeaway-charge-icon" aria-hidden="true">🛍</span>
-      <span><strong>TAKEAWAY ORDERS</strong><small class="takeaway-charge-amount">10 Packaging Charge</small><small class="takeaway-charge-detail">Per product on takeaway orders</small></span>
+    <div class="menu-intro-actions">
+      <div class="takeaway-charge-notice" role="note" aria-label="Takeaway packaging charge">
+        <span class="takeaway-charge-icon" aria-hidden="true">🛍</span>
+        <span><strong>TAKEAWAY ORDERS</strong><small class="takeaway-charge-amount">10 Packaging Charge</small><small class="takeaway-charge-detail">Per product on takeaway orders</small></span>
+      </div>
     </div>
 
 
@@ -3648,7 +3650,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
   </div>
 </footer>
 <nav class="mobile-bar" aria-label="Quick actions"><a href="tel:+919059059553" aria-label="Call TCC">☎ Call</a><a class="accent" href="menu.html">☕ Menu</a><button type="button" class="tcc-mobile-history" aria-label="Order History">▤ Order History</button><a href="https://maps.app.goo.gl/LTdYTXNZPJU4qetv6?g_st=ac" target="_blank" rel="noopener" aria-label="Open TCC Map">⌖ Map</a><a href="https://search.google.com/local/writereview?placeid=ChIJRY3c3XnzTDoRMsXmWvt_FMg" target="_blank" rel="noopener" aria-label="Rate TCC on Google">★ Rate</a></nav>
-<script src="script.js?v=mobile-actions-five-item-v1"></script>\n<script src="table-assistance-menu.js?v=2"></script>
+<script src="script.js?v=mobile-actions-five-item-v1"></script>\n<script src="table-assistance-menu.js?v=3"></script>
 
 <script>
 /* TCC MENU EXPERIENCE ENHANCEMENTS v2 */
