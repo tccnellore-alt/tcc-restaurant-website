@@ -38,6 +38,7 @@ import { getMessaging, getToken, onMessage, isSupported } from "https://www.gsta
       await navigator.serviceWorker.ready;
       const token = await getToken(messaging, { vapidKey: VAPID, serviceWorkerRegistration: sw });
       if (!token) throw new Error("Firebase did not return a device registration.");
+      localStorage.setItem("tccManagerFcmToken", token);
       await api("register", { token, manager_username: localStorage.getItem("tccOrderDeskManager") || "manager", device_name: navigator.userAgent.slice(0, 180) });
       showStatus("This phone is registered for TCC order alerts.");
       document.querySelector("#tccEnablePush").textContent = "Notifications enabled";
@@ -71,6 +72,7 @@ import { getMessaging, getToken, onMessage, isSupported } from "https://www.gsta
   }
   window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); window.__tccInstallPrompt = event; mount(); const install = document.querySelector("#tccInstallApp"); if (install) install.hidden = false; });
   window.addEventListener("appinstalled", () => { const install = document.querySelector("#tccInstallApp"); if (install) install.remove(); });
+  window.TCC_MANAGER_UNREGISTER_PUSH = async () => { const token = localStorage.getItem("tccManagerFcmToken"); if (token && session()) { try { await api("unregister", { token }); } catch (error) { console.warn("Could not unregister this phone from TCC alerts:", error); } } localStorage.removeItem("tccManagerFcmToken"); };
   const observer = new MutationObserver(mount);
   observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
   document.addEventListener("DOMContentLoaded", mount);
