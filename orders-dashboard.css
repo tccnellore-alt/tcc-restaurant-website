@@ -203,3 +203,11 @@
 .order-item-description{min-width:0;flex:1 1 130px;font-weight:800}
 @media(min-width:900px){.order-item-quantity{min-width:48px;padding:5px 10px;font-size:15px}}
 @media(max-width:520px){.order-item-heading{gap:7px}.order-item-quantity{min-width:40px;padding:4px 8px;font-size:13px}}
+
+/* Today vs. historical orders navigation */
+.order-view-tabs{display:flex;gap:10px;margin:0 0 18px;padding:5px;border:1px solid var(--line);border-radius:14px;background:#f0eee5;width:max-content;max-width:100%}
+.order-view-tab{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:145px;padding:11px 16px;border:1px solid transparent;border-radius:10px;background:transparent;color:#536257;text-align:left;cursor:pointer}
+.order-view-tab span{font-size:14px;font-weight:900}.order-view-tab small{font-size:11px;color:var(--muted)}
+.order-view-tab.active{background:var(--green);color:#fff;box-shadow:0 3px 10px #173c2b22}.order-view-tab.active small{color:#e1eadf}
+.order-view-tab:focus-visible{outline:3px solid #b79a5a;outline-offset:2px}
+@media(max-width:520px){.order-view-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:5px}.order-view-tab{min-width:0;padding:10px 12px}.order-view-tab span{font-size:13px}}
