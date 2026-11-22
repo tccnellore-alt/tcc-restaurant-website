@@ -62,10 +62,10 @@ function showWinner(reward){
 async function init(){
  try{
   const status=await request("game-status");if(!status.enabled)return;
-  const saved=JSON.parse(sessionStorage.getItem(STORE)||"null");
+  const saved=JSON.parse(localStorage.getItem(STORE)||"null");
   const existing=saved?.qr_token===QR?saved.session_token:"";
   game=await request("game-start",{method:"POST",body:{table_qr_token:QR,session_token:existing}});
-  sessionStorage.setItem(STORE,JSON.stringify({qr_token:QR,session_token:game.session_token}));
+  localStorage.setItem(STORE,JSON.stringify({qr_token:QR,session_token:game.session_token}));
   if(!game.table_number)return;
   mountEntry();ensureModal();
   if(game.is_winner&&game.reward){game.reward={...game.reward,code:game.reward.reward_code};}
