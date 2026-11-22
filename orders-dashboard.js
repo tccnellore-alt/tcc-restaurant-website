@@ -58,6 +58,26 @@ async function editOrderProducts(order){
  draw();document.body.append(dialog);dialog.showModal();dialog.addEventListener("close",()=>dialog.remove(),{once:true});
 }
 
+
+/* Desktop sidebar collapse/expand preference */
+(()=>{
+ const dashboard=$("#dashboardView"),toggle=$("#sidebarCollapseToggle"),key="tccOrderDeskSidebarCollapsedV1";
+ if(!dashboard||!toggle)return;
+ const links=[...document.querySelectorAll(".sidebar-nav .sidebar-link")];
+ links.forEach(link=>{const label=link.querySelector("span:not(.sidebar-icon)");if(label)link.title=label.textContent.trim();});
+ const logout=$("#logoutButton");if(logout)logout.title="Log out";
+ const apply=collapsed=>{
+  dashboard.classList.toggle("sidebar-collapsed",collapsed);
+  toggle.setAttribute("aria-expanded",String(!collapsed));
+  toggle.setAttribute("aria-label",collapsed?"Expand sidebar":"Collapse sidebar");
+  toggle.title=collapsed?"Expand sidebar":"Collapse sidebar";
+  try{localStorage.setItem(key,collapsed?"1":"0");}catch{}
+ };
+ let collapsed=false;try{collapsed=localStorage.getItem(key)==="1";}catch{}
+ apply(collapsed);
+ toggle.addEventListener("click",()=>apply(!dashboard.classList.contains("sidebar-collapsed")));
+})();
+
 renderSoundToggle();if(token){if(alertSoundEnabled)unlockAlertAudio();showDashboard();}else showLogin();
 
 // TCC live operations dashboard enhancements — orderv2 only
