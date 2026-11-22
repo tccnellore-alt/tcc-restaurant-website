@@ -2005,3 +2005,19 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
 })();
+
+
+/* Compact Clear Cart action in the sticky footer */
+(function(){
+  const style=document.createElement('style');
+  style.id='tcc-cart-clear-button-compact-height';
+  style.textContent=`
+    .tcc-wish-sticky-order .tcc-wish-secondary-actions .tcc-wish-clear{
+      min-height:34px!important;
+      height:34px!important;
+      padding-top:0!important;
+      padding-bottom:0!important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
