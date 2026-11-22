@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow">
+<title>Perfect 10 · TCC Order Desk</title>
+<link rel="stylesheet" href="orders-dashboard.css?v=desktop-operations-redesign-1">
+<link rel="stylesheet" href="game-rewards.css?v=1">
+</head>
+<body>
+<section class="dashboard game-desk-dashboard">
+  <aside class="desk-sidebar" aria-label="Order Desk navigation">
+    <a class="sidebar-brand" href="orders.html" aria-label="TCC Order Desk home"><span class="sidebar-brand-mark">TCC</span><strong>The Coffee Club</strong><small>NELLORE</small></a>
+    <p class="sidebar-caption">OPERATIONS</p>
+    <nav class="sidebar-nav">
+      <a class="sidebar-link" href="orders.html"><span class="sidebar-icon">▣</span><span>New Orders</span></a>
+      <a class="sidebar-link" href="orders.html"><span class="sidebar-icon">◷</span><span>Order History</span></a>
+      <a class="sidebar-link" href="orders-reports.html"><span class="sidebar-icon">▥</span><span>Reports &amp; Analytics</span></a>
+      <a class="sidebar-link" href="customers.html"><span class="sidebar-icon">♙</span><span>Customer Management</span></a>
+      <a class="sidebar-link" href="table-qr-admin.html"><span class="sidebar-icon">▦</span><span>Table QR Codes</span></a>
+      <a class="sidebar-link active" href="game-rewards.html" aria-current="page"><span class="sidebar-icon">★</span><span>Perfect 10</span><b id="gamePendingCount">0</b></a>
+    </nav>
+    <div class="sidebar-bottom"><span class="sidebar-live"><i></i> Live game updates</span><a href="orders.html" class="game-back-link">← Back to Order Desk</a></div>
+  </aside>
+  <main class="desk-main game-desk-main">
+    <header class="topbar">
+      <div class="topbar-heading"><div><p class="eyebrow">TCC · GUEST EXPERIENCE</p><h1>Perfect 10</h1><p class="muted">Manage the customer game, winning codes and beverage rewards.</p></div></div>
+      <div class="topbar-actions"><span class="live-status"><i></i> LIVE · 4 SEC REFRESH</span><a class="quiet game-mobile-back" href="orders.html">← Orders</a></div>
+    </header>
+    <section class="p10-settings-card">
+      <div><span class="p10-kicker">GAME CONTROL</span><h2>Customer game availability</h2><p>When disabled, Perfect 10 is hidden from table QR menus and new attempts are blocked.</p></div>
+      <div class="p10-toggle-wrap"><span id="gameToggleStatus" class="p10-status-pill">DISABLED</span><button id="gameToggle" class="p10-switch" type="button" role="switch" aria-checked="false" aria-label="Enable Perfect 10"><span></span></button></div>
+    </section>
+    <section class="p10-redemption-card">
+      <div class="p10-section-heading"><div><span class="p10-kicker">STAFF REDEMPTION</span><h2>Validate a reward code</h2><p>Apply the 10% beverage discount in SR POS first, then mark the code as redeemed here.</p></div></div>
+      <form id="rewardValidateForm" class="p10-validate-form"><label for="rewardCodeInput">Reward code</label><div><input id="rewardCodeInput" maxlength="14" autocomplete="off" placeholder="TCC10-XXXXXXXX" required><button class="p10-primary" type="submit">Validate code</button></div></form>
+      <p id="rewardValidationMessage" class="p10-message" role="status"></p>
+      <div id="validatedReward" class="p10-validated" hidden></div>
+    </section>
+    <section class="p10-list-section">
+      <div class="p10-list-heading"><div><span class="p10-kicker">GAME ACTIVITY</span><h2>Winners &amp; rewards</h2><p>New winning codes appear automatically while the Desk is open.</p></div><div class="p10-filters" role="group" aria-label="Reward filter"><button class="active" data-filter="all" type="button">All</button><button data-filter="pending" type="button">Pending</button><button data-filter="redeemed" type="button">Redeemed</button></div></div>
+      <div id="gameRewardsList" class="p10-reward-list" aria-live="polite"><p class="empty">Loading rewards…</p></div>
+    </section>
+    <footer>Rewards are valid for the game session's visit window (3 hours from the start of play). Discount applies to all beverages only and cannot be combined with other offers.</footer>
+  </main>
+</section>
+<script src="game-rewards.js?v=1"></script>
+</body></html>
