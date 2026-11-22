@@ -166,3 +166,7 @@
 @media(max-width:900px){.desk-sidebar{display:none}.desk-main{min-width:0}.dashboard{display:block}}
 .order-status-label{display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;background:#eef1ec;color:#405346;font-size:10px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
 .status-new{background:#fff0d5;color:#80551d}.status-preparing,.status-accepted{background:#e6eff9;color:#365b89}.status-ready,.status-completed{background:#e5f2e8;color:#28643a}.status-cancelled,.status-rejected{background:#f9e7e4;color:#963d32}
+
+@media(min-width:901px){.ops-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 9px}.ops-heading strong{color:#173c2b;font:700 16px Georgia,serif}.ops-heading span{color:#737b70;font-size:10px;font-weight:700}}
+@media(max-width:900px){.ops-heading{display:flex;flex-direction:column;gap:3px;margin:14px 0 8px}.ops-heading strong{color:#173c2b;font:700 15px Georgia,serif}.ops-heading span{color:#737b70;font-size:10px}}
+.sound-options{margin:10px 0;padding:10px 12px;border:1px solid #e4dfd2;border-radius:10px;background:#faf8f1}.sound-options .ops-check{margin:7px 0}
