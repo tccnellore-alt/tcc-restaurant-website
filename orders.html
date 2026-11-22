@@ -38,17 +38,26 @@
       <button class="stat-tile stage-preparing" type="button" data-quick-filter="in-progress"><span>Accepted &amp; Preparing</span><strong id="progressCount">0</strong><small>Accepted · Entered in billing app · KOT sent</small></button>
       <button class="stat-tile stage-finished" type="button" data-quick-filter="ready-completed"><span>Ready &amp; Completed</span><strong id="readyCompletedCount">0</strong><small>Ready for handover or delivered</small></button>
     </section>
-    <details class="advanced-filters" id="advancedFilters"><summary>More filters <span>Period, time and order type</span></summary>
-      
-      <div class="filter-row">
-        <label>Period<select id="periodFilter"><option value="today">Today</option><option value="yesterday">Yesterday</option><option value="7days">Last 7 days</option><option value="30days">Last 30 days</option><option value="all">All time</option><option value="custom">Custom range</option></select></label>
-        <label>Hour<select id="hourFilter"><option value="all">All hours</option><option value="0">00:00–00:59</option><option value="1">01:00–01:59</option><option value="2">02:00–02:59</option><option value="3">03:00–03:59</option><option value="4">04:00–04:59</option><option value="5">05:00–05:59</option><option value="6">06:00–06:59</option><option value="7">07:00–07:59</option><option value="8">08:00–08:59</option><option value="9">09:00–09:59</option><option value="10">10:00–10:59</option><option value="11">11:00–11:59</option><option value="12">12:00–12:59</option><option value="13">13:00–13:59</option><option value="14">14:00–14:59</option><option value="15">15:00–15:59</option><option value="16">16:00–16:59</option><option value="17">17:00–17:59</option><option value="18">18:00–18:59</option><option value="19">19:00–19:59</option><option value="20">20:00–20:59</option><option value="21">21:00–21:59</option><option value="22">22:00–22:59</option><option value="23">23:00–23:59</option></select></label>
-        <label>Order type<select id="typeFilter"><option value="all">All types</option><option value="dine-in">Dine-in</option><option value="takeaway">Takeaway</option></select></label>
+    <section class="date-filter-panel" id="advancedFilters" aria-label="Order date and filters">
+      <div class="date-filter-head"><div><span class="date-filter-kicker">ORDER EXPLORER</span><h2>Find orders by date</h2><p>Choose a quick range or set your own dates.</p></div><span class="date-filter-icon" aria-hidden="true">▦</span></div>
+      <div class="date-quick-ranges" id="dateQuickRanges" role="group" aria-label="Quick date ranges">
+        <button type="button" class="date-range-chip" data-period="7days">7 days</button>
+        <button type="button" class="date-range-chip" data-period="15days">15 days</button>
+        <button type="button" class="date-range-chip" data-period="30days">30 days</button>
+        <button type="button" class="date-range-chip" data-period="90days">90 days</button>
+        <button type="button" class="date-range-chip" data-period="thisMonth">This month</button>
+        <button type="button" class="date-range-chip" data-period="all">All time</button>
       </div>
-      <div class="filter-row custom-dates" id="customDates" hidden><label>From<input type="date" id="dateFrom"></label><label>To<input type="date" id="dateTo"></label></div>
-
-    
-    </details>
+      <div class="date-filter-controls">
+        <label class="date-control date-period-control"><span>Date range</span><select id="periodFilter">
+          <option value="today">Today</option><option value="yesterday">Yesterday</option><option value="7days">Last 7 days</option><option value="15days">Last 15 days</option><option value="30days">Last 30 days</option><option value="90days">Last 90 days</option><option value="thisMonth">This month</option><option value="lastMonth">Last month</option><option value="all">All time</option><option value="date">Specific date</option><option value="custom">Custom date range</option>
+        </select></label>
+        <label class="date-control"><span>Order time</span><select id="hourFilter"><option value="all">Any time</option><option value="0">00:00–00:59</option><option value="1">01:00–01:59</option><option value="2">02:00–02:59</option><option value="3">03:00–03:59</option><option value="4">04:00–04:59</option><option value="5">05:00–05:59</option><option value="6">06:00–06:59</option><option value="7">07:00–07:59</option><option value="8">08:00–08:59</option><option value="9">09:00–09:59</option><option value="10">10:00–10:59</option><option value="11">11:00–11:59</option><option value="12">12:00–12:59</option><option value="13">13:00–13:59</option><option value="14">14:00–14:59</option><option value="15">15:00–15:59</option><option value="16">16:00–16:59</option><option value="17">17:00–17:59</option><option value="18">18:00–18:59</option><option value="19">19:00–19:59</option><option value="20">20:00–20:59</option><option value="21">21:00–21:59</option><option value="22">22:00–22:59</option><option value="23">23:00–23:59</option></select></label>
+        <label class="date-control"><span>Order type</span><select id="typeFilter"><option value="all">All order types</option><option value="dine-in">Dine-in</option><option value="takeaway">Takeaway</option></select></label>
+      </div>
+      <div class="date-custom-fields" id="singleDate" hidden><label class="date-control"><span>Select date</span><input type="date" id="dateSingle"></label></div>
+      <div class="date-custom-fields" id="customDates" hidden><label class="date-control"><span>From date</span><input type="date" id="dateFrom"></label><label class="date-control"><span>To date</span><input type="date" id="dateTo"></label></div>
+    </section>
     <div class="quick-search"><label for="orderSearch">Find an order</label><input id="orderSearch" type="search" placeholder="Search order ID, customer or mobile"><button class="quiet" id="clearFiltersButton" type="button">Clear filters</button></div>
     <div class="toolbar"><div class="filters" id="filters">
       <button class="filter active" data-status="all">All orders</button><button class="filter" data-status="new">New</button><button class="filter" data-status="preparing">Preparing</button><button class="filter" data-status="ready">Ready</button><button class="filter" data-status="completed">Completed</button><button class="filter" data-status="cancelled">Cancelled</button>
