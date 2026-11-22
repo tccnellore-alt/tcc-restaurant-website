@@ -64,12 +64,12 @@ async function editOrderProducts(order){
  const dashboard=$("#dashboardView"),toggle=$("#sidebarCollapseToggle"),key="tccOrderDeskSidebarCollapsedV1";
  const mobileToggle=$("#mobileNavToggle"),backdrop=$("#mobileNavBackdrop"),sidebar=$("#deskSidebar");
  const closeMobile=()=>{
-  dashboard.classList.remove("mobile-nav-open");document.body.classList.remove("mobile-nav-lock");
+  dashboard.classList.remove("mobile-nav-open");document.body.classList.remove("mobile-nav-lock");if(backdrop)backdrop.hidden=true;
   mobileToggle?.setAttribute("aria-expanded","false");mobileToggle?.setAttribute("aria-label","Open navigation");
   if(mobileToggle)mobileToggle.textContent="☰";
  };
  const openMobile=()=>{
-  dashboard.classList.add("mobile-nav-open");document.body.classList.add("mobile-nav-lock");
+  dashboard.classList.add("mobile-nav-open");document.body.classList.add("mobile-nav-lock");if(backdrop)backdrop.hidden=false;
   mobileToggle?.setAttribute("aria-expanded","true");mobileToggle?.setAttribute("aria-label","Close navigation");
   if(mobileToggle)mobileToggle.textContent="✕";
  };
