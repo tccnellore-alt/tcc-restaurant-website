@@ -382,3 +382,8 @@
 .date-custom-fields{margin:0 0 10px}
 #historyTools .quick-search{margin:0}
 @media(max-width:620px){#historyTools{gap:8px}.date-filter-panel{padding:12px}.date-filter-head{margin-bottom:9px}.date-filter-head h2{font-size:15px}.date-quick-ranges{gap:6px}.date-range-chip{min-height:32px;padding:7px 10px;font-size:10px}.date-filter-controls{grid-template-columns:1fr 1fr}.date-control select,.date-control input{height:39px}}
+
+/* Ensure sidebar history action remains an accessible, clickable control */
+#sidebarHistoryButton{position:relative;z-index:2;width:100%;appearance:none;-webkit-appearance:none;pointer-events:auto;touch-action:manipulation}
+#sidebarHistoryButton .sidebar-icon,#sidebarHistoryButton span{pointer-events:none}
+#sidebarHistoryButton:focus-visible{outline:3px solid #d8bd79;outline-offset:2px}
