@@ -13,7 +13,7 @@ function mountEntry(){
  const host=document.querySelector(".menu-content .container")||document.querySelector("main")||document.body;
  const entry=document.createElement("section");entry.id="tccPerfect10Entry";entry.className="tcc-p10-entry";
  const isTestTable=String(game?.table_number||"").toUpperCase()==="T4";
- entry.innerHTML='<div class="tcc-p10-entry-copy"><span class="tcc-p10-eyebrow">A LITTLE TCC CHALLENGE</span><h2>THE PERFECT 10</h2><p>Stop the timer at exactly <strong>10.00 seconds</strong> and win 10% off all beverages.</p><small>'+(isTestTable?"T4 TEST TABLE · UNLIMITED ATTEMPTS":"3 attempts · Valid during this visit")+'</small></div><button type="button" class="tcc-p10-play">PLAY NOW <span aria-hidden="true">→</span></button>';
+ entry.innerHTML='<div class="tcc-p10-entry-top"><span class="tcc-p10-eyebrow">A LITTLE TCC CHALLENGE</span><span class="tcc-p10-tag">PLAY & WIN</span></div><h2>THE PERFECT 10</h2><div class="tcc-p10-offer"><strong>10% OFF</strong><span>ALL BEVERAGES</span></div><p class="tcc-p10-how">Can you stop the timer at exactly <strong>10.00 seconds?</strong></p><p class="tcc-p10-explain">Tap to start. Tap again to stop. Hit 10.00 and win your drink discount!</p><small class="tcc-p10-table-note">'+(isTestTable?"T4 TEST TABLE · UNLIMITED ATTEMPTS":"3 attempts · Valid during this visit")+'</small><button type="button" class="tcc-p10-play">PLAY NOW & WIN 10% OFF <span aria-hidden="true">→</span></button>';
  entry.querySelector("button").addEventListener("click",openGame);host.prepend(entry);
 }
 function ensureModal(){
@@ -29,10 +29,12 @@ function closeGame(){const modal=document.getElementById("tccP10Modal");if(!moda
 function openGame(){ensureModal();const modal=document.getElementById("tccP10Modal");modal.hidden=false;renderState();modal.querySelector(".tcc-p10-close").focus();}
 function renderState(){
  const attempts=document.getElementById("tccP10Attempts"),clock=document.getElementById("tccP10Clock"),button=document.getElementById("tccP10Start"),feedback=document.getElementById("tccP10Feedback"),rewardBox=document.getElementById("tccP10Reward");
+ const unlimited=game?.unlimited_attempts===true||String(game?.table_number||"").toUpperCase()==="T4";
  const remaining=Math.max(0,Number(game?.attempts_remaining??3));
- attempts.textContent=remaining+" ATTEMPT"+(remaining===1?"":"S")+" LEFT";
+ attempts.textContent=unlimited?"UNLIMITED TEST ATTEMPTS":remaining+" ATTEMPT"+(remaining===1?"":"S")+" LEFT";
  clock.textContent=game?.reward?"10.00":"0.00";
  rewardBox.hidden=true;rewardBox.innerHTML="";document.getElementById("tccP10Fireworks").innerHTML="";
+ button.hidden=false;
  if(game?.is_winner&&game.reward){showWinner(game.reward);return;}
  if(!unlimited&&remaining===0){button.disabled=true;button.textContent="NO ATTEMPTS LEFT";feedback.textContent="Thank you for playing. Enjoy your time at TCC!";return;}
  button.disabled=false;button.textContent="START ATTEMPT";feedback.textContent="Ready when you are.";
@@ -41,7 +43,6 @@ function tick(){if(!running)return;const elapsed=performance.now()-startedAt;dis
 async function toggleAttempt(){
  const button=document.getElementById("tccP10Start"),feedback=document.getElementById("tccP10Feedback");
  if(!running){running=true;startedAt=performance.now();displayedElapsedMs=0;button.textContent="STOP";feedback.textContent="Tap STOP when you think it is 10.00.";tick();return;}
- // Freeze and submit the exact value already visible on screen. Do not recalculate on click.
  running=false;cancelAnimationFrame(frame);const elapsed=displayedElapsedMs;
  button.disabled=true;button.textContent="CHECKING…";feedback.textContent="Checking your attempt…";
  try{
