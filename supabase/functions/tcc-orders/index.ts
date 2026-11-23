@@ -48,8 +48,8 @@ if(req.method==="GET"&&action==="table-assistance-status"){
  const rows=await db("tcc_table_assistance_requests?table_number=eq."+encodeURIComponent(tableNumber)+"&status=eq.pending&select=id,table_number,request_type,status,created_at&order=created_at.desc&limit=10");
  return json({requests:rows||[]});
 }
-if(!(await session(req)))return json({error:"Please log in again."},401);
 if(req.method==="GET"&&action==="menu-availability"){const rows=await db("tcc_menu_item_overrides?select=product_key,availability,visibility");return json({overrides:(rows||[]).map((r:any)=>({product_key:r.product_key,availability:r.availability,visibility:r.visibility}))});}
+if(!(await session(req)))return json({error:"Please log in again."},401);
 if(req.method==="GET"&&action==="menu-availability-admin"){const rows=await db("tcc_menu_item_overrides?select=product_key,name,category,section,availability,visibility,updated_at&order=category.asc,name.asc");return json({items:rows||[]});}
 if(req.method==="PATCH"&&action==="menu-availability"){const b=await req.json(),k=String(b.product_key||"").trim().toLowerCase(),n=String(b.name||"").trim().slice(0,120),c=String(b.category||"").trim().slice(0,80),s=String(b.section||"").trim().slice(0,100),a=String(b.availability||""),v=String(b.visibility||"");if(!k||k.length>220||!n||!["available","sold_out"].includes(a)||!["visible","hidden"].includes(v))return json({error:"Invalid menu update."},400);const rows=await db("tcc_menu_item_overrides?on_conflict=product_key&select=product_key,name,category,section,availability,visibility,updated_at",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=representation"},body:JSON.stringify({product_key:k,name:n,category:c,section:s,availability:a,visibility:v,updated_at:new Date().toISOString()})});return json({item:rows?.[0]||null});}
 
