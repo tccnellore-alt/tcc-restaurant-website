@@ -40,6 +40,18 @@ Deno.serve(async(req:Request)=>{if(req.method==="OPTIONS")return new Response("o
   const result=await db("rpc/tcc_game_consume_attempt",{method:"POST",body:JSON.stringify({p_session_hash:await digest(sessionToken),p_elapsed_ms:elapsedMs})});
   if(result?.status)return json({error:result.error},Number(result.status));return json(result);
  }
+ if(req.method==="GET"&&action==="game-statistics"){
+  const denied=await requireAdmin(req);if(denied)return denied;
+  const period=String(url.searchParams.get("period")||"today");
+  if(!["today","7d","30d","all"].includes(period))return json({error:"Invalid statistics period."},400);
+  const now=new Date(),localNow=new Date(now.getTime()+330*60000),dayStart=new Date(Date.UTC(localNow.getUTCFullYear(),localNow.getUTCMonth(),localNow.getUTCDate())-330*60000);
+  let start:string|null=dayStart.toISOString(),label="Today";
+  if(period==="7d"){start=new Date(dayStart.getTime()-6*86400000).toISOString();label="Last 7 days";}
+  if(period==="30d"){start=new Date(dayStart.getTime()-29*86400000).toISOString();label="Last 30 days";}
+  if(period==="all"){start=null;label="All time";}
+  const result=await db("rpc/tcc_game_statistics",{method:"POST",body:JSON.stringify({p_start:start,p_end:now.toISOString()})});
+  return json({statistics:result||{},period,period_label:label});
+ }
  if(req.method==="GET"&&action==="game-rewards"){
   const denied=await requireAdmin(req);if(denied)return denied;
   const rows=await db("tcc_game_rewards?select=id,reward_code,session_id,table_number,discount_percent,discount_scope,combine_with_offers,status,created_at,expires_at,redeemed_at,redeemed_by&order=created_at.desc&limit=250");
