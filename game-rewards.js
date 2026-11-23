@@ -3,7 +3,7 @@
 const API="https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-game";
 const KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A";
 const TOKEN_KEY="tccOrderDeskSessionV1",token=localStorage.getItem(TOKEN_KEY)||"";
-const $=s=>document.querySelector(s);let rewards=[],enabled=false,filter="all",validatedCode="",seenRewardIds=new Set(),rewardsInitialized=false,rangeDirty=false;
+const $=s=>document.querySelector(s);let rewards=[],enabled=false,filter="pending",validatedCode="",seenRewardIds=new Set(),rewardsInitialized=false,rangeDirty=false;
 if(!token){location.replace("orders.html");return;}
 async function request(action,{method="GET",body,query=""}={}){const r=await fetch(API+"?action="+encodeURIComponent(action)+(query?"&"+query:""),{method,headers:{apikey:KEY,Authorization:"Bearer "+KEY,"Content-Type":"application/json","x-tcc-admin-session":token},body:body?JSON.stringify(body):undefined,cache:"no-store"});const data=await r.json().catch(()=>({}));if(r.status===401){localStorage.removeItem(TOKEN_KEY);location.replace("orders.html");throw new Error(data.error||"Please sign in again.");}if(!r.ok)throw new Error(data.error||"Request failed ("+r.status+").");return data;}
 function dateTime(v){return new Date(v).toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"});}
