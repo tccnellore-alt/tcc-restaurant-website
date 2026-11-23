@@ -503,3 +503,23 @@
 .assistance-card-bill{border-left:3px solid #b79a5a}
 .assistance-card-staff{border-left:3px solid #4d8060}
 @media(max-width:520px){.assistance-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.assistance-card{min-height:116px;align-items:stretch;flex-direction:column;justify-content:space-between;padding:10px}.assistance-card .assistance-attend{width:100%;min-height:32px}.assistance-card strong{font-size:12px}.assistance-card span{font-size:9px}}
+
+
+/* Separate guest-support queues: equal-width Call Staff and Request Bill columns. */
+.assistance-panel{padding:15px;margin-bottom:18px}
+.assistance-heading{margin-bottom:12px}
+.assistance-heading h2{font-size:18px}
+.assistance-queues{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:stretch}
+.assistance-queue{min-width:0;padding:11px;border:1px solid #e2e8de;border-radius:12px;background:#ffffffb8}
+.assistance-queue-staff{border-top:3px solid #4d8060}
+.assistance-queue-bill{border-top:3px solid #b79a5a}
+.assistance-queue-heading{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:9px}
+.assistance-queue-heading h3{margin:0;color:#173c2b;font-size:13px;font-weight:900}
+.assistance-queue .assistance-count{padding:5px 7px;font-size:9px}
+.assistance-queue .assistance-list{display:grid;grid-template-columns:1fr;gap:7px}
+.assistance-queue .assistance-card{min-height:0;align-items:stretch;flex-direction:column;justify-content:space-between;gap:8px;padding:9px}
+.assistance-queue .assistance-card strong{font-size:11px}
+.assistance-queue .assistance-card span{font-size:9px}
+.assistance-queue .assistance-card .assistance-attend{width:100%;min-height:30px;padding:6px;font-size:9px}
+.assistance-queue .assistance-empty{padding:12px 5px;font-size:10px}
+@media(max-width:520px){.assistance-panel{padding:11px}.assistance-queues{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.assistance-queue{padding:8px}.assistance-queue-heading{align-items:flex-start;flex-direction:column;gap:5px}.assistance-queue-heading h3{font-size:12px}.assistance-queue .assistance-card{padding:7px}.assistance-queue .assistance-card strong{font-size:10px}.assistance-queue .assistance-card span{font-size:8px}}
