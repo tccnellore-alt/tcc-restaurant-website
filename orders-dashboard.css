@@ -526,3 +526,45 @@
 
 /* Table Requests History */
 .table-requests-history-view{padding:20px;background:#fff;border:1px solid #e4e9e2;border-radius:16px;margin:16px 0}.table-history-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.table-history-heading h2{margin:3px 0;color:#173c2b;font-size:22px}.table-history-heading p:last-child{margin:4px 0;color:#758078;font-size:13px}.table-history-filters{display:flex;gap:12px;flex-wrap:wrap;padding:14px;background:#f7f8f4;border:1px solid #e6e9e1;border-radius:12px}.table-history-filters label{display:grid;gap:6px;min-width:180px;color:#526055;font-size:12px;font-weight:800}.table-history-filters input,.table-history-filters select{height:40px;padding:0 11px;border:1px solid #d9e1d8;border-radius:8px;background:#fff;color:#263d2e}.table-history-summary{margin:14px 0;color:#748078;font-size:12px;font-weight:700}.table-history-table-wrap{overflow-x:auto}.table-history-table{width:100%;border-collapse:collapse;min-width:620px}.table-history-table th,.table-history-table td{padding:12px 10px;text-align:left;border-bottom:1px solid #edf0ea;font-size:12px;white-space:nowrap}.table-history-table th{color:#6c786e;background:#f8f9f6;font-size:10px;text-transform:uppercase;letter-spacing:.05em}.table-history-table td:first-child{font-weight:900;color:#173c2b}.table-history-staff{color:#276847;font-weight:800}.table-history-bill{color:#96753a;font-weight:800}.table-history-footer{display:flex;justify-content:center;padding-top:14px}.table-history-footer button:disabled{opacity:.45;cursor:not-allowed}@media(max-width:600px){.table-requests-history-view{padding:13px}.table-history-heading h2{font-size:19px}.table-history-filters{display:grid;grid-template-columns:1fr 1fr;gap:8px}.table-history-filters label{min-width:0}.table-history-table th,.table-history-table td{padding:10px 8px}}
+
+.menu-updates-view{padding:20px;background:#fff;border:1px solid #e4e9e2;border-radius:16px;margin:16px 0}.menu-updates-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.menu-updates-heading h2{margin:3px 0;color:#173c2b;font-size:22px}.menu-updates-heading p:last-child{margin:4px 0;color:#758078;font-size:13px}.menu-updates-toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,240px);gap:7px 12px;padding:14px;background:#f7f8f4;border:1px solid #e6e9e1;border-radius:12px}.menu-updates-toolbar label{font-size:11px;font-weight:800;color:#526055}.menu-updates-toolbar input,.menu-updates-toolbar select{min-width:0;height:40px;padding:0 11px;border:1px solid #d9e1d8;border-radius:8px;background:#fff;color:#263d2e}.menu-updates-summary{margin:14px 0;color:#748078;font-size:12px;font-weight:700}.menu-updates-list{display:grid;gap:9px}.menu-update-card{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px;border:1px solid #e5eae2;border-radius:12px;background:#fff}.menu-update-info{min-width:0;display:grid;gap:5px}.menu-update-info>strong{color:#173c2b;font-size:14px}.menu-update-info>small{color:#778177;font-size:10px}.menu-update-status{display:flex;gap:6px;flex-wrap:wrap}.menu-update-status span{padding:4px 7px;border-radius:999px;font-size:9px;font-weight:800}.menu-update-status .is-available,.menu-update-status .is-visible{background:#eaf3eb;color:#28613d}.menu-update-status .is-sold{background:#fbe9e7;color:#a3322b}.menu-update-status .is-hidden{background:#eeeef0;color:#565b60}.menu-update-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.menu-update-actions button{min-height:36px;padding:7px 10px;border:1px solid #cfd9cf;border-radius:9px;background:#f8faf6;color:#244536;font-size:10px;font-weight:800;cursor:pointer}.menu-update-actions button:last-child{border-color:#c9b98f;background:#faf6eb;color:#725b2d}.menu-update-actions button:disabled{opacity:.55;cursor:wait}.menu-updates-error{color:#a3322b;font-size:12px}@media(max-width:600px){.menu-updates-view{padding:13px}.menu-updates-heading h2{font-size:19px}.menu-updates-toolbar{grid-template-columns:1fr}.menu-update-card{align-items:stretch;flex-direction:column;gap:10px}.menu-update-actions{display:grid;grid-template-columns:1fr 1fr}.menu-update-actions button{min-height:40px}}
+/* Menu Updates: availability only */
+.menu-update-status>span.is-visible,.menu-update-status>span.is-hidden{display:none!important}
+.menu-update-actions button[data-action="visibility"]{display:none!important}
+.menu-update-actions{grid-template-columns:minmax(0,1fr)!important}
+
+/* Menu Updates: compact product controls and reliable page-level hiding */
+[hidden]{display:none!important}
+.menu-updates-view{min-height:calc(100vh - 32px);margin:0;padding:clamp(12px,2vw,22px);border-radius:0;border:0;background:#fbfaf6}
+.menu-updates-heading{position:sticky;top:0;z-index:5;margin:-2px 0 10px;padding:8px 0 10px;background:#fbfaf6}
+.menu-updates-heading h2{font-size:21px}
+.menu-updates-heading p:last-child{font-size:12px}
+.menu-updates-toolbar{grid-template-columns:minmax(90px,.55fr) minmax(160px,1.5fr) minmax(75px,.4fr) minmax(135px,1fr) minmax(90px,.55fr) minmax(130px,1fr);align-items:center;gap:8px;padding:10px 12px}
+.menu-updates-toolbar label{font-size:10px}
+.menu-updates-toolbar input,.menu-updates-toolbar select{height:36px;font-size:12px}
+.menu-updates-summary{margin:9px 0;font-size:11px}
+.menu-updates-list{gap:6px}
+.menu-update-card{min-height:56px;padding:8px 10px;gap:12px;border-radius:10px;box-shadow:none}
+.menu-update-info{display:flex;align-items:center;flex-wrap:wrap;gap:4px 9px;flex:1}
+.menu-update-info>strong{font-size:12px;line-height:1.25}
+.menu-update-info>small{font-size:9px}
+.menu-update-status{display:inline-flex}
+.menu-update-status span{padding:3px 6px;font-size:8px}
+.menu-update-actions{flex:0 0 auto;display:flex!important;justify-content:flex-end}
+.menu-update-actions button{min-height:32px;padding:6px 9px;font-size:9px;white-space:nowrap}
+@media(max-width:700px){
+ .menu-updates-view{padding:10px}
+ .menu-updates-heading{gap:8px}
+ .menu-updates-heading h2{font-size:19px}
+ .menu-updates-heading p:last-child{font-size:11px;max-width:230px}
+ .menu-updates-toolbar{grid-template-columns:72px minmax(0,1fr);gap:6px 8px;padding:9px}
+ .menu-updates-toolbar label{align-self:center}
+ .menu-updates-toolbar input,.menu-updates-toolbar select{height:34px}
+ .menu-update-card{flex-direction:row;align-items:center;gap:7px;padding:8px}
+ .menu-update-info{gap:3px 7px}
+ .menu-update-info>strong{font-size:11px}
+ .menu-update-info>small{width:100%;font-size:8px;line-height:1.2}
+ .menu-update-status span{font-size:8px;padding:2px 5px}
+ .menu-update-actions{display:flex!important;flex:0 0 auto}
+ .menu-update-actions button{min-height:31px;padding:5px 7px;font-size:8px}
+}

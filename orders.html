@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow">
-<title>TCC Order Desk</title><link rel="stylesheet" href="orders-dashboard.css?v=desktop-operations-redesign-1">
+<title>TCC Order Desk</title><link rel="stylesheet" href="orders-dashboard.css?v=menu-availability-visibility-1">
 </head>
 <body>
 <main class="shell">
@@ -23,6 +23,7 @@
       <p class="sidebar-caption">OPERATIONS</p>
       <nav class="sidebar-nav">
         <a class="sidebar-link active" id="sidebarTodayLink" href="orders.html" aria-current="page"><span class="sidebar-icon">▣</span><span>New Orders</span><b id="sidebarNewCount">0</b></a>
+        <button class="sidebar-link" id="sidebarMenuUpdatesButton" type="button" aria-pressed="false"><span class="sidebar-icon">☷</span><span>Menu Updates</span></button>
         <button class="sidebar-link" id="sidebarHistoryButton" type="button" data-order-view="history" aria-pressed="false"><span class="sidebar-icon">◷</span><span>Order History</span></button>
 <button class="sidebar-link" id="sidebarTableRequestsHistoryButton" type="button" aria-pressed="false"><span class="sidebar-icon">▤</span><span>Table Requests History</span></button>
         <a class="sidebar-link" href="orders-reports.html"><span class="sidebar-icon">▥</span><span>Reports &amp; Analytics</span></a>
@@ -36,6 +37,7 @@
     </aside>
     <div class="mobile-nav-backdrop" id="mobileNavBackdrop" hidden></div>
     <div class="desk-main">
+    <section id="menuUpdatesView" class="menu-updates-view" hidden aria-labelledby="menuUpdatesTitle"><div class="menu-updates-heading"><div><p class="assistance-kicker">MENU CONTROL</p><h2 id="menuUpdatesTitle">Menu Updates</h2><p>Manage product availability. Prices and product details are not editable here.</p></div><button type="button" class="quiet" id="menuUpdatesRefresh">↻ Refresh</button></div><div class="menu-updates-toolbar"><label for="menuUpdatesSearch">Search products</label><input id="menuUpdatesSearch" type="search" placeholder="Search by product name"><label for="menuUpdatesCategory">Category</label><select id="menuUpdatesCategory"><option value="all">All categories</option></select><label for="menuUpdatesAvailability">Availability</label><select id="menuUpdatesAvailability"><option value="all">All products</option><option value="available">Available</option><option value="sold_out">Sold Out</option></select></div><p class="menu-updates-summary" id="menuUpdatesSummary">Loading menu…</p><div id="menuUpdatesList" class="menu-updates-list" aria-live="polite"><p>Loading menu items…</p></div><p class="menu-updates-error" id="menuUpdatesError" role="alert"></p></section>
     <section id="tableRequestsHistoryView" class="table-requests-history-view" hidden aria-labelledby="tableRequestsHistoryTitle"><div class="table-history-heading"><div><p class="assistance-kicker">GUEST SUPPORT</p><h2 id="tableRequestsHistoryTitle">Table Requests History</h2><p>Completed Call Staff and Request Bill requests</p></div><button type="button" class="quiet" id="tableHistoryRefresh">↻ Refresh</button></div><div class="table-history-filters"><label><span>Date</span><input type="date" id="tableHistoryDate"></label><label><span>Request type</span><select id="tableHistoryType"><option value="all">All requests</option><option value="staff">Call Staff</option><option value="bill">Request Bill</option></select></label></div><p class="table-history-summary" id="tableHistorySummary">Loading history…</p><div class="table-history-table-wrap"><table class="table-history-table"><thead><tr><th>Table</th><th>Request</th><th>Received</th><th>Attended</th><th>Time taken</th></tr></thead><tbody id="tableHistoryRows"><tr><td colspan="5">Loading…</td></tr></tbody></table></div><div class="table-history-footer"><button type="button" id="tableHistoryOlder" class="quiet" disabled>Load older records</button></div></section>
     <header class="topbar"><div class="topbar-heading"><button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="deskSidebar">☰</button><div><p class="eyebrow">TCC · RECEPTION</p><h1>Order Desk</h1><p class="muted" id="lastUpdated">Waiting for orders…</p></div></div><div class="topbar-actions"><span class="live-status"><i></i> LIVE · 4 SEC REFRESH</span><button class="quiet sound-toggle" id="enableAlertsButton" type="button" role="switch" aria-checked="true" aria-label="Sound alerts"><span class="sound-toggle-track" aria-hidden="true"><span></span></span><span class="sound-toggle-label">Sound alerts: On</span></button><button class="quiet" id="assistanceSoundTest" type="button" title="Play a test table-assistance alert">♪ Test sound</button><button class="quiet" id="refreshButton" type="button">↻ Refresh</button></div></header>
     <div class="order-view-tabs" id="historyTabs" role="group" aria-label="Order date view" hidden><button type="button" id="todayOrdersTab" class="order-view-tab active" aria-pressed="true"><span>Today</span><small>Live orders</small></button><button type="button" id="orderHistoryTab" class="order-view-tab" aria-pressed="false"><span>Order History</span><small>Previous days</small></button></div>
@@ -78,5 +80,5 @@
     </div>
   </section>
 </main>
-<script src="orders-dashboard.js?v=desktop-operations-redesign-1"></script>
+<script src="orders-dashboard.js?v=menu-availability-visibility-1"></script>
 </body></html>
