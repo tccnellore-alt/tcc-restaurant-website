@@ -492,3 +492,14 @@
  body.mobile-nav-lock{overflow:hidden}
 }
 @media(max-width:600px){.topbar-heading{gap:9px}.mobile-nav-toggle{width:40px;height:40px;flex-basis:40px}.topbar h1{font-size:30px}}
+
+/* Compact guest-support request tiles */
+.assistance-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));align-items:stretch}
+.assistance-card{min-width:0;min-height:92px;align-items:center;padding:12px;gap:10px}
+.assistance-card>div{flex:1;min-width:0;gap:7px}
+.assistance-card strong{font-size:13px;line-height:1.35;overflow-wrap:anywhere}
+.assistance-card span{font-size:10px}
+.assistance-card .assistance-attend{flex:0 0 auto;min-height:34px;padding:8px 10px;font-size:10px}
+.assistance-card-bill{border-left:3px solid #b79a5a}
+.assistance-card-staff{border-left:3px solid #4d8060}
+@media(max-width:520px){.assistance-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.assistance-card{min-height:116px;align-items:stretch;flex-direction:column;justify-content:space-between;padding:10px}.assistance-card .assistance-attend{width:100%;min-height:32px}.assistance-card strong{font-size:12px}.assistance-card span{font-size:9px}}
