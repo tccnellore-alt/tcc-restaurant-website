@@ -18,7 +18,7 @@
  const actions=document.createElement("section");actions.className="tcc-table-actions";actions.setAttribute("aria-label","Table assistance");
  actions.innerHTML='<p class="tcc-table-actions-heading">Need anything else?</p><div class="tcc-table-actions-grid"><button type="button" class="tcc-table-action staff"><span aria-hidden="true">♧</span>Call Staff</button><button type="button" class="tcc-table-action bill"><span aria-hidden="true">▤</span>Request Bill</button></div><p class="tcc-table-action-note" role="status"></p>';
  slot.replaceChildren(actions);
- const note=actions.querySelector(".tcc-table-action-note");
+ const note=actions.querySelector(".tcc-table-action-note");let wasValid=false;
  const buttons={staff:actions.querySelector(".staff"),bill:actions.querySelector(".bill")};
  const labels={staff:"Call Staff",bill:"Request Bill"};
  const show=(msg,error=false)=>{note.textContent=msg;note.style.display=msg?"block":"none";note.style.color=error?"#ffd6ce":"#e8efdf";};
@@ -28,6 +28,6 @@
   catch(e){b.disabled=false;b.innerHTML='<span aria-hidden="true">'+(type==="bill"?"▤":"♧")+'</span>'+labels[type];show(e.message,true);}
  }
  buttons.staff.addEventListener("click",()=>send("staff"));buttons.bill.addEventListener("click",()=>send("bill"));
- const attach=()=>{const banner=document.querySelector(".tcc-table-qr-banner");const valid=banner&&banner.textContent.includes("Ordering for Table");actions.hidden=!valid;if(valid)sync();};
+ const attach=()=>{const banner=document.querySelector(".tcc-table-qr-banner");const valid=!!(banner&&banner.textContent.includes("Ordering for Table"));actions.hidden=!valid;if(valid&&!wasValid){wasValid=true;sync();}else if(!valid)wasValid=false;};
  const observer=new MutationObserver(attach);observer.observe(document.body,{childList:true,subtree:true,characterData:true});attach();
 })();
