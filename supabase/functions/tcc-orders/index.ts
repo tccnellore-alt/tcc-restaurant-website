@@ -25,17 +25,18 @@ if(req.method==="POST"&&action==="logout"){const token=req.headers.get("x-tcc-ad
 if(req.method==="GET"&&action==="order-lookup"){const lookup=String(url.searchParams.get("lookup")||"").trim();if(!lookup||lookup.length>80)return json({error:"Enter an order reference or mobile number."},400);let query:string;if(/^TCC-[0-9]{8}-(?:[A-Z0-9]{6}|[A-Z0-9]{1,10}-[0-9]{3,})$/i.test(lookup)){query="tcc_orders?order_number=eq."+encodeURIComponent(lookup.toUpperCase())+"&archived_at=is.null&select=order_number,status,created_at,order_type,table_number,total,customer_name,items,customer_note&limit=1";}else{const phone=lookup.replace(/\D/g,"").replace(/^91(?=\d{10}$)/,"");if(!/^\d{10}$/.test(phone))return json({error:"Enter a valid order reference or 10-digit mobile number."},400);query="tcc_orders?customer_phone=eq."+encodeURIComponent(phone)+"&archived_at=is.null&select=order_number,status,created_at,order_type,table_number,total,customer_name,items,customer_note&order=created_at.desc&limit=20";}return json({orders:await db(query)});}
 if(req.method==="GET"&&action==="order-status"){const orderNumber=String(url.searchParams.get("order_number")||"").trim().slice(0,80),phone=String(url.searchParams.get("phone")||"").replace(/[^0-9+]/g,"").slice(0,30);if(!orderNumber||phone.length<7)return json({error:"Order reference and phone number are required."},400);const rows=await db("tcc_orders?order_number=eq."+encodeURIComponent(orderNumber)+"&customer_phone=eq."+encodeURIComponent(phone)+"&select=order_number,status,updated_at,items,total,customer_note&limit=1");if(!Array.isArray(rows)||!rows.length)return json({error:"Order not found."},404);return json({order:rows[0]});}
 
-// Table assistance: public requests are accepted only with an active dedicated table QR token.
+// Table assistance and bill requests: public requests require an active dedicated table QR token.
 if(req.method==="POST"&&action==="create-table-assistance"){
- const body=await req.json(),qrToken=String(body.table_qr_token||"").trim();
- if(!/^[A-Za-z0-9_-]{40,80}$/.test(qrToken))return json({error:"Please scan your table QR code to call staff."},403);
+ const body=await req.json(),qrToken=String(body.table_qr_token||"").trim(),requestType=String(body.request_type||"staff").trim().toLowerCase();
+ if(!["staff","bill"].includes(requestType))return json({error:"Invalid table request."},400);
+ if(!/^[A-Za-z0-9_-]{40,80}$/.test(qrToken))return json({error:"Please scan your table QR code to send a request."},403);
  const qrRows=await db("tcc_table_qr_tokens?token_hash=eq."+encodeURIComponent(await digest(qrToken))+"&is_active=eq.true&select=table_number&limit=1");
  if(!Array.isArray(qrRows)||!qrRows[0])return json({error:"This table QR is invalid or has been disabled."},403);
  const tableNumber=String(qrRows[0].table_number||"").trim().toUpperCase();
- const open=await db("tcc_table_assistance_requests?table_number=eq."+encodeURIComponent(tableNumber)+"&status=eq.pending&select=id,table_number,status,created_at&order=created_at.desc&limit=1");
+ const open=await db("tcc_table_assistance_requests?table_number=eq."+encodeURIComponent(tableNumber)+"&request_type=eq."+encodeURIComponent(requestType)+"&status=eq.pending&select=id,table_number,request_type,status,created_at&order=created_at.desc&limit=1");
  if(open?.[0])return json({request:open[0],duplicate:true});
- const rows=await db("tcc_table_assistance_requests?select=id,table_number,status,created_at",{method:"POST",headers:{Prefer:"return=representation"},body:JSON.stringify({table_number:tableNumber,status:"pending"})});
- if(!rows?.[0])throw new Error("Unable to create table assistance request.");
+ const rows=await db("tcc_table_assistance_requests?select=id,table_number,request_type,status,created_at",{method:"POST",headers:{Prefer:"return=representation"},body:JSON.stringify({table_number:tableNumber,request_type:requestType,status:"pending"})});
+ if(!rows?.[0])throw new Error("Unable to create table request.");
  return json({request:rows[0]},201);
 }
 if(req.method==="GET"&&action==="table-assistance-status"){
@@ -44,12 +45,12 @@ if(req.method==="GET"&&action==="table-assistance-status"){
  const qrRows=await db("tcc_table_qr_tokens?token_hash=eq."+encodeURIComponent(await digest(qrToken))+"&is_active=eq.true&select=table_number&limit=1");
  if(!Array.isArray(qrRows)||!qrRows[0])return json({error:"This table QR is invalid or has been disabled."},403);
  const tableNumber=String(qrRows[0].table_number||"").trim().toUpperCase();
- const rows=await db("tcc_table_assistance_requests?table_number=eq."+encodeURIComponent(tableNumber)+"&status=eq.pending&select=id,table_number,status,created_at&order=created_at.desc&limit=1");
- return json({request:rows?.[0]||null});
+ const rows=await db("tcc_table_assistance_requests?table_number=eq."+encodeURIComponent(tableNumber)+"&status=eq.pending&select=id,table_number,request_type,status,created_at&order=created_at.desc&limit=10");
+ return json({requests:rows||[]});
 }
 if(!(await session(req)))return json({error:"Please log in again."},401);
 if(req.method==="GET"&&action==="table-assistance-requests"){
- const rows=await db("tcc_table_assistance_requests?select=id,table_number,status,created_at,attended_at,attended_by&order=created_at.desc&limit=100");
+ const rows=await db("tcc_table_assistance_requests?select=id,table_number,request_type,status,created_at,attended_at,attended_by&order=created_at.desc&limit=100");
  return json({requests:rows||[]});
 }
 if(req.method==="PATCH"&&action==="attend-table-assistance"){
