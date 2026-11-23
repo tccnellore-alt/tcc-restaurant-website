@@ -3,3 +3,8 @@
 .p10-winning-card h2{margin:6px 0;color:var(--green);font:600 23px Georgia,serif}.p10-winning-card>div>p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
 .p10-range-form{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-top:5px}.p10-range-form label{display:grid;gap:7px;min-width:150px;flex:1}.p10-range-form label span{color:#526258;font-size:11px;font-weight:800}.p10-range-form input{width:100%;height:44px;padding:0 12px;border:1px solid #dce2d9;border-radius:10px;background:#fff;color:#173c2b;font:800 15px Arial,sans-serif;font-variant-numeric:tabular-nums}.p10-range-separator{padding-bottom:14px;color:#8a958a;font-size:10px;font-weight:900;letter-spacing:.12em}.p10-range-form .p10-primary{min-height:44px;white-space:nowrap}.p10-range-form button:disabled{opacity:.6;cursor:wait}.p10-range-help{color:#788278!important;font-size:11px!important}.p10-winning-card .p10-message{margin:0;min-height:16px;font-size:12px}.p10-winning-card .p10-message.success{color:#237344}.p10-winning-card .p10-message.error{color:#a33b30}
 @media(max-width:600px){.p10-range-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}.p10-range-form label{min-width:0}.p10-range-separator{display:none}.p10-range-form .p10-primary{grid-column:1/-1;width:100%}}
+
+.p10-reward-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.p10-validate-button{min-height:34px;padding:0 14px;border:1px solid #c9d8ca;border-radius:9px;background:#edf5ed;color:#1b5635;font-size:10px;font-weight:900;cursor:pointer}
+.p10-validate-button:disabled{opacity:.6;cursor:wait}
+@media(max-width:600px){.p10-reward-actions{justify-content:flex-start}.p10-validate-button{min-height:38px;padding:0 18px}}
