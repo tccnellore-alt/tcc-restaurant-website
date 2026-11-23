@@ -532,3 +532,39 @@
 .menu-update-status>span.is-visible,.menu-update-status>span.is-hidden{display:none!important}
 .menu-update-actions button[data-action="visibility"]{display:none!important}
 .menu-update-actions{grid-template-columns:minmax(0,1fr)!important}
+
+/* Menu Updates: compact product controls and reliable page-level hiding */
+[hidden]{display:none!important}
+.menu-updates-view{min-height:calc(100vh - 32px);margin:0;padding:clamp(12px,2vw,22px);border-radius:0;border:0;background:#fbfaf6}
+.menu-updates-heading{position:sticky;top:0;z-index:5;margin:-2px 0 10px;padding:8px 0 10px;background:#fbfaf6}
+.menu-updates-heading h2{font-size:21px}
+.menu-updates-heading p:last-child{font-size:12px}
+.menu-updates-toolbar{grid-template-columns:minmax(90px,.55fr) minmax(160px,1.5fr) minmax(75px,.4fr) minmax(135px,1fr) minmax(90px,.55fr) minmax(130px,1fr);align-items:center;gap:8px;padding:10px 12px}
+.menu-updates-toolbar label{font-size:10px}
+.menu-updates-toolbar input,.menu-updates-toolbar select{height:36px;font-size:12px}
+.menu-updates-summary{margin:9px 0;font-size:11px}
+.menu-updates-list{gap:6px}
+.menu-update-card{min-height:56px;padding:8px 10px;gap:12px;border-radius:10px;box-shadow:none}
+.menu-update-info{display:flex;align-items:center;flex-wrap:wrap;gap:4px 9px;flex:1}
+.menu-update-info>strong{font-size:12px;line-height:1.25}
+.menu-update-info>small{font-size:9px}
+.menu-update-status{display:inline-flex}
+.menu-update-status span{padding:3px 6px;font-size:8px}
+.menu-update-actions{flex:0 0 auto;display:flex!important;justify-content:flex-end}
+.menu-update-actions button{min-height:32px;padding:6px 9px;font-size:9px;white-space:nowrap}
+@media(max-width:700px){
+ .menu-updates-view{padding:10px}
+ .menu-updates-heading{gap:8px}
+ .menu-updates-heading h2{font-size:19px}
+ .menu-updates-heading p:last-child{font-size:11px;max-width:230px}
+ .menu-updates-toolbar{grid-template-columns:72px minmax(0,1fr);gap:6px 8px;padding:9px}
+ .menu-updates-toolbar label{align-self:center}
+ .menu-updates-toolbar input,.menu-updates-toolbar select{height:34px}
+ .menu-update-card{flex-direction:row;align-items:center;gap:7px;padding:8px}
+ .menu-update-info{gap:3px 7px}
+ .menu-update-info>strong{font-size:11px}
+ .menu-update-info>small{width:100%;font-size:8px;line-height:1.2}
+ .menu-update-status span{font-size:8px;padding:2px 5px}
+ .menu-update-actions{display:flex!important;flex:0 0 auto}
+ .menu-update-actions button{min-height:31px;padding:5px 7px;font-size:8px}
+}
