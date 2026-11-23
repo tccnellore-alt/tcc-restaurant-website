@@ -2,8 +2,7 @@ create or replace function public.tcc_game_statistics(p_start timestamptz defaul
 returns jsonb
 language sql
 stable
-security definer
-set search_path = public
+set search_path = ''
 as $$
  with sessions as (
    select id,is_winner,attempts_used
