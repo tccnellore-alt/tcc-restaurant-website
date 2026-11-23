@@ -50,7 +50,19 @@ if(req.method==="GET"&&action==="table-assistance-status"){
 }
 if(!(await session(req)))return json({error:"Please log in again."},401);
 if(req.method==="GET"&&action==="table-assistance-requests"){
- const rows=await db("tcc_table_assistance_requests?select=id,table_number,request_type,status,created_at,attended_at,attended_by&order=created_at.desc&limit=100");
+ const rows=await db("tcc_table_assistance_requests?status=eq.pending&select=id,table_number,request_type,status,created_at,attended_at,attended_by&order=created_at.desc&limit=100");
+ return json({requests:rows||[]});
+}
+if(req.method==="GET"&&action==="table-assistance-history"){
+ const date=String(url.searchParams.get("date")||""),type=String(url.searchParams.get("type")||"all"),offset=Math.max(0,Math.min(100000,Number(url.searchParams.get("offset")||0))),limit=Math.max(1,Math.min(100,Number(url.searchParams.get("limit")||50)));
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return json({error:"Choose a valid history date."},400);
+ if(!["all","staff","bill"].includes(type))return json({error:"Invalid request type."},400);
+ const start=new Date(date+"T00:00:00+05:30"),end=new Date(start.getTime()+86400000);
+ if(!Number.isFinite(start.getTime()))return json({error:"Choose a valid history date."},400);
+ let query="tcc_table_assistance_requests?status=eq.attended&created_at=gte."+encodeURIComponent(start.toISOString())+"&created_at=lt."+encodeURIComponent(end.toISOString());
+ if(type!=="all")query+="&request_type=eq."+type;
+ query+="&select=id,table_number,request_type,status,created_at,attended_at,attended_by&order=created_at.desc&limit="+limit+"&offset="+offset;
+ const rows=await db(query);
  return json({requests:rows||[]});
 }
 if(req.method==="PATCH"&&action==="attend-table-assistance"){
