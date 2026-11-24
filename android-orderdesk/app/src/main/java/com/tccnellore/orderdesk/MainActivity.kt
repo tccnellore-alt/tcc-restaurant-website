@@ -84,6 +84,23 @@ class MainActivity : Activity() {
                 } catch (_: Exception) { }
             }.start()
         }
+        @JavascriptInterface fun unregisterPushToken(token: String, session: String) {
+            Thread {
+                try {
+                    val url = java.net.URL("https://inuesaudvhlcqswrltik.supabase.co/functions/v1/tcc-orders?action=unregister-device")
+                    val connection = (url.openConnection() as java.net.HttpURLConnection).apply {
+                        requestMethod = "POST"; connectTimeout = 12000; readTimeout = 12000; doOutput = true
+                        setRequestProperty("Content-Type", "application/json")
+                        setRequestProperty("apikey", TEST_API_KEY)
+                        setRequestProperty("Authorization", "Bearer $TEST_API_KEY")
+                        setRequestProperty("x-tcc-admin-session", session)
+                    }
+                    val body = org.json.JSONObject().put("fcm_token", token).toString()
+                    connection.outputStream.use { it.write(body.toByteArray()) }
+                    connection.inputStream.close(); connection.disconnect()
+                } catch (_: Exception) { }
+            }.start()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
