@@ -413,9 +413,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
   let tccCustomerOrderingEnabled=true;
+  let tccDedicatedQrVerified=false;
   const TCC_ORDERING_API='https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders';
   const TCC_ORDERING_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A';
-  const applyTccOrderingState=enabled=>{tccCustomerOrderingEnabled=enabled===true;document.body.classList.toggle('tcc-ordering-enabled',tccCustomerOrderingEnabled);document.body.classList.toggle('tcc-ordering-disabled',!tccCustomerOrderingEnabled);document.querySelectorAll('.tcc-wish-add,.menu-lightbox-add-cart').forEach(button=>{button.hidden=!tccCustomerOrderingEnabled;});if(!tccCustomerOrderingEnabled){document.querySelector('.tcc-wish-backdrop.is-open .tcc-wish-close')?.click();}};
+  const applyTccOrderingState=enabled=>{tccCustomerOrderingEnabled=enabled===true&&tccDedicatedQrVerified;document.body.classList.toggle('tcc-ordering-enabled',tccCustomerOrderingEnabled);document.body.classList.toggle('tcc-ordering-disabled',!tccCustomerOrderingEnabled);document.querySelectorAll('.tcc-wish-add,.menu-lightbox-add-cart').forEach(button=>{button.hidden=!tccCustomerOrderingEnabled;});if(!tccCustomerOrderingEnabled){document.querySelector('.tcc-wish-backdrop.is-open .tcc-wish-close')?.click();}};
   const refreshTccOrderingState=async()=>{try{const response=await fetch(TCC_ORDERING_API+'?action=ordering-status',{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store'});if(!response.ok)throw new Error('Unable to check ordering status');const data=await response.json();applyTccOrderingState(data.enabled);}catch(error){console.warn('TCC ordering status check failed:',error);}};
   refreshTccOrderingState();setInterval(refreshTccOrderingState,10000);
   const float=document.createElement('button');
@@ -437,7 +438,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const continuationBox=backdrop.querySelector('.tcc-continuation-box');
   // Dedicated table QR mode: resolve the opaque token before allowing checkout.
   const tableQrToken=new URLSearchParams(window.location.search).get('tcc_qr')?.trim()||'';
-  let tableQrVerified=!tableQrToken,tableQrTable='';
+  let tableQrVerified=false,tableQrTable='';
   const tableQrBanner=document.createElement('div');
   tableQrBanner.className='tcc-table-qr-banner';
   tableQrBanner.setAttribute('role','status');
@@ -464,12 +465,16 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         selectedTable=tableQrTable;
         orderType='dine-in';
         tableQrVerified=true;
+        tccDedicatedQrVerified=true;
+        applyTccOrderingState(true);
         tableQrBanner.textContent='✓ Ordering for Table '+tableQrTable;
         tableQrBanner.style.background='#edf5ed';
         tableQrBanner.style.borderColor='rgba(33,134,90,.35)';
         if(typeof tablePicker!=='undefined')tablePicker.classList.remove('is-open');
       }catch(error){
         tableQrVerified=false;
+        tccDedicatedQrVerified=false;
+        applyTccOrderingState(true);
         tableQrBanner.textContent=error.message||'Unable to verify this table QR. Please ask our team for assistance.';
         tableQrBanner.style.background='#fff0ed';
         tableQrBanner.style.color='#a12b20';
