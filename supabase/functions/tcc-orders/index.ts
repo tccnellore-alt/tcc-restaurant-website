@@ -33,18 +33,9 @@ const notifyAndroidDevices=async(title:string,body:string,data:Record<string,str
     headers:{Authorization:"Bearer "+access,"Content-Type":"application/json"},
     body:JSON.stringify({message:{
      token:device.fcm_token,
-     notification:{title,body},
-     data,
-     android:{
-      priority:"HIGH",
-      notification:{
-       channel_id:"tcc_order_alerts_v2",
-       sound:"default",
-       default_sound:true,
-       visibility:"PUBLIC",
-       notification_priority:"PRIORITY_HIGH"
-      }
-     }
+     // Data-only delivery makes Android invoke onMessageReceived in the background.
+     data:{...data,title,body},
+     android:{priority:"HIGH"}
     }})
    });
    if(!response.ok){
