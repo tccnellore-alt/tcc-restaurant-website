@@ -1,0 +1,28 @@
+{
+  "project_info": {
+    "project_number": "214351558451",
+    "project_id": "tcc-order-desk-b8569",
+    "storage_bucket": "tcc-order-desk-b8569.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214351558451:android:3308546d9119b782627046",
+        "android_client_info": {
+          "package_name": "com.tccnellore.orderdesk"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCUCoUxq8o6RJ_TrIykrXl49T3GK0i0L4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
