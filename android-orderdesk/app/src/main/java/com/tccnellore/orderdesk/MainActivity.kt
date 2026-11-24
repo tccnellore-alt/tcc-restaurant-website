@@ -63,6 +63,8 @@ class MainActivity : Activity() {
         webView.post { webView.evaluateJavascript("window.TCCAndroidPushToken=${org.json.JSONObject.quote(token)};window.dispatchEvent(new Event('tcc-push-token-ready'));", null) }
     }
 
+    companion object { private const val TEST_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpbnVlc2F1ZHZobGNxc3dybHRpayIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzk1NDQ5MDQ2LCJleHAiOjIxMTAyNTA0Nn0.tiROk1IwNB5xti81vjg6Fx4hGTJykMzvaa6O2HmDhdk" }
+
     inner class NativeBridge {
         @JavascriptInterface fun appVersion(): String = BuildConfig.VERSION_NAME
         @JavascriptInterface fun registerPushToken(token: String, session: String) {
@@ -72,8 +74,8 @@ class MainActivity : Activity() {
                     val connection = (url.openConnection() as java.net.HttpURLConnection).apply {
                         requestMethod = "POST"; connectTimeout = 12000; readTimeout = 12000; doOutput = true
                         setRequestProperty("Content-Type", "application/json")
-                        setRequestProperty("apikey", "$testKey")
-                        setRequestProperty("Authorization", "Bearer $testKey")
+                        setRequestProperty("apikey", TEST_API_KEY)
+                        setRequestProperty("Authorization", "Bearer $TEST_API_KEY")
                         setRequestProperty("x-tcc-admin-session", session)
                     }
                     val body = org.json.JSONObject().put("fcm_token", token).put("device_name", Build.MODEL).toString()
