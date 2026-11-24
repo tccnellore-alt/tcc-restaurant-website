@@ -14,9 +14,16 @@ async function requestTableHistory(date,type,offset){const headers={"Content-Typ
 const GAME_API=API_BASE+"/functions/v1/tcc-game";
 async function requestGame(action){const headers={"Content-Type":"application/json","apikey":PUBLIC_KEY,"Authorization":"Bearer "+PUBLIC_KEY};if(token)headers["x-tcc-admin-session"]=token;const response=await fetch(GAME_API+"?action="+encodeURIComponent(action),{headers,cache:"no-store"});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||"Unable to load Perfect 10 rewards.");return data;}
 async function loadGameRewardsAlerts(){try{const data=await requestGame("game-rewards"),rows=data.rewards||[],pending=rows.filter(r=>r.status==="pending"&&Date.parse(r.expires_at)>Date.now()),fresh=pending.filter(r=>!seenGameRewardIds.has(r.id));if(gameRewardsInitialized&&fresh.length){if(alertSoundEnabled)assistanceTone();if("Notification"in window&&Notification.permission==="granted"){try{new Notification("TCC · Perfect 10 winner",{body:fresh.map(r=>"Table "+r.table_number+" · "+r.reward_code).join(", "),tag:"tcc-perfect-10-winner"});}catch{}}}seenGameRewardIds=new Set(rows.map(r=>r.id));gameRewardsInitialized=true;const badge=$("#sidebarGameRewardCount");if(badge){badge.textContent=pending.length;badge.hidden=!pending.length;}}catch(error){console.warn("Unable to refresh Perfect 10 rewards",error);}}
-function registerAndroidPushDevice(){
+let registeredAndroidPushToken="";
+async function registerAndroidPushDevice(){
  if(!window.TCCAndroid||!window.TCCAndroidPushToken||!token)return;
- try{window.TCCAndroid.registerPushToken(window.TCCAndroidPushToken,token);}catch(error){console.warn("TCC Android push registration unavailable:",error);}
+ const pushToken=String(window.TCCAndroidPushToken);
+ if(!pushToken||pushToken===registeredAndroidPushToken)return;
+ try{
+  const result=await request("register-device",{method:"POST",body:{fcm_token:pushToken,device_name:"TCC Order Desk · Android"}});
+  if(result.registered){registeredAndroidPushToken=pushToken;console.info("TCC Android push device registered.");}
+  else console.warn("TCC Android push registration was not confirmed.");
+ }catch(error){console.warn("TCC Android push registration failed:",error);}
 }
 window.addEventListener("tcc-push-token-ready",registerAndroidPushDevice);
 function showDashboard(){ $("#loginView").hidden=true;$("#dashboardView").hidden=false;registerAndroidPushDevice();loadOrders();loadAssistance();loadGameRewardsAlerts();clearInterval(refreshTimer);refreshTimer=setInterval(()=>{loadOrders();loadAssistance();loadGameRewardsAlerts();},4000);}
