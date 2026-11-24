@@ -15,8 +15,8 @@ class OrderDeskMessagingService : FirebaseMessagingService() {
         getSharedPreferences("tcc_orderdesk", Context.MODE_PRIVATE).edit().putString("fcm_token", token).apply()
     }
     override fun onMessageReceived(message: RemoteMessage) {
-        val title = message.notification?.title ?: message.data["title"] ?: "TCC Order Desk"
-        val body = message.notification?.body ?: message.data["body"] ?: "There is an update in your Order Desk."
+        val title = message.data["title"] ?: message.notification?.title ?: "TCC Order Desk"
+        val body = message.data["body"] ?: message.notification?.body ?: "There is an update in your Order Desk."
         val channelId = "tcc_order_alerts_v2"
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) manager.createNotificationChannel(NotificationChannel(channelId, "New order alerts", NotificationManager.IMPORTANCE_HIGH).apply {
@@ -33,7 +33,7 @@ class OrderDeskMessagingService : FirebaseMessagingService() {
         }
         val pending = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         manager.notify((System.currentTimeMillis() % Int.MAX_VALUE).toInt(), NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(android.R.drawable.ic_dialog_info).setContentTitle(title).setContentText(body)
+            .setSmallIcon(R.drawable.ic_stat_tcc).setContentTitle(title).setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body)).setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true).setDefaults(NotificationCompat.DEFAULT_ALL).setCategory(NotificationCompat.CATEGORY_MESSAGE).setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setContentIntent(pending).build())
     }
