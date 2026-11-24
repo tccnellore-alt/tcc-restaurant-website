@@ -13,7 +13,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "0.1.0-test"
-        buildConfigField("String", "DASHBOARD_URL", "\"https://feature-android-orderdesk-test.tcc-restaurant-website.pages.dev/orders.html?tcc_env=test\"")
+        buildConfigField("String", "DASHBOARD_URL", "\"https://feature-android-orderdesk-te.tcc-restaurant-website.pages.dev/orders.html?tcc_env=test\"")
     }
     buildFeatures { buildConfig = true }
 }
