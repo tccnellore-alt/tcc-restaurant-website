@@ -76,6 +76,12 @@ if(req.method==="GET"&&action==="table-assistance-status"){
 }
 if(req.method==="GET"&&action==="menu-availability"){const rows=await db("tcc_menu_item_overrides?select=product_key,availability");return json({overrides:(rows||[]).map((r:any)=>({product_key:r.product_key,availability:r.availability,}))});}
 if(!(await session(req)))return json({error:"Please log in again."},401);
+if(req.method==="POST"&&action==="unregister-device"){
+ const body=await req.json(),fcmToken=String(body.fcm_token||"").trim();
+ if(!fcmToken)return json({success:true});
+ await db("tcc_push_devices?fcm_token=eq."+encodeURIComponent(fcmToken),{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({is_active:false,updated_at:new Date().toISOString()})});
+ return json({success:true});
+}
 if(req.method==="POST"&&action==="register-device"){
  const body=await req.json(),fcmToken=String(body.fcm_token||"").trim(),deviceName=String(body.device_name||"Android device").trim().slice(0,100);
  if(fcmToken.length<40||fcmToken.length>4096)return json({error:"Invalid push notification token."},400);
