@@ -4,7 +4,7 @@
 
 - Access is limited to a valid, active dedicated table QR token.
 - The game is hidden from the customer menu while `perfect_10_enabled` is false.
-- Each browser/device game session has three attempts.
+- Each browser/device game session has five attempts.
 - A win is recorded for an elapsed time from 9.991 to 10.009 seconds inclusive; the game displays two decimal places.
 - A winning session receives one unique `TCC10-XXXXXXXX` code.
 - Reward: 10% off all hot and cold beverages.
@@ -36,4 +36,4 @@ The website is not currently integrated with SR POS, so discount application in 
 - Disabling the game hides the customer entry point and blocks new game sessions/attempts. Existing valid rewards remain visible and redeemable.
 - The Order Desk checks for new winners every four seconds while open. Browser notifications require notification permission.
 - The timer is measured in the customer browser using a monotonic clock. Server-side attempt limits and reward issuance are enforced, but a determined user can manipulate browser-side timing. This is a promotional game, not a secure contest.
-- Three attempts are enforced per browser/device session. A different device or a cleared browser storage can start another session; identity-level enforcement would require phone verification.
+- Five attempts are enforced per browser/device session. A different device or a cleared browser storage can start another session; identity-level enforcement would require phone verification.
