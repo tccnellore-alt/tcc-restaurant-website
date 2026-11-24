@@ -3,6 +3,11 @@ package com.tccnellore.orderdesk
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.media.AudioAttributes
+import android.provider.Settings
 import android.os.Build
 import android.os.Bundle
 import android.webkit.JavascriptInterface
@@ -21,6 +26,7 @@ class MainActivity : Activity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createOrderNotificationChannel()
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 100)
         }
@@ -48,6 +54,27 @@ class MainActivity : Activity() {
         refreshPushToken()
     }
 
+    private fun createOrderNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                ORDER_NOTIFICATION_CHANNEL_ID,
+                "New order alerts",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Alerts for new TCC customer orders and table requests"
+                enableVibration(true)
+                vibrationPattern = longArrayOf(0, 250, 150, 250)
+                setSound(
+                    Settings.System.DEFAULT_NOTIFICATION_URI,
+                    AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build()
+                )
+                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                setShowBadge(true)
+            }
+            getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+        }
+    }
+
     private fun refreshPushToken() {
         try {
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
@@ -63,7 +90,7 @@ class MainActivity : Activity() {
         webView.post { webView.evaluateJavascript("window.TCCAndroidPushToken=${org.json.JSONObject.quote(token)};window.dispatchEvent(new Event('tcc-push-token-ready'));", null) }
     }
 
-    companion object { private const val TEST_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpbnVlc2F1ZHZobGNxc3dybHRpayIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzk1NDQ5MDQ2LCJleHAiOjIxMTAyNTA0Nn0.tiROk1IwNB5xti81vjg6Fx4hGTJykMzvaa6O2HmDhdk" }
+    companion object { private const val ORDER_NOTIFICATION_CHANNEL_ID = "tcc_order_alerts_v2"; private const val TEST_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpbnVlc2F1ZHZobGNxc3dybHRpayIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzk1NDQ5MDQ2LCJleHAiOjIxMTAyNTA0Nn0.tiROk1IwNB5xti81vjg6Fx4hGTJykMzvaa6O2HmDhdk" }
 
     inner class NativeBridge {
         @JavascriptInterface fun appVersion(): String = BuildConfig.VERSION_NAME
