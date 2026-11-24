@@ -50,6 +50,13 @@ if(req.method==="GET"&&action==="table-assistance-status"){
 }
 if(req.method==="GET"&&action==="menu-availability"){const rows=await db("tcc_menu_item_overrides?select=product_key,availability");return json({overrides:(rows||[]).map((r:any)=>({product_key:r.product_key,availability:r.availability,}))});}
 if(!(await session(req)))return json({error:"Please log in again."},401);
+if(req.method==="POST"&&action==="register-device"){
+ const body=await req.json(),fcmToken=String(body.fcm_token||"").trim(),deviceName=String(body.device_name||"Android device").trim().slice(0,100);
+ if(fcmToken.length<40||fcmToken.length>4096)return json({error:"Invalid push notification token."},400);
+ const rows=await db("tcc_push_devices?on_conflict=fcm_token&select=id",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=representation"},body:JSON.stringify({fcm_token:fcmToken,device_name:deviceName,platform:"android",is_active:true,last_seen_at:new Date().toISOString(),updated_at:new Date().toISOString()})});
+ return json({registered:Array.isArray(rows)&&rows.length>0});
+}
+
 if(req.method==="GET"&&action==="menu-availability-admin"){const rows=await db("tcc_menu_item_overrides?select=product_key,name,category,section,availability,updated_at&order=category.asc,name.asc");return json({items:rows||[]});}
 if(req.method==="PATCH"&&action==="menu-availability"){const b=await req.json(),k=String(b.product_key||"").trim().toLowerCase(),n=String(b.name||"").trim().slice(0,120),c=String(b.category||"").trim().slice(0,80),s=String(b.section||"").trim().slice(0,100),a=String(b.availability||"");if(!k||k.length>220||!n||!["available","sold_out"].includes(a))return json({error:"Invalid menu update."},400);const rows=await db("tcc_menu_item_overrides?on_conflict=product_key&select=product_key,name,category,section,availability,updated_at",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=representation"},body:JSON.stringify({product_key:k,name:n,category:c,section:s,availability:a,updated_at:new Date().toISOString()})});return json({item:rows?.[0]||null});}
 
