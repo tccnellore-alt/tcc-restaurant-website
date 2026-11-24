@@ -10,7 +10,7 @@ const base64url=(bytes:Uint8Array)=>btoa(String.fromCharCode(...bytes)).replaceA
 const encodeJson=(value:unknown)=>base64url(new TextEncoder().encode(JSON.stringify(value)));
 const fcmAccessToken=async(service:any)=>{
  const now=Math.floor(Date.now()/1000),header=encodeJson({alg:"RS256",typ:"JWT"}),claims=encodeJson({iss:service.client_email,scope:"https://www.googleapis.com/auth/firebase.messaging",aud:"https://oauth2.googleapis.com/token",iat:now,exp:now+3600}),unsigned=header+"."+claims;
- const pem=String(service.private_key||"").replace(/-----BEGIN PRIVATE KEY-----|-----END PRIVATE KEY-----|\\s/g,"");
+ const pem=String(service.private_key||"").replace(/-----BEGIN PRIVATE KEY-----|-----END PRIVATE KEY-----|\s/g,"");
  const key=await crypto.subtle.importKey("pkcs8",fromB64(pem),{name:"RSASSA-PKCS1-v1_5",hash:"SHA-256"},false,["sign"]);
  const signature=new Uint8Array(await crypto.subtle.sign("RSASSA-PKCS1-v1_5",key,new TextEncoder().encode(unsigned)));
  const assertion=unsigned+"."+base64url(signature);
