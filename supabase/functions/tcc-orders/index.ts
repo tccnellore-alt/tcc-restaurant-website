@@ -19,15 +19,46 @@ const fcmAccessToken=async(service:any)=>{
 };
 const notifyAndroidDevices=async(title:string,body:string,data:Record<string,string>={})=>{
  try{
-  const raw=Deno.env.get("FCM_SERVICE_ACCOUNT_JSON");if(!raw)return;
-  const service=JSON.parse(raw),project=String(service.project_id||"");if(!project)return;
+  const raw=Deno.env.get("FCM_SERVICE_ACCOUNT_JSON");
+  if(!raw){console.warn("TCC FCM skipped: FCM_SERVICE_ACCOUNT_JSON is not configured.");return;}
+  const service=JSON.parse(raw),project=String(service.project_id||"");
+  if(!project){console.warn("TCC FCM skipped: Firebase service account has no project_id.");return;}
   const devices=await db("tcc_push_devices?is_active=eq.true&select=id,fcm_token");
-  if(!Array.isArray(devices)||!devices.length)return;
+  if(!Array.isArray(devices)||!devices.length){console.warn("TCC FCM skipped: no active Android devices are registered.");return;}
+  console.info("TCC FCM sending notification to",devices.length,"active device(s).");
   const access=await fcmAccessToken(service);
-  await Promise.all(devices.map(async(device:any)=>{
-   const response=await fetch("https://fcm.googleapis.com/v1/projects/"+encodeURIComponent(project)+"/messages:send",{method:"POST",headers:{Authorization:"Bearer "+access,"Content-Type":"application/json"},body:JSON.stringify({message:{token:device.fcm_token,notification:{title,body},data}})});
-   if(!response.ok){const detail=await response.text();console.warn("TCC FCM send failed:",response.status,detail.slice(0,300));}
+  const results=await Promise.all(devices.map(async(device:any)=>{
+   const response=await fetch("https://fcm.googleapis.com/v1/projects/"+encodeURIComponent(project)+"/messages:send",{
+    method:"POST",
+    headers:{Authorization:"Bearer "+access,"Content-Type":"application/json"},
+    body:JSON.stringify({message:{
+     token:device.fcm_token,
+     notification:{title,body},
+     data,
+     android:{
+      priority:"HIGH",
+      notification:{
+       channel_id:"tcc_order_alerts_v2",
+       sound:"default",
+       default_sound:true,
+       visibility:"PUBLIC",
+       notification_priority:"PRIORITY_HIGH"
+      }
+     }
+    }})
+   });
+   if(!response.ok){
+    const detail=await response.text();
+    console.warn("TCC FCM send failed for device",device.id,":",response.status,detail.slice(0,500));
+    if(/UNREGISTERED|registration-token-not-registered/i.test(detail)){
+     await db("tcc_push_devices?id=eq."+encodeURIComponent(device.id),{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({is_active:false,updated_at:new Date().toISOString()})});
+    }
+    return false;
+   }
+   console.info("TCC FCM accepted notification for device",device.id);
+   return true;
   }));
+  console.info("TCC FCM result:",results.filter(Boolean).length,"accepted;",results.length-results.filter(Boolean).length,"failed.");
  }catch(error){console.warn("TCC Android push unavailable:",String(error));}
 };
 
