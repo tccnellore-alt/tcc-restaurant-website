@@ -15,6 +15,11 @@ android {
         versionName = "0.1.0-test"
         buildConfigField("String", "DASHBOARD_URL", "\"https://feature-android-orderdesk-te.tcc-restaurant-website.pages.dev/orders.html?tcc_env=test\"")
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions { jvmTarget = "17" }
     buildFeatures { buildConfig = true }
 }
 dependencies {
