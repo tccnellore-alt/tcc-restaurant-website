@@ -34,7 +34,7 @@ class MainActivity : Activity() {
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                     val host = request.url.host ?: return true
-                    return host != "feature-android-orderdesk-test.tcc-restaurant-website.pages.dev" &&
+                    return host != "feature-android-orderdesk-te.tcc-restaurant-website.pages.dev" &&
                         host != "inuesaudvhlcqswrltik.supabase.co"
                 }
                 override fun onPageFinished(view: WebView, url: String) {
