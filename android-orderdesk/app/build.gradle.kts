@@ -2,14 +2,11 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
-if (file("google-services.json").exists()) {
-    apply(plugin = "com.google.gms.google-services")
-}
+if (file("google-services.json").exists()) apply(plugin = "com.google.gms.google-services")
 
 android {
     namespace = "com.tccnellore.orderdesk"
     compileSdk = 35
-
     defaultConfig {
         applicationId = "com.tccnellore.orderdesk"
         minSdk = 26
@@ -20,7 +17,6 @@ android {
     }
     buildFeatures { buildConfig = true }
 }
-
 dependencies {
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("com.google.firebase:firebase-messaging:24.1.0")
