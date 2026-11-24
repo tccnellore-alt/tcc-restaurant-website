@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "product_sops": [],
+  "preparation_sops": [],
+  "_schema": {
+    "product_sop": [
+      "id",
+      "name",
+      "category",
+      "ingredients",
+      "steps",
+      "image",
+      "plating_image",
+      "notes"
+    ],
+    "preparation_sop": [
+      "id",
+      "name",
+      "category",
+      "yield",
+      "ingredients",
+      "steps",
+      "image",
+      "notes"
+    ],
+    "image_policy": "Images are referenced by path and loaded only after a SOP is opened. Keep image fields null when no approved source image exists.",
+    "source_policy": "Do not infer quantities or preparation steps. Transcribe supplied chef source exactly and flag unclear handwriting for confirmation."
+  }
+}
