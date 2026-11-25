@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow"><title>TCC Reports</title><link rel="stylesheet" href="orders-reports.css?v=5"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow"><title>TCC Reports</title><link rel="stylesheet" href="orders-reports.css?v=6"></head>
 <body><main class="report-shell" id="reportTop">
 <header class="report-header"><div><p class="eyebrow">THE COFFEE CLUB · NELLORE</p><h1>Business reports</h1><p class="muted" id="reportUpdated">Loading order data…</p></div><div class="header-actions"><a class="button secondary" href="orders.html">← Back to New Orders</a><button class="button secondary" id="reportRefresh">Refresh</button><button class="button secondary" id="reportLogout">Log out</button></div></header>
 <nav class="secondary-nav" aria-label="Order Desk sections"><a href="orders.html">← New Orders</a><a class="active" href="orders-reports.html">Reports</a><a href="customers.html">Customers</a><a href="table-qr-admin.html">Table QR Codes</a></nav>
@@ -7,14 +7,33 @@
 <p class="notice" id="reportNotice">Reports use online orders available in the ordering system. Billing/POS totals are maintained separately.</p>
 <p class="error" id="reportError" role="alert"></p>
 <nav class="insights-nav panel" aria-label="Jump to report section" id="reportJumpNav">
- <div class="jump-nav-head"><label for="reportSectionSelect">Jump to section</label><a href="#reportTop">↑ Top</a></div>
- <select id="reportSectionSelect" aria-label="Choose report section">
-  <option value="" selected disabled>Choose a section…</option>
-  <optgroup label="Report summary"><option value="ratingInsights">Customer ratings</option><option value="reportOverview">Overview KPIs</option><option value="timingReport">Order timing</option><option value="tableSalesReport">Table-wise sales</option><option value="customerSummary">Customer KPIs</option></optgroup>
-  <optgroup label="Order performance"><option value="topCustomers">Top customers</option><option value="dailyChart">Daily activity</option><option value="channelChart">Order channels</option><option value="statusChart">Order status</option><option value="hourChart">Busy hours</option><option value="productTable">Most ordered products</option></optgroup>
-  <optgroup label="Customer insights"><option value="customerInsights">Customer intelligence</option><option value="retentionInsights">Repeat visits / lapsed</option><option value="lifetimeInsights">Lifetime value</option><option value="acquisitionInsights">Acquisition</option></optgroup>
-  <optgroup label="Product & business insights"><option value="trendInsights">Sales trends</option><option value="productInsights">Product details</option><option value="promotionInsights">Promotions</option><option value="basketInsights">Baskets</option><option value="daypartInsights">Time demand</option><option value="categoryInsights">Categories</option><option value="staffingInsights">Staffing</option></optgroup>
- </select>
+ <div class="jump-nav-head"><strong>Jump to section</strong><a href="#reportTop">↑ Top</a></div>
+ <div class="jump-nav-groups">
+  <details class="jump-group">
+   <summary><span class="jump-group-number">01</span><span class="jump-group-title">Overview &amp; reports</span><span class="jump-group-count">5</span></summary>
+   <div class="jump-group-items">
+    <a href="#ratingInsights">Customer ratings</a><a href="#reportOverview">Overview KPIs</a><a href="#timingReport">Order timing</a><a href="#tableSalesReport">Table-wise sales</a><a href="#customerSummary">Customer KPIs</a>
+   </div>
+  </details>
+  <details class="jump-group">
+   <summary><span class="jump-group-number">02</span><span class="jump-group-title">Order performance</span><span class="jump-group-count">6</span></summary>
+   <div class="jump-group-items">
+    <a href="#topCustomers">Top customers</a><a href="#dailyChart">Daily activity</a><a href="#channelChart">Order channels</a><a href="#statusChart">Order status</a><a href="#hourChart">Busy hours</a><a href="#productTable">Most ordered products</a>
+   </div>
+  </details>
+  <details class="jump-group">
+   <summary><span class="jump-group-number">03</span><span class="jump-group-title">Customer insights</span><span class="jump-group-count">4</span></summary>
+   <div class="jump-group-items">
+    <a href="#customerInsights">Customer intelligence</a><a href="#retentionInsights">Repeat visits / lapsed</a><a href="#lifetimeInsights">Lifetime value</a><a href="#acquisitionInsights">Acquisition</a>
+   </div>
+  </details>
+  <details class="jump-group">
+   <summary><span class="jump-group-number">04</span><span class="jump-group-title">Products &amp; operations</span><span class="jump-group-count">7</span></summary>
+   <div class="jump-group-items">
+    <a href="#trendInsights">Sales trends</a><a href="#productInsights">Product details</a><a href="#promotionInsights">Promotions</a><a href="#basketInsights">Baskets</a><a href="#daypartInsights">Time demand</a><a href="#categoryInsights">Categories</a><a href="#staffingInsights">Staffing</a>
+   </div>
+  </details>
+ </div>
 </nav>
 <section class="panel insight-panel" id="ratingInsights"><div class="panel-heading"><div><h2>Customer ratings</h2><p>Experience ratings submitted after online orders</p></div><button class="button secondary" id="ratingRefresh" type="button">Refresh ratings</button></div><div class="insight-kpis"><article><span>Average rating</span><strong id="ratingAverage">—</strong></article><article><span>Total ratings</span><strong id="ratingTotal">0</strong></article><article><span>5-star ratings</span><strong id="ratingFiveStar">0</strong></article><article><span>Rating response</span><strong id="ratingResponse">—</strong></article></div><div class="table-scroll"><table class="sales-table insight-table"><thead><tr><th>Date</th><th>Customer</th><th>Mobile</th><th>Order</th><th>Rating</th></tr></thead><tbody id="ratingRows"><tr><td colspan="5">Loading ratings…</td></tr></tbody></table></div><p class="subtle" id="ratingReportNote">Ratings are linked to the online order and customer record.</p></section>
 <section class="kpis" id="reportOverview"><article><span>Gross order value</span><strong id="rSales">₹0</strong><small>Excludes cancelled/rejected orders</small></article><article><span>Orders received</span><strong id="rOrders">0</strong><small>In selected period</small></article><article><span>Average order value</span><strong id="rAov">₹0</strong><small>Per valid order</small></article><article><span>Cancelled orders</span><strong id="rCancelled">0</strong><small>Cancelled / rejected</small></article></section>
@@ -51,5 +70,5 @@
 <section class="panel insight-panel" id="acquisitionInsights"><div class="panel-heading"><div><h2>Customer acquisition & sales comparison</h2><p>New customers and current period compared with the immediately preceding equal period</p></div></div><div class="insight-kpis"><article><span>New customers in period</span><strong id="iAcquired">0</strong></article><article><span>Returning customers</span><strong id="iRetained">0</strong></article><article><span>Sales change</span><strong id="iSalesChange">—</strong></article><article><span>Order change</span><strong id="iOrderChange">—</strong></article></div><div id="iAcquisitionRows" class="insight-list"></div></section>
 <section class="panel insight-panel" id="categoryInsights"><div class="panel-heading"><div><h2>Category performance</h2><p>Revenue and units by menu category</p></div></div><div class="table-scroll"><table class="sales-table"><thead><tr><th>Category</th><th>Units</th><th>Orders</th><th class="numeric">Sales</th><th class="numeric">Share</th></tr></thead><tbody id="iCategoryRows"></tbody></table></div></section>
 <section class="panel insight-panel" id="staffingInsights"><div class="panel-heading"><div><h2>Peak-hour staffing insights</h2><p>Order load by hour to help plan staffing coverage</p></div></div><div id="iStaffingRows" class="insight-list"></div></section><footer>Online order analytics · This page does not replace your billing software reports.</footer></main><script src="orders-reports.js?v=8"></script><script src="orders-reports-insights.js?v=5"></script><script>
-(()=>{const select=document.getElementById("reportSectionSelect");select?.addEventListener("change",()=>{const id=select.value,target=id&&document.getElementById(id);if(target){target.scrollIntoView({behavior:"smooth",block:"start"});history.replaceState(null,"","#"+id);}});document.querySelector('#reportJumpNav .jump-nav-head>a')?.addEventListener("click",e=>{e.preventDefault();document.getElementById("reportTop")?.scrollIntoView({behavior:"smooth",block:"start"});history.replaceState(null,"","#reportTop");});})();
+(()=>{const nav=document.getElementById("reportJumpNav"),groups=[...nav.querySelectorAll(".jump-group")];groups.forEach(group=>group.addEventListener("toggle",()=>{if(group.open)groups.forEach(other=>{if(other!==group)other.open=false;});}));nav.querySelectorAll(".jump-group-items a").forEach(link=>link.addEventListener("click",e=>{const target=document.querySelector(link.getAttribute("href"));if(!target)return;e.preventDefault();target.scrollIntoView({behavior:"smooth",block:"start"});history.replaceState(null,"",link.getAttribute("href"));groups.forEach(group=>group.open=false);}));nav.querySelector(".jump-nav-head>a")?.addEventListener("click",e=>{e.preventDefault();document.getElementById("reportTop")?.scrollIntoView({behavior:"smooth",block:"start"});history.replaceState(null,"","#reportTop");groups.forEach(group=>group.open=false);});})();
 </script></body></html>
