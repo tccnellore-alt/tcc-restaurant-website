@@ -944,7 +944,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
           ratingStars.querySelectorAll('button').forEach(b=>{b.disabled=true;b.style.color=Number(b.dataset.rating)<=rating?'#b38b3e':'#d9d4c8';});
           ratingMessage.textContent='Sending your rating…';
           try{
-            const response=await fetch('https://ghdgsntpqucopwbtuihe.supabase.co/rest/v1/tcc_feedback',{method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_GUe7lGd_v8ZwTQcC0mZSeQ_oU1ADMSl','Prefer':'return=minimal'},body:JSON.stringify({rating,comments:null})});
+            const response=await fetch('https://ghdgsntpqucopwbtuihe.supabase.co/rest/v1/tcc_feedback',{method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_GUe7lGd_v8ZwTQcC0mZSeQ_oU1ADMSl','Prefer':'return=minimal'},body:JSON.stringify({rating,comments:null,order_ref:order.ref||null,customer_name:customerName.trim()||null,customer_phone:normalizedPhone||null})});
             if(!response.ok){const details=(await response.text()).slice(0,240);throw new Error(details||('HTTP '+response.status));}
             ratingMessage.textContent='Thank you for rating TCC!';
             ratingMessage.style.color='#245b3d';
