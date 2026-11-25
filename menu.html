@@ -5089,6 +5089,55 @@ body:not(.menu-text-mode) .tcc-special-card{position:relative!important}
 }
 body.menu-text-mode .tcc-special-card .tcc-special-badge{position:static!important;width:auto!important;margin:0 0 0 6px!important;padding:4px 7px!important;border-radius:999px!important;vertical-align:2px!important;font-size:8px!important;letter-spacing:.045em!important}
 </style>
+
+<style id="tcc-featured-card-preview">
+/* Experimental TCC Featured treatment — preview branch only. Keep the real menu photo and cart behavior unchanged. */
+body:not(.menu-text-mode) .menu-group .m-item.tcc-special-card{
+  background:linear-gradient(145deg,#173c2b 0%,#102e21 100%)!important;
+  border:1px solid rgba(213,181,112,.9)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,244,211,.08),0 0 0 1px rgba(183,154,90,.18),0 12px 30px rgba(17,48,34,.22)!important;
+  position:relative!important;
+}
+body:not(.menu-text-mode) .tcc-special-card .tcc-special-badge{
+  background:linear-gradient(90deg,#b79a5a,#d8bd7b,#b79a5a)!important;
+  color:#173c2b!important;
+  border-bottom:1px solid rgba(255,246,218,.65)!important;
+  box-shadow:0 3px 12px rgba(0,0,0,.16)!important;
+  letter-spacing:.16em!important;
+}
+body:not(.menu-text-mode) .tcc-special-card .m-item-info,
+body:not(.menu-text-mode) .tcc-special-card>div:not(.m-photo-wrap){
+  background:transparent!important;
+}
+body:not(.menu-text-mode) .tcc-special-card h3{
+  color:#fff8e8!important;
+}
+body:not(.menu-text-mode) .tcc-special-card p{
+  color:rgba(255,248,232,.76)!important;
+}
+body:not(.menu-text-mode) .tcc-special-card>strong{
+  background:rgba(215,182,109,.14)!important;
+  border:1px solid rgba(215,182,109,.45)!important;
+  color:#e5c982!important;
+}
+body:not(.menu-text-mode) .tcc-special-card .m-photo-wrap{
+  background:linear-gradient(135deg,#214b36,#102e21)!important;
+}
+body:not(.menu-text-mode) .tcc-special-card .m-photo-placeholder{
+  background:linear-gradient(135deg,#214b36,#102e21)!important;
+  color:#fff8e8!important;
+}
+body:not(.menu-text-mode) .tcc-special-card .m-photo-placeholder small{
+  color:rgba(255,248,232,.72)!important;
+}
+@media(hover:hover){
+ body:not(.menu-text-mode) .menu-group .m-item.tcc-special-card:hover{
+   border-color:#e0c27b!important;
+   box-shadow:inset 0 0 0 1px rgba(255,248,232,.14),0 0 24px rgba(183,154,90,.24),0 14px 32px rgba(17,48,34,.25)!important;
+ }
+}
+</style>
+
 </body>
 </html>
 
