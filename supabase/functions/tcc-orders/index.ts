@@ -51,6 +51,18 @@ if(req.method==="GET"&&action==="table-assistance-status"){
 }
 if(req.method==="GET"&&action==="menu-availability"){const rows=await db("tcc_menu_item_overrides?select=product_key,availability");return json({overrides:(rows||[]).map((r:any)=>({product_key:r.product_key,availability:r.availability,}))});}
 if(!(await session(req)))return json({error:"Please log in again."},401);
+if(req.method==="GET"&&action==="rating-report"){
+ const feedback=await db("tcc_order_feedback?select=id,order_id,rating,created_at&order=created_at.desc&limit=1000");
+ const valid=(feedback||[]).filter((r:any)=>/^[0-9a-f-]{36}$/i.test(String(r.order_id||""))&&Number(r.rating)>=1&&Number(r.rating)<=5);
+ const ids=[...new Set(valid.map((r:any)=>String(r.order_id)))];
+ let orders:any[]=[];
+ if(ids.length){const idList=ids.map(id=>encodeURIComponent(id)).join(",");orders=await db("tcc_orders?id=in.("+idList+")&select=id,order_number,customer_name,customer_phone");}
+ const byId=new Map((orders||[]).map((o:any)=>[String(o.id),o]));
+ const ratings=valid.map((r:any)=>{const o=byId.get(String(r.order_id))||{};return{rating:Number(r.rating),created_at:r.created_at,order_number:o.order_number||"",customer_name:o.customer_name||"Guest",customer_phone:o.customer_phone||""};});
+ const count=ratings.length,average=count?ratings.reduce((s:number,r:any)=>s+r.rating,0)/count:0,five_star=ratings.filter((r:any)=>r.rating===5).length;
+ const orderCount=await db("tcc_orders?select=id&archived_at=is.null&status=not.in.(cancelled,rejected)&limit=10000");
+ return json({ratings,count,average,five_star,response_rate:(orderCount?.length?count/orderCount.length*100:0)});
+}
 if(req.method==="GET"&&action==="menu-availability-admin"){const rows=await db("tcc_menu_item_overrides?select=product_key,name,category,section,availability,updated_at&order=category.asc,name.asc");return json({items:rows||[]});}
 if(req.method==="PATCH"&&action==="menu-availability"){const b=await req.json(),k=String(b.product_key||"").trim().toLowerCase(),n=String(b.name||"").trim().slice(0,120),c=String(b.category||"").trim().slice(0,80),s=String(b.section||"").trim().slice(0,100),a=String(b.availability||"");if(!k||k.length>220||!n||!["available","sold_out"].includes(a))return json({error:"Invalid menu update."},400);const rows=await db("tcc_menu_item_overrides?on_conflict=product_key&select=product_key,name,category,section,availability,updated_at",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=representation"},body:JSON.stringify({product_key:k,name:n,category:c,section:s,availability:a,updated_at:new Date().toISOString()})});return json({item:rows?.[0]||null});}
 
