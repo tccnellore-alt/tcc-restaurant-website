@@ -51,3 +51,41 @@
 
 .rating-stars-value{color:#b08b3d;letter-spacing:1px;white-space:nowrap}\n#ratingInsights .insight-kpis{margin-bottom:16px}\n#ratingInsights .sales-table td{vertical-align:middle}\n
 @media(max-width:700px){#productInsights .table-scroll{overflow:visible}#productInsights .insight-table{display:block;width:100%}#productInsights .insight-table thead{display:none}#productInsights .insight-table tbody{display:grid;gap:8px}#productInsights .insight-table tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}#productInsights .insight-table tbody th[data-label="Product"]{grid-column:1/-1;display:block;padding:0 0 8px;border:0;font-size:13px}#productInsights .insight-table tbody td{display:flex;flex-direction:column;align-items:flex-start;gap:4px;white-space:normal;text-align:left;padding:0;border:0;font-size:12px}#productInsights .insight-table tbody td::before{content:attr(data-label);font-size:10px;color:var(--muted);font-weight:700}}
+
+/* Premium report cards and clear section separation */
+.report-shell{max-width:1180px}
+.report-shell>.panel,
+.report-grid>.panel{border:1px solid rgba(23,60,43,.12);border-radius:20px;background:linear-gradient(180deg,#fff 0%,#fffdf8 100%);box-shadow:0 8px 26px rgba(31,48,36,.055);padding:clamp(16px,2.2vw,24px);margin-block:20px}
+.report-shell>.kpis{gap:14px;margin-block:20px}
+.report-shell>.kpis article{border:1px solid rgba(23,60,43,.11);border-radius:18px;background:linear-gradient(145deg,#fff 0%,#f9f8f2 100%);box-shadow:0 5px 18px rgba(31,48,36,.045);padding:18px}
+.report-grid{gap:18px;margin-block:20px}
+.report-grid>.panel{margin:0}
+.panel-heading{padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid rgba(23,60,43,.09)}
+.panel-heading h2{font-size:clamp(20px,2.4vw,24px);letter-spacing:-.02em}
+.panel-heading p{font-size:12px;line-height:1.55;margin-top:7px}
+.insight-panel{scroll-margin-top:124px}
+.insight-kpis article,.timing-kpis article{border:1px solid rgba(23,60,43,.10);border-radius:14px;background:linear-gradient(145deg,#f9faf5 0%,#f2f4ec 100%);padding:15px}
+.insight-row{padding:13px 12px;border:1px solid rgba(23,60,43,.08);border-radius:12px;background:#fffdf9}
+.insight-list{gap:8px}
+.promotion-card{border:1px solid rgba(23,60,43,.11);border-radius:15px;background:linear-gradient(145deg,#fffdf9 0%,#f7f6ef 100%);box-shadow:0 3px 12px rgba(31,48,36,.035);padding:15px}
+.report-controls{border:1px solid rgba(23,60,43,.12);border-radius:18px;background:#fffdf8;box-shadow:0 6px 20px rgba(31,48,36,.045);padding:18px;gap:14px}
+.report-controls select,.report-controls input{border-radius:11px;min-height:44px}
+.table-sales-panel .sales-table,.sales-table{border-radius:12px;overflow:hidden}
+.sales-table thead th{background:#f5f5ee;padding-block:14px}
+.sales-table tbody tr:nth-child(even){background:rgba(245,246,239,.48)}
+.sales-table tbody tr:hover{background:#eef3e9}
+.top-table-callout{border:1px solid rgba(23,60,43,.08);border-radius:13px}
+.timing-kpis article{background:#f8f9f3}
+.notice{padding:11px 14px;border-left:3px solid #b79a5a;background:rgba(239,230,209,.38);border-radius:0 10px 10px 0;line-height:1.55}
+@media(max-width:700px){
+ .report-shell{width:calc(100% - 24px);margin:16px auto 42px}
+ .report-shell>.panel,.report-grid>.panel{border-radius:17px;padding:15px;margin-block:16px}
+ .report-grid{gap:14px}
+ .report-shell>.kpis{gap:9px;margin-block:16px}
+ .report-shell>.kpis article{padding:14px;border-radius:15px}
+ .panel-heading{padding-bottom:10px;margin-bottom:12px}
+ .insight-kpis{gap:8px}
+ .insight-kpis article,.timing-kpis article{padding:12px;border-radius:12px}
+ .insight-row{padding:11px;border-radius:11px}
+ .report-controls{border-radius:16px;padding:13px}
+}
