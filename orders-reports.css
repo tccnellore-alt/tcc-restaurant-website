@@ -89,3 +89,14 @@
  .insight-row{padding:11px;border-radius:11px}
  .report-controls{border-radius:16px;padding:13px}
 }
+
+/* Keep jump links to a single horizontally swipeable row (override older .insights-nav div wrapping rule) */
+.insights-nav .jump-nav-links{display:flex;flex-wrap:nowrap;align-items:center;gap:7px;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;overscroll-behavior-x:contain}
+.insights-nav .jump-nav-links::-webkit-scrollbar{display:none}
+.insights-nav .jump-nav-links a{flex:0 0 auto}
+@media(max-width:700px){
+ .insights-nav{padding:9px 11px 7px;margin:8px -2px 12px}
+ .insights-nav .jump-nav-head{margin-bottom:5px}
+ .insights-nav .jump-nav-links{gap:6px;padding-bottom:2px}
+ .insights-nav .jump-nav-links a{min-height:32px;padding:6px 10px;font-size:10px}
+}
