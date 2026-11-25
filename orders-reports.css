@@ -100,3 +100,12 @@
  .insights-nav .jump-nav-links{gap:6px;padding-bottom:2px}
  .insights-nav .jump-nav-links a{min-height:32px;padding:6px 10px;font-size:10px}
 }
+
+/* Accessible one-tap section picker: no horizontal swiping */
+#reportJumpNav{position:sticky;top:8px;z-index:60;display:block;margin:10px 0 16px;padding:11px 14px;border:1px solid rgba(23,60,43,.14);border-radius:15px;background:rgba(255,253,247,.97);box-shadow:0 5px 18px rgba(25,45,31,.08);backdrop-filter:blur(12px)}
+#reportJumpNav .jump-nav-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 7px}
+#reportJumpNav .jump-nav-head label{font-size:12px;font-weight:800;color:var(--green)}
+#reportJumpNav .jump-nav-head>a{font-size:11px;font-weight:800;color:var(--green);text-decoration:none;padding:5px 9px;border-radius:7px;background:#efe6d1;white-space:nowrap}
+#reportSectionSelect{display:block;width:100%;min-height:42px;padding:0 12px;border:1px solid #dfe5da;border-radius:10px;background:#f8f9f3;color:#234b35;font:700 13px inherit;outline-offset:2px}
+#reportSectionSelect:focus{border-color:#78977e;box-shadow:0 0 0 3px rgba(23,60,43,.08)}
+@media(max-width:700px){#reportJumpNav{top:6px;margin:7px -2px 12px;padding:9px 11px;border-radius:12px}#reportJumpNav .jump-nav-head{margin-bottom:5px}#reportSectionSelect{min-height:38px;font-size:12px}}
