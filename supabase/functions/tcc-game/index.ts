@@ -25,13 +25,13 @@ Deno.serve(async(req:Request)=>{if(req.method==="OPTIONS")return new Response("o
    if(existing?.[0]){
     let reward=null;
     if(existing[0].is_winner){const rewards=await db(`tcc_game_rewards?session_id=eq.${encodeURIComponent(existing[0].id)}&select=reward_code,table_number,discount_percent,discount_scope,combine_with_offers,status,expires_at&limit=1`);reward=rewards?.[0]||null;}
-    return json({session_token:existingToken,table_number:existing[0].table_number,attempts_used:existing[0].attempts_used,attempts_remaining:String(existing[0].table_number).toUpperCase()==="T4"?-1:Math.max(0,3-Number(existing[0].attempts_used||0)),unlimited_attempts:String(existing[0].table_number).toUpperCase()==="T4",is_winner:existing[0].is_winner,expires_at:existing[0].expires_at,reward,resumed:true});
+    return json({session_token:existingToken,table_number:existing[0].table_number,attempts_used:existing[0].attempts_used,attempts_remaining:String(existing[0].table_number).toUpperCase()==="T4"?-1:Math.max(0,5-Number(existing[0].attempts_used||0)),unlimited_attempts:String(existing[0].table_number).toUpperCase()==="T4",is_winner:existing[0].is_winner,expires_at:existing[0].expires_at,reward,resumed:true});
    }
   }
   const sessionToken=newToken(),expiresAt=new Date(Date.now()+3*60*60*1000).toISOString();
   const created=await db("tcc_game_sessions?select=table_number,attempts_used,is_winner,expires_at",{method:"POST",headers:{Prefer:"return=representation"},body:JSON.stringify({session_hash:await digest(sessionToken),table_number:String(qrRows[0].table_number).toUpperCase(),qr_token_hash:qrHash,expires_at:expiresAt})});
   if(!created?.[0])throw new Error("Unable to create the game session.");
-  return json({session_token:sessionToken,table_number:created[0].table_number,attempts_used:0,attempts_remaining:String(created[0].table_number).toUpperCase()==="T4"?-1:3,unlimited_attempts:String(created[0].table_number).toUpperCase()==="T4",is_winner:false,expires_at:created[0].expires_at,reward:null,resumed:false},201);
+  return json({session_token:sessionToken,table_number:created[0].table_number,attempts_used:0,attempts_remaining:String(created[0].table_number).toUpperCase()==="T4"?-1:5,unlimited_attempts:String(created[0].table_number).toUpperCase()==="T4",is_winner:false,expires_at:created[0].expires_at,reward:null,resumed:false},201);
  }
  if(req.method==="POST"&&action==="game-attempt"){
   if(!(await gameEnabled()))return json({error:"Perfect 10 has been paused by TCC."},423);
@@ -39,6 +39,18 @@ Deno.serve(async(req:Request)=>{if(req.method==="OPTIONS")return new Response("o
   if(!/^[A-Za-z0-9_-]{40,80}$/.test(sessionToken)||!Number.isInteger(elapsedMs))return json({error:"Invalid game attempt."},400);
   const result=await db("rpc/tcc_game_consume_attempt",{method:"POST",body:JSON.stringify({p_session_hash:await digest(sessionToken),p_elapsed_ms:elapsedMs})});
   if(result?.status)return json({error:result.error},Number(result.status));return json(result);
+ }
+ if(req.method==="GET"&&action==="game-statistics"){
+  const denied=await requireAdmin(req);if(denied)return denied;
+  const period=String(url.searchParams.get("period")||"today");
+  if(!["today","7d","30d","all"].includes(period))return json({error:"Invalid statistics period."},400);
+  const now=new Date(),localNow=new Date(now.getTime()+330*60000),dayStart=new Date(Date.UTC(localNow.getUTCFullYear(),localNow.getUTCMonth(),localNow.getUTCDate())-330*60000);
+  let start:string|null=dayStart.toISOString(),label="Today";
+  if(period==="7d"){start=new Date(dayStart.getTime()-6*86400000).toISOString();label="Last 7 days";}
+  if(period==="30d"){start=new Date(dayStart.getTime()-29*86400000).toISOString();label="Last 30 days";}
+  if(period==="all"){start=null;label="All time";}
+  const result=await db("rpc/tcc_game_statistics",{method:"POST",body:JSON.stringify({p_start:start,p_end:now.toISOString()})});
+  return json({statistics:result||{},period,period_label:label});
  }
  if(req.method==="GET"&&action==="game-rewards"){
   const denied=await requireAdmin(req);if(denied)return denied;

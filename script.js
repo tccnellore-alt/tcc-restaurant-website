@@ -413,9 +413,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   `;
   document.head.appendChild(style);
   let tccCustomerOrderingEnabled=true;
+  let tccServerOrderingEnabled=true;
+  let tccDedicatedQrVerified=false;
   const TCC_ORDERING_API='https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders';
   const TCC_ORDERING_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A';
-  const applyTccOrderingState=enabled=>{tccCustomerOrderingEnabled=enabled===true;document.body.classList.toggle('tcc-ordering-enabled',tccCustomerOrderingEnabled);document.body.classList.toggle('tcc-ordering-disabled',!tccCustomerOrderingEnabled);document.querySelectorAll('.tcc-wish-add,.menu-lightbox-add-cart').forEach(button=>{button.hidden=!tccCustomerOrderingEnabled;});if(!tccCustomerOrderingEnabled){document.querySelector('.tcc-wish-backdrop.is-open .tcc-wish-close')?.click();}};
+  const applyTccOrderingState=enabled=>{tccServerOrderingEnabled=enabled===true;tccCustomerOrderingEnabled=tccServerOrderingEnabled&&tccDedicatedQrVerified;document.body.classList.toggle('tcc-ordering-enabled',tccCustomerOrderingEnabled);document.body.classList.toggle('tcc-ordering-disabled',!tccCustomerOrderingEnabled);document.querySelectorAll('.tcc-wish-add,.menu-lightbox-add-cart').forEach(button=>{button.hidden=!tccCustomerOrderingEnabled;});const cartButton=document.querySelector('.tcc-wish-float');if(cartButton)cartButton.hidden=!tccCustomerOrderingEnabled;if(!tccCustomerOrderingEnabled){document.querySelector('.tcc-wish-backdrop.is-open .tcc-wish-close')?.click();}};
   const refreshTccOrderingState=async()=>{try{const response=await fetch(TCC_ORDERING_API+'?action=ordering-status',{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store'});if(!response.ok)throw new Error('Unable to check ordering status');const data=await response.json();applyTccOrderingState(data.enabled);}catch(error){console.warn('TCC ordering status check failed:',error);}};
   refreshTccOrderingState();setInterval(refreshTccOrderingState,10000);
   const float=document.createElement('button');
@@ -437,7 +439,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const continuationBox=backdrop.querySelector('.tcc-continuation-box');
   // Dedicated table QR mode: resolve the opaque token before allowing checkout.
   const tableQrToken=new URLSearchParams(window.location.search).get('tcc_qr')?.trim()||'';
-  let tableQrVerified=!tableQrToken,tableQrTable='';
+  let tableQrVerified=false,tableQrTable='';
   const tableQrBanner=document.createElement('div');
   tableQrBanner.className='tcc-table-qr-banner';
   tableQrBanner.setAttribute('role','status');
@@ -464,12 +466,16 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         selectedTable=tableQrTable;
         orderType='dine-in';
         tableQrVerified=true;
+        tccDedicatedQrVerified=true;
+        applyTccOrderingState(tccServerOrderingEnabled);
         tableQrBanner.textContent='✓ Ordering for Table '+tableQrTable;
         tableQrBanner.style.background='#edf5ed';
         tableQrBanner.style.borderColor='rgba(33,134,90,.35)';
         if(typeof tablePicker!=='undefined')tablePicker.classList.remove('is-open');
       }catch(error){
         tableQrVerified=false;
+        tccDedicatedQrVerified=false;
+        applyTccOrderingState(tccServerOrderingEnabled);
         tableQrBanner.textContent=error.message||'Unable to verify this table QR. Please ask our team for assistance.';
         tableQrBanner.style.background='#fff0ed';
         tableQrBanner.style.color='#a12b20';
@@ -915,7 +921,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const apiResponse=await fetch('https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders?action=create-order',{
         method:'POST',
         headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A'},
-        body:JSON.stringify({idempotency_key:requestKey,parent_order_number:continuationOrder?.order_number||null,customer_name:customerName.trim(),customer_phone:normalizedPhone,order_type:orderType,table_number:tableNumber,table_qr_token:tableQrToken||null,items:items.map(item=>({name:item.name,quantity:item.qty,unit_price:item.price,category:item.category,section:item.section,addons:item.addons||[],note:item.note||'',fulfillment_type:orderType==='takeaway'?'takeaway':(item.fulfillment_type==='takeaway'?'takeaway':'dine-in')}))})
+        body:JSON.stringify({idempotency_key:requestKey,parent_order_number:continuationOrder?.order_number||null,customer_name:customerName.trim(),customer_phone:normalizedPhone,order_type:orderType,table_number:tableNumber,table_qr_token:tableQrToken||null,items:items.map(item=>({name:item.name,product_key:item.key||((item.category||'Menu')+'|'+item.name).toLowerCase(),quantity:item.qty,unit_price:item.price,category:item.category,section:item.section,addons:item.addons||[],note:item.note||'',fulfillment_type:orderType==='takeaway'?'takeaway':(item.fulfillment_type==='takeaway'?'takeaway':'dine-in')}))})
       });
       const saved=await apiResponse.json().catch(()=>({}));
       if(!apiResponse.ok||!saved.order)throw new Error(saved.error||'We could not confirm your order. Your cart is saved; please retry.');
@@ -924,8 +930,33 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       items=[];save();continuationOrder=null;continuationBox.hidden=true;render();close();
       try{sessionStorage.removeItem('tccPendingOrderRequestKey');sessionStorage.removeItem('tccPendingOrderSignature');}catch{}
       const notice=document.createElement('div');notice.className='tcc-order-send-notice';notice.setAttribute('role','status');
-      notice.innerHTML='<strong>Order placed successfully!</strong><br>Reference: '+order.ref+'<br>Your order has been sent to TCC’s kitchen. Track its progress in Order History.';
-      document.body.append(notice);setTimeout(()=>notice.remove(),9000);
+      notice.innerHTML='<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;text-align:left"><div><strong>Order placed successfully!</strong><br><span class="tcc-order-rating-ref"></span><br>Your order has been sent to TCC’s kitchen. Track its progress in Order History.</div><button type="button" class="tcc-order-rating-dismiss" aria-label="Dismiss rating prompt" style="flex:0 0 30px;width:30px;height:30px;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:21px;line-height:1">×</button></div><div class="tcc-order-rating-box" style="margin-top:12px;padding:12px 10px;border-radius:12px;background:#fff9ed;color:#173c2b;text-align:center"><strong style="display:block;font:700 15px Georgia,serif">Rate your experience</strong><span style="display:block;margin:4px 0 8px;font:11px Arial,sans-serif;color:#667367">Tap a star to share your rating</span><div class="tcc-order-rating-stars" style="display:flex;justify-content:center;gap:7px"></div><span class="tcc-order-rating-message" aria-live="polite" style="display:block;margin-top:7px;font:11px Arial,sans-serif;color:#667367"></span></div>';
+      notice.querySelector('.tcc-order-rating-ref').textContent='Reference: '+order.ref;
+      document.body.append(notice);
+      const dismissRating=()=>notice.remove();
+      notice.querySelector('.tcc-order-rating-dismiss').addEventListener('click',dismissRating);
+      const ratingStars=notice.querySelector('.tcc-order-rating-stars'),ratingMessage=notice.querySelector('.tcc-order-rating-message');
+      for(let rating=1;rating<=5;rating++){
+        const star=document.createElement('button');star.type='button';star.dataset.rating=String(rating);star.setAttribute('aria-label',rating+' star'+(rating===1?'':'s'));star.textContent='★';
+        star.style.cssText='border:0;background:transparent;padding:3px;color:#c9c5b9;font-size:32px;line-height:1;cursor:pointer;touch-action:manipulation';
+        star.addEventListener('click',async()=>{
+          if(star.dataset.sending==='1'||star.disabled)return;
+          ratingStars.querySelectorAll('button').forEach(b=>{b.disabled=true;b.style.color=Number(b.dataset.rating)<=rating?'#b38b3e':'#d9d4c8';});
+          ratingMessage.textContent='Sending your rating…';
+          try{
+            const response=await fetch('https://pcxsdypqlavtulidpydn.supabase.co/rest/v1/rpc/submit_tcc_order_rating',{method:'POST',headers:{'Content-Type':'application/json','apikey':TCC_ORDERING_KEY,'Authorization':'Bearer '+TCC_ORDERING_KEY},body:JSON.stringify({p_order_number:order.ref||'',p_rating:rating})});
+            if(!response.ok){const details=(await response.text()).slice(0,240);throw new Error(details||('HTTP '+response.status));}
+            ratingMessage.textContent='Thank you for rating TCC!';
+            ratingMessage.style.color='#245b3d';
+          }catch(error){
+            ratingMessage.textContent='Could not send: '+(error.message||'please try again');
+            ratingMessage.style.color='#9b453b';
+            ratingStars.querySelectorAll('button').forEach(b=>{b.disabled=false;b.style.color=Number(b.dataset.rating)<=rating?'#b38b3e':'#c9c5b9';});
+          }
+        });
+        ratingStars.append(star);
+      }
+      setTimeout(()=>notice.remove(),18000);
     }catch(error){tableError.textContent=error.message||'Unable to place your order. Your cart is saved — please retry.';}
     finally{orderSubmissionBusy=false;sendButton.disabled=false;sendButton.textContent='Place Order';}
   });
