@@ -944,12 +944,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
           ratingStars.querySelectorAll('button').forEach(b=>{b.disabled=true;b.style.color=Number(b.dataset.rating)<=rating?'#b38b3e':'#d9d4c8';});
           ratingMessage.textContent='Sending your rating…';
           try{
-            const response=await fetch('https://ghdgsntpqucopwbtuihe.supabase.co/rest/v1/tcc_feedback',{method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_GUe7lGd_v8ZwTQcC0mZSeQ_oU1ADMSl','Authorization':'Bearer sb_publishable_GUe7lGd_v8ZwTQcC0mZSeQ_oU1ADMSl','Prefer':'return=minimal'},body:JSON.stringify({rating,comments:null})});
-            if(!response.ok)throw new Error('Rating request failed');
+            const response=await fetch('https://ghdgsntpqucopwbtuihe.supabase.co/rest/v1/tcc_feedback',{method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_GU7e1Gd_v8ZwTQcC0mZSeQ_oU1ADMSl','Prefer':'return=minimal'},body:JSON.stringify({rating,comments:null})});
+            if(!response.ok){const details=(await response.text()).slice(0,240);throw new Error(details||('HTTP '+response.status));}
             ratingMessage.textContent='Thank you for rating TCC!';
             ratingMessage.style.color='#245b3d';
           }catch(error){
-            ratingMessage.textContent='Could not send right now. Tap a star to try again.';
+            ratingMessage.textContent='Could not send: '+(error.message||'please try again');
             ratingMessage.style.color='#9b453b';
             ratingStars.querySelectorAll('button').forEach(b=>{b.disabled=false;b.style.color=Number(b.dataset.rating)<=rating?'#b38b3e':'#c9c5b9';});
           }
