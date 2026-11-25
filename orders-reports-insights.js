@@ -76,7 +76,21 @@ function renderStaffing(){
  const max=Math.max(1,...slots.map(x=>x.orders)),label=h=>new Date(2000,0,1,h).toLocaleTimeString("en-IN",{hour:"numeric",hour12:true});$("iStaffingRows").innerHTML=slots.filter(x=>x.orders).sort((a,b)=>b.orders-a.orders).map(x=>'<div class="insight-row"><div><strong>'+label(x.h)+' – '+label((x.h+1)%24)+'</strong><small>'+x.items+' item units · '+(x.orders/max*100).toFixed(0)+'% of peak-hour order load</small></div><strong>'+x.orders+' orders</strong></div>').join("")||'<p class="insight-empty">No orders in this period.</p>';
 }
 function renderAdvanced(){renderLifetime();renderLostRecovery();renderBasket();renderDaypart();renderAcquisition();renderCategories();renderStaffing();}
-function renderAll(){if(!document.getElementById("iRepeatCount"))return;renderCustomers();renderTrend();renderBusy();renderProducts();renderPromotions();renderAdvanced();}
-function init(){if(ready)return;ready=true;const originalRender=render;render=function(){originalRender();renderAll();};["iTrendGroup","iTrendMetric"].forEach(id=>$(id).addEventListener("change",renderTrend));["iBusyDay","iBusyMetric"].forEach(id=>$(id).addEventListener("change",renderBusy));["iDaypart"].forEach(id=>$(id).addEventListener("change",renderDaypart));["iProductMetric","iProductSearch"].forEach(id=>$(id).addEventListener(id==="iProductSearch"?"input":"change",renderProducts));["reportPeriod","reportFrom","reportTo"].forEach(id=>$(id)?.addEventListener("change",()=>setTimeout(renderAll,50)));$("reportRefresh")?.addEventListener("click",()=>setTimeout(renderAll,500));renderAll();setInterval(renderAll,30000);}
+
+async function renderRatings(){
+ const body=$("ratingRows");if(!body)return;
+ body.innerHTML='<tr><td colspan="5">Loading ratings…</td></tr>';
+ try{
+  const data=await request("rating-report"),rows=data.ratings||[];
+  $("ratingAverage").textContent=rows.length?(Number(data.average||0).toFixed(1)+" ★"):"—";
+  $("ratingTotal").textContent=String(data.count||0);
+  $("ratingFiveStar").textContent=String(data.five_star||0);
+  $("ratingResponse").textContent=data.response_rate==null?"—":Number(data.response_rate).toFixed(1)+"%";
+  body.innerHTML=rows.map(r=>'<tr><td>'+esc(new Date(r.created_at).toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"}))+'</td><td><strong>'+esc(r.customer_name||"Guest")+'</strong></td><td>'+esc(r.customer_phone||"—")+'</td><td>'+esc(r.order_number||"—")+'</td><td><strong class="rating-stars-value">'+("★".repeat(Number(r.rating)||0))+'</strong> '+Number(r.rating||0)+'/5</td></tr>').join("")||'<tr><td colspan="5">No customer ratings yet.</td></tr>';
+  $("ratingReportNote").textContent="Showing "+rows.length+" latest ratings. Customer details are taken from the linked order.";
+ }catch(error){body.innerHTML='<tr><td colspan="5">Could not load ratings: '+esc(error.message||"Please refresh.")+'</td></tr>';}
+}
+\nfunction renderAll(){if(!document.getElementById("iRepeatCount"))return;renderRatings();renderCustomers();renderTrend();renderBusy();renderProducts();renderPromotions();renderAdvanced();}
+function init(){if(ready)return;ready=true;const originalRender=render;render=function(){originalRender();renderAll();};["iTrendGroup","iTrendMetric"].forEach(id=>$(id).addEventListener("change",renderTrend));["iBusyDay","iBusyMetric"].forEach(id=>$(id).addEventListener("change",renderBusy));["iDaypart"].forEach(id=>$(id).addEventListener("change",renderDaypart));["iProductMetric","iProductSearch"].forEach(id=>$(id).addEventListener(id==="iProductSearch"?"input":"change",renderProducts));["reportPeriod","reportFrom","reportTo"].forEach(id=>$(id)?.addEventListener("change",()=>setTimeout(renderAll,50)));$("reportRefresh")?.addEventListener("click",()=>setTimeout(renderAll,500));renderAll();$("ratingRefresh")?.addEventListener("click",renderRatings);setInterval(renderAll,30000);}
 let attempts=0;const wait=setInterval(()=>{attempts++;if(typeof periodOrders==="function"&&typeof allOrders!=="undefined"){clearInterval(wait);init();}else if(attempts>80)clearInterval(wait);},250);
 })();
