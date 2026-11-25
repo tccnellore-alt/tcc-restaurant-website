@@ -930,8 +930,33 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       items=[];save();continuationOrder=null;continuationBox.hidden=true;render();close();
       try{sessionStorage.removeItem('tccPendingOrderRequestKey');sessionStorage.removeItem('tccPendingOrderSignature');}catch{}
       const notice=document.createElement('div');notice.className='tcc-order-send-notice';notice.setAttribute('role','status');
-      notice.innerHTML='<strong>Order placed successfully!</strong><br>Reference: '+order.ref+'<br>Your order has been sent to TCC’s kitchen. Track its progress in Order History.';
-      document.body.append(notice);setTimeout(()=>notice.remove(),9000);
+      notice.innerHTML='<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;text-align:left"><div><strong>Order placed successfully!</strong><br><span class="tcc-order-rating-ref"></span><br>Your order has been sent to TCC’s kitchen. Track its progress in Order History.</div><button type="button" class="tcc-order-rating-dismiss" aria-label="Dismiss rating prompt" style="flex:0 0 30px;width:30px;height:30px;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:21px;line-height:1">×</button></div><div class="tcc-order-rating-box" style="margin-top:12px;padding:12px 10px;border-radius:12px;background:#fff9ed;color:#173c2b;text-align:center"><strong style="display:block;font:700 15px Georgia,serif">Rate your experience</strong><span style="display:block;margin:4px 0 8px;font:11px Arial,sans-serif;color:#667367">Tap a star to share your rating</span><div class="tcc-order-rating-stars" style="display:flex;justify-content:center;gap:7px"></div><span class="tcc-order-rating-message" aria-live="polite" style="display:block;margin-top:7px;font:11px Arial,sans-serif;color:#667367"></span></div>';
+      notice.querySelector('.tcc-order-rating-ref').textContent='Reference: '+order.ref;
+      document.body.append(notice);
+      const dismissRating=()=>notice.remove();
+      notice.querySelector('.tcc-order-rating-dismiss').addEventListener('click',dismissRating);
+      const ratingStars=notice.querySelector('.tcc-order-rating-stars'),ratingMessage=notice.querySelector('.tcc-order-rating-message');
+      for(let rating=1;rating<=5;rating++){
+        const star=document.createElement('button');star.type='button';star.dataset.rating=String(rating);star.setAttribute('aria-label',rating+' star'+(rating===1?'':'s'));star.textContent='★';
+        star.style.cssText='border:0;background:transparent;padding:3px;color:#c9c5b9;font-size:32px;line-height:1;cursor:pointer;touch-action:manipulation';
+        star.addEventListener('click',async()=>{
+          if(star.dataset.sending==='1'||star.disabled)return;
+          ratingStars.querySelectorAll('button').forEach(b=>{b.disabled=true;b.style.color=Number(b.dataset.rating)<=rating?'#b38b3e':'#d9d4c8';});
+          ratingMessage.textContent='Sending your rating…';
+          try{
+            const response=await fetch('https://ghdgsntpqucopwbtuihe.supabase.co/rest/v1/tcc_feedback',{method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_GUe7lGd_v8ZwTQcC0mZSeQ_oU1ADMSl','Authorization':'Bearer sb_publishable_GUe7lGd_v8ZwTQcC0mZSeQ_oU1ADMSl','Prefer':'return=minimal'},body:JSON.stringify({rating,comments:null})});
+            if(!response.ok)throw new Error('Rating request failed');
+            ratingMessage.textContent='Thank you for rating TCC!';
+            ratingMessage.style.color='#245b3d';
+          }catch(error){
+            ratingMessage.textContent='Could not send right now. Tap a star to try again.';
+            ratingMessage.style.color='#9b453b';
+            ratingStars.querySelectorAll('button').forEach(b=>{b.disabled=false;b.style.color=Number(b.dataset.rating)<=rating?'#b38b3e':'#c9c5b9';});
+          }
+        });
+        ratingStars.append(star);
+      }
+      setTimeout(()=>notice.remove(),18000);
     }catch(error){tableError.textContent=error.message||'Unable to place your order. Your cart is saved — please retry.';}
     finally{orderSubmissionBusy=false;sendButton.disabled=false;sendButton.textContent='Place Order';}
   });
