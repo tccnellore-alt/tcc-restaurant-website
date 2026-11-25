@@ -5138,6 +5138,59 @@ body:not(.menu-text-mode) .tcc-special-card .m-photo-placeholder small{
 }
 </style>
 
+
+<style id="tcc-featured-card-preview-fix">
+/* Preview refinement: make the featured item use the full mobile row and keep all controls legible. */
+@media(max-width:699px){
+ body:not(.menu-text-mode) .menu-group .m-list>.m-item.tcc-special-card{
+   grid-column:1/-1!important;
+   display:grid!important;
+   grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+   grid-template-rows:auto auto auto!important;
+   align-items:stretch!important;
+   gap:0!important;
+ }
+ body:not(.menu-text-mode) .menu-group .m-list>.m-item.tcc-special-card>.m-photo-wrap{
+   grid-column:1!important;grid-row:1/4!important;
+   width:100%!important;height:100%!important;min-height:0!important;
+   aspect-ratio:auto!important;align-self:stretch!important;
+ }
+ body:not(.menu-text-mode) .menu-group .m-list>.m-item.tcc-special-card>.m-photo-wrap .m-photo{
+   width:100%!important;height:100%!important;object-fit:cover!important;
+ }
+ body:not(.menu-text-mode) .menu-group .m-list>.m-item.tcc-special-card>.m-item-info{
+   grid-column:2!important;grid-row:1!important;
+   min-width:0!important;padding:34px 13px 8px!important;
+   background:transparent!important;
+ }
+ body:not(.menu-text-mode) .menu-group .m-list>.m-item.tcc-special-card>.m-item-info h3{
+   color:#fff8e8!important;-webkit-text-fill-color:#fff8e8!important;
+   font-size:15px!important;line-height:1.35!important;
+ }
+ body:not(.menu-text-mode) .menu-group .m-list>.m-item.tcc-special-card>.m-item-info p{
+   color:rgba(255,248,232,.78)!important;-webkit-text-fill-color:rgba(255,248,232,.78)!important;
+ }
+ body:not(.menu-text-mode) .menu-group .m-list>.m-item.tcc-special-card>strong{
+   grid-column:2!important;grid-row:2!important;justify-self:start!important;
+   margin:5px 12px 10px!important;background:#f7edcf!important;
+   color:#725c2d!important;-webkit-text-fill-color:#725c2d!important;
+   border:0!important;
+ }
+ body:not(.menu-text-mode) .menu-group .m-list>.m-item.tcc-special-card .tcc-wish-add{
+   grid-column:2!important;grid-row:3!important;justify-self:stretch!important;
+   align-self:end!important;width:auto!important;min-width:0!important;
+   margin:0 12px 14px!important;padding:12px 8px!important;
+   background:#f7edcf!important;color:#173c2b!important;
+   -webkit-text-fill-color:#173c2b!important;border:1px solid #d7bd82!important;
+   box-shadow:0 4px 12px rgba(0,0,0,.12)!important;
+   font-weight:800!important;
+ }
+}
+@media(min-width:700px){
+ body:not(.menu-text-mode) .menu-group .m-list>.m-item.tcc-special-card{grid-column:span 2!important}
+}
+</style>
+
 </body>
 </html>
 
