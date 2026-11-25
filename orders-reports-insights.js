@@ -90,7 +90,7 @@ async function renderRatings(){
   $("ratingReportNote").textContent="Showing "+rows.length+" latest ratings. Customer details are taken from the linked order.";
  }catch(error){body.innerHTML='<tr><td colspan="5">Could not load ratings: '+esc(error.message||"Please refresh.")+'</td></tr>';}
 }
-\nfunction renderAll(){if(!document.getElementById("iRepeatCount"))return;renderRatings();renderCustomers();renderTrend();renderBusy();renderProducts();renderPromotions();renderAdvanced();}
+function renderAll(){if(!document.getElementById("iRepeatCount"))return;renderRatings();renderCustomers();renderTrend();renderBusy();renderProducts();renderPromotions();renderAdvanced();}
 function init(){if(ready)return;ready=true;const originalRender=render;render=function(){originalRender();renderAll();};["iTrendGroup","iTrendMetric"].forEach(id=>$(id).addEventListener("change",renderTrend));["iBusyDay","iBusyMetric"].forEach(id=>$(id).addEventListener("change",renderBusy));["iDaypart"].forEach(id=>$(id).addEventListener("change",renderDaypart));["iProductMetric","iProductSearch"].forEach(id=>$(id).addEventListener(id==="iProductSearch"?"input":"change",renderProducts));["reportPeriod","reportFrom","reportTo"].forEach(id=>$(id)?.addEventListener("change",()=>setTimeout(renderAll,50)));$("reportRefresh")?.addEventListener("click",()=>setTimeout(renderAll,500));renderAll();$("ratingRefresh")?.addEventListener("click",renderRatings);setInterval(renderAll,30000);}
 let attempts=0;const wait=setInterval(()=>{attempts++;if(typeof periodOrders==="function"&&typeof allOrders!=="undefined"){clearInterval(wait);init();}else if(attempts>80)clearInterval(wait);},250);
 })();
