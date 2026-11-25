@@ -48,3 +48,4 @@
 .jump-nav-links a:hover,.jump-nav-links a:focus-visible,.jump-nav-links a[aria-current="location"]{background:#173c2b;border-color:#173c2b;color:#fff;outline:none}
 .insight-panel{scroll-margin-top:118px}
 @media(max-width:700px){.insights-nav{top:4px;margin:8px -2px 14px;padding:9px 10px;border-radius:12px}.jump-nav-head{margin-bottom:7px}.jump-nav-links{gap:6px}.jump-nav-links a{min-height:34px;padding:7px 11px;font-size:10px}.insight-panel{scroll-margin-top:112px}}
+\n.rating-stars-value{color:#b08b3d;letter-spacing:1px;white-space:nowrap}\n#ratingInsights .insight-kpis{margin-bottom:16px}\n#ratingInsights .sales-table td{vertical-align:middle}\n
