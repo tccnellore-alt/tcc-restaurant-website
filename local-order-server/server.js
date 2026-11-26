@@ -154,7 +154,7 @@ app.post('/v1/orders', publicLimiter, orderLimiter, (req, res) => {
     const total = subtotal + takeawayFee;
     const id = uuid(), created = now(), orderNumber = makeOrderNumber(String(table).toUpperCase());
     const payload = {
-      id, order_number: orderNumber, customer_name: String(body.customer_name || '').trim().slice(0, 120) || 'Guest',
+      id, order_number: orderNumber, idempotency_key: key, parent_order_id: null, customer_name: String(body.customer_name || '').trim().slice(0, 120) || 'Guest',
       customer_phone: phone, order_type: orderType, table_number: String(table).toUpperCase(),
       items, subtotal, takeaway_fee: takeawayFee, total,
       customer_note: String(body.customer_note || '').trim().slice(0, 500) || null,
