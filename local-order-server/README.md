@@ -68,6 +68,7 @@ The current website is on a `pages.dev` hostname; a stable custom order hostname
 
 - `GET /health` — process and database health, no secrets.
 - `POST /v1/orders` — public order submission; requires idempotency UUID, cached ordering-enabled setting, and valid cached active table QR.
+- `GET /v1/orders/:id/status?key=<idempotency_uuid>` — customer-safe delivery state; `received` changes to `delivered_to_desk` only after authenticated Desk acknowledgement.
 - `GET /v1/ordering-status` — public cached ordering status; returns disabled until the first successful settings sync.
 - `POST /v1/admin/qr-cache` — refresh QR-token cache and the cached customer-ordering pause setting.
 - `GET /v1/admin/orders?limit=250` — authenticated Desk order snapshot.
