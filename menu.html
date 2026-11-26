@@ -5221,3 +5221,24 @@ body.menu-text-mode .menu-page .tcc-bestseller-crown{color:#fff4cf!important;fon
   body.menu-text-mode .menu-page .tcc-bestseller-badge{font-size:7px!important;padding:3px 5px!important}
 }
 </style>
+
+
+<style id="tcc-special-badge-priority-fix">
+/* If an item is explicitly TCC SPECIAL, show that plaque instead of its older Best Seller ribbon. */
+body:not(.menu-text-mode) .menu-section .m-item.tcc-special-card:has(.tcc-special-badge) .tcc-bestseller-badge,
+body:not(.menu-text-mode) .menu-group .m-item.tcc-special-card:has(.tcc-special-badge) .tcc-bestseller-badge{
+  display:none!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item.tcc-special-card .tcc-special-badge,
+body:not(.menu-text-mode) .menu-group .m-item.tcc-special-card .tcc-special-badge{
+  background:linear-gradient(90deg,#b79a5a 0%,#e4ca86 50%,#b79a5a 100%)!important;
+  color:#173c2b!important;border:1px solid rgba(255,246,218,.72)!important;
+  border-bottom:1px solid rgba(255,246,218,.8)!important;
+  box-shadow:0 3px 12px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,250,225,.55)!important;
+  letter-spacing:.16em!important;
+}
+body:not(.menu-text-mode) .menu-section .m-item.tcc-special-card .tcc-special-badge,
+body:not(.menu-text-mode) .menu-group .m-item.tcc-special-card .tcc-special-badge{
+  z-index:25!important;
+}
+</style>
