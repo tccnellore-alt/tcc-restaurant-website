@@ -7,7 +7,10 @@
   "scripts": {
     "start": "node server.js",
     "check": "node --check server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "cloud-sync": "node cloud-sync.js",
+    "sync-qr": "node sync-qr-cache.js",
+    "backup": "node backup.js"
   },
   "engines": {
     "node": ">=20.11"
