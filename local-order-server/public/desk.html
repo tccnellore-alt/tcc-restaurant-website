@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TCC Local Order Desk · Test</title>
+<style>
+:root{color-scheme:light;--green:#173c2b;--cream:#f7f3e9;--sage:#e5ece3;--ink:#24342a;--muted:#68766b;--line:#d9dfd6;--red:#a93232}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:var(--green);color:#fffaf0;padding:20px max(16px,calc((100% - 1100px)/2));display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+h1{font-size:22px;margin:0}header p{margin:4px 0 0;color:#d5e0d5;font-size:12px}.tag{border:1px solid #8da796;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;letter-spacing:.05em}
+main{max-width:1100px;margin:0 auto;padding:18px 14px 40px}.login{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:16px}
+input{flex:1;min-width:230px;padding:11px 12px;border:1px solid var(--line);border-radius:9px;font:inherit}button,select{font:inherit;border-radius:9px;border:1px solid var(--line);padding:9px 12px;background:white;color:var(--green);cursor:pointer;font-weight:700}button.primary{background:var(--green);color:#fffaf0;border-color:var(--green)}button:disabled{opacity:.5;cursor:wait}
+.status{font-size:12px;color:var(--muted);margin:6px 0 14px}.grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr);gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px;min-width:0}.panel h2{font-size:16px;margin:0 0 12px}.order{border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}.order-top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.ref{font-weight:900;color:var(--green)}.meta{color:var(--muted);font-size:12px;margin:5px 0}.items{font-size:13px;margin:8px 0}.actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.actions select{max-width:160px}.empty{color:var(--muted);font-size:13px;padding:14px 0}.request{display:flex;justify-content:space-between;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding:10px 0}.request:last-child{border:0}.request strong{display:block}.request small{color:var(--muted)}.error{color:var(--red);font-size:12px}.hidden{display:none!important}
+@media(max-width:760px){.grid{grid-template-columns:1fr}header{align-items:flex-start}}
+</style>
+</head>
+<body>
+<header><div><h1>TCC · Local Order Desk</h1><p>Development-only test desk — not the live production Order Desk</p></div><span class="tag">LOCAL SERVER TEST</span></header>
+<main>
+<div class="login"><label for="token">Staff local API token</label><input id="token" type="password" autocomplete="off" placeholder="Paste local admin token for this tab"><button class="primary" id="connect">Connect</button><button id="disconnect">Disconnect</button></div>
+<div class="status" id="status">Not connected. Enter the local test token to begin.</div>
+<div class="error" id="error" role="alert"></div>
+<div class="grid">
+<section class="panel"><h2>Orders <span id="count"></span></h2><div id="orders"><p class="empty">Connect to load orders.</p></div></section>
+<section class="panel"><h2>Table requests</h2><div id="requests"><p class="empty">Connect to load requests.</p></div></section>
+</div>
+</main>
+<script>
+(()=> {
+  const $=id=>document.getElementById(id);
+  let token=sessionStorage.getItem('tccLocalDeskToken')||'',lastSeq=Number(sessionStorage.getItem('tccLocalDeskSeq')||0),busy=false,timer=null;
+  const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const headers=()=>({'Authorization':'Bearer '+token,'Content-Type':'application/json','x-tcc-desk-id':'Local Test Desk'});
+  async function api(path,options={}) {
+    const response=await fetch(path,{...options,headers:{...headers(),...(options.headers||{})},cache:'no-store'});
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(data.error||'Request failed (HTTP '+response.status+').');
+    return data;
+  }
+  function setError(message=''){$('error').textContent=message;}
+  function orderHtml(order) {
+    const items=(order.items||[]).map(item=>'<div>'+esc(item.quantity)+' × '+esc(item.name)+(item.item_status?' <small>('+esc(item.item_status)+')</small>':'')+'</div>').join('');
+    const statuses=['new','accepted','preparing','ready','completed','cancelled','rejected'];
+    return '<article class="order" data-id="'+esc(order.id)+'"><div class="order-top"><span class="ref">'+esc(order.order_number)+'</span><strong>₹'+Number(order.total||0).toLocaleString('en-IN')+'</strong></div><div class="meta">Table '+esc(order.table_number||'—')+' · '+esc(order.customer_name||'Guest')+' · '+esc(order.customer_phone||'')+'<br>'+esc(new Date(order.created_at).toLocaleString('en-IN'))+'</div><div class="items">'+items+'</div><div class="actions"><select class="status">'+statuses.map(s=>'<option value="'+s+'"'+(s===order.status?' selected':'')+'>'+s+'</option>').join('')+'</select><button class="primary save-status">Save status</button></div></article>';
+  }
+  async function refreshOrders() {
+    const data=await api('/v1/admin/orders?limit=250');
+    $('orders').innerHTML=data.orders.length?data.orders.map(orderHtml).join(''):'<p class="empty">No orders received yet.</p>';
+    $('count').textContent='('+data.orders.length+')';
+  }
+  async function refreshRequests() {
+    const data=await api('/v1/admin/table-requests');
+    $('requests').innerHTML=data.requests.length?data.requests.map(r=>'<div class="request" data-id="'+esc(r.id)+'"><div><strong>'+esc(r.request_type==='bill'?'Bill requested':'Staff assistance')+' · '+esc(r.table_number)+'</strong><small>'+esc(new Date(r.created_at).toLocaleTimeString('en-IN'))+'</small></div><button class="attend">Attended</button></div>').join(''):'<p class="empty">No pending table requests.</p>';
+  }
+  async function pollEvents() {
+    if(!token||busy)return;busy=true;
+    try {
+      const data=await api('/v1/admin/events?after='+lastSeq);
+      for(const event of data.events||[]) {
+        if(event.event_type==='order_received'||event.event_type==='order_status_changed')await refreshOrders();
+        if(event.entity_type==='table_request')await refreshRequests();
+        await api('/v1/admin/events/'+event.seq+'/ack',{method:'POST',body:'{}'});
+        lastSeq=Math.max(lastSeq,Number(event.seq)||0);
+        sessionStorage.setItem('tccLocalDeskSeq',String(lastSeq));
+      }
+      $('status').textContent='Connected · local server · '+new Date().toLocaleTimeString('en-IN');
+      setError('');
+    } catch(error){setError(error.message);$('status').textContent='Connection interrupted · retrying';}
+    finally{busy=false;}
+  }
+  async function connect() {
+    token=$('token').value.trim()||sessionStorage.getItem('tccLocalDeskToken')||'';
+    if(!token){setError('Enter the local API token.');return;}
+    sessionStorage.setItem('tccLocalDeskToken',token);
+    try {
+      await refreshOrders();await refreshRequests();await pollEvents();
+      clearInterval(timer);timer=setInterval(async()=>{await pollEvents();},2000);
+      setError('');
+    } catch(error){setError(error.message);$('status').textContent='Could not connect';}
+  }
+  $('connect').addEventListener('click',connect);
+  $('disconnect').addEventListener('click',()=>{token='';sessionStorage.removeItem('tccLocalDeskToken');clearInterval(timer);$('status').textContent='Disconnected';});
+  $('orders').addEventListener('click',async event=>{
+    const button=event.target.closest('.save-status');if(!button)return;
+    const card=button.closest('.order'),id=card.dataset.id,status=card.querySelector('.status').value;
+    button.disabled=true;
+    try{await api('/v1/admin/orders/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({status})});await refreshOrders();setError('');}
+    catch(error){setError(error.message);}finally{button.disabled=false;}
+  });
+  $('requests').addEventListener('click',async event=>{
+    const button=event.target.closest('.attend');if(!button)return;
+    const row=button.closest('.request');button.disabled=true;
+    try{await api('/v1/admin/table-requests/'+encodeURIComponent(row.dataset.id),{method:'PATCH',body:'{}'});await refreshRequests();setError('');}
+    catch(error){setError(error.message);}finally{button.disabled=false;}
+  });
+  if(token){$('token').value=token;connect();}
+})();
+</script>
+</body>
+</html>
