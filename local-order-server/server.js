@@ -78,7 +78,7 @@ const isUuid = value => /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f
 const orderDate = () => new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit'
 }).format(new Date()).replaceAll('-', '');
-const makeOrderNumber = table => 'TCC-' + orderDate() + '-' + table + '-L' + crypto.randomBytes(3).toString('hex').toUpperCase();
+const makeOrderNumber = table => { const prefix = 'TCC-' + orderDate() + '-' + table + '-L'; const rows = db.prepare('SELECT order_number FROM orders WHERE order_number LIKE ?').all(prefix + '%'); const max = rows.reduce((n,row) => { const match = String(row.order_number).match(/-(\\d{3,})$/); return match ? Math.max(n,Number(match[1])) : n; },0); return prefix + String(max + 1).padStart(3,'0'); };
 const tableForQr = token => {
   if (!/^[A-Za-z0-9_-]{40,80}$/.test(String(token || ''))) return null;
   return db.prepare('SELECT table_number FROM qr_tokens WHERE token_hash=? AND is_active=1').get(sha256(token))?.table_number || null;
@@ -230,7 +230,7 @@ app.patch('/v1/admin/orders/:id', admin, (req, res) => {
   payload.updated_at = at;
   const commitStatus = db.transaction(() => {
     db.prepare('UPDATE orders SET status=?,payload_json=?,updated_at=? WHERE id=?').run(status, JSON.stringify(payload), at, id);
-    addEvent('order', id, 'order_status_changed', { id, order_number: row.order_number, status, updated_at: at }, row.idempotency_key);
+    addEvent('order', id, 'order_status_changed', payload, row.idempotency_key);
     db.prepare('INSERT INTO audit_log(id,actor,action,entity_type,entity_id,details_json,created_at) VALUES(?,?,?,?,?,?,?)')
       .run(uuid(), String(req.headers['x-tcc-desk-id'] || 'Order Desk').slice(0,80), 'status_changed', 'order', id, JSON.stringify({ from: row.status, to: status }), at);
   });
