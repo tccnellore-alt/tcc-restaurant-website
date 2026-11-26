@@ -32,15 +32,24 @@ async function sync() {
   });
   if (!availabilityResponse.ok) throw new Error('Menu availability source returned HTTP ' + availabilityResponse.status);
   const menuOverrides = await availabilityResponse.json();
+  const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const date=parts.find(p=>p.type==='year').value+parts.find(p=>p.type==='month').value+parts.find(p=>p.type==='day').value;
+  const orderNumbersResponse=await fetch(base+'/rest/v1/tcc_orders?order_number=like.'+encodeURIComponent('TCC-'+date+'-*')+'&select=order_number&limit=10000',{
+    headers:{apikey:serviceKey,Authorization:'Bearer '+serviceKey},
+    signal:AbortSignal.timeout(15000)
+  });
+  if(!orderNumbersResponse.ok)throw new Error('Cloud order-number source returned HTTP '+orderNumbersResponse.status);
+  const orderNumberRows=await orderNumbersResponse.json();
+  const orderNumbers=orderNumberRows.map(row=>row.order_number);
   const saved = await fetch(local + '/v1/admin/qr-cache', {
     method: 'POST',
     headers: { Authorization: 'Bearer ' + adminToken, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tokens, customer_ordering_enabled: orderingEnabled, menu_overrides: menuOverrides }),
+    body: JSON.stringify({ tokens, customer_ordering_enabled: orderingEnabled, menu_overrides: menuOverrides, order_numbers: orderNumbers }),
     signal: AbortSignal.timeout(15000)
   });
   if (!saved.ok) throw new Error('Local QR cache returned HTTP ' + saved.status);
   const result = await saved.json();
-  console.log('QR cache refreshed: ' + result.updated + ' token records; ' + menuOverrides.length + ' menu availability records; online ordering ' + (orderingEnabled ? 'enabled' : 'paused') + '.');
+  console.log('QR cache refreshed: ' + result.updated + ' token records; ' + menuOverrides.length + ' menu availability records; seeded ' + orderNumbers.length + ' cloud order references; online ordering ' + (orderingEnabled ? 'enabled' : 'paused') + '.');
 }
 async function loop() {
   while (true) {
