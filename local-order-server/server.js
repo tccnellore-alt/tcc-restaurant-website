@@ -352,6 +352,19 @@ app.post('/v1/admin/qr-cache', admin, (req, res) => {
         if(key&&availability)saveOverride.run(key,availability,at);
       }
     }
+    if(Array.isArray(req.body?.order_numbers)){
+      const maxima=new Map();
+      for(const value of req.body.order_numbers.slice(0,10000)){
+        const match=String(value||'').match(/^TCC-(\d{8})-(.+)-(\d{3,})$/i);
+        if(!match)continue;
+        const date=match[1],tableKey=match[2].toUpperCase(),number=Number(match[3]);
+        if(!Number.isSafeInteger(number))continue;
+        const mapKey=date+'|'+tableKey;
+        maxima.set(mapKey,Math.max(maxima.get(mapKey)||0,number));
+      }
+      const seed=db.prepare('INSERT INTO order_sequences(order_date,table_key,next_number) VALUES(?,?,?) ON CONFLICT(order_date,table_key) DO UPDATE SET next_number=MAX(order_sequences.next_number,excluded.next_number)');
+      for(const [mapKey,max] of maxima){const [date,tableKey]=mapKey.split('|');seed.run(date,tableKey,max+1);}
+    }
     const upsert = db.prepare(`INSERT INTO qr_tokens(token_hash,table_number,is_active,synced_at) VALUES(?,?,?,?)
       ON CONFLICT(token_hash) DO UPDATE SET table_number=excluded.table_number,is_active=excluded.is_active,synced_at=excluded.synced_at`);
     for (const row of rows) {
