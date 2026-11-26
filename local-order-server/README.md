@@ -70,9 +70,10 @@ The current website is on a `pages.dev` hostname; a stable custom order hostname
 - `POST /v1/orders` — public order submission; requires idempotency UUID, cached ordering-enabled setting, and valid cached active table QR.
 - `GET /v1/ordering-status` — public cached ordering status; returns disabled until the first successful settings sync.
 - `POST /v1/admin/qr-cache` — refresh QR-token cache and the cached customer-ordering pause setting.
-- `GET /v1/admin/orders?since=<ISO>` — authenticated Desk incremental snapshot.
-- `POST /v1/admin/orders/:id/ack` — Desk acknowledges after rendering.
-- `PATCH /v1/admin/orders/:id` — authenticated status change with audit/outbox event.
+- `GET /v1/admin/orders?limit=250` — authenticated Desk order snapshot.
+- `GET /v1/admin/events?after=<seq>` — durable Desk event feed; unacknowledged events are returned again.
+- `POST /v1/admin/events/:seq/ack` — Desk acknowledges an event after rendering.
+- `PATCH /v1/admin/orders/:id` — authenticated production-compatible status change with item updates, audit and cloud outbox event.
 - `POST /v1/table-requests` — public staff/bill request with QR.
 - `GET /v1/admin/table-requests` and `PATCH /v1/admin/table-requests/:id` — Desk list/attend.
 - `GET /v1/admin/events?after=<seq>` — durable events for polling recovery.
