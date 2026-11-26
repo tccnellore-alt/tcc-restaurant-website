@@ -281,6 +281,7 @@ app.post('/v1/admin/qr-cache', admin, (req, res) => {
   const rows = Array.isArray(req.body?.tokens) ? req.body.tokens.slice(0,200) : [];
   const at = now();
   const save = db.transaction(() => {
+    db.prepare('UPDATE qr_tokens SET is_active=0,synced_at=?').run(at);
     const upsert = db.prepare(`INSERT INTO qr_tokens(token_hash,table_number,is_active,synced_at) VALUES(?,?,?,?)
       ON CONFLICT(token_hash) DO UPDATE SET table_number=excluded.table_number,is_active=excluded.is_active,synced_at=excluded.synced_at`);
     for (const row of rows) {
