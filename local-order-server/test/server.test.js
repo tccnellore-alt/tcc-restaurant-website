@@ -92,6 +92,15 @@ test('Desk event remains pending until acknowledged and status changes are durab
 });
 
 
+
+test('rejects malformed quantities and fractional currency before persistence',async()=>{
+  const key=crypto.randomUUID();
+  const body={idempotency_key:key,customer_name:'Test Customer',customer_phone:'9876543210',order_type:'dine-in',table_qr_token:qrToken,items:[{name:'Test Latte',quantity:1,unit_price:100.5,category:'Coffee',addons:[],fulfillment_type:'dine-in'}]};
+  const response=await fetch('http://127.0.0.1:'+port+'/v1/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  assert.equal(response.status,400);
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM orders WHERE idempotency_key=?').get(key).n,0);
+});
+
 test('cached ordering pause is visible and blocks new orders',async()=>{
   const hash=crypto.createHash('sha256').update(qrToken).digest('hex');
   const paused=await api('/v1/admin/qr-cache',{method:'POST',body:JSON.stringify({customer_ordering_enabled:false,tokens:[{token_hash:hash,table_number:'S1',is_active:true}]})});
