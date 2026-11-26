@@ -1,0 +1,32 @@
+name: Local order server tests
+
+on:
+  push:
+    branches:
+      - feature/local-order-server
+    paths:
+      - "local-order-server/**"
+      - ".github/workflows/local-order-server-test.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "local-order-server/**"
+      - ".github/workflows/local-order-server-test.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: local-order-server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: local-order-server/package-lock.json
+      - run: npm install
+      - run: npm run check
+      - run: npm test
