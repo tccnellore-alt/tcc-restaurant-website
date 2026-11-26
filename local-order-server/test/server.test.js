@@ -97,4 +97,6 @@ test('order and unacknowledged events survive a server restart',async()=>{
   assert.ok(snapshot.data.orders.some(order=>order.id===orderId&&order.status==='preparing'));
   const health=await fetch('http://127.0.0.1:'+port+'/health').then(r=>r.json());
   assert.equal(health.database,'ok');
+  const recovered=await api('/v1/admin/events?after=0');
+  assert.ok(recovered.data.events.some(event=>event.entity_id===orderId&&event.event_type==='order_status_changed'&&!event.desk_ack_at));
 });
