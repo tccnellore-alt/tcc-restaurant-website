@@ -130,7 +130,11 @@ app.get('/health', (req, res) => {
     db.prepare('SELECT 1').get();
     const pending = db.prepare("SELECT COUNT(*) AS n FROM outbox WHERE status IN ('pending','failed')").get().n;
     const unacked = db.prepare('SELECT COUNT(*) AS n FROM order_events WHERE desk_ack_at IS NULL').get().n;
-    res.json({ ok: true, service: 'tcc-local-order-server', database: 'ok', pending_cloud_sync: pending, unacknowledged_desk_events: unacked, time: now() });
+    const orderingConfig=db.prepare("SELECT setting_value_json,synced_at FROM app_settings WHERE setting_key='customer_ordering_enabled'").get();
+    const qrCount=db.prepare('SELECT COUNT(*) AS n FROM qr_tokens WHERE is_active=1').get().n;
+    const menuCount=db.prepare('SELECT COUNT(*) AS n FROM menu_availability').get().n;
+    const cacheAge=orderingConfig?Math.max(0,Math.floor((Date.now()-Date.parse(orderingConfig.synced_at))/1000)):null;
+    res.json({ ok: true, service: 'tcc-local-order-server', database: 'ok', pending_cloud_sync: pending, unacknowledged_desk_events: unacked, active_qr_tokens: qrCount, cached_menu_overrides: menuCount, ordering_config_synced_at: orderingConfig?.synced_at||null, ordering_config_age_seconds:cacheAge, time: now() });
   } catch (error) {
     res.status(503).json({ ok: false, service: 'tcc-local-order-server', database: 'error' });
   }
