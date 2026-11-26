@@ -53,6 +53,8 @@ before(async()=>{
   port=await freePort();
   await startServer();
   db=new Database(dbPath);
+  db.prepare('INSERT INTO app_settings(setting_key,setting_value_json,synced_at) VALUES(?,?,?)')
+    .run('customer_ordering_enabled','true',new Date().toISOString());
   db.prepare('INSERT INTO qr_tokens(token_hash,table_number,is_active,synced_at) VALUES(?,?,1,?)')
     .run(crypto.createHash('sha256').update(qrToken).digest('hex'),'S1',new Date().toISOString());
 });
