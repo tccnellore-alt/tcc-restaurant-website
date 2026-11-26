@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js",
+    "check": "node --check server.js && node --check cloud-sync.js && node --check sync-qr-cache.js && node --check backup.js && node --check test/server.test.js",
     "test": "node --test",
     "cloud-sync": "node cloud-sync.js",
     "sync-qr": "node sync-qr-cache.js",
