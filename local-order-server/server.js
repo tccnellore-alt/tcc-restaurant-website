@@ -138,7 +138,7 @@ app.get('/health', (req, res) => {
 
 app.post('/v1/orders', publicLimiter, orderLimiter, (req, res) => {
   try {
-    const setting=db.prepare(\"SELECT setting_value_json FROM app_settings WHERE setting_key='customer_ordering_enabled'\").get();
+    const setting=db.prepare("SELECT setting_value_json FROM app_settings WHERE setting_key='customer_ordering_enabled'").get();
     if(!setting || JSON.parse(setting.setting_value_json)!==true) return res.status(423).json({error:'Online ordering is currently paused or not yet synchronized. Please ask our team for assistance.'});
     const body = req.body || {};
     const key = String(body.idempotency_key || '').trim();
