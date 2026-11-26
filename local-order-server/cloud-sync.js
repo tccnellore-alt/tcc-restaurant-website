@@ -55,8 +55,8 @@ async function run() {
       const delay = Math.min(15 * 60 * 1000, 1000 * (2 ** Math.min(attempts,10)));
       const next = new Date(Date.now() + delay).toISOString();
       const message = String(error.message || 'Cloud sync failed').slice(0,300);
-      db.prepare("UPDATE outbox SET status='failed',next_attempt_at=?,last_error=? WHERE id=? AND status='syncing' AND payload_json=?").run(next,message,row.id,row.payload_json);
-      if (row.entity_type === 'order') db.prepare('UPDATE orders SET cloud_error=? WHERE id=?').run(message,row.entity_id);
+      const failed=db.prepare("UPDATE outbox SET status='failed',next_attempt_at=?,last_error=? WHERE id=? AND status='syncing' AND payload_json=?").run(next,message,row.id,row.payload_json);
+      if (failed.changes && row.entity_type === 'order') db.prepare('UPDATE orders SET cloud_error=? WHERE id=?').run(message,row.entity_id);
       console.error('Cloud sync deferred for ' + row.entity_type + ' ' + row.entity_id + ': ' + message);
     }
   }
