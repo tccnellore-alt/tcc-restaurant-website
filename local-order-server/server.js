@@ -276,7 +276,7 @@ app.post('/v1/admin/events/:seq/ack', admin, (req, res) => {
 app.patch('/v1/admin/orders/:id', admin, (req, res) => {
   const id = String(req.params.id || '');
   const status = String(req.body?.status || '');
-  const allowed = new Set(['new','accepted','preparing','ready','completed','cancelled','rejected']);
+  const allowed = new Set(['new','preparing','ready','completed','cancelled']);
   if (!allowed.has(status)) return res.status(400).json({ error: 'Invalid order status.' });
   const row = db.prepare('SELECT * FROM orders WHERE id=?').get(id);
   if (!row) return res.status(404).json({ error: 'Order not found.' });
@@ -284,6 +284,12 @@ app.patch('/v1/admin/orders/:id', admin, (req, res) => {
   const payload = JSON.parse(row.payload_json);
   payload.status = status;
   payload.updated_at = at;
+  payload.items=(payload.items||[]).map(item=>{
+    if(status==='cancelled')return {...item,item_status:'cancelled'};
+    if(status==='preparing'&&(!item.item_status||item.item_status==='pending'))return {...item,item_status:'preparing'};
+    if(status==='completed'&&item.item_status!=='cancelled')return {...item,item_status:'completed'};
+    return item;
+  });
   const commitStatus = db.transaction(() => {
     db.prepare('UPDATE orders SET status=?,payload_json=?,updated_at=? WHERE id=?').run(status, JSON.stringify(payload), at, id);
     addEvent('order', id, 'order_status_changed', payload, row.idempotency_key);
