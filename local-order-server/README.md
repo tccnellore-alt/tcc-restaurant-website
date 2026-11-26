@@ -40,6 +40,8 @@ flowchart TD
 
 Preferred public route: Cloudflare Tunnel to the PC, no router port-forwarding. For LAN traffic, investigate router split-horizon DNS for the same HTTPS hostname to the PC's private address, using a browser-trusted certificate. If the router cannot do this reliably, LAN devices may use the tunnel while internet is available; direct LAN/offline access requires a valid local HTTPS hostname/certificate and compatible browser permissions. Never use insecure mixed-content HTTP from the HTTPS website.
 
+The current website is on a `pages.dev` hostname; a stable custom order hostname requires a domain/zone managed in Cloudflare (for example, `orders.<TCC-domain>`). The repo does not establish that TCC already has a custom domain, so domain setup is a prerequisite to a stable public tunnel hostname. A temporary Cloudflare Tunnel hostname is suitable only for development. A browser-trusted certificate is needed for split-DNS direct LAN HTTPS; a Cloudflare Origin CA certificate alone is not browser-trusted. The server supports HTTPS when `HTTPS_KEY_PATH` and `HTTPS_CERT_PATH` are configured. A sample tunnel config is in `cloudflared/config.yml.example`.
+
 ## Delivery semantics
 
 - Local order write + idempotency record + outbox event are committed in one SQLite transaction.
@@ -87,6 +89,16 @@ From this folder on a development machine:
 
 The current customer website and production `orders.html` are not yet wired to this local API. The standalone Desk is a test harness; customer frontend and existing Desk adapter integration are a later phase on this branch.
 
+## Estimated remaining stages
+
+- **Stage A — Local intake and persistence (prototype):** order API, SQLite schema, idempotency, durable events/outbox, standalone Desk harness, QR cache and restart tests. Initial prototype is committed; CI covers core API behavior.
+- **Stage B — Compatibility adapter:** connect the customer checkout and the existing Order Desk to the local API behind a feature flag; preserve current UI and staff workflows. Estimate 1–2 focused days after API contract review.
+- **Stage C — Windows/network installation:** PC service/task setup, trusted TLS, Cloudflare Tunnel, Access policy, split-DNS and firewall validation. Estimate 0.5–1.5 days depending on domain/router/certificate setup.
+- **Stage D — Cloud mirror and backup validation:** verify the live schema read-only, run sync/reconciliation and backup restore tests, check status edits and table requests. Estimate 1–2 focused days.
+- **Stage E — Pilot and cutover:** test busy service windows, failure injection, then a small approved pilot with rollback. Allow 2–3 operating sessions for observation.
+
+Overall planning estimate: roughly 4–7 focused engineering days plus real cafe pilot sessions; network/domain setup or schema discrepancies can extend this. This is a planning range, not a guarantee.
+
 ## Security
 
 - Bind the service to the cafe LAN interface; Windows Firewall allow inbound only from the private cafe subnet. Do not expose a raw port to the internet.
@@ -110,6 +122,7 @@ The current customer website and production `orders.html` are not yet wired to t
 8. Cloudflare Tunnel: create a named tunnel and route the order hostname to local HTTPS origin; use Cloudflare Access for admin endpoints.
 9. Configure daily SQLite online backup, rotate logs, monitor disk space and `/health`.
 10. Test restore from backup and service recovery before pilot.
+11. The setup script is a starting point, not a completed PC installation. Review the scheduled-task identity, folder ACLs, TLS renewal and Windows Firewall subnet rule before registering or starting tasks. Do not run it on the cafe PC until configuration is approved.
 
 ## Test and migration gates
 
