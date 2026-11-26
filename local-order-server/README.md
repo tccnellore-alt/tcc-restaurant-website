@@ -55,7 +55,7 @@ The current website is on a `pages.dev` hostname; a stable custom order hostname
 ## Local data model
 
 - `orders`: stable UUID, production-compatible `TCC-YYYYMMDD-TABLE-###` reference (or `TAKEAWAY`), unique idempotency key, full order JSON, customer phone, status, timestamps, Desk acknowledgement and cloud sync state.
-- `order_sequences`: atomic per-date/per-table order reference counters seeded from existing local order history.
+- `order_sequences`: atomic per-date/per-table order reference counters seeded from both local history and today's cloud order references during QR/settings refresh. This reduces collisions when the local writer is activated; pilot must still use a single active order writer.
 - `order_events`: monotonically increasing sequence, event type, order/request ID, JSON payload, creation time, desk ack.
 - `table_requests`: stable request ID, table, type (staff/bill), pending/attended status, created/attended timestamps, unique open request constraint.
 - `qr_tokens`: SHA-256 hash only, table, active flag, last sync. Raw QR tokens are never stored.
@@ -77,7 +77,7 @@ The current website is on a `pages.dev` hostname; a stable custom order hostname
 - `GET /v1/admin/table-requests` and `PATCH /v1/admin/table-requests/:id` — Desk list/attend.
 - `GET /v1/admin/events?after=<seq>` — durable events for polling recovery.
 
-The first prototype exposes a small compatibility layer; it does not replace the current Supabase function or change frontend/Order Desk production calls.
+The first prototype exposes a small compatibility layer; it does not replace the current Supabase function or change frontend/Order Desk production calls. It supports continuation of recent orders only when the parent order is already present in the local database; pre-cutover cloud orders need an approved import/reconciliation path before this feature is enabled.
 
 ### Prototype runbook
 
