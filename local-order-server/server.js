@@ -89,7 +89,7 @@ const insertEvent = db.prepare(`
 const insertOutbox = db.prepare(`
   INSERT INTO outbox(entity_type,entity_id,operation,idempotency_key,payload_json,next_attempt_at,created_at)
   VALUES(?,?,?,?,?,?,?)
-  ON CONFLICT(entity_type,entity_id,operation) DO NOTHING
+  ON CONFLICT(entity_type,entity_id,operation) DO UPDATE SET payload_json=excluded.payload_json,status='pending',attempts=0,next_attempt_at=excluded.next_attempt_at,last_error=NULL,synced_at=NULL
 `);
 const addEvent = (type, id, eventType, payload, key) => {
   const created = now();
