@@ -64,7 +64,9 @@ input{flex:1;min-width:230px;padding:11px 12px;border:1px solid var(--line);bord
         lastSeq=Math.max(lastSeq,Number(event.seq)||0);
         sessionStorage.setItem('tccLocalDeskSeq',String(lastSeq));
       }
-      $('status').textContent='Connected · local server · '+new Date().toLocaleTimeString('en-IN');
+      const health=await api('/health');
+      const pending=Number(health.pending_cloud_sync||0);
+      $('status').textContent='Connected · local server · '+(pending?'Cloud sync pending: '+pending:'Cloud sync clear')+' · '+new Date().toLocaleTimeString('en-IN');
       setError('');
     } catch(error){setError(error.message);$('status').textContent='Connection interrupted · retrying';}
     finally{busy=false;}
