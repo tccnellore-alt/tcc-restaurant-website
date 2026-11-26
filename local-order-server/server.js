@@ -182,6 +182,11 @@ app.post('/v1/orders', publicLimiter, orderLimiter, (req, res) => {
         fulfillment_type: fulfillment, item_status: 'pending'
       };
     });
+    const soldOut=items.find(item=>{
+      const key=(String(item.category||'Menu').trim()+'|'+String(item.name||'').trim()).replace(/\s+/g,' ').toLowerCase();
+      return db.prepare("SELECT 1 FROM menu_availability WHERE product_key=? AND availability='sold_out'").get(key);
+    });
+    if(soldOut)return res.status(409).json({error:soldOut.name+' is currently sold out. Please remove it from your cart.'});
     const subtotal = items.reduce((sum, item) => sum + item.quantity * (item.unit_price + item.addons.reduce((a, addon) => a + addon.price, 0)), 0);
     const takeawayFee = items.reduce((sum, item) => sum + (item.fulfillment_type === 'takeaway' ? item.quantity * 10 : 0), 0);
     const total = subtotal + takeawayFee;
@@ -333,10 +338,20 @@ app.patch('/v1/admin/table-requests/:id', admin, (req, res) => {
 
 app.post('/v1/admin/qr-cache', admin, (req, res) => {
   const rows = Array.isArray(req.body?.tokens) ? req.body.tokens.slice(0,200) : [];
+  const overrides = Array.isArray(req.body?.menu_overrides) ? req.body.menu_overrides.slice(0,1000) : null;
   const at = now();
   const save = db.transaction(() => {
     db.prepare('UPDATE qr_tokens SET is_active=0,synced_at=?').run(at);
     if(typeof req.body?.customer_ordering_enabled==='boolean') db.prepare('INSERT INTO app_settings(setting_key,setting_value_json,synced_at) VALUES(?,?,?) ON CONFLICT(setting_key) DO UPDATE SET setting_value_json=excluded.setting_value_json,synced_at=excluded.synced_at').run('customer_ordering_enabled',JSON.stringify(req.body.customer_ordering_enabled),at);
+    if(overrides){
+      db.prepare('DELETE FROM menu_availability').run();
+      const saveOverride=db.prepare('INSERT INTO menu_availability(product_key,availability,synced_at) VALUES(?,?,?)');
+      for(const row of overrides){
+        const key=String(row.product_key||'').trim().replace(/\s+/g,' ').toLowerCase().slice(0,240);
+        const availability=row.availability==='sold_out'?'sold_out':row.availability==='available'?'available':null;
+        if(key&&availability)saveOverride.run(key,availability,at);
+      }
+    }
     const upsert = db.prepare(`INSERT INTO qr_tokens(token_hash,table_number,is_active,synced_at) VALUES(?,?,?,?)
       ON CONFLICT(token_hash) DO UPDATE SET table_number=excluded.table_number,is_active=excluded.is_active,synced_at=excluded.synced_at`);
     for (const row of rows) {
