@@ -15,7 +15,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const getData=card=>{
     const heading=card.querySelector('h3');
     const cleanHeading=heading?.cloneNode(true);
-    cleanHeading?.querySelectorAll('.tcc-bestseller-badge,.tcc-new-arrival-badge,.food-badge,.availability-status,[class*="bestseller"],[class*="best-seller"]').forEach(el=>el.remove());
+    cleanHeading?.querySelectorAll('.tcc-bestseller-badge,.tcc-new-arrival-badge,.tcc-special-badge,.food-badge,.availability-status,[class*="bestseller"],[class*="best-seller"]').forEach(el=>el.remove());
     const name=clean(cleanHeading?.textContent || heading?.textContent);
     const priceText=clean(card.querySelector(':scope > strong')?.textContent);
     const price=Number((priceText.match(/[\d,]+/)||['0'])[0].replace(/,/g,''));
