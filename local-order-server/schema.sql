@@ -1,5 +1,11 @@
 PRAGMA foreign_keys = ON;
 
+CREATE TABLE IF NOT EXISTS app_settings (
+  setting_key TEXT PRIMARY KEY,
+  setting_value_json TEXT NOT NULL,
+  synced_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS orders (
   id TEXT PRIMARY KEY,
   order_number TEXT NOT NULL UNIQUE,
