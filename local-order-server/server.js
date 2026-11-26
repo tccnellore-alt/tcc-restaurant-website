@@ -153,20 +153,24 @@ app.post('/v1/orders', publicLimiter, orderLimiter, (req, res) => {
     if (!/^\d{10}$/.test(phone)) return res.status(400).json({ error: 'Enter a valid 10-digit mobile number.' });
     if (!orderType || !table) return res.status(403).json({ error: 'Please scan an active TCC table QR to place an order.' });
     if (orderType !== 'dine-in') return res.status(403).json({ error: 'This QR is for dine-in ordering only.' });
-    const inputItems = Array.isArray(body.items) ? body.items.slice(0, 60) : [];
-    if (!inputItems.length) return res.status(400).json({ error: 'Your cart is empty.' });
+    if (!Array.isArray(body.items) || !body.items.length) return res.status(400).json({ error: 'Your cart is empty.' });
+    if (body.items.length > 60) return res.status(400).json({ error: 'Your cart has too many items. Please reduce it and retry.' });
+    const inputItems = body.items;
 
     // Prototype only: this currently mirrors the existing API's client-price behavior.
     // Production cutover is blocked until a server-owned menu/add-on price catalogue is implemented.
     const items = inputItems.map(item => {
       const name = String(item.name || '').trim().slice(0, 120);
-      const quantity = Math.max(1, Math.min(99, Math.floor(Number(item.quantity) || 1)));
+      const rawQuantity = item.quantity === undefined ? 1 : Number(item.quantity);
+      if (!Number.isInteger(rawQuantity) || rawQuantity < 1 || rawQuantity > 99) throw new Error('An item has invalid price or quantity information.');
+      const quantity = rawQuantity;
       const unitPrice = Number(item.unit_price);
-      if (!name || !Number.isFinite(unitPrice) || unitPrice < 0 || unitPrice > 100000) throw new Error('An item has invalid price information.');
-      const addons = Array.isArray(item.addons) ? item.addons.slice(0, 12).map(addon => {
+      if (!name || !Number.isSafeInteger(unitPrice) || unitPrice < 0 || unitPrice > 100000) throw new Error('An item has invalid price information.');
+      if (Array.isArray(item.addons) && item.addons.length > 12) throw new Error('An item has too many add-ons.');
+      const addons = Array.isArray(item.addons) ? item.addons.map(addon => {
         const addonName = String(addon.name || '').trim().slice(0, 100);
         const price = Number(addon.price);
-        if (!addonName || !Number.isFinite(price) || price < 0 || price > 100000) throw new Error('An add-on has invalid price information.');
+        if (!addonName || !Number.isSafeInteger(price) || price < 0 || price > 100000) throw new Error('An add-on has invalid price information.');
         return { name: addonName, price };
       }) : [];
       const fulfillment = item.fulfillment_type === 'takeaway' ? 'takeaway' : 'dine-in';
@@ -181,6 +185,7 @@ app.post('/v1/orders', publicLimiter, orderLimiter, (req, res) => {
     const subtotal = items.reduce((sum, item) => sum + item.quantity * (item.unit_price + item.addons.reduce((a, addon) => a + addon.price, 0)), 0);
     const takeawayFee = items.reduce((sum, item) => sum + (item.fulfillment_type === 'takeaway' ? item.quantity * 10 : 0), 0);
     const total = subtotal + takeawayFee;
+    if (!Number.isSafeInteger(total) || total > 500000) return res.status(400).json({ error: 'Your order total is invalid or exceeds the local order limit.' });
     const id = uuid(), created = now(), orderNumber = makeOrderNumber(orderType, table);
     const payload = {
       id, order_number: orderNumber, idempotency_key: key, parent_order_id: null, customer_name: String(body.customer_name || '').trim().slice(0, 120) || 'Guest',
