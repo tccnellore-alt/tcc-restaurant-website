@@ -71,7 +71,7 @@ test('persists an order before success and deduplicates retries',async()=>{
   assert.equal(requests.filter(result=>result.data.duplicate).length,4);
   orderId=requests[0].data.order.id;
   assert.equal(requests[0].data.order.total,200);
-  assert.match(requests[0].data.order.order_number,/^TCC-\d{8}-[A-Z0-9]{6}$/);
+  assert.match(requests[0].data.order.order_number,/^TCC-\d{8}-S1-\d{3}$/);
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM orders WHERE idempotency_key=?').get(orderKey).n,1);
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM order_events WHERE entity_id=? AND event_type=?').get(orderId,'order_received').n,1);
 });
