@@ -54,7 +54,8 @@ The current website is on a `pages.dev` hostname; a stable custom order hostname
 
 ## Local data model
 
-- `orders`: stable UUID, human reference, idempotency key (unique), full validated order JSON, customer phone, order status, timestamps, desk ack, cloud sync state.
+- `orders`: stable UUID, production-compatible `TCC-YYYYMMDD-TABLE-###` reference (or `TAKEAWAY`), unique idempotency key, full order JSON, customer phone, status, timestamps, Desk acknowledgement and cloud sync state.
+- `order_sequences`: atomic per-date/per-table order reference counters seeded from existing local order history.
 - `order_events`: monotonically increasing sequence, event type, order/request ID, JSON payload, creation time, desk ack.
 - `table_requests`: stable request ID, table, type (staff/bill), pending/attended status, created/attended timestamps, unique open request constraint.
 - `qr_tokens`: SHA-256 hash only, table, active flag, last sync. Raw QR tokens are never stored.
@@ -65,7 +66,9 @@ The current website is on a `pages.dev` hostname; a stable custom order hostname
 ## API prototype
 
 - `GET /health` — process and database health, no secrets.
-- `POST /v1/orders` — public order submission; requires idempotency UUID and valid cached active table QR.
+- `POST /v1/orders` — public order submission; requires idempotency UUID, cached ordering-enabled setting, and valid cached active table QR.
+- `GET /v1/ordering-status` — public cached ordering status; returns disabled until the first successful settings sync.
+- `POST /v1/admin/qr-cache` — refresh QR-token cache and the cached customer-ordering pause setting.
 - `GET /v1/admin/orders?since=<ISO>` — authenticated Desk incremental snapshot.
 - `POST /v1/admin/orders/:id/ack` — Desk acknowledges after rendering.
 - `PATCH /v1/admin/orders/:id` — authenticated status change with audit/outbox event.
@@ -108,7 +111,7 @@ Overall planning estimate: roughly 4–7 focused engineering days plus real cafe
 - Store secrets in a local `.env` excluded from Git. Restrict Windows ACLs to the service account/admin. Rotate tokens if exposed.
 - Do not log customer phone numbers, QR tokens, passwords, bearer tokens or full request bodies.
 - Use HTTPS for all browser-to-server traffic. CORS allowlist only the TCC Pages origin(s); no wildcard in production.
-- Local QR-token cache is refreshed from Supabase when available and persists through internet outages. A revoked QR may remain accepted until cache refresh; define a short TTL and emergency local revoke mechanism before launch.
+- Local QR-token cache and the online-ordering enabled/paused setting are refreshed from Supabase when available and persist through internet outages. New orders fail closed until the ordering setting has synchronized at least once. A revoked QR may remain accepted until cache refresh; define a short TTL and emergency local revoke mechanism before launch.
 
 ## Windows PC setup (to finalize after hardware/network check)
 
