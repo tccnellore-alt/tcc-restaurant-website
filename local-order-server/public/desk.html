@@ -41,7 +41,7 @@ input{flex:1;min-width:230px;padding:11px 12px;border:1px solid var(--line);bord
   function setError(message=''){$('error').textContent=message;}
   function orderHtml(order) {
     const items=(order.items||[]).map(item=>'<div>'+esc(item.quantity)+' × '+esc(item.name)+(item.item_status?' <small>('+esc(item.item_status)+')</small>':'')+'</div>').join('');
-    const statuses=['new','accepted','preparing','ready','completed','cancelled','rejected'];
+    const statuses=['new','preparing','ready','completed','cancelled'];
     return '<article class="order" data-id="'+esc(order.id)+'"><div class="order-top"><span class="ref">'+esc(order.order_number)+'</span><strong>₹'+Number(order.total||0).toLocaleString('en-IN')+'</strong></div><div class="meta">Table '+esc(order.table_number||'—')+' · '+esc(order.customer_name||'Guest')+' · '+esc(order.customer_phone||'')+'<br>'+esc(new Date(order.created_at).toLocaleString('en-IN'))+'</div><div class="items">'+items+'</div><div class="actions"><select class="status">'+statuses.map(s=>'<option value="'+s+'"'+(s===order.status?' selected':'')+'>'+s+'</option>').join('')+'</select><button class="primary save-status">Save status</button></div></article>';
   }
   async function refreshOrders() {
