@@ -186,13 +186,27 @@ app.post('/v1/orders', publicLimiter, orderLimiter, (req, res) => {
     const takeawayFee = items.reduce((sum, item) => sum + (item.fulfillment_type === 'takeaway' ? item.quantity * 10 : 0), 0);
     const total = subtotal + takeawayFee;
     if (!Number.isSafeInteger(total) || total > 500000) return res.status(400).json({ error: 'Your order total is invalid or exceeds the local order limit.' });
+    const parentOrderNumber=String(body.parent_order_number||'').trim().slice(0,40);
+    let parentOrderId=null;
+    if(parentOrderNumber){
+      const parent=db.prepare("SELECT * FROM orders WHERE order_number=? AND customer_phone=? AND order_type=? AND table_number=? AND status NOT IN ('cancelled','rejected')").get(parentOrderNumber,phone,orderType,String(table).toUpperCase());
+      if(!parent)return res.status(409).json({error:'That previous order is not available on this local Order Desk. Please place this as a new order.'});
+      const parentPayload=JSON.parse(parent.payload_json);
+      const rootId=parentPayload.parent_order_id||parent.id;
+      const root=db.prepare("SELECT * FROM orders WHERE id=? AND status NOT IN ('cancelled','rejected')").get(rootId);
+      if(!root)return res.status(409).json({error:'That previous order can no longer be continued. Please place this as a new order.'});
+      const since=new Date(Date.now()-3*60*60*1000).toISOString();
+      const recentChild=db.prepare("SELECT 1 FROM orders WHERE json_extract(payload_json,'$.parent_order_id')=? AND customer_phone=? AND created_at>=? AND status NOT IN ('cancelled','rejected') LIMIT 1").get(rootId,phone,since);
+      if(root.created_at<since&&!recentChild)return res.status(409).json({error:'That previous order can no longer be continued. Please place this as a new order.'});
+      parentOrderId=rootId;
+    }
     const id = uuid(), created = now(), orderNumber = makeOrderNumber(orderType, table);
     const payload = {
-      id, order_number: orderNumber, idempotency_key: key, parent_order_id: null, customer_name: String(body.customer_name || '').trim().slice(0, 120) || 'Guest',
+      id, order_number: orderNumber, idempotency_key: key, parent_order_id: parentOrderId, customer_name: String(body.customer_name || '').trim().slice(0, 120) || 'Guest',
       customer_phone: phone, order_type: orderType, table_number: String(table).toUpperCase(),
       items, subtotal, takeaway_fee: takeawayFee, total,
       customer_note: String(body.customer_note || '').trim().slice(0, 500) || null,
-      status: 'new', source: 'local-server', created_at: created, updated_at: created
+      status: 'new', source: 'website', archived_at: null, created_at: created, updated_at: created
     };
     const commitOrder = db.transaction(() => {
       db.prepare(`INSERT INTO orders(id,order_number,idempotency_key,customer_name,customer_phone,order_type,table_number,status,total,payload_json,created_at,updated_at)
