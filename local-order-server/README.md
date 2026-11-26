@@ -107,8 +107,8 @@ Overall planning estimate: roughly 4–7 focused engineering days plus real cafe
 ## Security
 
 - Bind the service to the cafe LAN interface; Windows Firewall allow inbound only from the private cafe subnet. Do not expose a raw port to the internet.
-- Cloudflare Tunnel is outbound-only; protect staff APIs with a separate high-entropy local admin token and/or Cloudflare Access. Ensure the tunnel preserves `CF-Connecting-IP` so per-customer limits do not collapse into a single localhost rate-limit bucket. Do not place the admin token in public frontend code.
-- Public routes validate request size, phone, item count, integer quantity/currency, QR token, idempotency UUID, ordering pause and cached sold-out state. Rate limiting keys on Cloudflare's edge-provided client IP when present, without trusting arbitrary forwarded-IP chains.
+- Cloudflare Tunnel is outbound-only; protect staff APIs with a separate high-entropy local admin token and/or Cloudflare Access. Do not blindly enable Express `trust proxy`; validate the tunnel's forwarded client-IP behavior first, then configure a trusted proxy strategy or edge rate limit. Do not place the admin token in public frontend code.
+- Public routes validate request size, phone, item count, integer quantity/currency, QR token, idempotency UUID, ordering pause and cached sold-out state. Express currently rate-limits by the connection IP it sees; behind Cloudflare Tunnel that may aggregate clients to localhost, so configure Cloudflare edge rate limits and verify client-IP behavior before public pilot.
 - Current Supabase function accepts client-supplied prices. This is an existing business/security gap. Before production cutover, build a server-controlled menu/add-on price catalogue and reject mismatches; never treat the client total as authoritative.
 - Store secrets in a local `.env` excluded from Git. Restrict Windows ACLs to the service account/admin. Rotate tokens if exposed.
 - Do not log customer phone numbers, QR tokens, passwords, bearer tokens or full request bodies.
