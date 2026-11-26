@@ -91,6 +91,21 @@ test('Desk event remains pending until acknowledged and status changes are durab
   assert.equal(db.prepare('SELECT status FROM outbox WHERE entity_type=? AND entity_id=?').get('order',orderId).status,'pending');
 });
 
+
+test('cached ordering pause is visible and blocks new orders',async()=>{
+  const hash=crypto.createHash('sha256').update(qrToken).digest('hex');
+  const paused=await api('/v1/admin/qr-cache',{method:'POST',body:JSON.stringify({customer_ordering_enabled:false,tokens:[{token_hash:hash,table_number:'S1',is_active:true}]})});
+  assert.equal(paused.status,200);
+  const status=await fetch('http://127.0.0.1:'+port+'/v1/ordering-status').then(r=>r.json());
+  assert.equal(status.enabled,false);
+  assert.equal(status.configured,true);
+  const body={idempotency_key:crypto.randomUUID(),customer_name:'Test Customer',customer_phone:'9876543210',order_type:'dine-in',table_qr_token:qrToken,items:[{name:'Test Latte',quantity:1,unit_price:100,category:'Coffee',addons:[],fulfillment_type:'dine-in'}]};
+  const response=await fetch('http://127.0.0.1:'+port+'/v1/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  assert.equal(response.status,423);
+  const enabled=await api('/v1/admin/qr-cache',{method:'POST',body:JSON.stringify({customer_ordering_enabled:true,tokens:[{token_hash:hash,table_number:'S1',is_active:true}]})});
+  assert.equal(enabled.status,200);
+});
+
 test('order and unacknowledged events survive a server restart',async()=>{
   await stopServer();
   await startServer();
