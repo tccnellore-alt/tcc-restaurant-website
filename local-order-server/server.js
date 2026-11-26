@@ -244,6 +244,14 @@ function publicOrder(row) {
   return { id: row.id, order_number: row.order_number, status: row.status, created_at: row.created_at, total: row.total, ...payload };
 }
 
+app.get('/v1/orders/:id/status', publicLimiter, (req,res) => {
+  const id=String(req.params.id||''),key=String(req.query.key||'');
+  if(!isUuid(id)||!isUuid(key))return res.status(400).json({error:'Invalid order status reference.'});
+  const row=db.prepare('SELECT id,order_number,status,created_at,desk_ack_at,idempotency_key FROM orders WHERE id=? AND idempotency_key=?').get(id,key);
+  if(!row)return res.status(404).json({error:'Order status not found.'});
+  res.json({order_id:row.id,order_number:row.order_number,status:row.status,received_at:row.created_at,desk_ack_at:row.desk_ack_at,delivery_state:row.desk_ack_at?'delivered_to_desk':'received'});
+});
+
 app.get('/v1/admin/orders', admin, (req, res) => {
   const limit = Math.max(1, Math.min(500, Number(req.query.limit) || 250));
   const rows = db.prepare('SELECT * FROM orders ORDER BY created_at DESC LIMIT ?').all(limit);
