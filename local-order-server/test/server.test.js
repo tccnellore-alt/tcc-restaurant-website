@@ -76,6 +76,11 @@ test('persists an order before success and deduplicates retries',async()=>{
   assert.match(requests[0].data.order.order_number,/^TCC-\d{8}-S1-\d{3}$/);
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM orders WHERE idempotency_key=?').get(orderKey).n,1);
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM order_events WHERE entity_id=? AND event_type=?').get(orderId,'order_received').n,1);
+  const nextBody={...body,idempotency_key:crypto.randomUUID()};
+  const nextResponse=await fetch('http://127.0.0.1:'+port+'/v1/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(nextBody)});
+  const nextResult=await nextResponse.json();
+  assert.equal(nextResponse.status,201);
+  assert.match(nextResult.order.order_number,/^TCC-\d{8}-S1-002$/);
 });
 
 test('Desk event remains pending until acknowledged and status changes are durable',async()=>{
