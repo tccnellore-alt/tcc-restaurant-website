@@ -1,59 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#173c2b"><meta name="robots" content="noindex,nofollow">
-<title>Perfect 10 · TCC Order Desk</title>
-<link rel="stylesheet" href="orders-dashboard.css?v=desktop-operations-redesign-1">
-<link rel="stylesheet" href="game-rewards.css?v=2">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>TCC Order Desk</title>
+<meta http-equiv="refresh" content="0;url=orders.html">
+<script>location.replace("orders.html");</script>
 </head>
-<body>
-<section class="dashboard game-desk-dashboard">
-  <aside class="desk-sidebar" aria-label="Order Desk navigation">
-    <a class="sidebar-brand" href="orders.html" aria-label="TCC Order Desk home"><span class="sidebar-brand-mark">TCC</span><strong>The Coffee Club</strong><small>NELLORE</small></a>
-    <p class="sidebar-caption">OPERATIONS</p>
-    <nav class="sidebar-nav">
-      <a class="sidebar-link" href="orders.html"><span class="sidebar-icon">▣</span><span>New Orders</span></a>
-      <a class="sidebar-link" href="orders.html"><span class="sidebar-icon">◷</span><span>Order History</span></a>
-      <a class="sidebar-link" href="orders-reports.html"><span class="sidebar-icon">▥</span><span>Reports &amp; Analytics</span></a>
-      <a class="sidebar-link" href="customers.html"><span class="sidebar-icon">♙</span><span>Customer Management</span></a>
-      <a class="sidebar-link" href="table-qr-admin.html"><span class="sidebar-icon">▦</span><span>Table QR Codes</span></a>
-      <a class="sidebar-link active" href="game-rewards.html" aria-current="page"><span class="sidebar-icon">★</span><span>Perfect 10</span><b id="gamePendingCount">0</b></a>
-    </nav>
-    <div class="sidebar-bottom"><span class="sidebar-live"><i></i> Live game updates</span><a href="orders.html" class="game-back-link">← Back to Order Desk</a></div>
-  </aside>
-  <main class="desk-main game-desk-main">
-    <header class="topbar">
-      <div class="topbar-heading"><div><p class="eyebrow">TCC · GUEST EXPERIENCE</p><h1>Perfect 10</h1><p class="muted">Manage the customer game, winning range and beverage rewards.</p></div></div>
-      <div class="topbar-actions"><span class="live-status"><i></i> LIVE · 4 SEC REFRESH</span><a class="quiet game-mobile-back" href="orders.html">← Orders</a></div>
-    </header>
-    <section class="p10-settings-card">
-      <div><span class="p10-kicker">GAME CONTROL</span><h2>Customer game availability</h2><p>When disabled, Perfect 10 is hidden from table QR menus and new attempts are blocked.</p></div>
-      <div class="p10-toggle-wrap"><span id="gameToggleStatus" class="p10-status-pill">DISABLED</span><button id="gameToggle" class="p10-switch" type="button" role="switch" aria-checked="false" aria-label="Enable Perfect 10"><span></span></button></div>
-    </section>
-    <section class="p10-winning-card">
-      <div><span class="p10-kicker">GAME RULES</span><h2>Winning time range</h2><p>Set the inclusive time range customers must hit to win the 10% beverage discount.</p></div>
-      <form id="winningRangeForm" class="p10-range-form">
-        <label><span>Minimum time (seconds)</span><input id="winningMin" type="number" inputmode="decimal" min="0" max="60" step="0.001" required></label>
-        <span class="p10-range-separator">TO</span>
-        <label><span>Maximum time (seconds)</span><input id="winningMax" type="number" inputmode="decimal" min="0" max="60" step="0.001" required></label>
-        <button class="p10-primary" id="saveWinningRange" type="submit">Save winning range</button>
-      </form>
-      <p class="p10-range-help">Example: 9.991 to 10.009 seconds. Both endpoints count as a win. Changes take effect immediately for new attempts.</p>
-      <p id="winningRangeMessage" class="p10-message" role="status"></p>
-    </section>
-    <section class="p10-redemption-card">
-      <div class="p10-section-heading"><div><span class="p10-kicker">STAFF REDEMPTION</span><h2>Quick reward validation</h2><p>Apply the 10% beverage discount in SR POS, then tap Validate beside the customer's pending reward below. No code entry needed.</p></div></div>
-      <p id="rewardValidationMessage" class="p10-message" role="status"></p>
-      <div id="validatedReward" class="p10-validated" hidden></div>
-    </section>
-    <section class="p10-statistics-card" aria-labelledby="p10StatisticsTitle"><div class="p10-stats-heading"><div><span class="p10-kicker">GAME PERFORMANCE</span><h2 id="p10StatisticsTitle">Game Statistics</h2><p>Participation, attempts and rewards at a glance.</p></div><label class="p10-stats-filter"><span>Period</span><select id="p10StatsPeriod"><option value="today">Today</option><option value="7d">Last 7 days</option><option value="30d">Last 30 days</option><option value="all">All time</option></select></label></div><div class="p10-stats-grid"><article class="p10-stat-tile"><strong id="p10StatPlayers">—</strong><span>Players / sessions</span></article><article class="p10-stat-tile is-wins"><strong id="p10StatWins">—</strong><span>Winning sessions</span></article><article class="p10-stat-tile is-losses"><strong id="p10StatLosses">—</strong><span>Non-winning sessions</span></article><article class="p10-stat-tile"><strong id="p10StatAttempts">—</strong><span>Total rounds / attempts</span></article><article class="p10-stat-tile"><strong id="p10StatWinRate">—</strong><span>Win rate</span></article><article class="p10-stat-tile"><strong id="p10StatAverage">—</strong><span>Average attempts / session</span></article><article class="p10-stat-tile"><strong id="p10StatRewards">—</strong><span>Rewards generated</span></article><article class="p10-stat-tile"><strong id="p10StatRedeemed">—</strong><span>Rewards redeemed</span></article></div><p class="p10-stats-note" id="p10StatsNote">Loading game statistics…</p></section>
-    <section class="p10-list-section">
-      <div class="p10-list-heading"><div><span class="p10-kicker">GAME ACTIVITY</span><h2>Winners &amp; rewards</h2><p>New winning codes appear automatically while the Desk is open.</p></div><div class="p10-filters" role="group" aria-label="Reward filter"><button data-filter="all" type="button">All</button><button class="active" data-filter="pending" type="button">Pending</button><button data-filter="redeemed" type="button">Redeemed</button></div></div>
-      <div id="gameRewardsList" class="p10-reward-list" aria-live="polite"><p class="empty">Loading rewards…</p></div>
-    </section>
-    <footer>Rewards are valid for the game session's visit window (3 hours from the start of play). Discount applies to all beverages only and cannot be combined with other offers.</footer>
-  </main>
-</section>
-<script src="game-rewards.js?v=2"></script>
-</body></html>
+<body><p>Perfect 10 is no longer available. <a href="orders.html">Return to TCC Order Desk</a>.</p></body>
+</html>
