@@ -9,15 +9,15 @@ const key = String(process.env.SUPABASE_SERVICE_ROLE_KEY || '');
 const dbPath = path.resolve(process.env.DB_PATH || path.join(process.env.DATA_DIR || path.join(__dirname,'data'),'tcc-orders.sqlite'));
 const db = new Database(dbPath);
 db.pragma('busy_timeout = 5000');
-db.prepare("UPDATE outbox SET status='pending',next_attempt_at=? WHERE status='syncing'").run(new Date().toISOString());
-
-if (!base || !key) {
-  console.error('Cloud sync disabled: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in the local .env.');
-  process.exit(1);
-}
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const now = () => new Date().toISOString();
+async function waitForSchema() {
+  while (!db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='outbox'").get()) {
+    console.log('Waiting for local server database schema...');
+    await wait(2000);
+  }
+}
 async function syncOne(row) {
   const payload = JSON.parse(row.payload_json);
   const table = row.entity_type === 'order' ? 'tcc_orders' : row.entity_type === 'table_request' ? 'tcc_table_assistance_requests' : null;
@@ -36,6 +36,9 @@ async function syncOne(row) {
   if (!response.ok) throw new Error('Supabase sync returned HTTP ' + response.status);
 }
 async function run() {
+  await waitForSchema();
+  db.prepare("UPDATE outbox SET status='pending',next_attempt_at=? WHERE status='syncing'").run(now());
+  if (!base || !key) throw new Error('Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in the local .env.');
   while (true) {
     const row = db.prepare("SELECT * FROM outbox WHERE status IN ('pending','failed') AND next_attempt_at<=? ORDER BY id LIMIT 1").get(now());
     if (!row) { await wait(1000); continue; }
