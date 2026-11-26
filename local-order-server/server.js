@@ -17,6 +17,8 @@ const DB_PATH = path.resolve(process.env.DB_PATH || path.join(DATA_DIR, 'tcc-ord
 const ADMIN_TOKEN = String(process.env.TCC_LOCAL_ADMIN_TOKEN || '');
 const ALLOWED_ORIGIN = String(process.env.ALLOWED_ORIGIN || 'https://tcc-restaurant-website.pages.dev');
 const MAX_BODY_BYTES = process.env.MAX_BODY_BYTES || '256kb';
+const PUBLIC_RATE_LIMIT = Math.max(20, Number(process.env.PUBLIC_RATE_LIMIT_PER_MINUTE || 120));
+const ORDER_RATE_LIMIT = Math.max(20, Number(process.env.ORDER_RATE_LIMIT_PER_MINUTE || 60));
 const TLS_KEY_PATH = process.env.HTTPS_KEY_PATH ? path.resolve(process.env.HTTPS_KEY_PATH) : '';
 const TLS_CERT_PATH = process.env.HTTPS_CERT_PATH ? path.resolve(process.env.HTTPS_CERT_PATH) : '';
 
@@ -50,14 +52,14 @@ app.use('/desk', express.static(path.join(__dirname, 'public'), { fallthrough: f
 
 const publicLimiter = rateLimit({
   windowMs: 60 * 1000,
-  limit: 60,
+  limit: PUBLIC_RATE_LIMIT,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   message: { error: 'Too many requests. Please wait and try again.' }
 });
 const orderLimiter = rateLimit({
   windowMs: 60 * 1000,
-  limit: 12,
+  limit: ORDER_RATE_LIMIT,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   message: { error: 'Too many order attempts. Please wait and retry.' }
