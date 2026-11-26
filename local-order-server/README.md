@@ -11,6 +11,8 @@ Status: **development only**. This folder is isolated from the live Supabase ord
 - The frontend uses a UUID idempotency key stored in sessionStorage for the pending cart signature. The server checks the key and the database has a unique idempotency index.
 - The current function validates a dedicated table QR for dine-in orders, normalizes the 10-digit phone, and stores order/items/totals in `public.tcc_orders`.
 - `orders-dashboard.js` loads `action=orders`, polls `new-order-notifications` every 8 seconds, and polls `orders-updates` approximately every 30 seconds. Staff status changes are sent to the same Edge Function.
+- The Order Desk login uses the Edge Function's `login` action; current repository source derives the password hash with PBKDF2-SHA256 (310,000 iterations), stores only hashed session tokens, and uses a 12-hour session with `x-tcc-admin-session`. The Edge Function uses the Supabase service-role key server-side.
+- The function source also exposes `update-status`, `edit-order`, `archive-order`, `restore-order`, `delete-order`, `archived-orders`, customer/order lookup, menu availability, table QR management, and assistance history/attendance actions. Preserve these staff workflows during later adapter work.
 - Public table requests use `create-table-assistance`; `request_type` is `staff` or `bill`. A pending request is deduplicated by table and request type.
 - Current related data includes `tcc_orders`, `tcc_table_qr_tokens`, `tcc_table_assistance_requests`, `tcc_admin_sessions`, and supporting menu/settings/audit tables.
 - The repository handoff mentions Edge Function v20 active as of 15 Nov, but live function/database state has not been independently queried in this implementation session. Verify before any migration.
@@ -70,6 +72,20 @@ Preferred public route: Cloudflare Tunnel to the PC, no router port-forwarding. 
 - `GET /v1/admin/events?after=<seq>` — durable events for polling recovery.
 
 The first prototype exposes a small compatibility layer; it does not replace the current Supabase function or change frontend/Order Desk production calls.
+
+### Prototype runbook
+
+From this folder on a development machine:
+
+1. Install Node.js LTS and run `npm install`.
+2. Copy `.env.example` to `.env`; generate a local staff token with `node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"\` and keep it private.
+3. Start `npm start`.
+4. Start QR cache refresh in a separate terminal with `npm run sync-qr` (requires the service-role key only in the local `.env`).
+5. Start cloud sync in a separate terminal with `npm run cloud-sync`; it retries pending outbox entries and does not block order intake.
+6. Open `http://127.0.0.1:8787/desk/desk.html`, enter the local admin token and use the standalone test desk to verify order receipt/acknowledgement and status changes.
+7. Run `npm run check` and `npm test`.
+
+The current customer website and production `orders.html` are not yet wired to this local API. The standalone Desk is a test harness; customer frontend and existing Desk adapter integration are a later phase on this branch.
 
 ## Security
 
