@@ -5176,3 +5176,53 @@ body:not(.menu-text-mode) .menu-group .m-item.tcc-special-card .tcc-wish-add{
   font:800 9px/1.2 Manrope,Arial,sans-serif!important;letter-spacing:.12em!important;
 }
 </style>
+
+
+<style id="tcc-bestseller-premium-preview">
+/* BEST SELLER DESIGN PREVIEW — badge and lower product panel only */
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge){
+  background:#fff5df!important;
+  border:1px solid #d7b56d!important;
+  box-shadow:0 5px 16px rgba(70,38,16,.10)!important;
+  overflow:visible!important;
+  position:relative!important;
+}
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .m-item-info{
+  background:linear-gradient(180deg,#fff4dc 0%,#f8e8c8 100%)!important;
+  padding:12px 11px 8px!important;
+}
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .m-item-info h3{
+  color:#4b2615!important;-webkit-text-fill-color:#4b2615!important;
+}
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .m-item-info p{
+  color:#76543a!important;-webkit-text-fill-color:#76543a!important;
+}
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge)>strong{
+  background:#5b2b17!important;color:#fff4dc!important;
+  border:1px solid #bd8b43!important;box-shadow:0 2px 5px rgba(74,38,17,.14)!important;
+}
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .tcc-bestseller-badge{
+  position:absolute!important;top:9px!important;right:9px!important;left:auto!important;
+  width:76px!important;height:76px!important;box-sizing:border-box!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:3px!important;margin:0!important;padding:7px 5px!important;
+  border:3px double #f2cf83!important;border-radius:24px 20px 24px 20px!important;
+  background:radial-gradient(circle at 35% 25%,#8b3829 0%,#641f1c 58%,#431513 100%)!important;
+  color:#ffe7b0!important;box-shadow:0 3px 0 #b17b32,0 7px 14px rgba(0,0,0,.25)!important;
+  white-space:normal!important;text-align:center!important;z-index:25!important;
+}
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .tcc-bestseller-crown{
+  display:block!important;color:#f4ce7c!important;font-size:20px!important;line-height:1!important;
+}
+body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .tcc-bestseller-label{
+  display:block!important;color:#fff0ca!important;font:900 9px/1.05 Manrope,Arial,sans-serif!important;
+  letter-spacing:.04em!important;text-transform:uppercase!important;white-space:normal!important;
+}
+body.menu-text-mode .menu-group .m-item:has(.tcc-bestseller-badge) .tcc-bestseller-badge{
+  background:#641f1c!important;color:#ffe7b0!important;border-color:#d7b56d!important;
+}
+@media(max-width:380px){
+ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .tcc-bestseller-badge{width:66px!important;height:66px!important;top:7px!important;right:7px!important}
+ body:not(.menu-text-mode) .menu-group .m-item:has(.tcc-bestseller-badge) .tcc-bestseller-label{font-size:8px!important}
+}
+</style>
