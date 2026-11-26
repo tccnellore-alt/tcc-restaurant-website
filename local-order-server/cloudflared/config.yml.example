@@ -1,0 +1,9 @@
+tunnel: <CLOUDFLARE_TUNNEL_ID>
+credentials-file: C:/ProgramData/cloudflared/<CLOUDFLARE_TUNNEL_ID>.json
+
+ingress:
+  - hostname: orders.your-domain.example
+    service: https://127.0.0.1:8787
+    originRequest:
+      originServerName: orders.your-domain.example
+  - service: http_status:404
