@@ -26,15 +26,21 @@ async function sync() {
   if (!settingResponse.ok) throw new Error('Ordering setting source returned HTTP ' + settingResponse.status);
   const settingRows = await settingResponse.json();
   const orderingEnabled = settingRows?.[0]?.setting_value !== false;
+  const availabilityResponse = await fetch(base + '/rest/v1/tcc_menu_item_overrides?select=product_key,availability', {
+    headers: { apikey: serviceKey, Authorization: 'Bearer ' + serviceKey },
+    signal: AbortSignal.timeout(15000)
+  });
+  if (!availabilityResponse.ok) throw new Error('Menu availability source returned HTTP ' + availabilityResponse.status);
+  const menuOverrides = await availabilityResponse.json();
   const saved = await fetch(local + '/v1/admin/qr-cache', {
     method: 'POST',
     headers: { Authorization: 'Bearer ' + adminToken, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tokens, customer_ordering_enabled: orderingEnabled }),
+    body: JSON.stringify({ tokens, customer_ordering_enabled: orderingEnabled, menu_overrides: menuOverrides }),
     signal: AbortSignal.timeout(15000)
   });
   if (!saved.ok) throw new Error('Local QR cache returned HTTP ' + saved.status);
   const result = await saved.json();
-  console.log('QR cache refreshed: ' + result.updated + ' token records; online ordering ' + (orderingEnabled ? 'enabled' : 'paused') + '.');
+  console.log('QR cache refreshed: ' + result.updated + ' token records; ' + menuOverrides.length + ' menu availability records; online ordering ' + (orderingEnabled ? 'enabled' : 'paused') + '.');
 }
 async function loop() {
   while (true) {
