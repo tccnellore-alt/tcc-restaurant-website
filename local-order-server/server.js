@@ -81,7 +81,25 @@ const isUuid = value => /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f
 const orderDate = () => new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit'
 }).format(new Date()).replaceAll('-', '');
-const makeOrderNumber = () => { const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; const date=orderDate(); for(let attempt=0;attempt<20;attempt++){ const suffix='L'+Array.from(crypto.randomBytes(5),byte=>alphabet[byte%alphabet.length]).join(''); const value='TCC-'+date+'-'+suffix; if(!db.prepare('SELECT 1 FROM orders WHERE order_number=?').get(value))return value; } throw new Error('Unable to allocate a unique order reference.'); };
+const makeOrderNumber = (orderType, tableNumber) => {
+  const date=orderDate(), tableKey=orderType==='takeaway'?'TAKEAWAY':String(tableNumber).toUpperCase();
+  const prefix='TCC-'+date+'-'+tableKey+'-';
+  const reserve=db.transaction(()=>{
+    let sequence=db.prepare('SELECT next_number FROM order_sequences WHERE order_date=? AND table_key=?').get(date,tableKey);
+    if(!sequence){
+      const rows=db.prepare('SELECT order_number FROM orders WHERE order_number LIKE ?').all(prefix+'%');
+      const highest=rows.reduce((max,row)=>{const match=String(row.order_number).match(/-(\d{3,})$/);return match?Math.max(max,Number(match[1])):max;},0);
+      db.prepare('INSERT INTO order_sequences(order_date,table_key,next_number) VALUES(?,?,?)').run(date,tableKey,highest+2);
+      return highest+1;
+    }
+    const value=Number(sequence.next_number);
+    db.prepare('UPDATE order_sequences SET next_number=? WHERE order_date=? AND table_key=?').run(value+1,date,tableKey);
+    return value;
+  });
+  const number=reserve();
+  if(number>999999)throw new Error('Daily order sequence limit reached.');
+  return prefix+String(number).padStart(3,'0');
+};
 const tableForQr = token => {
   if (!/^[A-Za-z0-9_-]{40,80}$/.test(String(token || ''))) return null;
   return db.prepare('SELECT table_number FROM qr_tokens WHERE token_hash=? AND is_active=1').get(sha256(token))?.table_number || null;
@@ -156,7 +174,7 @@ app.post('/v1/orders', publicLimiter, orderLimiter, (req, res) => {
     const subtotal = items.reduce((sum, item) => sum + item.quantity * (item.unit_price + item.addons.reduce((a, addon) => a + addon.price, 0)), 0);
     const takeawayFee = items.reduce((sum, item) => sum + (item.fulfillment_type === 'takeaway' ? item.quantity * 10 : 0), 0);
     const total = subtotal + takeawayFee;
-    const id = uuid(), created = now(), orderNumber = makeOrderNumber();
+    const id = uuid(), created = now(), orderNumber = makeOrderNumber(orderType, table);
     const payload = {
       id, order_number: orderNumber, idempotency_key: key, parent_order_id: null, customer_name: String(body.customer_name || '').trim().slice(0, 120) || 'Guest',
       customer_phone: phone, order_type: orderType, table_number: String(table).toUpperCase(),
