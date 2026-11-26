@@ -30,7 +30,7 @@ db.exec(fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8'));
 
 const app = express();
 app.disable('x-powered-by');
-app.use(helmet({ crossOriginResourcePolicy: false, contentSecurityPolicy: { directives: { defaultSrc: [\"'self'\"], scriptSrc: [\"'self'\", \"'unsafe-inline'\"], styleSrc: [\"'self'\", \"'unsafe-inline'\"], connectSrc: [\"'self'\"], imgSrc: [\"'self'\", 'data:'], objectSrc: [\"'none'\"], baseUri: [\"'self'\"] } } }));
+app.use(helmet({ crossOriginResourcePolicy: false, contentSecurityPolicy: { directives: { defaultSrc: ["'self'"], scriptSrc: ["'self'", "'unsafe-inline'"], styleSrc: ["'self'", "'unsafe-inline'"], connectSrc: ["'self'"], imgSrc: ["'self'", 'data:'], objectSrc: ["'none'"], baseUri: ["'self'"] } } }));
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (origin && origin === ALLOWED_ORIGIN) {
