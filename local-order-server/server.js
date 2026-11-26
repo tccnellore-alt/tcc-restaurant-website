@@ -7,8 +7,7 @@ const path = require('node:path');
 const express = require('express');
 const https = require('node:https');
 const helmet = require('helmet');
-const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
-const net = require('node:net');
+const rateLimit = require('express-rate-limit');
 const Database = require('better-sqlite3');
 
 const PORT = Number(process.env.PORT || 8787);
@@ -49,13 +48,7 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: MAX_BODY_BYTES, strict: true }));
 app.use('/desk', express.static(path.join(__dirname, 'public'), { fallthrough: false }));
 
-const clientRateLimitKey = req => {
-  const cloudflareIp=String(req.headers['cf-connecting-ip']||'').trim();
-  const ip=net.isIP(cloudflareIp)?cloudflareIp:String(req.ip||'unknown');
-  return net.isIP(ip)?ipKeyGenerator(ip):ip;
-};
 const publicLimiter = rateLimit({
-  keyGenerator: clientRateLimitKey,
   windowMs: 60 * 1000,
   limit: 60,
   standardHeaders: 'draft-7',
@@ -63,7 +56,6 @@ const publicLimiter = rateLimit({
   message: { error: 'Too many requests. Please wait and try again.' }
 });
 const orderLimiter = rateLimit({
-  keyGenerator: clientRateLimitKey,
   windowMs: 60 * 1000,
   limit: 12,
   standardHeaders: 'draft-7',
