@@ -120,6 +120,11 @@ const addEvent = (type, id, eventType, payload, key) => {
 };
 const parseOrder = row => ({ ...row, items: JSON.parse(row.payload_json).items, ...JSON.parse(row.payload_json) });
 
+app.get('/v1/ordering-status', (req,res) => {
+  const row=db.prepare("SELECT setting_value_json,synced_at FROM app_settings WHERE setting_key='customer_ordering_enabled'").get();
+  res.json({enabled:row ? JSON.parse(row.setting_value_json)===true : false,configured:Boolean(row),synced_at:row?.synced_at||null});
+});
+
 app.get('/health', (req, res) => {
   try {
     db.prepare('SELECT 1').get();
@@ -133,6 +138,8 @@ app.get('/health', (req, res) => {
 
 app.post('/v1/orders', publicLimiter, orderLimiter, (req, res) => {
   try {
+    const setting=db.prepare(\"SELECT setting_value_json FROM app_settings WHERE setting_key='customer_ordering_enabled'\").get();
+    if(!setting || JSON.parse(setting.setting_value_json)!==true) return res.status(423).json({error:'Online ordering is currently paused or not yet synchronized. Please ask our team for assistance.'});
     const body = req.body || {};
     const key = String(body.idempotency_key || '').trim();
     if (!isUuid(key)) return res.status(400).json({ error: 'Please retry placing your order.' });
@@ -310,6 +317,7 @@ app.post('/v1/admin/qr-cache', admin, (req, res) => {
   const at = now();
   const save = db.transaction(() => {
     db.prepare('UPDATE qr_tokens SET is_active=0,synced_at=?').run(at);
+    if(typeof req.body?.customer_ordering_enabled==='boolean') db.prepare('INSERT INTO app_settings(setting_key,setting_value_json,synced_at) VALUES(?,?,?) ON CONFLICT(setting_key) DO UPDATE SET setting_value_json=excluded.setting_value_json,synced_at=excluded.synced_at').run('customer_ordering_enabled',JSON.stringify(req.body.customer_ordering_enabled),at);
     const upsert = db.prepare(`INSERT INTO qr_tokens(token_hash,table_number,is_active,synced_at) VALUES(?,?,?,?)
       ON CONFLICT(token_hash) DO UPDATE SET table_number=excluded.table_number,is_active=excluded.is_active,synced_at=excluded.synced_at`);
     for (const row of rows) {
