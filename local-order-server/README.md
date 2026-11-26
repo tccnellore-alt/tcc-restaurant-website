@@ -59,6 +59,7 @@ The current website is on a `pages.dev` hostname; a stable custom order hostname
 - `order_events`: monotonically increasing sequence, event type, order/request ID, JSON payload, creation time, desk ack.
 - `table_requests`: stable request ID, table, type (staff/bill), pending/attended status, created/attended timestamps, unique open request constraint.
 - `qr_tokens`: SHA-256 hash only, table, active flag, last sync. Raw QR tokens are never stored.
+- `menu_availability`: cached sold-out/available overrides keyed exactly like the production menu override logic, so sold-out products remain blocked during a Supabase outage.
 - `outbox`: entity ID/type, operation, idempotency key, retry count, next retry, last error, sync status.
 - `sync_cursor`: checkpoint for cloud reconciliation.
 - `audit_log`: append-only staff action log.
@@ -111,7 +112,7 @@ Overall planning estimate: roughly 4–7 focused engineering days plus real cafe
 - Store secrets in a local `.env` excluded from Git. Restrict Windows ACLs to the service account/admin. Rotate tokens if exposed.
 - Do not log customer phone numbers, QR tokens, passwords, bearer tokens or full request bodies.
 - Use HTTPS for all browser-to-server traffic. CORS allowlist only the TCC Pages origin(s); no wildcard in production.
-- Local QR-token cache and the online-ordering enabled/paused setting are refreshed from Supabase when available and persist through internet outages. New orders fail closed until the ordering setting has synchronized at least once. A revoked QR may remain accepted until cache refresh; define a short TTL and emergency local revoke mechanism before launch.
+- Local QR-token cache, online-ordering enabled/paused setting, and menu sold-out overrides are refreshed from Supabase when available and persist through internet outages. New orders fail closed until the ordering setting has synchronized at least once. A revoked QR may remain accepted until cache refresh; define a short TTL and emergency local revoke mechanism before launch.
 
 ## Windows PC setup (to finalize after hardware/network check)
 
