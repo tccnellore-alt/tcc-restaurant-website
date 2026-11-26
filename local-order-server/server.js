@@ -43,6 +43,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json({ limit: MAX_BODY_BYTES, strict: true }));
+app.use('/desk', express.static(path.join(__dirname, 'public'), { fallthrough: false }));
 
 const publicLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -186,6 +187,12 @@ function publicOrder(row) {
   const payload = JSON.parse(row.payload_json);
   return { id: row.id, order_number: row.order_number, status: row.status, created_at: row.created_at, total: row.total, ...payload };
 }
+
+app.get('/v1/admin/orders', admin, (req, res) => {
+  const limit = Math.max(1, Math.min(500, Number(req.query.limit) || 250));
+  const rows = db.prepare('SELECT * FROM orders ORDER BY created_at DESC LIMIT ?').all(limit);
+  res.json({ orders: rows.map(publicOrder) });
+});
 
 app.get('/v1/admin/events', admin, (req, res) => {
   const after = Math.max(0, Number(req.query.after) || 0);
