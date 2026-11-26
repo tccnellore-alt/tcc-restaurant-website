@@ -87,6 +87,15 @@ test('persists an order before success and deduplicates retries',async()=>{
   assert.equal(continuationResponse.status,201);
   assert.equal(continuationResult.order.parent_order_id,orderId);
   assert.match(continuationResult.order.order_number,/^TCC-\d{8}-S1-003$/);
+  const dateParts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const date=dateParts.find(p=>p.type==='year').value+dateParts.find(p=>p.type==='month').value+dateParts.find(p=>p.type==='day').value;
+  const seeded=await api('/v1/admin/qr-cache',{method:'POST',body:JSON.stringify({tokens:[{token_hash:crypto.createHash('sha256').update(qrToken).digest('hex'),table_number:'S1',is_active:true}],order_numbers:['TCC-'+date+'-S1-009']})});
+  assert.equal(seeded.status,200);
+  const afterSeed={...body,idempotency_key:crypto.randomUUID()};
+  const seededResponse=await fetch('http://127.0.0.1:'+port+'/v1/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(afterSeed)});
+  const seededOrder=await seededResponse.json();
+  assert.equal(seededResponse.status,201);
+  assert.match(seededOrder.order.order_number,/^TCC-\d{8}-S1-010$/);
 });
 
 test('Desk event remains pending until acknowledged and status changes are durable',async()=>{
