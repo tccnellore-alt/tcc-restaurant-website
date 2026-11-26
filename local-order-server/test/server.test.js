@@ -124,6 +124,13 @@ test('cached ordering pause is visible and blocks new orders',async()=>{
   assert.equal(response.status,423);
   const enabled=await api('/v1/admin/qr-cache',{method:'POST',body:JSON.stringify({customer_ordering_enabled:true,tokens:[{token_hash:hash,table_number:'S1',is_active:true}]})});
   assert.equal(enabled.status,200);
+  const key=crypto.randomUUID();
+  const soldOut=await api('/v1/admin/qr-cache',{method:'POST',body:JSON.stringify({customer_ordering_enabled:true,tokens:[{token_hash:hash,table_number:'S1',is_active:true}],menu_overrides:[{product_key:'coffee|test latte',availability:'sold_out'}]})});
+  assert.equal(soldOut.status,200);
+  const orderBody={idempotency_key:key,customer_name:'Test Customer',customer_phone:'9876543210',order_type:'dine-in',table_qr_token:qrToken,items:[{name:'Test Latte',quantity:1,unit_price:100,category:'Coffee',addons:[],fulfillment_type:'dine-in'}]};
+  const rejected=await fetch('http://127.0.0.1:'+port+'/v1/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(orderBody)});
+  assert.equal(rejected.status,409);
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM orders WHERE idempotency_key=?').get(key).n,0);
 });
 
 
