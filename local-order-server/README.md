@@ -1,0 +1,114 @@
+# TCC Local Order Server (parallel prototype)
+
+Status: **development only**. This folder is isolated from the live Supabase order path. Do not deploy or switch production traffic until the acceptance tests and owner approval are complete.
+
+## Verified current system (2026-11-26)
+
+- Production site: https://tcc-restaurant-website.pages.dev/
+- Production branch: `main`; current development branch for this work: `feature/local-order-server`.
+- Supabase project: `pcxsdypqlavtulidpydn`, region Mumbai (`ap-south-1`), Edge Function `tcc-orders`.
+- Customer checkout in `script.js` POSTs `action=create-order` to the Supabase function.
+- The frontend uses a UUID idempotency key stored in sessionStorage for the pending cart signature. The server checks the key and the database has a unique idempotency index.
+- The current function validates a dedicated table QR for dine-in orders, normalizes the 10-digit phone, and stores order/items/totals in `public.tcc_orders`.
+- `orders-dashboard.js` loads `action=orders`, polls `new-order-notifications` every 8 seconds, and polls `orders-updates` approximately every 30 seconds. Staff status changes are sent to the same Edge Function.
+- Public table requests use `create-table-assistance`; `request_type` is `staff` or `bill`. A pending request is deduplicated by table and request type.
+- Current related data includes `tcc_orders`, `tcc_table_qr_tokens`, `tcc_table_assistance_requests`, `tcc_admin_sessions`, and supporting menu/settings/audit tables.
+- The repository handoff mentions Edge Function v20 active as of 15 Nov, but live function/database state has not been independently queried in this implementation session. Verify before any migration.
+- Recent main commit (26 Nov) fixes the order list query to use existing database columns; preserve this correction.
+
+## Architecture decision
+
+Use Node.js LTS + Express + `better-sqlite3` (single local Windows PC). SQLite is the simplest fit for one host: no separate DB service, atomic transactions, WAL, durable storage and easy backup. Do not self-host Supabase or add PostgreSQL unless measured needs require it.
+
+### Data flow
+
+```mermaid
+flowchart TD
+  C[Customer QR menu] -->|HTTPS order| T[Cloudflare Tunnel / secure gateway]
+  LAN[Customer on cafe Wi-Fi] -->|local HTTPS / split DNS| S[Windows local order server]
+  T --> S
+  S -->|SQLite transaction| DB[(Local SQLite)]
+  DB --> O[Durable outbox]
+  O -->|retry / idempotent mirror| SB[Supabase cloud backup]
+  D[Order Desk on cafe LAN] -->|local API, 2-second polling + ack| S
+  S -->|backup only; not critical path| SB
+```
+
+**Important network limitation:** remote customers require working cafe internet and a live PC/tunnel. When cafe internet is down, local Wi-Fi devices can still reach the server; mobile-data customers cannot reach the cafe PC. The customer must see a clear failure, never a false success.
+
+Preferred public route: Cloudflare Tunnel to the PC, no router port-forwarding. For LAN traffic, investigate router split-horizon DNS for the same HTTPS hostname to the PC's private address, using a browser-trusted certificate. If the router cannot do this reliably, LAN devices may use the tunnel while internet is available; direct LAN/offline access requires a valid local HTTPS hostname/certificate and compatible browser permissions. Never use insecure mixed-content HTTP from the HTTPS website.
+
+## Delivery semantics
+
+- Local order write + idempotency record + outbox event are committed in one SQLite transaction.
+- Return success only after commit, with `order_id`, `order_number`, `received_at`, and `delivery_state=received`.
+- The Desk fetches pending events and explicitly acknowledges after rendering. Until ack, the server returns the event again (at-least-once); Desk deduplicates by stable `order_id`.
+- `delivered_to_desk` means the authenticated Desk acknowledged the order, not merely that a network request was sent.
+- Cloud sync is independent and retryable; it cannot block local order acceptance.
+- Cloud sync uses the same idempotency key and immutable local ID mapping. Retries must upsert by unique key and never create a second order.
+- If the local server/database is unavailable, customer submission fails visibly. Do not fall back to a second writer (Supabase) automatically unless a single-writer/fencing protocol is proven; two independent writers can create split-brain and duplicates.
+
+## Local data model
+
+- `orders`: stable UUID, human reference, idempotency key (unique), full validated order JSON, customer phone, order status, timestamps, desk ack, cloud sync state.
+- `order_events`: monotonically increasing sequence, event type, order/request ID, JSON payload, creation time, desk ack.
+- `table_requests`: stable request ID, table, type (staff/bill), pending/attended status, created/attended timestamps, unique open request constraint.
+- `qr_tokens`: SHA-256 hash only, table, active flag, last sync. Raw QR tokens are never stored.
+- `outbox`: entity ID/type, operation, idempotency key, retry count, next retry, last error, sync status.
+- `sync_cursor`: checkpoint for cloud reconciliation.
+- `audit_log`: append-only staff action log.
+
+## API prototype
+
+- `GET /health` — process and database health, no secrets.
+- `POST /v1/orders` — public order submission; requires idempotency UUID and valid cached active table QR.
+- `GET /v1/admin/orders?since=<ISO>` — authenticated Desk incremental snapshot.
+- `POST /v1/admin/orders/:id/ack` — Desk acknowledges after rendering.
+- `PATCH /v1/admin/orders/:id` — authenticated status change with audit/outbox event.
+- `POST /v1/table-requests` — public staff/bill request with QR.
+- `GET /v1/admin/table-requests` and `PATCH /v1/admin/table-requests/:id` — Desk list/attend.
+- `GET /v1/admin/events?after=<seq>` — durable events for polling recovery.
+
+The first prototype exposes a small compatibility layer; it does not replace the current Supabase function or change frontend/Order Desk production calls.
+
+## Security
+
+- Bind the service to the cafe LAN interface; Windows Firewall allow inbound only from the private cafe subnet. Do not expose a raw port to the internet.
+- Cloudflare Tunnel is outbound-only; protect staff APIs with a separate high-entropy local admin token and/or Cloudflare Access. Do not place the admin token in public frontend code.
+- Public routes validate request size, phone, item count, quantity, QR token, idempotency UUID and rate limits.
+- Current Supabase function accepts client-supplied prices. This is an existing business/security gap. Before production cutover, build a server-controlled menu/add-on price catalogue and reject mismatches; never treat the client total as authoritative.
+- Store secrets in a local `.env` excluded from Git. Restrict Windows ACLs to the service account/admin. Rotate tokens if exposed.
+- Do not log customer phone numbers, QR tokens, passwords, bearer tokens or full request bodies.
+- Use HTTPS for all browser-to-server traffic. CORS allowlist only the TCC Pages origin(s); no wildcard in production.
+- Local QR-token cache is refreshed from Supabase when available and persists through internet outages. A revoked QR may remain accepted until cache refresh; define a short TTL and emergency local revoke mechanism before launch.
+
+## Windows PC setup (to finalize after hardware/network check)
+
+1. Install supported Node.js LTS; verify `node -v` and `npm -v`.
+2. Create a dedicated `C:\TCC\LocalOrderServer\` directory and service account.
+3. Install dependencies and initialize database under `C:\ProgramData\TCC\OrderServer\` (not in repo/user Downloads).
+4. Configure `.env` with port, LAN host, admin token, Supabase URL/service key (server-only), and allowed origin.
+5. Install as a Windows service (recommended: WinSW or NSSM after reviewing IT policy); set automatic start and restart on failure. Alternatively Task Scheduler with boot trigger and restart-on-failure.
+6. Disable sleep during cafe hours; keep display sleep enabled. Configure UPS if available.
+7. Windows Firewall: allow only private subnet and required service port; no router port-forwarding.
+8. Cloudflare Tunnel: create a named tunnel and route the order hostname to local HTTPS origin; use Cloudflare Access for admin endpoints.
+9. Configure daily SQLite online backup, rotate logs, monitor disk space and `/health`.
+10. Test restore from backup and service recovery before pilot.
+
+## Test and migration gates
+
+- Normal order: persisted, Desk fetches, Desk ack, customer receives reference.
+- Concurrent repeated request with same idempotency key: exactly one order.
+- Rapid distinct orders: all unique, ordered by creation/sequence.
+- Desk closed/crashed after fetch but before ack: event reappears and Desk deduplicates.
+- Supabase down/quota exhausted: local order accepted and visible to local Desk; outbox pending.
+- Internet down: LAN order works; remote order shows failure; tunnel reconnects automatically.
+- PC/server crash/restart: SQLite recovers; unacked events and outbox resume.
+- Disk full/DB locked/corrupt: no success response; health alarm; recovery procedure.
+- Cloud sync retries and then reconciles by idempotency key; no duplicate rows.
+- QR disabled in cloud while offline: cached QR behavior and revoke window tested.
+- Status transitions and table staff/bill requests remain consistent.
+- Backups restore into a clean test directory and match order/event counts.
+- Load test concurrent checkout and Desk polling; measure p95 persistence and notification latency.
+
+Cutover requires an explicit owner approval, a controlled pilot, and rollback to the existing Supabase function. Keep Supabase and its function active throughout initial migration. No production deploy or live database change is authorized by this prototype.
