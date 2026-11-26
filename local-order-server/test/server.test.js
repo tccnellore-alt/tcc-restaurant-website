@@ -108,6 +108,7 @@ test('Desk event remains pending until acknowledged and status changes are durab
   const changed=await api('/v1/admin/orders/'+orderId,{method:'PATCH',body:JSON.stringify({status:'preparing'})});
   assert.equal(changed.status,200);
   assert.equal(changed.data.order.status,'preparing');
+  assert.equal(changed.data.order.items[0].item_status,'preparing');
   assert.equal(db.prepare('SELECT status FROM outbox WHERE entity_type=? AND entity_id=?').get('order',orderId).status,'pending');
 });
 
