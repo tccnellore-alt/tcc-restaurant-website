@@ -73,6 +73,8 @@ test('persists an order before success and deduplicates retries',async()=>{
   assert.equal(requests.filter(result=>result.data.duplicate).length,4);
   orderId=requests[0].data.order.id;
   assert.equal(requests[0].data.order.total,200);
+  const delivery=await fetch('http://127.0.0.1:'+port+'/v1/orders/'+orderId+'/status?key='+orderKey).then(r=>r.json());
+  assert.equal(delivery.delivery_state,'received');
   assert.match(requests[0].data.order.order_number,/^TCC-\d{8}-S1-\d{3}$/);
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM orders WHERE idempotency_key=?').get(orderKey).n,1);
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM order_events WHERE entity_id=? AND event_type=?').get(orderId,'order_received').n,1);
@@ -105,6 +107,8 @@ test('Desk event remains pending until acknowledged and status changes are durab
   assert.ok(event);
   const ack=await api('/v1/admin/events/'+event.seq+'/ack',{method:'POST',body:'{}'});
   assert.equal(ack.status,200);
+  const delivery=await fetch('http://127.0.0.1:'+port+'/v1/orders/'+orderId+'/status?key='+orderKey).then(r=>r.json());
+  assert.equal(delivery.delivery_state,'delivered_to_desk');
   const changed=await api('/v1/admin/orders/'+orderId,{method:'PATCH',body:JSON.stringify({status:'preparing'})});
   assert.equal(changed.status,200);
   assert.equal(changed.data.order.status,'preparing');
