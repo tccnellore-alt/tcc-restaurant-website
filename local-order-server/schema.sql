@@ -17,6 +17,13 @@ CREATE TABLE IF NOT EXISTS orders (
   cloud_synced_at TEXT,
   cloud_error TEXT
 );
+CREATE TABLE IF NOT EXISTS order_sequences (
+  order_date TEXT NOT NULL,
+  table_key TEXT NOT NULL,
+  next_number INTEGER NOT NULL CHECK(next_number > 0),
+  PRIMARY KEY(order_date,table_key)
+);
+
 CREATE INDEX IF NOT EXISTS orders_created_idx ON orders(created_at DESC);
 CREATE INDEX IF NOT EXISTS orders_status_created_idx ON orders(status,created_at DESC);
 
