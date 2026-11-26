@@ -5,6 +5,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const express = require('express');
+const https = require('node:https');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const Database = require('better-sqlite3');
@@ -16,6 +17,8 @@ const DB_PATH = path.resolve(process.env.DB_PATH || path.join(DATA_DIR, 'tcc-ord
 const ADMIN_TOKEN = String(process.env.TCC_LOCAL_ADMIN_TOKEN || '');
 const ALLOWED_ORIGIN = String(process.env.ALLOWED_ORIGIN || 'https://tcc-restaurant-website.pages.dev');
 const MAX_BODY_BYTES = process.env.MAX_BODY_BYTES || '256kb';
+const TLS_KEY_PATH = process.env.HTTPS_KEY_PATH ? path.resolve(process.env.HTTPS_KEY_PATH) : '';
+const TLS_CERT_PATH = process.env.HTTPS_CERT_PATH ? path.resolve(process.env.HTTPS_CERT_PATH) : '';
 
 if (ADMIN_TOKEN.length < 32) {
   throw new Error('Set TCC_LOCAL_ADMIN_TOKEN to a random secret of at least 32 characters.');
@@ -314,10 +317,16 @@ app.use((error, req, res, next) => {
   res.status(500).json({ error: 'Local order server error.' });
 });
 
-const server = app.listen(PORT, HOST, () => {
-  console.log('TCC local order server listening on ' + HOST + ':' + PORT);
+const listening = () => {
+  console.log('TCC local order server listening on ' + HOST + ':' + PORT + (TLS_KEY_PATH && TLS_CERT_PATH ? ' (HTTPS)' : ' (HTTP development mode)'));
   console.log('Database: ' + DB_PATH);
-});
+};
+let server;
+if (TLS_KEY_PATH && TLS_CERT_PATH) {
+  server = https.createServer({ key: fs.readFileSync(TLS_KEY_PATH), cert: fs.readFileSync(TLS_CERT_PATH) }, app).listen(PORT, HOST, listening);
+} else {
+  server = app.listen(PORT, HOST, listening);
+}
 const shutdown = () => {
   server.close(() => {
     try { db.pragma('wal_checkpoint(TRUNCATE)'); db.close(); } finally { process.exit(0); }
