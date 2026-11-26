@@ -58,6 +58,12 @@ CREATE TABLE IF NOT EXISTS table_requests (
 CREATE UNIQUE INDEX IF NOT EXISTS table_requests_one_open_idx
   ON table_requests(table_number,request_type) WHERE status='pending';
 
+CREATE TABLE IF NOT EXISTS menu_availability (
+  product_key TEXT PRIMARY KEY,
+  availability TEXT NOT NULL CHECK(availability IN ('available','sold_out')),
+  synced_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS qr_tokens (
   token_hash TEXT PRIMARY KEY,
   table_number TEXT NOT NULL,
