@@ -126,6 +126,20 @@ test('cached ordering pause is visible and blocks new orders',async()=>{
   assert.equal(enabled.status,200);
 });
 
+
+test('staff and bill requests are distinct and duplicate taps reuse the open request',async()=>{
+  const submit=type=>fetch('http://127.0.0.1:'+port+'/v1/table-requests',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({table_qr_token:qrToken,request_type:type})}).then(async response=>({status:response.status,data:await response.json()}));
+  const [staff1,staff2,bill]=await Promise.all([submit('staff'),submit('staff'),submit('bill')]);
+  assert.ok([200,201].includes(staff1.status));
+  assert.ok([200,201].includes(staff2.status));
+  assert.equal(staff1.data.request.id,staff2.data.request.id);
+  assert.notEqual(staff1.data.request.id,bill.data.request.id);
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM table_requests WHERE table_number='S1' AND status='pending'").get().n,2);
+  const attended=await api('/v1/admin/table-requests/'+staff1.data.request.id,{method:'PATCH',body:'{}'});
+  assert.equal(attended.status,200);
+  assert.equal(attended.data.request.status,'attended');
+});
+
 test('order and unacknowledged events survive a server restart',async()=>{
   await stopServer();
   await startServer();
