@@ -44,7 +44,8 @@ async function run() {
       await syncOne(row);
       const at = now();
       const tx = db.transaction(() => {
-        db.prepare("UPDATE outbox SET status='synced',synced_at=?,last_error=NULL WHERE id=?").run(at,row.id);
+        const marked=db.prepare("UPDATE outbox SET status='synced',synced_at=?,last_error=NULL WHERE id=? AND status='syncing' AND payload_json=?").run(at,row.id,row.payload_json);
+        if (!marked.changes) return;
         if (row.entity_type === 'order') db.prepare('UPDATE orders SET cloud_synced_at=?,cloud_error=NULL WHERE id=?').run(at,row.entity_id);
         if (row.entity_type === 'table_request') db.prepare('UPDATE table_requests SET cloud_synced_at=? WHERE id=?').run(at,row.entity_id);
       });
@@ -54,7 +55,7 @@ async function run() {
       const delay = Math.min(15 * 60 * 1000, 1000 * (2 ** Math.min(attempts,10)));
       const next = new Date(Date.now() + delay).toISOString();
       const message = String(error.message || 'Cloud sync failed').slice(0,300);
-      db.prepare("UPDATE outbox SET status='failed',next_attempt_at=?,last_error=? WHERE id=?").run(next,message,row.id);
+      db.prepare("UPDATE outbox SET status='failed',next_attempt_at=?,last_error=? WHERE id=? AND status='syncing' AND payload_json=?").run(next,message,row.id,row.payload_json);
       if (row.entity_type === 'order') db.prepare('UPDATE orders SET cloud_error=? WHERE id=?').run(message,row.entity_id);
       console.error('Cloud sync deferred for ' + row.entity_type + ' ' + row.entity_id + ': ' + message);
     }
