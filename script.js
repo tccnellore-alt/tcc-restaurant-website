@@ -423,7 +423,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     if(orderingStatusRequest)return orderingStatusRequest;
     orderingStatusRequest=(async()=>{
       try{
-        const response=await fetch(TCC_ORDERING_API+'?action=ordering-status',{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store'});
+        const controller=new AbortController();
+        const timeout=setTimeout(()=>controller.abort(),5000);
+        let response;
+        try{
+          response=await fetch(TCC_ORDERING_API+'?action=ordering-status',{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store',signal:controller.signal});
+        }finally{clearTimeout(timeout);}
         if(!response.ok)throw new Error('Unable to check ordering status');
         const data=await response.json();
         applyTccOrderingState(data.enabled);
