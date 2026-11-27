@@ -2631,6 +2631,54 @@ body:not(.menu-text-mode) .menu-section .m-item{
 </style>
 
 
+<style id="tcc-combo-prototype-styles">
+.tcc-combo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.tcc-combo-card{min-width:0;padding:18px 15px 15px;border:1px solid rgba(183,154,90,.34);border-radius:17px;background:#fffdf8;box-shadow:0 8px 22px rgba(23,60,43,.06);display:flex;flex-direction:column}
+.tcc-combo-kicker{color:#8d7337;font:800 9px/1.3 Manrope,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.tcc-combo-card h3{margin:9px 0 7px;color:#173c2b;font:700 17px/1.25 Manrope,Arial,sans-serif}
+.tcc-combo-includes{flex:1;margin:0;color:#6b756d;font:12px/1.5 Manrope,Arial,sans-serif}
+.tcc-combo-price{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:13px 0 12px}
+.tcc-combo-price del{color:#8b8e83;font:600 12px Manrope,Arial,sans-serif}
+.tcc-combo-price strong{color:#173c2b;font:850 18px Manrope,Arial,sans-serif}
+.tcc-combo-price span{padding:4px 7px;border-radius:999px;background:#eaf1e8;color:#2f6c45;font:750 9px Manrope,Arial,sans-serif}
+.tcc-combo-select{width:100%;min-height:44px;padding:10px 12px;border:0;border-radius:999px;background:#173c2b;color:#fffaf0;font:750 11px Manrope,Arial,sans-serif;cursor:pointer}
+.tcc-combo-select:focus-visible{outline:3px solid #b79a5a;outline-offset:3px}
+.tcc-combo-footnote{margin:12px 0 0;color:#69736a;font:12px/1.5 Manrope,Arial,sans-serif}
+.tcc-combo-modal{position:fixed;inset:0;z-index:14000;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(8,20,14,.72);backdrop-filter:blur(5px)}
+.tcc-combo-modal.is-open{display:flex}
+.tcc-combo-modal-panel{position:relative;width:min(100%,520px);max-height:calc(100dvh - 28px);overflow:auto;padding:20px;border:1px solid rgba(183,154,90,.5);border-radius:20px;background:#fffaf0;color:#173c2b;box-shadow:0 24px 70px rgba(0,0,0,.3)}
+.tcc-combo-modal-close{position:absolute;top:12px;right:12px;width:36px;height:36px;border:1px solid rgba(23,60,43,.14);border-radius:50%;background:#fff;color:#173c2b;font-size:23px;cursor:pointer}
+.tcc-combo-modal-kicker{margin:0 42px 6px 0;color:#8d7337;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.tcc-combo-modal-title{margin:0 38px 6px 0;font:700 25px/1.2 Manrope,Arial,sans-serif;color:#173c2b}
+.tcc-combo-modal-copy{margin:0 0 17px;color:#68746b;font:12px/1.5 Manrope,Arial,sans-serif}
+.tcc-combo-modal-section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:16px 0 8px;font:800 12px Manrope,Arial,sans-serif;color:#173c2b}
+.tcc-combo-modal-section-title small{color:#8b8e83;font:600 10px Manrope,Arial,sans-serif}
+.tcc-combo-variant-list{display:grid;gap:8px}
+.tcc-combo-variant{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid rgba(23,60,43,.15);border-radius:12px;background:#fff;cursor:pointer}
+.tcc-combo-variant:has(input:checked){border-color:#173c2b;background:#f1f5ed;box-shadow:inset 0 0 0 1px #173c2b}
+.tcc-combo-variant input{margin:3px 0 0;accent-color:#173c2b}
+.tcc-combo-variant-content{flex:1;min-width:0}
+.tcc-combo-variant-content strong{display:block;font:750 13px Manrope,Arial,sans-serif}
+.tcc-combo-variant-content small{display:block;margin-top:4px;color:#6b756d;font:11px/1.45 Manrope,Arial,sans-serif}
+.tcc-combo-variant-price{white-space:nowrap;text-align:right}
+.tcc-combo-variant-price b{display:block;font:850 14px Manrope,Arial,sans-serif}
+.tcc-combo-variant-price del{display:block;margin-top:3px;color:#8b8e83;font:10px Manrope,Arial,sans-serif}
+.tcc-combo-extras{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tcc-combo-extra{display:flex;align-items:center;gap:8px;min-width:0;padding:10px;border:1px solid rgba(23,60,43,.12);border-radius:10px;background:#fff;font:600 11px/1.35 Manrope,Arial,sans-serif}
+.tcc-combo-extra input{accent-color:#173c2b}
+.tcc-combo-extra span{flex:1;min-width:0}
+.tcc-combo-extra b{white-space:nowrap;color:#8d7337;font:800 11px Manrope,Arial,sans-serif}
+.tcc-combo-summary{margin-top:16px;padding:13px;border-radius:12px;background:#f1eadb}
+.tcc-combo-summary-row{display:flex;justify-content:space-between;gap:12px;margin:5px 0;color:#58665b;font:12px Manrope,Arial,sans-serif}
+.tcc-combo-summary-row strong{color:#173c2b}
+.tcc-combo-summary-row .tcc-combo-old{color:#8b8e83;text-decoration:line-through}
+.tcc-combo-summary-row.tcc-combo-payable{padding-top:8px;margin-top:9px;border-top:1px solid rgba(23,60,43,.14);font-weight:800;font-size:14px}
+.tcc-combo-summary-saving{margin:7px 0 0;color:#2f6c45;font:750 11px Manrope,Arial,sans-serif}
+.tcc-combo-confirm{width:100%;min-height:48px;margin-top:13px;border:0;border-radius:999px;background:#173c2b;color:#fffaf0;font:800 14px Manrope,Arial,sans-serif;cursor:pointer}
+.tcc-combo-cart-details{display:block;margin-top:3px;color:#7b806f;font:10px/1.35 Manrope,Arial,sans-serif}
+@media(max-width:600px){.tcc-combo-grid{gap:9px}.tcc-combo-card{padding:14px 11px 11px;border-radius:14px}.tcc-combo-card h3{font-size:14px}.tcc-combo-includes{font-size:10.5px}.tcc-combo-price{gap:5px;margin:11px 0}.tcc-combo-price strong{font-size:16px}.tcc-combo-price span{font-size:8px}.tcc-combo-select{font-size:10px;padding:9px 6px}.tcc-combo-modal-panel{padding:17px 14px}.tcc-combo-modal-title{font-size:22px}.tcc-combo-extras{grid-template-columns:1fr}}
+@media(max-width:350px){.tcc-combo-grid{grid-template-columns:1fr}.tcc-combo-card{padding:16px}}
+</style>
 </head>
 <body>
 <!-- HEADER -->
@@ -3748,7 +3796,39 @@ body:not(.menu-text-mode) .menu-section .m-item{
       <div class="menu-group" id="tcc-combos" data-group="TCC Combos">
         <section class="menu-section" data-group="TCC Combos">
           <h2>TCC Combos</h2>
-          <p class="menu-note">TCC combo selections will be added here soon.</p>
+          <div class="tcc-combo-grid" aria-label="TCC combo offers">
+  <article class="tcc-combo-card" data-combo-id="avocado-toast">
+    <div class="tcc-combo-kicker">BREAKFAST · COMBO 2</div><h3>Avocado Toast Combo</h3>
+    <p class="tcc-combo-includes">Avocado Toast + Chilli Cheese Toast + Mocha</p>
+    <div class="tcc-combo-price"><del>₹597</del><strong>From ₹549</strong><span>Save up to ₹48</span></div>
+    <button type="button" class="tcc-combo-select" data-combo-id="avocado-toast">Choose Veg / Non-Veg</button>
+  </article>
+  <article class="tcc-combo-card" data-combo-id="burger">
+    <div class="tcc-combo-kicker">SIGNATURE MEAL · COMBO 3</div><h3>TCC Burger Combo</h3>
+    <p class="tcc-combo-includes">Burger + Classic Fries + Sunset Bliss</p>
+    <div class="tcc-combo-price"><del>₹666</del><strong>₹599</strong><span>Save ₹67</span></div>
+    <button type="button" class="tcc-combo-select" data-combo-id="burger">Choose Veg / Non-Veg</button>
+  </article>
+  <article class="tcc-combo-card" data-combo-id="pasta">
+    <div class="tcc-combo-kicker">PASTA MEAL · COMBO 4</div><h3>Pasta &amp; Refreshers Combo</h3>
+    <p class="tcc-combo-includes">Pasta + Potato Cheese Balls + Blueberry Mojito</p>
+    <div class="tcc-combo-price"><del>₹666–₹676</del><strong>From ₹599</strong><span>Save ₹67</span></div>
+    <button type="button" class="tcc-combo-select" data-combo-id="pasta">Choose Veg / Non-Veg</button>
+  </article>
+  <article class="tcc-combo-card" data-combo-id="tuscan">
+    <div class="tcc-combo-kicker">HEARTY MEAL · COMBO 5</div><h3>Tuscan Honey Combo</h3>
+    <p class="tcc-combo-includes">Tuscan Honey Chicken / Paneer Burger + Classic Fries + Orange Fizzy</p>
+    <div class="tcc-combo-price"><del>₹666–₹717</del><strong>From ₹599</strong><span>Save up to ₹68</span></div>
+    <button type="button" class="tcc-combo-select" data-combo-id="tuscan">Choose Veg / Non-Veg</button>
+  </article>
+  <article class="tcc-combo-card" data-combo-id="sandwich">
+    <div class="tcc-combo-kicker">CAFÉ FAVOURITE · COMBO 6</div><h3>Sandwich &amp; Tiramisu Combo</h3>
+    <p class="tcc-combo-includes">Sandwich + Peri Peri Fries + Tiramisu Latte</p>
+    <div class="tcc-combo-price"><del>₹657–₹697</del><strong>From ₹599</strong><span>Save up to ₹68</span></div>
+    <button type="button" class="tcc-combo-select" data-combo-id="sandwich">Choose Veg / Non-Veg</button>
+  </article>
+</div>
+<p class="tcc-combo-footnote">Combo prices are prototype offers. Select your preference and optional extras to see the final cart price. Takeaway packing is +₹10 per item as usual.</p>
         </section>
       </div>
   </div>
