@@ -880,13 +880,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const def=tccComboDefinitions[id];if(!def)return;
     tccComboCurrentId=id;tccComboEditingItem=editItem;
     tccComboModal.querySelector('.tcc-combo-modal-title').textContent=def.name;
-    const variantSection=variantList.parentElement;
-    variantSection.style.display=def.variants.length>1?'flex':'none';
     const variantList=tccComboModal.querySelector('.tcc-combo-variant-list');variantList.replaceChildren();
+    const variantSection=variantList.previousElementSibling;
     const existingChoice=editItem?.combo_variant_id||'';
     const variantHeading=variantSection.querySelector('.tcc-combo-modal-section-title span');
     variantHeading.textContent=def.variants.length>1?'Choose your option':'Included in this combo';
-    variantSection.style.display=def.variants.length>1?'flex':'block';
+    variantSection.style.display='flex';
     def.variants.forEach((variant,index)=>{
       const label=document.createElement('label');label.className='tcc-combo-variant';
       const input=document.createElement('input');input.type='radio';input.name='tccComboVariant';input.value=variant.id;input.checked=existingChoice?existingChoice===variant.id:index===0;
@@ -906,7 +905,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const fixedTitle=document.createElement('strong');fixedTitle.textContent=def.variants[0].label;
       const fixedItems=document.createElement('small');fixedItems.textContent=def.variants[0].items;
       fixedText.append(fixedTitle,fixedItems);fixed.append(fixedText);variantList.append(fixed);
-    }else variantSection.style.display='flex';
+    }
     const extrasWrap=tccComboModal.querySelector('.tcc-combo-extras');extrasWrap.replaceChildren();
     const existingExtras=(editItem?.addons||[]).filter(a=>a.combo_extra).map(a=>a.name);
     tccComboExtras.forEach((extra,index)=>{
