@@ -2753,6 +2753,38 @@ body:not(.menu-text-mode) .menu-section .m-item{
 .tcc-combo-extra b{white-space:nowrap;color:#8d7337;font:800 11px Manrope,Arial,sans-serif}
 @media(max-width:600px){.tcc-combo-extras{grid-template-columns:1fr}.tcc-combo-extra{padding:9px 10px}}
 </style>
+<style id="tcc-combo-card-overlap-fix">
+/* Keep combo photo and text in separate, predictable layout areas. */
+.tcc-combo-grid .tcc-combo-card{display:grid!important;grid-template-columns:minmax(0,34%) minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;align-items:stretch!important;padding:0!important;overflow:hidden!important}
+.tcc-combo-grid .tcc-combo-visual{grid-column:1!important;grid-row:1!important;display:flex!important;flex-direction:column!important;position:relative!important;min-width:0!important;height:100%!important;overflow:hidden!important}
+.tcc-combo-grid .tcc-combo-image{display:block!important;position:relative!important;inset:auto!important;width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:1/1!important;flex:0 0 auto!important;object-fit:cover!important}
+.tcc-combo-grid .tcc-combo-visual-caption{position:static!important;inset:auto!important;display:block!important;transform:none!important;float:none!important;margin:0!important;padding:12px 11px 14px!important;background:#f2eadb!important;opacity:1!important;visibility:visible!important}
+.tcc-combo-grid .tcc-combo-kicker{display:block!important;position:static!important;transform:none!important;margin:0!important;white-space:normal!important}
+.tcc-combo-grid .tcc-combo-card h3{display:block!important;position:static!important;transform:none!important;margin:7px 0 0!important;white-space:normal!important;overflow-wrap:anywhere!important}
+.tcc-combo-grid .tcc-combo-content{grid-column:2!important;grid-row:1!important;display:flex!important;position:static!important;flex-direction:column!important;justify-content:center!important;align-items:stretch!important;min-width:0!important;margin:0!important;padding:18px 18px!important;transform:none!important}
+.tcc-combo-grid .tcc-combo-includes-label{position:static!important;display:block!important;margin:0 0 8px!important}
+.tcc-combo-grid .tcc-combo-products{position:static!important;display:grid!important;width:100%!important;margin:0!important}
+.tcc-combo-grid .tcc-combo-product{position:static!important;transform:none!important}
+@media(max-width:600px){
+ .tcc-combo-grid .tcc-combo-card{grid-template-columns:minmax(0,32%) minmax(0,1fr)!important;border-radius:15px!important}
+ .tcc-combo-grid .tcc-combo-visual-caption{padding:9px 8px 11px!important}
+ .tcc-combo-grid .tcc-combo-kicker{font-size:8px!important;line-height:1.35!important;letter-spacing:.06em!important}
+ .tcc-combo-grid .tcc-combo-card h3{font-size:13px!important;line-height:1.25!important}
+ .tcc-combo-grid .tcc-combo-content{padding:12px 11px!important}
+ .tcc-combo-grid .tcc-combo-includes-label{font-size:8px!important;letter-spacing:.07em!important}
+ .tcc-combo-grid .tcc-combo-product-name,.tcc-combo-grid .tcc-combo-product-name strong{font-size:10.5px!important;line-height:1.25!important}
+ .tcc-combo-grid .tcc-combo-price{gap:6px!important;margin:10px 0!important}
+ .tcc-combo-grid .tcc-combo-price del{font-size:10px!important}
+ .tcc-combo-grid .tcc-combo-price strong{font-size:19px!important}
+ .tcc-combo-grid .tcc-combo-price span{font-size:8px!important}
+ .tcc-combo-grid .tcc-combo-select{width:100%!important;min-width:0!important}
+}
+@media(max-width:370px){
+ .tcc-combo-grid .tcc-combo-card{grid-template-columns:minmax(0,30%) minmax(0,1fr)!important}
+ .tcc-combo-grid .tcc-combo-content{padding:10px 9px!important}
+ .tcc-combo-grid .tcc-combo-card h3{font-size:12px!important}
+}
+</style>
 </head>
 <body>
 <!-- HEADER -->
