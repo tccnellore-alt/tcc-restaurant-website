@@ -72,9 +72,10 @@
     <p class="results-summary" id="resultsSummary">Showing today's orders</p>
     <p class="error" id="dashboardError" role="alert"></p>
     <section class="orders" id="ordersList" aria-live="polite"><p class="empty">Loading orders…</p></section>
-    <footer>New order alerts check every 8 seconds; changed orders refresh every 30 seconds. Select a workflow tile to jump to its queue.</footer>
+    <button id="loadMoreOrdersButton" class="btn outline" type="button" hidden>Load older orders</button>
+    <footer>New order alerts check every 8 seconds; changed orders refresh every 2 minutes. Older order history loads in pages when requested.</footer>
     </div>
   </section>
 </main>
-<script src="orders-dashboard.js?v=no-table-requests-1"></script>
+<script src="orders-dashboard.js?v=history-pages-100-120s"></script>
 </body></html>
