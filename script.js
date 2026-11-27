@@ -850,6 +850,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   /* TCC combo configurator — isolated prototype branch; uses the existing cart/order item format. */
   const tccComboDefinitions={"avocado-toast":{"name":"Avocado Toast Combo","variants":[{"id":"veg","label":"Veg · Avocado Toast","items":"Avocado Toast + Chilli Cheese Toast + Mocha","originalPrice":597,"comboPrice":549},{"id":"nonveg","label":"Non-Veg · Avocado Egg Toast","items":"Avocado Egg Toast + Chilli Cheese Toast + Mocha","originalPrice":647,"comboPrice":599}]},"burger":{"name":"TCC Burger Combo","variants":[{"id":"veg","label":"Veg · Grilled Paneer Burger","items":"Grilled Paneer Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Crispy Chicken Burger","items":"Crispy Chicken Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599}]},"pasta":{"name":"Pasta & Refreshers Combo","variants":[{"id":"veg","label":"Veg · Penne Alfredo","items":"Penne Alfredo + Potato Cheese Balls + Blueberry Mojito","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Chicken Alfredo Bliss","items":"Chicken Alfredo Bliss + Potato Cheese Balls + Blueberry Mojito","originalPrice":676,"comboPrice":609}]},"tuscan":{"name":"Tuscan Honey Combo","variants":[{"id":"veg","label":"Veg · Grilled Paneer Burger","items":"Grilled Paneer Burger + Classic Fries + Orange Fizzy","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Tuscan Honey Chicken","items":"Tuscan Honey Chicken + Classic Fries + Orange Fizzy","originalPrice":717,"comboPrice":649}]},"sandwich":{"name":"Sandwich & Tiramisu Combo","variants":[{"id":"veg","label":"Veg · Bombay Street Sandwich","items":"Bombay Street Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":657,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Grilled Chicken Sandwich","items":"Grilled Chicken Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":697,"comboPrice":629}]}};
   const tccComboExtras=[{"name":"Classic Fries","price":169},{"name":"Potato Cheese Balls","price":158},{"name":"Tiramisu Cake Tin","price":230},{"name":"Lemon Cooler","price":200}];
+  if(window.TCC_COMBO_PROTOTYPE_MODE){
+    const placeOrderButton=backdrop.querySelector('.tcc-wish-send');
+    if(placeOrderButton){placeOrderButton.disabled=true;placeOrderButton.textContent='Preview Only — No Orders';placeOrderButton.setAttribute('title','Checkout is disabled in this prototype.');}
+  }
   const tccComboModal=document.createElement('div');
   tccComboModal.className='tcc-combo-modal';
   tccComboModal.setAttribute('aria-hidden','true');
@@ -871,7 +875,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     tccComboModal.querySelector('.tcc-combo-summary-saving').textContent='You save '+tccComboMoney(variant.originalPrice-variant.comboPrice)+' on the combo'+(extraTotal?' · extras are not discounted':'');
     tccComboModal.querySelector('.tcc-combo-confirm').textContent=(tccComboEditingItem?'Save Combo Changes':'Add Combo to Cart')+' · '+tccComboMoney(variant.comboPrice+extraTotal);
   };
-  const closeTccComboModal=()=>{tccComboModal.classList.remove('is-open');tccComboModal.setAttribute('aria-hidden','true');document.body.style.overflow='';tccComboEditingItem=null;};
+  const closeTccComboModal=()=>{tccComboModal.classList.remove('is-open');tccComboModal.setAttribute('aria-hidden','true');document.body.style.overflow=backdrop.classList.contains('is-open')?'hidden':'';tccComboEditingItem=null;};
   const openTccComboModal=(id,editItem=null)=>{
     const def=tccComboDefinitions[id];if(!def)return;
     tccComboCurrentId=id;tccComboEditingItem=editItem;
@@ -899,12 +903,12 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const price=document.createElement('b');price.textContent='+'+tccComboMoney(extra.price);
       label.append(input,name,price);extrasWrap.append(label);
     });
-    variantList.addEventListener('change',updateTccComboSummary);
-    extrasWrap.addEventListener('change',event=>{
+    variantList.onchange=updateTccComboSummary;
+    extrasWrap.onchange=event=>{
       const checked=extrasWrap.querySelectorAll('input:checked');
       if(checked.length>3&&event.target.checked){event.target.checked=false;alert('You can choose up to 3 extras.');}
       updateTccComboSummary();
-    });
+    };
     updateTccComboSummary();
     tccComboModal.classList.add('is-open');tccComboModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
     tccComboModal.querySelector('.tcc-combo-modal-close').focus();
@@ -937,14 +941,14 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     save();render();closeTccComboModal();
   });
   document.querySelectorAll('.tcc-combo-select').forEach(button=>button.addEventListener('click',()=>{
-    if(!tccCustomerOrderingEnabled){alert('Online ordering is currently paused. Please ask our team for assistance.');return;}
+    if(!tccCustomerOrderingEnabled&&!window.TCC_COMBO_PROTOTYPE_MODE){alert('Online ordering is currently paused. Please ask our team for assistance.');return;}
     openTccComboModal(button.dataset.comboId);
   }));
   
   const open=async()=>{
     // Refresh before opening; server-side checkout validation remains authoritative.
-    const orderingEnabled=await refreshTccOrderingState();
-    if(orderingEnabled===false||!tccCustomerOrderingEnabled)return;
+    const orderingEnabled=window.TCC_COMBO_PROTOTYPE_MODE?true:await refreshTccOrderingState();
+    if((orderingEnabled===false||!tccCustomerOrderingEnabled)&&!window.TCC_COMBO_PROTOTYPE_MODE)return;
     if(tableQrToken&&!tableQrVerified){tableQrBanner.scrollIntoView?.({block:'nearest'});return;}
     if(backdrop.classList.contains('is-open'))return;
     // Re-read saved cart data and rebuild rows every time the cart opens.
