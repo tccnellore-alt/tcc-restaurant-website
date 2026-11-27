@@ -848,7 +848,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   else startWishlistButtons();
 
   /* TCC combo configurator — isolated prototype branch; uses the existing cart/order item format. */
-  const tccComboDefinitions={"avocado-toast":{"name":"Avocado Toast Combo","variants":[{"id":"veg","label":"Veg · Avocado Toast","items":"Avocado Toast + Chilli Cheese Toast + Mocha","originalPrice":597,"comboPrice":549},{"id":"nonveg","label":"Non-Veg · Avocado Egg Toast","items":"Avocado Egg Toast + Chilli Cheese Toast + Mocha","originalPrice":647,"comboPrice":599}]},"burger":{"name":"TCC Burger Combo","variants":[{"id":"veg","label":"Veg · Grilled Paneer Burger","items":"Grilled Paneer Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Crispy Chicken Burger","items":"Crispy Chicken Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599}]},"pasta":{"name":"Pasta & Refreshers Combo","variants":[{"id":"veg","label":"Veg · Penne Alfredo","items":"Penne Alfredo + Potato Cheese Balls + Blueberry Mojito","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Chicken Alfredo Bliss","items":"Chicken Alfredo Bliss + Potato Cheese Balls + Blueberry Mojito","originalPrice":676,"comboPrice":609}]},"tuscan":{"name":"Tuscan Honey Combo","variants":[{"id":"veg","label":"Veg · Grilled Paneer Burger","items":"Grilled Paneer Burger + Classic Fries + Orange Fizzy","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Tuscan Honey Chicken","items":"Tuscan Honey Chicken + Classic Fries + Orange Fizzy","originalPrice":717,"comboPrice":649}]},"sandwich":{"name":"Sandwich & Tiramisu Combo","variants":[{"id":"veg","label":"Veg · Bombay Street Sandwich","items":"Bombay Street Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":657,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Grilled Chicken Sandwich","items":"Grilled Chicken Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":697,"comboPrice":629}]}};
+  const tccComboDefinitions={"avocado-toast":{"name":"Avocado Toast Combo","variants":[{"id":"veg","label":"Veg · Avocado Toast","items":"Avocado Toast + Chilli Cheese Toast + Mocha","originalPrice":597,"comboPrice":549},{"id":"nonveg","label":"Non-Veg · Avocado Egg Toast","items":"Avocado Egg Toast + Chilli Cheese Toast + Mocha","originalPrice":647,"comboPrice":599}]},"burger":{"name":"TCC Burger Combo","variants":[{"id":"veg","label":"Veg · Grilled Paneer Burger","items":"Grilled Paneer Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Crispy Chicken Burger","items":"Crispy Chicken Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599}]},"pasta":{"name":"Pasta & Refreshers Combo","variants":[{"id":"veg","label":"Veg · Penne Alfredo","items":"Penne Alfredo + Potato Cheese Balls + Blueberry Mojito","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Chicken Alfredo Bliss","items":"Chicken Alfredo Bliss + Potato Cheese Balls + Blueberry Mojito","originalPrice":676,"comboPrice":609}]},"tuscan":{"name":"Tuscan Honey Combo","variants":[{"id":"fixed","label":"Tuscan Honey Chicken","items":"Tuscan Honey Chicken + Classic Fries + Orange Fizzy","originalPrice":717,"comboPrice":649}]},"sandwich":{"name":"Sandwich & Tiramisu Combo","variants":[{"id":"veg","label":"Veg · Bombay Street Sandwich","items":"Bombay Street Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":657,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Grilled Chicken Sandwich","items":"Grilled Chicken Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":697,"comboPrice":629}]}};
   const tccComboExtras=[{"name":"Classic Fries","price":169},{"name":"Potato Cheese Balls","price":158},{"name":"Tiramisu Cake Tin","price":230},{"name":"Lemon Cooler","price":200}];
   if(window.TCC_COMBO_PROTOTYPE_MODE){
     const placeOrderButton=backdrop.querySelector('.tcc-wish-send');
@@ -862,7 +862,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const tccComboPanel=tccComboModal.querySelector('.tcc-combo-modal-panel');
   const tccComboMoney=n=>'₹'+Number(n||0).toLocaleString('en-IN');
   let tccComboCurrentId='',tccComboEditingItem=null;
-  const tccComboSelectedVariant=()=>{const input=tccComboModal.querySelector('input[name="tccComboVariant"]:checked');return input?input.value:'';};
+  const tccComboSelectedVariant=()=>{const input=tccComboModal.querySelector('input[name="tccComboVariant"]:checked');if(input)return input.value;const def=tccComboDefinitions[tccComboCurrentId];return def?.variants.length===1?def.variants[0].id:'';};
   const tccComboSelectedExtras=()=>[...tccComboModal.querySelectorAll('.tcc-combo-extra input:checked')].map(input=>tccComboExtras[Number(input.value)]);
   const updateTccComboSummary=()=>{
     const def=tccComboDefinitions[tccComboCurrentId],variant=def?.variants.find(v=>v.id===tccComboSelectedVariant());
@@ -880,8 +880,13 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const def=tccComboDefinitions[id];if(!def)return;
     tccComboCurrentId=id;tccComboEditingItem=editItem;
     tccComboModal.querySelector('.tcc-combo-modal-title').textContent=def.name;
+    const variantSection=variantList.parentElement;
+    variantSection.style.display=def.variants.length>1?'flex':'none';
     const variantList=tccComboModal.querySelector('.tcc-combo-variant-list');variantList.replaceChildren();
     const existingChoice=editItem?.combo_variant_id||'';
+    const variantHeading=variantSection.querySelector('.tcc-combo-modal-section-title span');
+    variantHeading.textContent=def.variants.length>1?'Choose your option':'Included in this combo';
+    variantSection.style.display=def.variants.length>1?'flex':'block';
     def.variants.forEach((variant,index)=>{
       const label=document.createElement('label');label.className='tcc-combo-variant';
       const input=document.createElement('input');input.type='radio';input.name='tccComboVariant';input.value=variant.id;input.checked=existingChoice?existingChoice===variant.id:index===0;
@@ -894,6 +899,14 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const original=document.createElement('del');original.textContent=tccComboMoney(variant.originalPrice);
       price.append(offer,original);label.append(input,content,price);variantList.append(label);
     });
+    if(def.variants.length===1){
+      variantList.innerHTML='';
+      const fixed=document.createElement('div');fixed.className='tcc-combo-variant';
+      const fixedText=document.createElement('span');fixedText.className='tcc-combo-variant-content';
+      const fixedTitle=document.createElement('strong');fixedTitle.textContent=def.variants[0].label;
+      const fixedItems=document.createElement('small');fixedItems.textContent=def.variants[0].items;
+      fixedText.append(fixedTitle,fixedItems);fixed.append(fixedText);variantList.append(fixed);
+    }else variantSection.style.display='flex';
     const extrasWrap=tccComboModal.querySelector('.tcc-combo-extras');extrasWrap.replaceChildren();
     const existingExtras=(editItem?.addons||[]).filter(a=>a.combo_extra).map(a=>a.name);
     tccComboExtras.forEach((extra,index)=>{
