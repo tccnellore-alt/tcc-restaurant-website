@@ -2691,10 +2691,9 @@ body:not(.menu-text-mode) .menu-section .m-item{
 .tcc-combo-content{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-width:0;padding:20px 22px}
 .tcc-combo-includes-label{margin-bottom:6px;color:#8d7337;font:800 10px/1.3 Manrope,Arial,sans-serif;letter-spacing:.12em}
 .tcc-combo-includes{margin:0;color:#657168;font:500 14px/1.5 Manrope,Arial,sans-serif}
-.tcc-combo-price{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:14px 0 13px}
-.tcc-combo-price del{color:#8b8e83;font:600 13px Manrope,Arial,sans-serif}
-.tcc-combo-price strong{color:#173c2b;font:850 22px/1.1 Manrope,Arial,sans-serif}
-.tcc-combo-price span{padding:5px 9px;border-radius:999px;background:#eaf1e8;color:#2f6c45;font:750 10px Manrope,Arial,sans-serif}
+.tcc-combo-price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:14px 0 13px}
+.tcc-combo-price strong{color:#173c2b;font:850 25px/1.08 Manrope,Arial,sans-serif;letter-spacing:-.035em}
+.tcc-combo-price span{padding:4px 8px;border-radius:7px;background:#eef3e9;color:#3f6b4a;font:750 10px/1.2 Manrope,Arial,sans-serif;white-space:nowrap}
 .tcc-combo-select{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:auto;min-width:190px;min-height:46px;padding:11px 20px;border:0;border-radius:999px;background:#173c2b;color:#fffaf0;font:800 13px Manrope,Arial,sans-serif;cursor:pointer;box-shadow:0 3px 9px rgba(23,60,43,.12)}
 .tcc-combo-select span{font-size:17px;line-height:1}
 .tcc-combo-select:focus-visible{outline:3px solid #b79a5a;outline-offset:3px}
@@ -2711,8 +2710,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
  .tcc-combo-includes-label{font-size:9px;margin-bottom:4px}
  .tcc-combo-includes{font-size:11.5px;line-height:1.42}
  .tcc-combo-price{gap:6px;margin:10px 0}
- .tcc-combo-price del{font-size:10px}
- .tcc-combo-price strong{font-size:18px}
+ .tcc-combo-price strong{font-size:20px}
  .tcc-combo-price span{font-size:8px;padding:4px 6px}
  .tcc-combo-select{width:100%;min-width:0;min-height:42px;padding:10px 12px;font-size:11px;gap:7px}
 }
@@ -2722,7 +2720,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
  .tcc-combo-card h3{font-size:13px}
  .tcc-combo-content{padding:11px}
  .tcc-combo-includes{font-size:10.5px}
- .tcc-combo-price strong{font-size:17px}
+ .tcc-combo-price strong{font-size:19px}
 }
 </style>
 </head>
@@ -3854,7 +3852,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
     <div class="tcc-combo-content">
       <div class="tcc-combo-includes-label">INCLUDES</div>
       <p class="tcc-combo-includes">Avocado Toast + Chilli Cheese Toast + Mocha</p>
-      <div class="tcc-combo-price"><del>₹597</del><strong>From ₹549</strong><span>Save up to ₹48</span></div>
+      <div class="tcc-combo-price"><strong>From ₹549</strong><span>Save ₹48</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="avocado-toast">Add combo <span aria-hidden="true">→</span></button>
     </div>
   </article>
@@ -3869,7 +3867,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
     <div class="tcc-combo-content">
       <div class="tcc-combo-includes-label">INCLUDES</div>
       <p class="tcc-combo-includes">Burger + Classic Fries + Sunset Bliss</p>
-      <div class="tcc-combo-price"><del>₹666</del><strong>₹599</strong><span>Save ₹67</span></div>
+      <div class="tcc-combo-price"><strong>₹599</strong><span>Save ₹67</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="burger">Add combo <span aria-hidden="true">→</span></button>
     </div>
   </article>
@@ -3884,7 +3882,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
     <div class="tcc-combo-content">
       <div class="tcc-combo-includes-label">INCLUDES</div>
       <p class="tcc-combo-includes">Pasta + Potato Cheese Balls + Blueberry Mojito</p>
-      <div class="tcc-combo-price"><del>₹666–₹676</del><strong>From ₹599</strong><span>Save ₹67</span></div>
+      <div class="tcc-combo-price"><strong>From ₹599</strong><span>Save ₹67</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="pasta">Add combo <span aria-hidden="true">→</span></button>
     </div>
   </article>
@@ -3899,7 +3897,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
     <div class="tcc-combo-content">
       <div class="tcc-combo-includes-label">INCLUDES</div>
       <p class="tcc-combo-includes">Tuscan Honey Chicken / Paneer Burger + Classic Fries + Orange Fizzy</p>
-      <div class="tcc-combo-price"><del>₹666–₹717</del><strong>From ₹599</strong><span>Save up to ₹68</span></div>
+      <div class="tcc-combo-price"><strong>From ₹599</strong><span>Save up to ₹68</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="tuscan">Add combo <span aria-hidden="true">→</span></button>
     </div>
   </article>
@@ -3914,7 +3912,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
     <div class="tcc-combo-content">
       <div class="tcc-combo-includes-label">INCLUDES</div>
       <p class="tcc-combo-includes">Sandwich + Peri Peri Fries + Tiramisu Latte</p>
-      <div class="tcc-combo-price"><del>₹657–₹697</del><strong>From ₹599</strong><span>Save up to ₹68</span></div>
+      <div class="tcc-combo-price"><strong>From ₹599</strong><span>Save up to ₹68</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="sandwich">Add combo <span aria-hidden="true">→</span></button>
     </div>
   </article>
