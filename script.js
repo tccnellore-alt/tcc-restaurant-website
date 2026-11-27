@@ -676,6 +676,11 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
         addonLine.textContent='Add-ons: '+item.addons.map(addon=>addon.name).filter(Boolean).join(' · ');
         info.append(addonLine);
       }
+      if(item.combo_variant){
+        const comboDetail=document.createElement('small');comboDetail.className='tcc-combo-cart-details';
+        comboDetail.textContent='Combo includes: '+(item.combo_included||'')+' · Save '+money(item.combo_savings||0);
+        info.append(comboDetail);
+      }
       const fulfillment=document.createElement('label');fulfillment.className='tcc-wish-fulfillment';const fulfillmentInput=document.createElement('input');fulfillmentInput.type='checkbox';fulfillmentInput.checked=item.fulfillment_type==='takeaway'||(orderType==='takeaway');fulfillmentInput.setAttribute('aria-label','Pack '+item.name+' as takeaway (+₹10 each)');fulfillmentInput.addEventListener('change',()=>{item.fulfillment_type=fulfillmentInput.checked?'takeaway':'dine-in';save();render();});const fulfillmentText=document.createElement('span');fulfillmentText.textContent='Takeaway +₹10';fulfillment.append(fulfillmentInput,fulfillmentText);
       const itemOptions=document.createElement('div');itemOptions.className='tcc-wish-item-options';itemOptions.append(fulfillment);
       info.append(itemOptions);
@@ -722,7 +727,8 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       minus.addEventListener('click',()=>{item.qty=Math.max(1,(Number(item.qty)||1)-1);save();render()});
       plus.addEventListener('click',()=>{item.qty=(Number(item.qty)||1)+1;save();render()});
       qty.append(minus,qtyValue,plus);
-      if((item.addons||[]).length){const edit=document.createElement('button');edit.type='button';edit.className='tcc-wish-edit';edit.textContent='Edit';edit.setAttribute('aria-label','Edit add-ons for '+item.name);edit.addEventListener('click',()=>{const card=[...document.querySelectorAll('.m-item')].find(node=>sameProduct(item,getData(node)));if(card)openChoice(card,getData(card),addonOptions(card),item);});price.append(edit);}
+      if(item.combo_id){const edit=document.createElement('button');edit.type='button';edit.className='tcc-wish-edit';edit.textContent='Edit';edit.setAttribute('aria-label','Edit options for '+item.name);edit.addEventListener('click',()=>openTccComboModal(item.combo_id,item));price.append(edit);}
+      else if((item.addons||[]).length){const edit=document.createElement('button');edit.type='button';edit.className='tcc-wish-edit';edit.textContent='Edit';edit.setAttribute('aria-label','Edit add-ons for '+item.name);edit.addEventListener('click',()=>{const card=[...document.querySelectorAll('.m-item')].find(node=>sameProduct(item,getData(node)));if(card)openChoice(card,getData(card),addonOptions(card),item);});price.append(edit);}
       const remove=document.createElement('button');remove.type='button';remove.className='tcc-wish-remove';remove.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m3 3v7m6-7v7"/></svg>';remove.setAttribute('aria-label','Remove '+item.name);remove.title='Remove '+item.name;remove.addEventListener('click',()=>{items=items.filter(x=>x!==item);save();render()});
       price.append(amount,qty,remove);row.append(info,price,noteEditor);list.append(row);
     });
@@ -840,6 +846,101 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startWishlistButtons,{once:true});
   else startWishlistButtons();
+
+  /* TCC combo configurator — isolated prototype branch; uses the existing cart/order item format. */
+  const tccComboDefinitions={"avocado-toast":{"name":"Avocado Toast Combo","variants":[{"id":"veg","label":"Veg · Avocado Toast","items":"Avocado Toast + Chilli Cheese Toast + Mocha","originalPrice":597,"comboPrice":549},{"id":"nonveg","label":"Non-Veg · Avocado Egg Toast","items":"Avocado Egg Toast + Chilli Cheese Toast + Mocha","originalPrice":647,"comboPrice":599}]},"burger":{"name":"TCC Burger Combo","variants":[{"id":"veg","label":"Veg · Grilled Paneer Burger","items":"Grilled Paneer Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Crispy Chicken Burger","items":"Crispy Chicken Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599}]},"pasta":{"name":"Pasta & Refreshers Combo","variants":[{"id":"veg","label":"Veg · Penne Alfredo","items":"Penne Alfredo + Potato Cheese Balls + Blueberry Mojito","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Chicken Alfredo Bliss","items":"Chicken Alfredo Bliss + Potato Cheese Balls + Blueberry Mojito","originalPrice":676,"comboPrice":609}]},"tuscan":{"name":"Tuscan Honey Combo","variants":[{"id":"veg","label":"Veg · Grilled Paneer Burger","items":"Grilled Paneer Burger + Classic Fries + Orange Fizzy","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Tuscan Honey Chicken","items":"Tuscan Honey Chicken + Classic Fries + Orange Fizzy","originalPrice":717,"comboPrice":649}]},"sandwich":{"name":"Sandwich & Tiramisu Combo","variants":[{"id":"veg","label":"Veg · Bombay Street Sandwich","items":"Bombay Street Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":657,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Grilled Chicken Sandwich","items":"Grilled Chicken Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":697,"comboPrice":629}]}};
+  const tccComboExtras=[{"name":"Classic Fries","price":169},{"name":"Potato Cheese Balls","price":158},{"name":"Tiramisu Cake Tin","price":230},{"name":"Lemon Cooler","price":200}];
+  const tccComboModal=document.createElement('div');
+  tccComboModal.className='tcc-combo-modal';
+  tccComboModal.setAttribute('aria-hidden','true');
+  tccComboModal.innerHTML='<section class="tcc-combo-modal-panel" role="dialog" aria-modal="true" aria-labelledby="tccComboModalTitle"><button type="button" class="tcc-combo-modal-close" aria-label="Close combo options">×</button><p class="tcc-combo-modal-kicker">CUSTOMIZE YOUR TCC COMBO</p><h2 class="tcc-combo-modal-title" id="tccComboModalTitle"></h2><p class="tcc-combo-modal-copy">Choose one required option. Optional extras are charged at their regular menu price.</p><div class="tcc-combo-modal-section-title"><span>Choose Veg / Non-Veg</span><small>Required · 1 choice</small></div><div class="tcc-combo-variant-list"></div><div class="tcc-combo-modal-section-title"><span>Add something extra</span><small>Optional · up to 3</small></div><div class="tcc-combo-extras"></div><div class="tcc-combo-summary"><div class="tcc-combo-summary-row"><span>Original combo price</span><strong class="tcc-combo-summary-original"></strong></div><div class="tcc-combo-summary-row"><span>Combo offer</span><strong class="tcc-combo-summary-offer"></strong></div><div class="tcc-combo-summary-row"><span>Optional extras</span><strong class="tcc-combo-summary-extras"></strong></div><div class="tcc-combo-summary-row tcc-combo-payable"><span>Payable for combo</span><strong class="tcc-combo-summary-total"></strong></div><p class="tcc-combo-summary-saving"></p></div><button type="button" class="tcc-combo-confirm">Add Combo to Cart</button></section>';
+  document.body.appendChild(tccComboModal);
+  const tccComboPanel=tccComboModal.querySelector('.tcc-combo-modal-panel');
+  const tccComboMoney=n=>'₹'+Number(n||0).toLocaleString('en-IN');
+  let tccComboCurrentId='',tccComboEditingItem=null;
+  const tccComboSelectedVariant=()=>{const input=tccComboModal.querySelector('input[name="tccComboVariant"]:checked');return input?input.value:'';};
+  const tccComboSelectedExtras=()=>[...tccComboModal.querySelectorAll('.tcc-combo-extra input:checked')].map(input=>tccComboExtras[Number(input.value)]);
+  const updateTccComboSummary=()=>{
+    const def=tccComboDefinitions[tccComboCurrentId],variant=def?.variants.find(v=>v.id===tccComboSelectedVariant());
+    if(!variant)return;
+    const extrasSelected=tccComboSelectedExtras(),extraTotal=extrasSelected.reduce((sum,x)=>sum+x.price,0);
+    tccComboModal.querySelector('.tcc-combo-summary-original').textContent=tccComboMoney(variant.originalPrice);
+    tccComboModal.querySelector('.tcc-combo-summary-offer').textContent=tccComboMoney(variant.comboPrice);
+    tccComboModal.querySelector('.tcc-combo-summary-extras').textContent=tccComboMoney(extraTotal);
+    tccComboModal.querySelector('.tcc-combo-summary-total').textContent=tccComboMoney(variant.comboPrice+extraTotal);
+    tccComboModal.querySelector('.tcc-combo-summary-saving').textContent='You save '+tccComboMoney(variant.originalPrice-variant.comboPrice)+' on the combo'+(extraTotal?' · extras are not discounted':'');
+    tccComboModal.querySelector('.tcc-combo-confirm').textContent=(tccComboEditingItem?'Save Combo Changes':'Add Combo to Cart')+' · '+tccComboMoney(variant.comboPrice+extraTotal);
+  };
+  const closeTccComboModal=()=>{tccComboModal.classList.remove('is-open');tccComboModal.setAttribute('aria-hidden','true');document.body.style.overflow='';tccComboEditingItem=null;};
+  const openTccComboModal=(id,editItem=null)=>{
+    const def=tccComboDefinitions[id];if(!def)return;
+    tccComboCurrentId=id;tccComboEditingItem=editItem;
+    tccComboModal.querySelector('.tcc-combo-modal-title').textContent=def.name;
+    const variantList=tccComboModal.querySelector('.tcc-combo-variant-list');variantList.replaceChildren();
+    const existingChoice=editItem?.combo_variant_id||'';
+    def.variants.forEach((variant,index)=>{
+      const label=document.createElement('label');label.className='tcc-combo-variant';
+      const input=document.createElement('input');input.type='radio';input.name='tccComboVariant';input.value=variant.id;input.checked=existingChoice?existingChoice===variant.id:index===0;
+      const content=document.createElement('span');content.className='tcc-combo-variant-content';
+      const title=document.createElement('strong');title.textContent=variant.label;
+      const included=document.createElement('small');included.textContent=variant.items;
+      content.append(title,included);
+      const price=document.createElement('span');price.className='tcc-combo-variant-price';
+      const offer=document.createElement('b');offer.textContent=tccComboMoney(variant.comboPrice);
+      const original=document.createElement('del');original.textContent=tccComboMoney(variant.originalPrice);
+      price.append(offer,original);label.append(input,content,price);variantList.append(label);
+    });
+    const extrasWrap=tccComboModal.querySelector('.tcc-combo-extras');extrasWrap.replaceChildren();
+    const existingExtras=(editItem?.addons||[]).filter(a=>a.combo_extra).map(a=>a.name);
+    tccComboExtras.forEach((extra,index)=>{
+      const label=document.createElement('label');label.className='tcc-combo-extra';
+      const input=document.createElement('input');input.type='checkbox';input.value=String(index);input.checked=existingExtras.includes(extra.name);
+      const name=document.createElement('span');name.textContent=extra.name;
+      const price=document.createElement('b');price.textContent='+'+tccComboMoney(extra.price);
+      label.append(input,name,price);extrasWrap.append(label);
+    });
+    variantList.addEventListener('change',updateTccComboSummary);
+    extrasWrap.addEventListener('change',event=>{
+      const checked=extrasWrap.querySelectorAll('input:checked');
+      if(checked.length>3&&event.target.checked){event.target.checked=false;alert('You can choose up to 3 extras.');}
+      updateTccComboSummary();
+    });
+    updateTccComboSummary();
+    tccComboModal.classList.add('is-open');tccComboModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+    tccComboModal.querySelector('.tcc-combo-modal-close').focus();
+  };
+  tccComboModal.querySelector('.tcc-combo-modal-close').addEventListener('click',closeTccComboModal);
+  tccComboModal.addEventListener('click',event=>{if(event.target===tccComboModal)closeTccComboModal();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&tccComboModal.classList.contains('is-open'))closeTccComboModal();});
+  tccComboModal.querySelector('.tcc-combo-confirm').addEventListener('click',()=>{
+    const def=tccComboDefinitions[tccComboCurrentId],variant=def?.variants.find(v=>v.id===tccComboSelectedVariant());
+    if(!variant){alert('Please choose Veg or Non-Veg.');return;}
+    const selectedExtras=tccComboSelectedExtras();
+    const comboAddons=[
+      {name:variant.label,price:0,combo_choice:true},
+      {name:'Includes: '+variant.items,price:0,combo_included:true},
+      ...selectedExtras.map(extra=>({name:extra.name,price:extra.price,combo_extra:true}))
+    ];
+    const comboItem={
+      name:def.name+' — '+(variant.id==='veg'?'Veg':'Non-Veg'),
+      price:variant.comboPrice,original_price:variant.originalPrice,combo_savings:variant.originalPrice-variant.comboPrice,
+      combo_id:tccComboCurrentId,combo_variant_id:variant.id,combo_variant:variant.label,combo_included:variant.items,
+      category:'TCC Combos',section:'TCC Combos',key:('tcc-combo|'+tccComboCurrentId+'|'+variant.id).toLowerCase(),
+      addons:comboAddons,note:'',qty:1,lineId:String(Date.now())+'-'+Math.random().toString(36).slice(2)
+    };
+    if(tccComboEditingItem){
+      const old=tccComboEditingItem;comboItem.qty=old.qty;comboItem.lineId=old.lineId;comboItem.fulfillment_type=old.fulfillment_type;comboItem.note=old.note||'';
+      items=items.map(item=>item===old?comboItem:item);
+    }else{
+      items.push(comboItem);
+    }
+    save();render();closeTccComboModal();
+  });
+  document.querySelectorAll('.tcc-combo-select').forEach(button=>button.addEventListener('click',()=>{
+    if(!tccCustomerOrderingEnabled){alert('Online ordering is currently paused. Please ask our team for assistance.');return;}
+    openTccComboModal(button.dataset.comboId);
+  }));
+  
   const open=async()=>{
     // Refresh before opening; server-side checkout validation remains authoritative.
     const orderingEnabled=await refreshTccOrderingState();
