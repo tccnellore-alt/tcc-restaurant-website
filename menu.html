@@ -5019,6 +5019,17 @@ function filter(q){
         sec.style.display=sectionFound?"block":"none";
         groupFound+=sectionFound;
       });
+      if(g.id==="tcc-combos"){
+        const comboCards=[...g.querySelectorAll(".tcc-combo-card")];
+        let comboFound=0;
+        comboCards.forEach(card=>{
+          const ok=card.textContent.toLowerCase().includes(q);
+          card.style.display=ok?"flex":"none";
+          if(ok)comboFound++;
+        });
+        g.querySelectorAll(".menu-section").forEach(sec=>sec.style.display=comboFound?"block":"none");
+        groupFound+=comboFound;
+      }
       g.classList.toggle("active",groupFound>0);
       found+=groupFound;
     });
@@ -5026,6 +5037,12 @@ function filter(q){
     if(foodTabsWrap) foodTabsWrap.classList.remove("visible");
   } else {
     groups.forEach(g=>g.classList.toggle("active",g===active));
+    if(active.id==="tcc-combos"){
+      const comboCards=[...active.querySelectorAll(".tcc-combo-card")];
+      comboCards.forEach(card=>card.style.display="flex");
+      active.querySelectorAll(".menu-section").forEach(sec=>sec.style.display="block");
+      found+=comboCards.length;
+    }
     active.querySelectorAll(".menu-section").forEach(sec=>{
       if(sec.hasAttribute("data-menu-paused")){sec.style.display="none";return;}
       let sectionFound=0;
