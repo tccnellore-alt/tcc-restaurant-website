@@ -678,7 +678,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       }
       if(item.combo_variant){
         const comboDetail=document.createElement('small');comboDetail.className='tcc-combo-cart-details';
-        comboDetail.textContent='Combo includes: '+(item.combo_included||'')+' · Save '+money(item.combo_savings||0);
+        comboDetail.textContent='Original '+money(item.original_price||0)+' · Combo '+money(item.price||0)+' · Save '+money(item.combo_savings||0)+' · Includes: '+(item.combo_included||'');
         info.append(comboDetail);
       }
       const fulfillment=document.createElement('label');fulfillment.className='tcc-wish-fulfillment';const fulfillmentInput=document.createElement('input');fulfillmentInput.type='checkbox';fulfillmentInput.checked=item.fulfillment_type==='takeaway'||(orderType==='takeaway');fulfillmentInput.setAttribute('aria-label','Pack '+item.name+' as takeaway (+₹10 each)');fulfillmentInput.addEventListener('change',()=>{item.fulfillment_type=fulfillmentInput.checked?'takeaway':'dine-in';save();render();});const fulfillmentText=document.createElement('span');fulfillmentText.textContent='Takeaway +₹10';fulfillment.append(fulfillmentInput,fulfillmentText);
