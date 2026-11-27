@@ -5052,7 +5052,7 @@ function filter(q){
         item.style.setProperty("display",ok?"flex":"none","important");
         if(ok)sectionFound++;
       });
-      sec.style.display=sectionFound?"block":"none";
+      sec.style.display=active.id==="tcc-combos"?"block":(sectionFound?"block":"none");
       found+=sectionFound;
     });
     buildSubTabs(active.id);
