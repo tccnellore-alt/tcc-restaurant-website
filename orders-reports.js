@@ -1,38 +1,75 @@
-let API="https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders",PUBLIC_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A",TOKEN_KEY="tccOrderDeskSessionV1",token=localStorage.getItem(TOKEN_KEY)||"",allOrders=[];
-let customerDirectory=[];let $=s=>document.querySelector(s),money=v=>"₹"+Number(v||0).toLocaleString("en-IN",{maximumFractionDigits:0}),key=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-async function request(action){let res=await fetch(API+"?action="+action,{headers:{apikey:PUBLIC_KEY,Authorization:"Bearer "+PUBLIC_KEY,"x-tcc-admin-session":token}});let data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||"Unable to load report data.");return data;}
-async function load(){try{if(!token)throw new Error("Please sign in from the Order Desk first.");let [data,customers]=await Promise.all([request("orders"),request("customer-directory")]);allOrders=data.orders||[];customerDirectory=customers.customers||[];$("#reportUpdated").textContent="Updated "+new Date().toLocaleString("en-IN");$("#reportError").textContent="";render();}catch(e){$("#reportError").textContent=e.message;if(/sign in|session|login/i.test(e.message)){localStorage.removeItem(TOKEN_KEY);}}}
-function periodOrders(){let p=$("#reportPeriod").value,now=new Date();let from=null,to=key(now);if(p==="today")from=to;else if(["7","30","90"].includes(p)){let d=new Date(now);d.setDate(d.getDate()-Number(p)+1);from=key(d);}else if(p==="custom"){from=$("#reportFrom").value||null;to=$("#reportTo").value||key(now);}return allOrders.filter(o=>{let d=key(new Date(o.created_at));return(!from||d>=from)&&(!to||d<=to);});}
-function horizontal(el,entries){el.replaceChildren();let max=Math.max(1,...entries.map(x=>x[1]));entries.forEach(([name,value])=>{let row=document.createElement("div");row.className="hrow";let label=document.createElement("span");label.textContent=name;let track=document.createElement("div");track.className="track";let fill=document.createElement("div");fill.className="fill";fill.style.width=(value/max*100)+"%";track.append(fill);let count=document.createElement("strong");count.textContent=value;row.append(label,track,count);el.append(row);});}
-function formatDuration(ms){if(!Number.isFinite(ms)||ms<0)return "—";let seconds=Math.round(ms/1000),hours=Math.floor(seconds/3600),minutes=Math.floor((seconds%3600)/60),remaining=seconds%60;if(hours)return hours+"h "+String(minutes).padStart(2,"0")+"m";if(minutes)return minutes+"m "+String(remaining).padStart(2,"0")+"s";return remaining+"s";}
-function averageDuration(orders,startField,endField){let values=orders.map(o=>{let start=Date.parse(o[startField]||""),end=Date.parse(o[endField]||"");return Number.isFinite(start)&&Number.isFinite(end)&&end>=start?end-start:null;}).filter(v=>v!==null);return {average:values.length?values.reduce((a,b)=>a+b,0)/values.length:null,count:values.length};}
-function renderTimingAverages(rows){let accepted=averageDuration(rows,"created_at","accepted_at"),preparation=rows.map(o=>{let start=Date.parse(o.accepted_at||""),end=Date.parse(o.completed_at||"");return Number.isFinite(start)&&Number.isFinite(end)&&end>=start?end-start:null;}).filter(v=>v!==null),total=averageDuration(rows,"created_at","completed_at");const prep={average:preparation.length?preparation.reduce((a,b)=>a+b,0)/preparation.length:null,count:preparation.length};$("#rAvgAcceptance").textContent=accepted.average===null?"—":formatDuration(accepted.average);$("#rAcceptanceCount").textContent=accepted.count+" orders measured";$("#rAvgPreparation").textContent=prep.average===null?"—":formatDuration(prep.average);$("#rPreparationCount").textContent=prep.count+" orders measured";$("#rAvgTotal").textContent=total.average===null?"—":formatDuration(total.average);$("#rTotalCount").textContent=total.count+" orders measured";}
-function renderTableSales(validOrders){
- let tableSales=new Map(),takeawayOrders=new Set(),takeawaySales=0;
- validOrders.forEach(order=>{
-  let dineInItems=0,takeawayItems=0;
-  (order.items||[]).forEach(item=>{
-   if(item.item_status==="cancelled")return;
-   let qty=Math.max(1,Number(item.quantity)||1),addons=(item.addons||[]).reduce((sum,a)=>sum+Number(a.price||0),0),base=qty*(Number(item.unit_price||0)+addons);
-   let type=item.fulfillment_type||(order.order_type==="takeaway"?"takeaway":"dine-in");
-   if(type==="takeaway"){takeawayItems++;takeawaySales+=base+qty*10;}
-   else{dineInItems++;let table=String(order.table_number||"Unassigned").trim()||"Unassigned",entry=tableSales.get(table)||{orders:0,sales:0};entry.sales+=base;tableSales.set(table,entry);}
-  });
-  if(takeawayItems)takeawayOrders.add(order.id||order.order_number);
-  if(dineInItems){let table=String(order.table_number||"Unassigned").trim()||"Unassigned",entry=tableSales.get(table);entry.orders++;}
- });
- let entries=[...tableSales.entries()].sort((a,b)=>b[1].sales-a[1].sales||b[1].orders-a[1].orders||a[0].localeCompare(b[0],undefined,{numeric:true}));
- let dineInSales=entries.reduce((sum,[,v])=>sum+v.sales,0),tbody=$("#tableSalesBody");tbody.replaceChildren();
- entries.forEach(([table,data],index)=>{let tr=document.createElement("tr"),name=document.createElement("th");name.scope="row";name.textContent=table;let count=document.createElement("td");count.textContent=String(data.orders);let sales=document.createElement("td");sales.className="numeric";sales.textContent=money(data.sales);let average=document.createElement("td");average.className="numeric";average.textContent=money(data.orders?data.sales/data.orders:0);let share=document.createElement("td");share.className="numeric";share.textContent=(dineInSales?data.sales/dineInSales*100:0).toFixed(1)+"%";tr.append(name,count,sales,average,share);if(index===0)tr.classList.add("top-table-row");tbody.append(tr);});
- $("#tableSalesEmpty").hidden=entries.length>0;$("#tableSalesWrap").hidden=entries.length===0;$("#topTableSales").textContent=entries.length?entries[0][0]+" · "+money(entries[0][1].sales):"—";
- $("#takeawaySalesSummary").textContent=takeawayOrders.size+" orders containing takeaway items · "+money(takeawaySales)+" (includes ₹10 per takeaway unit)";
- $("#tableSalesFootnote").textContent=entries.length?entries.length+" dine-in tables · "+money(dineInSales)+" dine-in item sales":"No dine-in sales in this period.";
+"use strict";
+const API="https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders";
+const PUBLIC_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A";
+const TOKEN_KEY="tccOrderDeskSessionV1",token=localStorage.getItem(TOKEN_KEY)||"";
+let allOrders=[],customerDirectory=[];
+const $=id=>document.getElementById(id);
+const money=v=>"₹"+Number(v||0).toLocaleString("en-IN",{maximumFractionDigits:0});
+const key=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const valid=o=>!["cancelled","rejected"].includes(String(o.status||"").toLowerCase());
+const phone=c=>String(c.phone||c.customer_phone||c.mobile||"").replace(/\D/g,"").replace(/^91(?=\d{10}$)/,"");
+async function request(action){const res=await fetch(API+"?action="+encodeURIComponent(action),{headers:{apikey:PUBLIC_KEY,Authorization:"Bearer "+PUBLIC_KEY,"x-tcc-admin-session":token}});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||"Unable to load report data.");return data;}
+async function load(){
+ const refresh=$("reportRefresh");refresh.disabled=true;refresh.textContent="Loading…";
+ try{
+  if(!token)throw new Error("Please sign in from the Order Desk first.");
+  const [ordersData,customerData]=await Promise.all([request("orders"),request("customer-directory")]);
+  allOrders=ordersData.orders||[];customerDirectory=customerData.customers||[];
+  $("reportUpdated").textContent="Updated "+new Date().toLocaleString("en-IN");
+  $("reportError").textContent="";render();
+ }catch(error){
+  $("reportError").textContent=error.message||"Could not load reports.";
+  if(/sign in|session|login/i.test(error.message||""))localStorage.removeItem(TOKEN_KEY);
+ }finally{refresh.disabled=false;refresh.textContent="Refresh";}
 }
-function render(){let rows=periodOrders(),valid=rows.filter(o=>!["cancelled","rejected"].includes(o.status)),sales=valid.reduce((s,o)=>s+Number(o.total||0),0);let byPhone=new Map();rows.forEach(o=>{let p=String(o.customer_phone||"").replace(/\D/g,"").replace(/^91(?=\d{10}$)/,"");if(!/^\d{10}$/.test(p))return;let c=byPhone.get(p)||{phone:p,name:o.customer_name||"Guest",spend:0,orders:0};c.orders++;if(!["cancelled","rejected"].includes(o.status))c.spend+=Number(o.total||0);byPhone.set(p,c);});let ranked=[...byPhone.values()].sort((a,b)=>b.spend-a.spend);$("#rCustomers").textContent=byPhone.size;let today=key(new Date()),firstByPhone=new Map();allOrders.forEach(o=>{let p=String(o.customer_phone||"").replace(/\D/g,"").replace(/^91(?=\d{10}$)/,"");if(!/^\d{10}$/.test(p))return;let d=key(new Date(o.created_at));if(!firstByPhone.has(p)||d<firstByPhone.get(p))firstByPhone.set(p,d);});$("#rNewCustomers").textContent=[...firstByPhone.values()].filter(d=>d===today).length;$("#rReturningCustomers").textContent=allOrders.filter(o=>key(new Date(o.created_at))===today).reduce((set,o)=>{let p=String(o.customer_phone||"").replace(/\D/g,"").replace(/^91(?=\d{10}$)/,"");if(p&&firstByPhone.get(p)!==today)set.add(p);return set;},new Set()).size;let top=ranked[0];$("#rTopCustomer").textContent=top?(top.name||top.phone):"—";$("#rTopCustomerSpend").textContent=top?money(top.spend)+" · "+top.phone:"No customer data";$("#topCustomers").replaceChildren();ranked.slice(0,10).forEach((c,i)=>{let row=document.createElement("div");row.className="rank-row";let no=document.createElement("span");no.className="rank-no";no.textContent=String(i+1).padStart(2,"0");let title=document.createElement("span");title.textContent=(c.name||"Guest")+" · "+c.phone+" · "+c.orders+" orders";let val=document.createElement("strong");val.textContent=money(c.spend);row.append(no,title,val);$("#topCustomers").append(row);});renderTableSales(valid);renderTimingAverages(rows);$("#rSales").textContent=money(sales);$("#rOrders").textContent=rows.length;$("#rAov").textContent=money(valid.length?sales/valid.length:0);$("#rCancelled").textContent=rows.filter(o=>["cancelled","rejected"].includes(o.status)).length;
-let byDay={};rows.forEach(o=>{let k=key(new Date(o.created_at));byDay[k]??={count:0,sales:0};byDay[k].count++;if(!["cancelled","rejected"].includes(o.status))byDay[k].sales+=Number(o.total||0);});let days=Object.entries(byDay).sort((a,b)=>a[0].localeCompare(b[0])).slice(-90),max=Math.max(1,...days.map(x=>x[1].count));$("#dailyChart").replaceChildren();days.forEach(([day,v])=>{let col=document.createElement("div");col.className="daily-col";let n=document.createElement("em");n.textContent=v.count;let bar=document.createElement("div");bar.className="daily-bar";bar.style.height=(v.count/max*125+2)+"px";bar.title=day+" · "+v.count+" orders · "+money(v.sales);let date=document.createElement("small");date.textContent=day.slice(5);col.append(n,bar,date);$("#dailyChart").append(col);});
-horizontal($("#channelChart"),[["Dine-in units",rows.reduce((sum,o)=>sum+(o.items||[]).reduce((n,i)=>n+(i.item_status!=="cancelled"&&(i.fulfillment_type||(o.order_type==="takeaway"?"takeaway":"dine-in"))==="dine-in"?Math.max(1,Number(i.quantity)||1):0),0),0)],["Takeaway units",rows.reduce((sum,o)=>sum+(o.items||[]).reduce((n,i)=>n+(i.item_status!=="cancelled"&&(i.fulfillment_type||(o.order_type==="takeaway"?"takeaway":"dine-in"))==="takeaway"?Math.max(1,Number(i.quantity)||1):0),0),0)]]);
-horizontal($("#statusChart"),["new","accepted","preparing","ready","completed","cancelled"].map(s=>[s[0].toUpperCase()+s.slice(1),rows.filter(o=>o.status===s).length]));
-let hours=Array.from({length:24},(_,i)=>rows.filter(o=>new Date(o.created_at).getHours()===i).length),peak=Math.max(1,...hours);$("#hourChart").replaceChildren();hours.forEach((n,i)=>{let col=document.createElement("div");col.className="hour-col";let bar=document.createElement("i");bar.style.height=(n/peak*100+2)+"px";bar.title=String(i).padStart(2,"0")+":00 · "+n+" orders";let label=document.createElement("small");label.textContent=i%3===0?String(i).padStart(2,"0"):"";col.append(bar,label);$("#hourChart").append(col);});
-let products={};rows.forEach(o=>(o.items||[]).forEach(i=>{if(i.item_status!=="cancelled")products[i.name]=(products[i.name]||0)+Number(i.quantity||1);}));$("#productTable").replaceChildren();Object.entries(products).sort((a,b)=>b[1]-a[1]).slice(0,12).forEach(([name,count],i)=>{let row=document.createElement("div");row.className="rank-row";let no=document.createElement("span");no.className="rank-no";no.textContent=String(i+1).padStart(2,"0");let title=document.createElement("span");title.textContent=name;let val=document.createElement("strong");val.textContent=count+" sold";row.append(no,title,val);$("#productTable").append(row);});if(!rows.length)$("#dailyChart").textContent="No orders in this period.";}
-function exportCsv(){let rows=periodOrders(),head=["Order","Date","Customer","Mobile","Order Type","Table","Status","Accepted At","Completed At","Acceptance Seconds","Preparation Seconds","Total Seconds","Items with fulfillment","Total"],data=rows.map(o=>{let accepted=Date.parse(o.accepted_at||""),completed=Date.parse(o.completed_at||""),created=Date.parse(o.created_at||"");return [o.order_number,o.created_at,o.customer_name,o.customer_phone,o.order_type,o.table_number,o.status,o.accepted_at||"",o.completed_at||"",Number.isFinite(accepted)&&Number.isFinite(created)&&accepted>=created?Math.round((accepted-created)/1000):"",Number.isFinite(accepted)&&Number.isFinite(completed)&&completed>=accepted?Math.round((completed-accepted)/1000):"",Number.isFinite(created)&&Number.isFinite(completed)&&completed>=created?Math.round((completed-created)/1000):"",(o.items||[]).map(i=>i.quantity+"x "+i.name+" ["+(i.fulfillment_type||(o.order_type==="takeaway"?"takeaway":"dine-in"))+"]").join("; "),o.total];});let csv=[head,...data].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n"),blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="TCC-online-orders-report.csv";a.click();URL.revokeObjectURL(url);}
-$("#reportPeriod").addEventListener("change",()=>{let custom=$("#reportPeriod").value==="custom";$("#fromWrap").hidden=!custom;$("#toWrap").hidden=!custom;render();});["reportFrom","reportTo"].forEach(id=>$("#"+id).addEventListener("change",render));$("#reportRefresh").addEventListener("click",load);$("#reportExport").addEventListener("click",exportCsv);$("#reportLogout").addEventListener("click",()=>{localStorage.removeItem(TOKEN_KEY);location.href="orders.html";});load();
+function periodOrders(){
+ const p=$("reportPeriod").value,now=new Date();let from=null,to=key(now);
+ if(p==="today")from=to;
+ else if(["7","30","90"].includes(p)){const d=new Date(now);d.setDate(d.getDate()-Number(p)+1);from=key(d);}
+ else if(p==="custom"){from=$("reportFrom").value||null;to=$("reportTo").value||key(now);}
+ return allOrders.filter(o=>{const d=key(new Date(o.created_at));return(!from||d>=from)&&(!to||d<=to);});
+}
+function itemSales(item){
+ const quantity=Math.max(1,Number(item.quantity)||1);
+ const addons=(item.addons||[]).reduce((sum,addon)=>sum+Number(addon.price||0),0);
+ return quantity*(Number(item.unit_price||0)+addons);
+}
+function renderCustomers(){
+ const q=$("customerSearch").value.trim().toLowerCase();
+ const customers=[...customerDirectory].sort((a,b)=>Number(b.spend||0)-Number(a.spend||0));
+ const filtered=customers.filter(c=>String(c.name||"").toLowerCase().includes(q)||phone(c).includes(q.replace(/\D/g,"")));
+ $("customerRows").innerHTML=filtered.map(c=>'<tr><td><strong>'+esc(c.name||"Customer")+'</strong></td><td>'+esc(phone(c)||"—")+'</td><td class="numeric">'+Number(c.orders||0)+'</td><td class="numeric">'+money(c.spend)+'</td><td>'+esc(c.first_order?new Date(c.first_order).toLocaleDateString("en-IN"):"—")+'</td><td>'+esc(c.last_order?new Date(c.last_order).toLocaleDateString("en-IN"):"—")+'</td></tr>').join("")||'<tr><td class="empty-row" colspan="6">No matching customers.</td></tr>';
+ $("customerSummary").textContent=customers.length+" recorded customers · "+filtered.length+" shown";
+}
+function renderProducts(rows){
+ const products=new Map();
+ rows.filter(valid).forEach(order=>(order.items||[]).forEach(item=>{
+  if(String(item.item_status||"").toLowerCase()==="cancelled")return;
+  const name=String(item.name||"Unnamed product"),quantity=Math.max(1,Number(item.quantity)||1);
+  const entry=products.get(name)||{name,quantity:0,sales:0,orders:new Set()};
+  entry.quantity+=quantity;entry.sales+=itemSales(item);entry.orders.add(order.id||order.order_number||order.created_at);products.set(name,entry);
+ }));
+ const list=[...products.values()].sort((a,b)=>b.sales-a.sales||b.quantity-a.quantity||a.name.localeCompare(b.name));
+ $("productRows").innerHTML=list.map(p=>'<tr><td><strong>'+esc(p.name)+'</strong></td><td class="numeric">'+p.quantity+'</td><td class="numeric">'+p.orders.size+'</td><td class="numeric">'+money(p.sales)+'</td><td class="numeric">'+money(p.quantity?p.sales/p.quantity:0)+'</td></tr>').join("")||'<tr><td class="empty-row" colspan="5">No product sales in this period.</td></tr>';
+ window.tccProductSalesForExport=list.map(p=>[p.name,p.quantity,p.orders.size,p.sales,p.quantity?p.sales/p.quantity:0]);
+}
+function render(){
+ const rows=periodOrders(),validRows=rows.filter(valid),sales=validRows.reduce((sum,o)=>sum+Number(o.total||0),0);
+ const periodPhones=new Set(validRows.map(o=>String(o.customer_phone||"").replace(/\D/g,"").replace(/^91(?=\d{10}$)/,"")).filter(p=>/^\d{10}$/.test(p)));
+ $("rSales").textContent=money(sales);$("rOrders").textContent=validRows.length;$("rCustomers").textContent=customerDirectory.length;
+ $("customerSummary").textContent=customerDirectory.length+" recorded customers · "+periodPhones.size+" customers ordered in this period";
+ renderCustomers();renderProducts(rows);
+}
+function csvDownload(filename,rows){
+ const csv=rows.map(row=>row.map(value=>'"'+String(value??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+ const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+$("reportPeriod").addEventListener("change",()=>{const custom=$("reportPeriod").value==="custom";$("fromWrap").hidden=!custom;$("toWrap").hidden=!custom;render();});
+["reportFrom","reportTo"].forEach(id=>$(id).addEventListener("change",render));
+$("customerSearch").addEventListener("input",renderCustomers);
+$("reportRefresh").addEventListener("click",load);
+$("reportLogout").addEventListener("click",()=>{localStorage.removeItem(TOKEN_KEY);location.href="orders.html";});
+$("exportCustomers").addEventListener("click",()=>csvDownload("TCC-customer-data.csv",[["Name","Mobile","Orders","Total spend","First order","Last order"],...customerDirectory.map(c=>[c.name,phone(c),c.orders,c.spend,c.first_order,c.last_order])]));
+$("exportProducts").addEventListener("click",()=>csvDownload("TCC-product-wise-sales.csv",[["Product","Units sold","Orders","Sales","Average per unit"],...(window.tccProductSalesForExport||[])]));
+load();
