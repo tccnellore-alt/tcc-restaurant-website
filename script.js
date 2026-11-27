@@ -418,8 +418,33 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const TCC_ORDERING_API='https://pcxsdypqlavtulidpydn.supabase.co/functions/v1/tcc-orders';
   const TCC_ORDERING_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjeHNkeXBxbGF2dHVsaWRweWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzM3MjcsImV4cCI6MjExMDI0OTcyN30.RJ6Q8gcGbC-cfX93oG-6Y7-YGpNkUCDzkrDioTHgM_A';
   const applyTccOrderingState=enabled=>{tccServerOrderingEnabled=enabled===true;tccCustomerOrderingEnabled=tccServerOrderingEnabled&&tccDedicatedQrVerified;document.body.classList.toggle('tcc-ordering-enabled',tccCustomerOrderingEnabled);document.body.classList.toggle('tcc-ordering-disabled',!tccCustomerOrderingEnabled);document.querySelectorAll('.tcc-wish-add,.menu-lightbox-add-cart').forEach(button=>{button.hidden=!tccCustomerOrderingEnabled;});const cartButton=document.querySelector('.tcc-wish-float');if(cartButton)cartButton.hidden=!tccCustomerOrderingEnabled;if(!tccCustomerOrderingEnabled){document.querySelector('.tcc-wish-backdrop.is-open .tcc-wish-close')?.click();}};
-  const refreshTccOrderingState=async()=>{try{const response=await fetch(TCC_ORDERING_API+'?action=ordering-status',{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store'});if(!response.ok)throw new Error('Unable to check ordering status');const data=await response.json();applyTccOrderingState(data.enabled);}catch(error){console.warn('TCC ordering status check failed:',error);}};
+  let orderingStatusRequest=null;
+  const refreshTccOrderingState=async()=>{
+    if(orderingStatusRequest)return orderingStatusRequest;
+    orderingStatusRequest=(async()=>{
+      try{
+        const controller=new AbortController();
+        const timeout=setTimeout(()=>controller.abort(),5000);
+        let response;
+        try{
+          response=await fetch(TCC_ORDERING_API+'?action=ordering-status',{headers:{apikey:TCC_ORDERING_KEY,Authorization:'Bearer '+TCC_ORDERING_KEY},cache:'no-store',signal:controller.signal});
+        }finally{clearTimeout(timeout);}
+        if(!response.ok)throw new Error('Unable to check ordering status');
+        const data=await response.json();
+        applyTccOrderingState(data.enabled);
+        return data.enabled===true;
+      }catch(error){
+        console.warn('TCC ordering status check failed:',error);
+        return null;
+      }
+    })();
+    try{return await orderingStatusRequest;}finally{orderingStatusRequest=null;}
+  };
   refreshTccOrderingState();
+  // Recheck when a customer returns to the menu; this replaces constant polling.
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible')refreshTccOrderingState();
+  });
   const float=document.createElement('button');
   float.type='button';float.className='tcc-wish-float';float.innerHTML='<svg class="tcc-cart-icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path></svg><span>Cart</span><span class="tcc-wish-count">0</span>';
   float.setAttribute('aria-label','Open cart');
@@ -815,10 +840,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startWishlistButtons,{once:true});
   else startWishlistButtons();
-  const open=()=>{
-    if(!tccCustomerOrderingEnabled)return;
-    // Recheck availability when the customer opens the cart instead of polling every 10 seconds.
-    refreshTccOrderingState();
+  const open=async()=>{
+    // Refresh before opening; server-side checkout validation remains authoritative.
+    const orderingEnabled=await refreshTccOrderingState();
+    if(orderingEnabled===false||!tccCustomerOrderingEnabled)return;
     if(tableQrToken&&!tableQrVerified){tableQrBanner.scrollIntoView?.({block:'nearest'});return;}
     if(backdrop.classList.contains('is-open'))return;
     // Re-read saved cart data and rebuild rows every time the cart opens.
