@@ -2723,6 +2723,29 @@ body:not(.menu-text-mode) .menu-section .m-item{
  .tcc-combo-price strong{font-size:19px}
 }
 </style>
+<style id="tcc-combo-included-products">
+.tcc-combo-products{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;width:100%;margin:0}
+.tcc-combo-product{display:flex;align-items:center;gap:9px;min-width:0;padding:6px 8px;border:1px solid rgba(183,154,90,.22);border-radius:11px;background:rgba(255,255,255,.72)}
+.tcc-combo-product img{display:block;flex:0 0 40px;width:40px;height:40px;object-fit:cover;border-radius:8px;background:#eee6d7}
+.tcc-combo-product-name{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;color:#244b37;font:650 12px/1.25 Manrope,Arial,sans-serif}
+.tcc-combo-product-name strong{font:750 12px/1.25 Manrope,Arial,sans-serif}
+.tcc-combo-item-alt{color:#7b8279;font:500 10px/1.25 Manrope,Arial,sans-serif}
+.tcc-combo-content .tcc-combo-includes-label{margin-bottom:7px}
+.tcc-combo-price{margin-top:12px}
+@media(max-width:600px){
+ .tcc-combo-products{gap:5px}
+ .tcc-combo-product{gap:7px;padding:5px;border-radius:9px}
+ .tcc-combo-product img{flex-basis:32px;width:32px;height:32px;border-radius:6px}
+ .tcc-combo-product-name,.tcc-combo-product-name strong{font-size:10.5px;line-height:1.22}
+ .tcc-combo-item-alt{font-size:9px}
+ .tcc-combo-content .tcc-combo-includes-label{font-size:8px;letter-spacing:.09em;margin-bottom:5px}
+}
+@media(max-width:370px){
+ .tcc-combo-product img{flex-basis:28px;width:28px;height:28px}
+ .tcc-combo-product-name,.tcc-combo-product-name strong{font-size:9.5px}
+ .tcc-combo-item-alt{font-size:8px}
+}
+</style>
 </head>
 <body>
 <!-- HEADER -->
@@ -3850,8 +3873,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
       </div>
     </div>
     <div class="tcc-combo-content">
-      <div class="tcc-combo-includes-label">INCLUDES</div>
-      <p class="tcc-combo-includes">Avocado Toast + Chilli Cheese Toast + Mocha</p>
+      <div class="tcc-combo-includes-label">INCLUDED IN THIS COMBO</div><div class="tcc-combo-products"><div class="tcc-combo-product"><img src="images/menu/optimized/avocado-toast-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Avocado Toast</strong><small class="tcc-combo-item-alt">or Avocado Egg Toast</small></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/chilli-cheese-toast-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Chilli Cheese Toast</strong></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/hot-mocha-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Mocha</strong></span></div></div>
       <div class="tcc-combo-price"><del>₹597</del><strong>From ₹549</strong><span>Save ₹48</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="avocado-toast">Add combo <span aria-hidden="true">→</span></button>
     </div>
@@ -3865,8 +3887,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
       </div>
     </div>
     <div class="tcc-combo-content">
-      <div class="tcc-combo-includes-label">INCLUDES</div>
-      <p class="tcc-combo-includes">Burger + Classic Fries + Sunset Bliss</p>
+      <div class="tcc-combo-includes-label">INCLUDED IN THIS COMBO</div><div class="tcc-combo-products"><div class="tcc-combo-product"><img src="images/menu/optimized/grilled-paneer-burger-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Grilled Paneer Burger</strong><small class="tcc-combo-item-alt">or Crispy Chicken Burger</small></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/french-fries-classic-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Classic Fries</strong></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/sunset-bliss-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Sunset Bliss</strong></span></div></div>
       <div class="tcc-combo-price"><del>₹666</del><strong>₹599</strong><span>Save ₹67</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="burger">Add combo <span aria-hidden="true">→</span></button>
     </div>
@@ -3880,8 +3901,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
       </div>
     </div>
     <div class="tcc-combo-content">
-      <div class="tcc-combo-includes-label">INCLUDES</div>
-      <p class="tcc-combo-includes">Pasta + Potato Cheese Balls + Blueberry Mojito</p>
+      <div class="tcc-combo-includes-label">INCLUDED IN THIS COMBO</div><div class="tcc-combo-products"><div class="tcc-combo-product"><img src="images/menu/optimized/penne-alfredo-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Penne Alfredo</strong><small class="tcc-combo-item-alt">or Chicken Alfredo Bliss</small></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/potato-cheese-balls-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Potato Cheese Balls</strong></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/blueberry-mojito-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Blueberry Mojito</strong></span></div></div>
       <div class="tcc-combo-price"><del>₹666–₹676</del><strong>From ₹599</strong><span>Save ₹67</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="pasta">Add combo <span aria-hidden="true">→</span></button>
     </div>
@@ -3895,8 +3915,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
       </div>
     </div>
     <div class="tcc-combo-content">
-      <div class="tcc-combo-includes-label">INCLUDES</div>
-      <p class="tcc-combo-includes">Tuscan Honey Chicken / Paneer Burger + Classic Fries + Orange Fizzy</p>
+      <div class="tcc-combo-includes-label">INCLUDED IN THIS COMBO</div><div class="tcc-combo-products"><div class="tcc-combo-product"><img src="images/menu/optimized/tuscan-honey-chicken-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Tuscan Honey Chicken</strong></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/french-fries-classic-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Classic Fries</strong></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/orange-fizzy-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Orange Fizzy</strong></span></div></div>
       <div class="tcc-combo-price"><del>₹666–₹717</del><strong>From ₹599</strong><span>Save up to ₹68</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="tuscan">Add combo <span aria-hidden="true">→</span></button>
     </div>
@@ -3910,8 +3929,7 @@ body:not(.menu-text-mode) .menu-section .m-item{
       </div>
     </div>
     <div class="tcc-combo-content">
-      <div class="tcc-combo-includes-label">INCLUDES</div>
-      <p class="tcc-combo-includes">Sandwich + Peri Peri Fries + Tiramisu Latte</p>
+      <div class="tcc-combo-includes-label">INCLUDED IN THIS COMBO</div><div class="tcc-combo-products"><div class="tcc-combo-product"><img src="images/menu/optimized/bombay-street-sandwich-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Bombay Street Sandwich</strong><small class="tcc-combo-item-alt">or Grilled Chicken Sandwich</small></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/peri-peri-french-fries-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Peri Peri Fries</strong></span></div><div class="tcc-combo-product"><img src="images/menu/optimized/tiramisu-latte-400.webp" alt="" loading="lazy" decoding="async"><span class="tcc-combo-product-name"><strong>Tiramisu Latte</strong></span></div></div>
       <div class="tcc-combo-price"><del>₹657–₹697</del><strong>From ₹599</strong><span>Save up to ₹68</span></div>
       <button type="button" class="tcc-combo-select" data-combo-id="sandwich">Add combo <span aria-hidden="true">→</span></button>
     </div>
