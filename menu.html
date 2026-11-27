@@ -2674,8 +2674,8 @@ body:not(.menu-text-mode) .menu-section .m-item{
       <button class="menu-tab" data-target="refreshers-and-tea" aria-label="Refreshers menu">🧊 Refreshers</button>
       <button class="menu-tab" data-target="signatures" aria-label="Signature drinks menu">✨ Signatures</button>
       <button class="menu-tab" data-target="food" aria-label="Food menu">🍽️ Food</button>
-      <button class="menu-tab" data-target="ice-creams" aria-label="Ice Creams menu">🍨 Ice Creams</button>
-      <button class="menu-tab" data-target="desserts" aria-label="Desserts menu">🍰 Desserts</button>
+      <button class="menu-tab" data-target="desserts" aria-label="Ice Creams and Desserts menu">🍨 Ice Creams &amp; Desserts</button>
+      <button class="menu-tab" data-target="tcc-combos" aria-label="TCC Combos menu">🎁 TCC Combos</button>
     </div>
     <div class="food-tabs" id="foodTabs" aria-label="Category sections"></div>
     <input class="menu-search" id="menuSearch" type="search" placeholder="Search the entire menu…" aria-label="Search menu">
@@ -3657,9 +3657,8 @@ body:not(.menu-text-mode) .menu-section .m-item{
       <article class="m-item tcc-special-card"><div><h3>Choco Lava Croissant <span class="tcc-special-badge" role="img" aria-label="TCC Special">✦ TCC SPECIAL</span></h3></div><strong>219</strong></article>
           </div>
         </section>
-      </div>
-  <div class="menu-group" id="ice-creams" data-group="Ice Creams">
-        <section class="menu-section" data-group="Ice Creams">
+      
+        <section class="menu-section" data-group="Desserts">
           <h2>Ice Creams</h2>
           <div class="m-list">
       <article class="m-item">
@@ -3744,6 +3743,12 @@ body:not(.menu-text-mode) .menu-section .m-item{
         <strong>149</strong>
       </article>
           </div>
+        </section>
+      </div>
+      <div class="menu-group" id="tcc-combos" data-group="TCC Combos">
+        <section class="menu-section" data-group="TCC Combos">
+          <h2>TCC Combos</h2>
+          <p class="menu-note">TCC combo selections will be added here soon.</p>
         </section>
       </div>
   </div>
@@ -4842,8 +4847,8 @@ function showGroup(id,scrollToCategory=true){
     "refreshers-and-tea":["02 · REFRESHERS","Bright. Cold. Refreshing.","Iced teas, coolers and South Indian favourites."],
     signatures:["03 · SIGNATURES","Made the TCC way.","Matcha, pour-over and house favourites."],
     food:["04 · FOOD","Good food, no fuss.","Starters and pasta, while we refine the TCC food menu."],
-    "ice-creams":["05 · ICE CREAMS","A little scoop of joy.","Classic flavours and frozen favourites."],
-    desserts:["06 · DESSERTS","Save room for something sweet.","Cakes, dessert tins and indulgent jars."]
+    desserts:["05 · ICE CREAMS & DESSERTS","A little scoop of joy.","Classic scoops, cakes, dessert tins and sweet treats."],
+    "tcc-combos":["06 · TCC COMBOS","Good things go together.","Discover TCC pairings and combo offers."]
   }[id];
   if(intro&&copy){intro.querySelector(".category-kicker").textContent=copy[0];intro.querySelector("h2").textContent=copy[1];intro.querySelector("span").textContent=copy[2];}
   syncTccDrinkPicker();
