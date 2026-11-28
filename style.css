@@ -623,3 +623,15 @@ body:not(.menu-text-mode) .menu-group .m-item .tcc-bestseller-badge .tcc-bestsel
     padding-top:6px!important;
   }
 }
+
+/* Clear per-product combo cart breakdown */
+.tcc-combo-cart-products{display:grid;gap:5px;margin:5px 0 8px;padding:8px 10px;border:1px solid rgba(23,60,43,.12);border-radius:10px;background:rgba(255,255,255,.42)}
+.tcc-combo-cart-products-label{display:block;margin-top:7px;font:700 11px/1.35 Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#53665a}
+.tcc-combo-cart-product{display:flex;align-items:flex-start;gap:7px;min-width:0;font:500 13px/1.4 Arial,sans-serif;color:#2c4034}
+.tcc-combo-cart-product-marker{flex:0 0 12px;color:#8b7440;font-weight:800}
+.tcc-combo-cart-product-name{flex:1;min-width:0;overflow-wrap:anywhere}
+.tcc-combo-cart-pasta-group{display:grid;gap:4px;padding-bottom:5px;margin-bottom:2px;border-bottom:1px dashed rgba(23,60,43,.16)}
+.tcc-combo-cart-product.is-addon{padding-left:16px;font-size:12px;color:#6b716b}
+.tcc-combo-cart-product.is-addon .tcc-combo-cart-product-marker{color:#9a8050}
+.tcc-combo-cart-addon-price{flex:0 0 auto;font-size:12px;font-weight:700;color:#53665a;white-space:nowrap}
+.tcc-combo-cart-price{display:block;margin-top:4px}
