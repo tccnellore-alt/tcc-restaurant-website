@@ -670,16 +670,42 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const titleLine=document.createElement('div');titleLine.className='tcc-wish-title-line';
       const title=document.createElement('strong');title.textContent=item.name;titleLine.append(title);
       info.append(titleLine);
-      if(Array.isArray(item.addons)&&item.addons.length){
+      if(item.combo_variant){
+        const includedItems=String(item.combo_included||'').split(/\\s*\\+\\s*/).filter(Boolean);
+        if(item.combo_id==='alfredo-affair'){
+          const pastaName=includedItems.shift()||'Penne Alfredo';
+          const pastaLine=document.createElement('small');
+          pastaLine.className='tcc-combo-cart-details';
+          pastaLine.textContent=pastaName;
+          info.append(pastaLine);
+          const pastaAddons=(item.addons||[]).filter(addon=>addon.combo_pasta_addon&&addon.name);
+          if(pastaAddons.length){
+            const addonLine=document.createElement('small');
+            addonLine.className='tcc-combo-cart-details tcc-combo-pasta-cart-addons';
+            addonLine.textContent='Pasta add-ons: '+pastaAddons.map(addon=>addon.name).join(' · ');
+            info.append(addonLine);
+          }
+          if(includedItems.length){
+            const otherItems=document.createElement('small');
+            otherItems.className='tcc-combo-cart-details';
+            otherItems.textContent='Also includes: '+includedItems.join(' · ');
+            info.append(otherItems);
+          }
+        }else{
+          const comboItems=document.createElement('small');
+          comboItems.className='tcc-combo-cart-details';
+          comboItems.textContent='Includes: '+includedItems.join(' · ');
+          info.append(comboItems);
+        }
+        const comboPriceLine=document.createElement('small');
+        comboPriceLine.className='tcc-combo-cart-details tcc-combo-cart-price';
+        comboPriceLine.textContent='Combo '+money(item.price||0)+' · Was '+money(item.original_price||0)+' · Save '+money(item.combo_savings||0);
+        info.append(comboPriceLine);
+      }else if(Array.isArray(item.addons)&&item.addons.length){
         const addonLine=document.createElement('small');
         addonLine.className='tcc-wish-addon-line';
         addonLine.textContent='Add-ons: '+item.addons.map(addon=>addon.name).filter(Boolean).join(' · ');
         info.append(addonLine);
-      }
-      if(item.combo_variant){
-        const comboDetail=document.createElement('small');comboDetail.className='tcc-combo-cart-details';
-        comboDetail.textContent='Original '+money(item.original_price||0)+' · Combo '+money(item.price||0)+' · Save '+money(item.combo_savings||0)+' · Includes: '+(item.combo_included||'');
-        info.append(comboDetail);
       }
       const fulfillment=document.createElement('label');fulfillment.className='tcc-wish-fulfillment';const fulfillmentInput=document.createElement('input');fulfillmentInput.type='checkbox';fulfillmentInput.checked=item.fulfillment_type==='takeaway'||(orderType==='takeaway');fulfillmentInput.setAttribute('aria-label','Pack '+item.name+' as takeaway (+₹10 each)');fulfillmentInput.addEventListener('change',()=>{item.fulfillment_type=fulfillmentInput.checked?'takeaway':'dine-in';save();render();});const fulfillmentText=document.createElement('span');fulfillmentText.textContent='Takeaway +₹10';fulfillment.append(fulfillmentInput,fulfillmentText);
       const itemOptions=document.createElement('div');itemOptions.className='tcc-wish-item-options';itemOptions.append(fulfillment);
