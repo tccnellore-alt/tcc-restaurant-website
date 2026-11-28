@@ -874,7 +874,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   const updateTccComboSummary=()=>{
     const def=tccComboDefinitions[tccComboCurrentId],variant=def?.variants.find(v=>v.id===tccComboSelectedVariant());
     if(!variant)return;
-    const selectedAddons=tccComboCurrentId==='pasta'?tccComboSelectedPastaAddons():[];
+    const selectedAddons=tccComboCurrentId==='alfredo-affair'?tccComboSelectedPastaAddons():[];
     const addonTotal=selectedAddons.reduce((sum,addon)=>sum+addon.price,0);
     const payable=variant.comboPrice+addonTotal;
     tccComboModal.querySelector('.tcc-combo-summary-original').textContent=tccComboMoney(variant.originalPrice);
@@ -917,10 +917,10 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     }
     const pastaAddonSection=tccComboModal.querySelector('.tcc-combo-pasta-addons');
     const pastaExtrasWrap=tccComboModal.querySelector('.tcc-combo-extras');
-    pastaAddonSection.hidden=id!=='pasta';
-    tccComboModal.querySelector('.tcc-combo-summary-addons-row').hidden=id!=='pasta';
+    pastaAddonSection.hidden=id!=='alfredo-affair';
+    tccComboModal.querySelector('.tcc-combo-summary-addons-row').hidden=id!=='alfredo-affair';
     pastaExtrasWrap.replaceChildren();
-    if(id==='pasta'){
+    if(id==='alfredo-affair'){
       const existingPastaAddons=(editItem?.addons||[]).filter(addon=>addon.combo_pasta_addon).map(addon=>addon.name);
       tccComboPastaAddons.forEach((addon,index)=>{
         const label=document.createElement('label');label.className='tcc-combo-extra';
@@ -942,7 +942,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   tccComboModal.querySelector('.tcc-combo-confirm').addEventListener('click',()=>{
     const def=tccComboDefinitions[tccComboCurrentId],variant=def?.variants.find(v=>v.id===tccComboSelectedVariant());
     if(!variant){alert('Please choose Veg or Non-Veg.');return;}
-    const selectedPastaAddons=tccComboCurrentId==='pasta'?tccComboSelectedPastaAddons():[];
+    const selectedPastaAddons=tccComboCurrentId==='alfredo-affair'?tccComboSelectedPastaAddons():[];
     const comboAddons=[
       {name:variant.label,price:0,combo_choice:true},
       {name:'Includes: '+variant.items,price:0,combo_included:true},
