@@ -672,31 +672,32 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       info.append(titleLine);
       if(item.combo_variant){
         const includedItems=String(item.combo_included||'').split(/\s*\+\s*/).filter(Boolean);
+        const productsWrap=document.createElement('div');
+        productsWrap.className='tcc-combo-cart-products';
+        const productLine=(name,kind='included')=>{
+          const line=document.createElement('div');
+          line.className='tcc-combo-cart-product'+(kind==='addon'?' is-addon':'');
+          const marker=document.createElement('span');marker.className='tcc-combo-cart-product-marker';marker.textContent=kind==='addon'?'↳':'•';
+          const label=document.createElement('span');label.className='tcc-combo-cart-product-name';label.textContent=name;
+          line.append(marker,label);return line;
+        };
         if(item.combo_id==='alfredo-affair'){
           const pastaName=includedItems.shift()||'Penne Alfredo';
-          const pastaLine=document.createElement('small');
-          pastaLine.className='tcc-combo-cart-details';
-          pastaLine.textContent=pastaName;
-          info.append(pastaLine);
+          const pastaGroup=document.createElement('div');pastaGroup.className='tcc-combo-cart-pasta-group';
+          pastaGroup.append(productLine(pastaName));
           const pastaAddons=(item.addons||[]).filter(addon=>addon.combo_pasta_addon&&addon.name);
-          if(pastaAddons.length){
-            const addonLine=document.createElement('small');
-            addonLine.className='tcc-combo-cart-details tcc-combo-pasta-cart-addons';
-            addonLine.textContent='Pasta add-ons: '+pastaAddons.map(addon=>addon.name).join(' · ');
-            info.append(addonLine);
-          }
-          if(includedItems.length){
-            const otherItems=document.createElement('small');
-            otherItems.className='tcc-combo-cart-details';
-            otherItems.textContent='Also includes: '+includedItems.join(' · ');
-            info.append(otherItems);
-          }
+          pastaAddons.forEach(addon=>{
+            const addonLine=productLine(addon.name,'addon');
+            const addonPrice=document.createElement('span');addonPrice.className='tcc-combo-cart-addon-price';addonPrice.textContent='+'+money(addon.price||0);
+            addonLine.append(addonPrice);pastaGroup.append(addonLine);
+          });
+          productsWrap.append(pastaGroup);
+          includedItems.forEach(name=>productsWrap.append(productLine(name)));
         }else{
-          const comboItems=document.createElement('small');
-          comboItems.className='tcc-combo-cart-details';
-          comboItems.textContent='Includes: '+includedItems.join(' · ');
-          info.append(comboItems);
+          includedItems.forEach(name=>productsWrap.append(productLine(name)));
         }
+        const productsLabel=document.createElement('small');productsLabel.className='tcc-combo-cart-products-label';productsLabel.textContent='Combo includes';
+        info.append(productsLabel,productsWrap);
         const comboPriceLine=document.createElement('small');
         comboPriceLine.className='tcc-combo-cart-details tcc-combo-cart-price';
         comboPriceLine.textContent='Combo '+money(item.price||0)+' · Was '+money(item.original_price||0)+' · Save '+money(item.combo_savings||0);
