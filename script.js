@@ -671,7 +671,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       const title=document.createElement('strong');title.textContent=item.name;titleLine.append(title);
       info.append(titleLine);
       if(item.combo_variant){
-        const includedItems=String(item.combo_included||'').split(/\\s*\\+\\s*/).filter(Boolean);
+        const includedItems=String(item.combo_included||'').split(/\s*\+\s*/).filter(Boolean);
         if(item.combo_id==='alfredo-affair'){
           const pastaName=includedItems.shift()||'Penne Alfredo';
           const pastaLine=document.createElement('small');
