@@ -969,11 +969,9 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
     const def=tccComboDefinitions[tccComboCurrentId],variant=def?.variants.find(v=>v.id===tccComboSelectedVariant());
     if(!variant){alert('Please choose Veg or Non-Veg.');return;}
     const selectedPastaAddons=tccComboCurrentId==='alfredo-affair'?tccComboSelectedPastaAddons():[];
-    const comboAddons=[
-      {name:variant.label,price:0,combo_choice:true},
-      {name:'Includes: '+variant.items,price:0,combo_included:true},
-      ...selectedPastaAddons.map(addon=>({name:addon.name,price:addon.price,combo_pasta_addon:true}))
-    ];
+    // Keep the addons array for real chargeable extras only.
+    // Combo choice and included products already have dedicated fields on comboItem.
+    const comboAddons=selectedPastaAddons.map(addon=>({name:addon.name,price:addon.price,combo_pasta_addon:true}));
     const comboItem={
       name:def.variants.length===1?def.name:def.name+' — '+variant.label,
       price:variant.comboPrice,original_price:variant.originalPrice,combo_savings:variant.originalPrice-variant.comboPrice,
