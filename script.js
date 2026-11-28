@@ -848,7 +848,14 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
   else startWishlistButtons();
 
   /* TCC combo configurator — isolated prototype branch; uses the existing cart/order item format. */
-  const tccComboDefinitions={"avocado-toast":{"name":"Avocado Toast Combo","variants":[{"id":"veg","label":"Veg · Avocado Toast","items":"Avocado Toast + Chilli Cheese Toast + Cappuccino","originalPrice":597,"comboPrice":549},{"id":"nonveg","label":"Non-Veg · Avocado Egg Toast","items":"Avocado Egg Toast + Chilli Cheese Toast + Cappuccino","originalPrice":647,"comboPrice":599}]},"burger":{"name":"TCC Burger Combo","variants":[{"id":"veg","label":"Veg · Grilled Paneer Burger","items":"Grilled Paneer Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Crispy Chicken Burger","items":"Crispy Chicken Burger + Classic Fries + Sunset Bliss","originalPrice":666,"comboPrice":599}]},"pasta":{"name":"Pasta & Refreshers Combo","variants":[{"id":"fixed","label":"Penne Alfredo","items":"Penne Alfredo + Potato Cheese Balls + Blueberry Mojito","originalPrice":666,"comboPrice":599}]},"tuscan":{"name":"Tuscan Honey Combo","variants":[{"id":"fixed","label":"Tuscan Honey Chicken","items":"Tuscan Honey Chicken + Classic Fries + Orange Fizzy","originalPrice":717,"comboPrice":649}]},"sandwich":{"name":"Sandwich & Tiramisu Combo","variants":[{"id":"veg","label":"Veg · Bombay Street Sandwich","items":"Bombay Street Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":657,"comboPrice":599},{"id":"nonveg","label":"Non-Veg · Grilled Chicken Sandwich","items":"Grilled Chicken Sandwich + Peri Peri Fries + Tiramisu Latte","originalPrice":697,"comboPrice":629}]}};
+  const tccComboDefinitions={
+    "alfredo-affair":{name:"Alfredo Affair",variants:[{id:"fixed",label:"Alfredo Affair",items:"Penne Alfredo + Potato Cheese Balls + Sunset Bliss",originalPrice:696,comboPrice:619}]},
+    "honey-heat-feast":{name:"Honey Heat Feast",variants:[{id:"fixed",label:"Honey Heat Feast",items:"Tuscan Honey Chicken + Peri Peri French Fries + Orange Fizzy",originalPrice:737,comboPrice:659}]},
+    "burger-bliss-box":{name:"Burger Bliss Box",variants:[{id:"paneer",label:"Grilled Paneer Burger",items:"Grilled Paneer Burger + Corn Ribs + Blueberry Mojito",originalPrice:626,comboPrice:559},{id:"chicken",label:"Crispy Chicken Burger",items:"Crispy Chicken Burger + Corn Ribs + Blueberry Mojito",originalPrice:626,comboPrice:559}]},
+    "pizza-and-chill":{name:"Pizza & Chill",variants:[{id:"farmer",label:"The Farmer’s Pizza",items:"The Farmer’s Pizza + French Fries Classic + TCC’s Signature Cold Coffee",originalPrice:743,comboPrice:669},{id:"bbq-chicken",label:"BBQ Chicken Pizza",items:"BBQ Chicken Pizza + French Fries Classic + TCC’s Signature Cold Coffee",originalPrice:843,comboPrice:759}]},
+    "two-cups-one-date":{name:"Two Cups, One Date",variants:[{id:"bombay",label:"Bombay Street Sandwich",items:"Cappuccino + Mocha + Bombay Street Sandwich",originalPrice:667,comboPrice:599},{id:"crispy-chicken",label:"Crispy Chicken Sandwich",items:"Cappuccino + Mocha + Crispy Chicken Sandwich",originalPrice:707,comboPrice:629}]},
+    "sweet-heat-sharing-box":{name:"Sweet Heat Sharing Box",variants:[{id:"fixed",label:"Sweet Heat Sharing Box",items:"Hot Chocolate + Moist Chocolate Slice + Peri Peri French Fries + Corn Ribs",originalPrice:882,comboPrice:779}]}
+  };
   const tccComboPastaAddons=[{name:"Grilled Chicken",price:40},{name:"Crispy Chicken",price:40},{name:"Mushroom",price:40},{name:"Prawns",price:60},{name:"Extra Parmesan Cheese",price:50}];
   if(window.TCC_COMBO_PROTOTYPE_MODE){
     const placeOrderButton=backdrop.querySelector('.tcc-wish-send');
@@ -942,7 +949,7 @@ const body=document.body,toggle=document.querySelector('[data-toggle]'),close=do
       ...selectedPastaAddons.map(addon=>({name:addon.name,price:addon.price,combo_pasta_addon:true}))
     ];
     const comboItem={
-      name:variant.id==='fixed'?def.name:def.name+' — '+(variant.id==='veg'?'Veg':'Non-Veg'),
+      name:def.variants.length===1?def.name:def.name+' — '+variant.label,
       price:variant.comboPrice,original_price:variant.originalPrice,combo_savings:variant.originalPrice-variant.comboPrice,
       combo_id:tccComboCurrentId,combo_variant_id:variant.id,combo_variant:variant.label,combo_included:variant.items,
       category:'TCC Combos',section:'TCC Combos',key:('tcc-combo|'+tccComboCurrentId+'|'+variant.id).toLowerCase(),
